@@ -191,6 +191,8 @@ const functions = [
   Func(name: 'PyEval_GetGlobals', parameterTypes: [], returnType: ppyObject),
   Func(name: 'PyEval_GetLocals', parameterTypes: [], returnType: ppyObject),
 
+  Func(name: 'Py_IncRef', parameterTypes: [ppyObject], returnType: cint),
+  Func(name: 'Py_DecRef', parameterTypes: [ppyObject], returnType: cint),
   Func(name: 'Py_Initialize', parameterTypes: [], returnType: pySsizeT),
   Func(
       name: 'PyRun_SimpleString',
