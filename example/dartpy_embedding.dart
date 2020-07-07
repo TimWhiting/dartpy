@@ -48,7 +48,7 @@ void main(List<String> args) {
       }
       print('Cannot find function ${args[1]}');
     }
-    xdecRef(pFunc);
+    Py_DecRef(pFunc);
     Py_DecRef(pModule);
   } else {
     PyErr_Print();

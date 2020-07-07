@@ -14,6 +14,20 @@ ffi.DynamicLibrary _open() {
   throw UnsupportedError('This platform is not supported.');
 }
 
+/// This is the structure used to hold compiler flags. In cases where code is only being compiled, it is passed as int flags, and in cases where code is being executed, it is passed as PyCompilerFlags *flags. In this case, from __future__ import can modify flags.
+/// Whenever PyCompilerFlags *flags is NULL, cf_flags is treated as equal to 0, and any modification due to from __future__ import is discarded.
+class PyCompilerFlags extends ffi.Struct {
+  @ffi.Int32()
+  int cf_flags;
+
+  @ffi.Int32()
+  int cf_feature_version;
+
+  static ffi.Pointer<PyCompilerFlags> allocate() {
+    return ffi.allocate<PyCompilerFlags>();
+  }
+}
+
 /// C struct `PyObject`.
 class PyObject extends ffi.Struct {
   static ffi.Pointer<PyObject> allocate() {
@@ -45,7 +59,7 @@ class PyMemberDef extends ffi.Struct {
   ffi.Pointer<ffi.Uint8> name;
 
   @ffi.Int32()
-  int typ;
+  int type;
 
   @ffi.Uint32()
   int offset;
@@ -309,6 +323,168 @@ class PyTypeObject3Obj extends ffi.Struct {
     return ffi.allocate<PyTypeObject3Obj>();
   }
 }
+
+/// The main program for the standard interpreter. This is made available for programs which embed Python. The argc and argv parameters should be prepared exactly as those which are passed to a C program’s main() function (converted to wchar_t according to the user’s locale). It is important to note that the argument list may be modified (but the contents of the strings pointed to by the argument list are not). The return value will be 0 if the interpreter exits normally (i.e., without an exception), 1 if the interpreter exits due to an exception, or 2 if the parameter list does not represent a valid Python command line.
+/// Note that if an otherwise unhandled SystemExit is raised, this function will not return 1, but exit the process, as long as Py_InspectFlag is not set.
+int Py_Main(
+  int arg0,
+  ffi.Pointer<ffi.Uint16> arg1,
+) {
+  return _Py_Main(arg0, arg1);
+}
+
+final _Py_Main_Dart _Py_Main =
+    _dynamicLibrary.lookupFunction<_Py_Main_C, _Py_Main_Dart>(
+  'Py_Main',
+);
+typedef _Py_Main_C = ffi.Int32 Function(
+  ffi.Int32 arg0,
+  ffi.Pointer<ffi.Uint16> arg1,
+);
+typedef _Py_Main_Dart = int Function(
+  int arg0,
+  ffi.Pointer<ffi.Uint16> arg1,
+);
+
+/// Similar to [Py_Main] but argv is an array of bytes strings.
+/// New in version 3.8
+int Py_BytesMain(
+  int arg0,
+  ffi.Pointer<ffi.Uint8> arg1,
+) {
+  return _Py_BytesMain(arg0, arg1);
+}
+
+final _Py_BytesMain_Dart _Py_BytesMain =
+    _dynamicLibrary.lookupFunction<_Py_BytesMain_C, _Py_BytesMain_Dart>(
+  'Py_BytesMain',
+);
+typedef _Py_BytesMain_C = ffi.Int32 Function(
+  ffi.Int32 arg0,
+  ffi.Pointer<ffi.Uint8> arg1,
+);
+typedef _Py_BytesMain_Dart = int Function(
+  int arg0,
+  ffi.Pointer<ffi.Uint8> arg1,
+);
+
+/// This is a simplified interface to [PyRun_SimpleStringFlags] below, leaving the PyCompilerFlags* argument set to NULL.
+int PyRun_SimpleString(
+  ffi.Pointer<ffi.Uint8> arg0,
+) {
+  return _PyRun_SimpleString(arg0);
+}
+
+final _PyRun_SimpleString_Dart _PyRun_SimpleString = _dynamicLibrary
+    .lookupFunction<_PyRun_SimpleString_C, _PyRun_SimpleString_Dart>(
+  'PyRun_SimpleString',
+);
+typedef _PyRun_SimpleString_C = ffi.Uint32 Function(
+  ffi.Pointer<ffi.Uint8> arg0,
+);
+typedef _PyRun_SimpleString_Dart = int Function(
+  ffi.Pointer<ffi.Uint8> arg0,
+);
+
+/// Executes the Python source code from command in the __main__ module according to the flags argument. If __main__ does not already exist, it is created. Returns 0 on success or -1 if an exception was raised. If there was an error, there is no way to get the exception information. For the meaning of flags, see below.
+/// Note that if an otherwise unhandled SystemExit is raised, this function will not return -1, but exit the process, as long as Py_InspectFlag is not set.
+int PyRun_SimpleStringFlags(
+  ffi.Pointer<ffi.Uint8> arg0,
+  ffi.Pointer<PyCompilerFlags> arg1,
+) {
+  return _PyRun_SimpleStringFlags(arg0, arg1);
+}
+
+final _PyRun_SimpleStringFlags_Dart _PyRun_SimpleStringFlags = _dynamicLibrary
+    .lookupFunction<_PyRun_SimpleStringFlags_C, _PyRun_SimpleStringFlags_Dart>(
+  'PyRun_SimpleStringFlags',
+);
+typedef _PyRun_SimpleStringFlags_C = ffi.Uint32 Function(
+  ffi.Pointer<ffi.Uint8> arg0,
+  ffi.Pointer<PyCompilerFlags> arg1,
+);
+typedef _PyRun_SimpleStringFlags_Dart = int Function(
+  ffi.Pointer<ffi.Uint8> arg0,
+  ffi.Pointer<PyCompilerFlags> arg1,
+);
+
+/// Increment the reference count for object o. The object may be NULL, in which case the function has no effect.
+void Py_IncRef(
+  ffi.Pointer<PyObject> arg0,
+) {
+  _Py_IncRef(arg0);
+}
+
+final _Py_IncRef_Dart _Py_IncRef =
+    _dynamicLibrary.lookupFunction<_Py_IncRef_C, _Py_IncRef_Dart>(
+  'Py_IncRef',
+);
+typedef _Py_IncRef_C = ffi.Void Function(
+  ffi.Pointer<PyObject> arg0,
+);
+typedef _Py_IncRef_Dart = void Function(
+  ffi.Pointer<PyObject> arg0,
+);
+
+/// Decrement the reference count for object o. The object may be NULL, in which case the macro has no effect; otherwise the effect is the same as for Py_DECREF(), and the same warning applies.
+void Py_DecRef(
+  ffi.Pointer<PyObject> arg0,
+) {
+  _Py_DecRef(arg0);
+}
+
+final _Py_DecRef_Dart _Py_DecRef =
+    _dynamicLibrary.lookupFunction<_Py_DecRef_C, _Py_DecRef_Dart>(
+  'Py_DecRef',
+);
+typedef _Py_DecRef_C = ffi.Void Function(
+  ffi.Pointer<PyObject> arg0,
+);
+typedef _Py_DecRef_Dart = void Function(
+  ffi.Pointer<PyObject> arg0,
+);
+
+/// C function `Py_Initialize`.
+int Py_Initialize() {
+  return _Py_Initialize();
+}
+
+final _Py_Initialize_Dart _Py_Initialize =
+    _dynamicLibrary.lookupFunction<_Py_Initialize_C, _Py_Initialize_Dart>(
+  'Py_Initialize',
+);
+typedef _Py_Initialize_C = ffi.Uint32 Function();
+typedef _Py_Initialize_Dart = int Function();
+
+/// C function `Py_FinalizeEx`.
+int Py_FinalizeEx() {
+  return _Py_FinalizeEx();
+}
+
+final _Py_FinalizeEx_Dart _Py_FinalizeEx =
+    _dynamicLibrary.lookupFunction<_Py_FinalizeEx_C, _Py_FinalizeEx_Dart>(
+  'Py_FinalizeEx',
+);
+typedef _Py_FinalizeEx_C = ffi.Uint32 Function();
+typedef _Py_FinalizeEx_Dart = int Function();
+
+/// C function `PyImport_Import`.
+ffi.Pointer<PyObject> PyImport_Import(
+  ffi.Pointer<ffi.Uint8> arg0,
+) {
+  return _PyImport_Import(arg0);
+}
+
+final _PyImport_Import_Dart _PyImport_Import =
+    _dynamicLibrary.lookupFunction<_PyImport_Import_C, _PyImport_Import_Dart>(
+  'PyImport_Import',
+);
+typedef _PyImport_Import_C = ffi.Pointer<PyObject> Function(
+  ffi.Pointer<ffi.Uint8> arg0,
+);
+typedef _PyImport_Import_Dart = ffi.Pointer<PyObject> Function(
+  ffi.Pointer<ffi.Uint8> arg0,
+);
 
 /// C function `Py_BuildValue`.
 ffi.Pointer<PyObject> Py_BuildValue(
@@ -1403,102 +1579,6 @@ final _PyEval_GetLocals_Dart _PyEval_GetLocals =
 );
 typedef _PyEval_GetLocals_C = ffi.Pointer<PyObject> Function();
 typedef _PyEval_GetLocals_Dart = ffi.Pointer<PyObject> Function();
-
-/// C function `Py_IncRef`.
-int Py_IncRef(
-  ffi.Pointer<PyObject> arg0,
-) {
-  return _Py_IncRef(arg0);
-}
-
-final _Py_IncRef_Dart _Py_IncRef =
-    _dynamicLibrary.lookupFunction<_Py_IncRef_C, _Py_IncRef_Dart>(
-  'Py_IncRef',
-);
-typedef _Py_IncRef_C = ffi.Int32 Function(
-  ffi.Pointer<PyObject> arg0,
-);
-typedef _Py_IncRef_Dart = int Function(
-  ffi.Pointer<PyObject> arg0,
-);
-
-/// C function `Py_DecRef`.
-int Py_DecRef(
-  ffi.Pointer<PyObject> arg0,
-) {
-  return _Py_DecRef(arg0);
-}
-
-final _Py_DecRef_Dart _Py_DecRef =
-    _dynamicLibrary.lookupFunction<_Py_DecRef_C, _Py_DecRef_Dart>(
-  'Py_DecRef',
-);
-typedef _Py_DecRef_C = ffi.Int32 Function(
-  ffi.Pointer<PyObject> arg0,
-);
-typedef _Py_DecRef_Dart = int Function(
-  ffi.Pointer<PyObject> arg0,
-);
-
-/// C function `Py_Initialize`.
-int Py_Initialize() {
-  return _Py_Initialize();
-}
-
-final _Py_Initialize_Dart _Py_Initialize =
-    _dynamicLibrary.lookupFunction<_Py_Initialize_C, _Py_Initialize_Dart>(
-  'Py_Initialize',
-);
-typedef _Py_Initialize_C = ffi.Uint32 Function();
-typedef _Py_Initialize_Dart = int Function();
-
-/// C function `PyRun_SimpleString`.
-int PyRun_SimpleString(
-  ffi.Pointer<ffi.Uint8> arg0,
-) {
-  return _PyRun_SimpleString(arg0);
-}
-
-final _PyRun_SimpleString_Dart _PyRun_SimpleString = _dynamicLibrary
-    .lookupFunction<_PyRun_SimpleString_C, _PyRun_SimpleString_Dart>(
-  'PyRun_SimpleString',
-);
-typedef _PyRun_SimpleString_C = ffi.Uint32 Function(
-  ffi.Pointer<ffi.Uint8> arg0,
-);
-typedef _PyRun_SimpleString_Dart = int Function(
-  ffi.Pointer<ffi.Uint8> arg0,
-);
-
-/// C function `Py_FinalizeEx`.
-int Py_FinalizeEx() {
-  return _Py_FinalizeEx();
-}
-
-final _Py_FinalizeEx_Dart _Py_FinalizeEx =
-    _dynamicLibrary.lookupFunction<_Py_FinalizeEx_C, _Py_FinalizeEx_Dart>(
-  'Py_FinalizeEx',
-);
-typedef _Py_FinalizeEx_C = ffi.Uint32 Function();
-typedef _Py_FinalizeEx_Dart = int Function();
-
-/// C function `PyImport_Import`.
-ffi.Pointer<PyObject> PyImport_Import(
-  ffi.Pointer<ffi.Uint8> arg0,
-) {
-  return _PyImport_Import(arg0);
-}
-
-final _PyImport_Import_Dart _PyImport_Import =
-    _dynamicLibrary.lookupFunction<_PyImport_Import_C, _PyImport_Import_Dart>(
-  'PyImport_Import',
-);
-typedef _PyImport_Import_C = ffi.Pointer<PyObject> Function(
-  ffi.Pointer<ffi.Uint8> arg0,
-);
-typedef _PyImport_Import_Dart = ffi.Pointer<PyObject> Function(
-  ffi.Pointer<ffi.Uint8> arg0,
-);
 
 /// C function `PyUnicode_DecodeFSDefault`.
 ffi.Pointer<PyObject> PyUnicode_DecodeFSDefault(

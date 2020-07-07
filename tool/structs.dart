@@ -7,11 +7,22 @@ const pPyObject = 'ffi.Pointer<PyObject>';
 const pPyObjectObj = 'ffi.Pointer<PyObjectObj>';
 const pPyModuleDef_Base = 'ffi.Pointer<PyModuleDef_Base>';
 const pPyModuleDef = 'ffi.Pointer<PyModuleDef>';
-
+const pPyCompilerFlags = 'ffi.Pointer<PyCompilerFlags>';
 const pPyCFunction = 'ffi.Pointer';
 const pPyCFunctionWithKeywords = 'ffi.Pointer';
 
 const structs = [
+  //https://docs.python.org/3/c-api/veryhigh.html#c.PyCompilerFlags
+  Struct(
+    name: 'PyCompilerFlags',
+    fields: [
+      StructField(name: 'cf_flags', type: cint),
+      StructField(name: 'cf_feature_version', type: cint),
+    ],
+    documentation: '''
+This is the structure used to hold compiler flags. In cases where code is only being compiled, it is passed as int flags, and in cases where code is being executed, it is passed as PyCompilerFlags *flags. In this case, from __future__ import can modify flags.
+Whenever PyCompilerFlags *flags is NULL, cf_flags is treated as equal to 0, and any modification due to from __future__ import is discarded.''',
+  ),
   Struct(name: 'PyObject', fields: []),
   Struct(name: 'PyMethodDef', fields: [
     StructField(name: 'ml_name', type: cstring),
