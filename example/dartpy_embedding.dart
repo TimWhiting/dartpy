@@ -10,7 +10,7 @@ void main(List<String> args) {
   final name = Utf8.toUtf8(args[0]);
   final pName = PyUnicode_DecodeFSDefault(name.cast<Uint8>());
   free(name);
-  final pModule = PyImport_ImportModule(pName.cast<Uint8>());
+  final pModule = PyImport_Import(pName.cast<Uint8>());
   // print(pName.cast<PyObjectObj>().ref.ob_refcnt);
   Py_DecRef(pName);
   // print(pName.cast<PyObjectObj>().ref.ob_refcnt);

@@ -12,6 +12,9 @@ const pPyCFunctionWithKeywords = 'ffi.Pointer';
 const pyTypeObject = 'PyTypeObject';
 const pPyTypeObject = 'ffi.Pointer<PyTypeObject>';
 
+const DeallocFunc =
+    'ffi.Pointer<ffi.NativeFunction<ffi.Uint32 Function(ffi.Pointer<PyObject>)>>';
+
 const structs = [
   //https://docs.python.org/3/c-api/veryhigh.html#c.PyCompilerFlags
   Struct(
@@ -129,6 +132,3 @@ Whenever PyCompilerFlags *flags is NULL, cf_flags is treated as equal to 0, and 
     StructField(name: 'tp_finalize', type: cpointer),
   ]),
 ];
-
-const DeallocFunc =
-    'ffi.Pointer<ffi.NativeFunction<ffi.Uint32 Function(ffi.Pointer<PyObject>)>>';

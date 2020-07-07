@@ -18,8 +18,12 @@ const typedefs = ImportedUri('typedefs.dart');
 final library = Library.platformAware(
   // Configure, how the dynamic library should be loaded depending on the platform
   dynamicLibraryConfig: DynamicLibraryConfig(
+    linux: DynamicLibraryPlatformConfig.open(
+      '/usr/lib/x86_64-linux-gnu/libpython3.7m.so',
+    ),
     macOS: DynamicLibraryPlatformConfig.open(
-        '/usr/local/Frameworks/Python.framework/Versions/3.7/lib/libpython3.7m.dylib'),
+      '/usr/local/Frameworks/Python.framework/Versions/3.7/lib/libpython3.7m.dylib',
+    ),
   ),
   importedUris: {typedefs},
   elements: [...structs, ...functions, ...globals],

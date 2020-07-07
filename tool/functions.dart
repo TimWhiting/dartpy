@@ -140,7 +140,9 @@ This function always uses absolute imports.''',
   // TODO More
   Func(
     name: 'PyImport_Import',
-    parameterTypes: [pPyObject],
+    parameterTypes: [
+      cstring
+    ], // TODO: Figure out the mismatch of string / pyObject args
     returnType: pPyObject,
     documentation: '''
 Return value: New reference.
@@ -233,6 +235,13 @@ Compute a string representation of object o. Returns the string representation o
 Changed in version 3.4: This function now includes a debug assertion to help ensure that it does not silently discard an active exception.''',
   ),
   // TODO: Some things
+  Func(
+    name: 'PyCallable_Check',
+    parameterTypes: [pPyObject],
+    returnType: cint,
+    documentation: '''
+Determine if the object o is callable. Return 1 if the object is callable and 0 otherwise. This function always succeeds.''',
+  ),
   Func(
     name: 'PyObject_Call',
     parameterTypes: [pPyObject, pPyObject, pPyObject],
@@ -345,6 +354,15 @@ Send a request to exporter to fill in view as specified by flags. If the exporte
 On success, fill in view, set view->obj to a new reference to exporter and return 0. In the case of chained buffer providers that redirect requests to a single object, view->obj MAY refer to this object instead of exporter (See Buffer Object Structures).
 Successful calls to PyObject_GetBuffer() must be paired with calls to PyBuffer_Release(), similar to malloc() and free(). Thus, after the consumer is done with the buffer, PyBuffer_Release() must be called exactly once.''',
   ),
+  Func(
+    name: 'PyBuffer_Release',
+    parameterTypes: [rawPyBuffer],
+    returnType: cvoid,
+    documentation: '''
+Release the buffer view and decrement the reference count for view->obj. This function MUST be called when the buffer is no longer being used, otherwise reference leaks may occur.
+It is an error to call this function on a buffer that was not obtained via PyObject_GetBuffer().''',
+  ),
+
   // TODO: More
 
 // Type Objects
@@ -353,7 +371,7 @@ Successful calls to PyObject_GetBuffer() must be paired with calls to PyBuffer_R
 
   Func(
     name: 'PyType_IsSubtype',
-    parameterTypes: [pyTypeObject, pyTypeObject],
+    parameterTypes: [pPyTypeObject, pPyTypeObject],
     returnType: cint,
     documentation: '''
 Return true if a is a subtype of b.
@@ -444,122 +462,424 @@ Return a new reference to Py_True or Py_False depending on the truth value of v.
   ),
   // Floating Point Objects
   // https://docs.python.org/3/c-api/float.html
-  // TODO: This is where I'm at
+  // TODO: More
+  Func(
+    name: 'PyFloat_FromDouble',
+    parameterTypes: [cdouble],
+    returnType: pPyObject,
+    documentation: '''
+Return value: New reference.
+Create a PyFloatObject object from v, or NULL on failure.''',
+  ),
+  // TODO: More
   Func(
     name: 'PyFloat_AsDouble',
     parameterTypes: [pPyObject],
     returnType: cdouble,
+    documentation: '''
+Return a C double representation of the contents of pyfloat. If pyfloat is not a Python floating point object but has a __float__() method, this method will first be called to convert pyfloat into a float. If __float__() is not defined then it falls back to __index__(). This method returns -1.0 upon failure, so one should call PyErr_Occurred() to check for errors.
+Changed in version 3.8: Use __index__() if available.''',
+  ),
+  // TODO: More
+  // Complex Number Objects
+  // https://docs.python.org/3/c-api/complex.html
+
+  // TODO: More
+  Func(
+    name: 'PyComplex_RealAsDouble',
+    parameterTypes: [pPyObject],
+    returnType: cdouble,
+    documentation: '''Return the real part of op as a C double.''',
+  ),
+  Func(
+    name: 'PyComplex_ImagAsDouble',
+    parameterTypes: [pPyObject],
+    returnType: cdouble,
+    documentation: '''Return the complex part of op as a C double.''',
+  ),
+  // TODO: More
+
+  // Bytes Objects
+  // https://docs.python.org/3/c-api/bytes.html
+  // TODO: This
+  Func(
+    name: 'PyBytes_AsStringAndSize',
+    parameterTypes: [pPyObject, ppC, ppySize],
+    returnType: cint,
+    documentation: '''
+Return the null-terminated contents of the object obj through the output variables buffer and length.
+If length is NULL, the bytes object may not contain embedded null bytes; if it does, the function returns -1 and a ValueError is raised.
+The buffer refers to an internal buffer of obj, which includes an additional null byte at the end (not counted in length). The data must not be modified in any way, unless the object was just created using PyBytes_FromStringAndSize(NULL, size). It must not be deallocated. If obj is not a bytes object at all, PyBytes_AsStringAndSize() returns -1 and raises TypeError.
+Changed in version 3.5: Previously, TypeError was raised when embedded null bytes were encountered in the bytes object.''',
+  ),
+  //TODO: More
+  // Byte Array Objects
+  // https://docs.python.org/3/c-api/bytearray.html
+  // TODO: this
+
+  // Unicode Objects and Codecs
+  // https://docs.python.org/3/c-api/unicode.html
+  // TODO: This
+  Func(
+    name: 'PyUnicode_FromString',
+    parameterTypes: [cstring],
+    returnType: pPyObject,
+    documentation: '''
+Return value: New reference.
+Create a Unicode object from a UTF-8 encoded null-terminated char buffer u.''',
+  ),
+  // TODO: More
+  Func(
+    name: 'PyUnicode_DecodeFSDefault',
+    parameterTypes: [cstring],
+    returnType: pPyObject,
+    documentation: '''
+Return value: New reference.
+Decode a null-terminated string using Py_FileSystemDefaultEncoding and the Py_FileSystemDefaultEncodeErrors error handler.
+If Py_FileSystemDefaultEncoding is not set, fall back to the locale encoding.
+Use PyUnicode_DecodeFSDefaultAndSize() if you know the string length.
+Changed in version 3.6: Use Py_FileSystemDefaultEncodeErrors error handler.''',
+  ),
+  // TODO: More
+  Func(
+    name: 'PyUnicode_AsUTF8String',
+    parameterTypes: [pPyObject],
+    returnType: pPyObject,
+    documentation: '''
+Return value: New reference.
+Encode a Unicode object using UTF-8 and return the result as Python bytes object. Error handling is “strict”. Return NULL if an exception was raised by the codec.''',
+  ),
+  // TODO: More
+
+  Func(
+    name: 'PyUnicode_CompareWithASCIIString',
+    parameterTypes: [pPyObject, cstring],
+    returnType: cint,
+    documentation: '''
+Compare a Unicode object, uni, with string and return -1, 0, 1 for less than, equal, and greater than, respectively. It is best to pass only ASCII-encoded strings, but the function interprets the input string as ISO-8859-1 if it contains non-ASCII characters.
+This function does not raise exceptions.''',
   ),
 
-  Func(name: 'PyDict_New', parameterTypes: [], returnType: pPyObject),
-  Func(name: 'PyDict_Size', parameterTypes: [pPyObject], returnType: pySsizeT),
+// Tuple Objects
+// https://docs.python.org/3/c-api/tuple.html
+//TODO: More
   Func(
-      name: 'PyDict_GetItemString',
-      parameterTypes: [pPyObject, cstring],
-      returnType: pPyObject),
+    name: 'PyTuple_New',
+    parameterTypes: [pySsizeT],
+    returnType: pPyObject,
+    documentation: '''
+Return value: New reference.
+Return a new tuple object of size len, or NULL on failure.''',
+  ),
+  //TODO: More
   Func(
-      name: 'PyDict_SetItemString',
-      parameterTypes: [pPyObject, cstring, pPyObject],
-      returnType: cint),
+    name: 'PyTuple_Size',
+    parameterTypes: [pPyObject],
+    returnType: pySsizeT,
+    documentation: '''
+Take a pointer to a tuple object, and return the size of that tuple.''',
+  ),
+  //TODO: More
   Func(
-      name: 'PyDict_GetItem',
-      parameterTypes: [pPyObject, pPyObject],
-      returnType: pPyObject),
+    name: 'PyTuple_GetItem',
+    parameterTypes: [pPyObject, pySsizeT],
+    returnType: pPyObject,
+    documentation: '''
+Return value: Borrowed reference.
+Return the object at position pos in the tuple pointed to by p. If pos is out of bounds, return NULL and set an IndexError exception.''',
+  ),
+  //TODO: More
   Func(
-      name: 'PyDict_SetItem',
-      parameterTypes: [pPyObject, pPyObject, pPyObject],
-      returnType: cint),
-  Func(name: 'PyDict_Keys', parameterTypes: [pPyObject], returnType: pPyObject),
-  Func(
-      name: 'PyDict_Values',
-      parameterTypes: [pPyObject],
-      returnType: pPyObject),
-  Func(
-      name: 'PyDict_Contains',
-      parameterTypes: [pPyObject, pPyObject],
-      returnType: cint),
+    name: 'PyTuple_SetItem',
+    parameterTypes: [pPyObject, pySsizeT, pPyObject],
+    returnType: cint,
+    documentation: '''
+Insert a reference to object o at position pos of the tuple pointed to by p. Return 0 on success. If pos is out of bounds, return -1 and set an IndexError exception.
+Note This function “steals” a reference to o and discards a reference to an item already in the tuple at the affected position.''',
+  ),
+  //TODO: More
 
-  Func(name: 'Py_Initialize', parameterTypes: [], returnType: pySsizeT),
-  Func(name: 'Py_FinalizeEx', returnType: pySsizeT, parameterTypes: []),
+// List Objects
+// https://docs.python.org/3/c-api/list.html
+//TODO: More
+  Func(
+    name: 'PyList_New',
+    parameterTypes: [pySsizeT],
+    returnType: pPyObject,
+    documentation: '''
+Return value: New reference.
+Return a new list of length len on success, or NULL on failure.
+Note If len is greater than zero, the returned list object’s items are set to NULL. Thus you cannot use abstract API functions such as PySequence_SetItem() or expose the object to Python code before setting all items to a real object with PyList_SetItem().''',
+  ),
+  Func(
+    name: 'PyList_Size',
+    parameterTypes: [pPyObject],
+    returnType: pySsizeT,
+    documentation: '''
+Return the length of the list object in list; this is equivalent to len(list) on a list object.''',
+  ),
+  Func(
+    name: 'PyList_GetItem',
+    parameterTypes: [pPyObject, pySsizeT],
+    returnType: pPyObject,
+    documentation: '''
+Return value: Borrowed reference.
+Return the object at position index in the list pointed to by list. The position must be non-negative; indexing from the end of the list is not supported. If index is out of bounds (<0 or >=len(list)), return NULL and set an IndexError exception.''',
+  ),
+  Func(
+    name: 'PyList_SetItem',
+    parameterTypes: [pPyObject, pySsizeT, pPyObject],
+    returnType: cint,
+    documentation: '''
+Set the item at index index in list to item. Return 0 on success. If index is out of bounds, return -1 and set an IndexError exception.
+Note This function “steals” a reference to item and discards a reference to an item already in the list at the affected position.''',
+  ),
+  //TODO: More
 
-  Func(name: 'PyTuple_New', parameterTypes: [pySsizeT], returnType: pPyObject),
-  Func(name: 'PyTuple_Size', parameterTypes: [pPyObject], returnType: pySsizeT),
-  Func(
-      name: 'PyTuple_GetItem',
-      parameterTypes: [pPyObject, pySsizeT],
-      returnType: pPyObject),
-  Func(
-      name: 'PyTuple_SetItem',
-      parameterTypes: [pPyObject, pySsizeT, pPyObject],
-      returnType: pySsizeT),
+  // Dict Objects
+  // https://docs.python.org/3/c-api/dict.html
 
+  //TODO: More
   Func(
-      name: 'PyModule_AddObject',
-      parameterTypes: [pPyObject, cstring, pPyObject],
-      returnType: cint),
+    name: 'PyDict_New',
+    parameterTypes: [],
+    returnType: pPyObject,
+    documentation: '''
+Return value: New reference.
+Return a new empty dictionary, or NULL on failure.''',
+  ),
 
-  Func(name: 'PyList_New', parameterTypes: [pySsizeT], returnType: pPyObject),
-  Func(name: 'PyList_Size', parameterTypes: [pPyObject], returnType: pySsizeT),
+  //TODO: More
   Func(
-      name: 'PyList_GetItem',
-      parameterTypes: [pPyObject, pySsizeT],
-      returnType: pPyObject),
-  Func(
-      name: 'PyList_SetItem',
-      parameterTypes: [pPyObject, pySsizeT, pPyObject],
-      returnType: cint),
+    name: 'PyDict_Contains',
+    parameterTypes: [pPyObject, pPyObject],
+    returnType: cint,
+    documentation: '''
+Determine if dictionary p contains key. If an item in p is matches key, return 1, otherwise return 0. On error, return -1. This is equivalent to the Python expression key in p.''',
+  ),
 
-  Func(
-      name: 'PyBuffer_Release',
-      parameterTypes: [rawPyBuffer],
-      returnType: cint),
-
-  Func(
-      name: 'PyComplex_RealAsDouble',
-      parameterTypes: [pPyObject],
-      returnType: cdouble),
-  Func(
-      name: 'PyComplex_ImagAsDouble',
-      parameterTypes: [pPyObject],
-      returnType: cdouble),
-
-  Func(
-      name: 'PyUnicode_AsUTF8String',
-      parameterTypes: [pPyObject],
-      returnType: pPyObject),
-  Func(
-      name: 'PyBytes_AsStringAndSize',
-      parameterTypes: [pPyObject, ppC, ppySize],
-      returnType: cint),
-  Func(
-      name: 'PyUnicode_FromString',
-      parameterTypes: [cstring],
-      returnType: pPyObject),
-  Func(
-      name: 'PyUnicode_CompareWithASCIIString',
-      parameterTypes: [pPyObject, cstring],
-      returnType: cint),
-  Func(
-      name: 'PyString_AsString',
-      parameterTypes: [pPyObject],
-      returnType: cstring),
-
-  Func(
-      name: 'PyCapsule_New',
-      parameterTypes: ['*void', cstring, '*void'],
-      returnType: pPyObject),
-  Func(
-      name: 'PyCapsule_GetPointer',
-      parameterTypes: [pPyObject, cstring],
-      returnType: '*void'),
+  //TODO: More
 
   Func(
-      name: 'PyUnicode_DecodeFSDefault',
-      parameterTypes: [cstring],
-      returnType: pPyObject),
+    name: 'PyDict_SetItem',
+    parameterTypes: [pPyObject, pPyObject, pPyObject],
+    returnType: cint,
+    documentation: '''
+Insert val into the dictionary p with a key of key. key must be hashable; if it isn’t, TypeError will be raised. Return 0 on success or -1 on failure. This function does not steal a reference to val.''',
+  ),
+  Func(
+    name: 'PyDict_SetItemString',
+    parameterTypes: [pPyObject, cstring, pPyObject],
+    returnType: cint,
+    documentation: '''
+Insert val into the dictionary p using key as a key. key should be a const char*. The key object is created using PyUnicode_FromString(key). Return 0 on success or -1 on failure. This function does not steal a reference to val.''',
+  ),
+  //TODO: More
 
   Func(
-      name: 'PyCallable_Check',
-      parameterTypes: [pPyObject],
-      returnType: pySsizeT),
+    name: 'PyDict_GetItem',
+    parameterTypes: [pPyObject, pPyObject],
+    returnType: pPyObject,
+    documentation: '''
+Return value: Borrowed reference.
+Return the object from dictionary p which has a key key. Return NULL if the key key is not present, but without setting an exception.
+Note that exceptions which occur while calling __hash__() and __eq__() methods will get suppressed. To get error reporting use PyDict_GetItemWithError() instead.''',
+  ),
+  //TODO: More
+
+  Func(
+    name: 'PyDict_GetItemString',
+    parameterTypes: [pPyObject, cstring],
+    returnType: pPyObject,
+    documentation: '''
+Return value: Borrowed reference.
+This is the same as PyDict_GetItem(), but key is specified as a const char*, rather than a PyObject*.
+Note that exceptions which occur while calling __hash__() and __eq__() methods and creating a temporary string object will get suppressed. To get error reporting use PyDict_GetItemWithError() instead.''',
+  ),
+  //TODO: More
+
+  Func(
+    name: 'PyDict_Keys',
+    parameterTypes: [pPyObject],
+    returnType: pPyObject,
+    documentation: '''
+Return value: New reference.
+Return a PyListObject containing all the keys from the dictionary.''',
+  ),
+  Func(
+    name: 'PyDict_Values',
+    parameterTypes: [pPyObject],
+    returnType: pPyObject,
+    documentation: '''
+Return value: New reference.
+Return a PyListObject containing all the values from the dictionary p.''',
+  ),
+  Func(
+    name: 'PyDict_Size',
+    parameterTypes: [pPyObject],
+    returnType: pySsizeT,
+    documentation: '''
+Return the number of items in the dictionary. This is equivalent to len(p) on a dictionary.''',
+  ),
+  //TODO: More
+
+  // Set Objects
+  // https://docs.python.org/3/c-api/set.html
+  // TODO: This
+
+  // Function objects
+  // https://docs.python.org/3/c-api/function.html
+  // TODO: This
+
+  // Instance Method Objects
+  // https://docs.python.org/3/c-api/method.html
+  // TODO: This
+
+  // Cell objects
+  // https://docs.python.org/3/c-api/cell.html
+  // TODO: this
+
+  // Code Objects
+  // https://docs.python.org/3/c-api/code.html
+  // TODO: This
+
+  // File Objects
+  // https://docs.python.org/3/c-api/file.html
+  // TODO: this
+
+  // Module Objects
+  // https://docs.python.org/3/c-api/module.html
+  // TODO: This
+  Func(
+    name: 'PyModule_AddObject',
+    parameterTypes: [pPyObject, cstring, pPyObject],
+    returnType: cint,
+    documentation: '''
+Add an object to module as name. This is a convenience function which can be used from the module’s initialization function. This steals a reference to value on success. Return -1 on error, 0 on success.
+Note Unlike other functions that steal references, PyModule_AddObject() only decrements the reference count of value on success.
+This means that its return value must be checked, and calling code must Py_DECREF() value manually on error. Example usage:''',
+  ),
+  // TODO: More
+
+  // Iterator Objects
+  // https://docs.python.org/3/c-api/iterator.html
+  // TODO: This
+
+  // Descriptor objects
+  // https://docs.python.org/3/c-api/descriptor.html
+  // TODO: This
+
+  // Slice Objects
+  // https://docs.python.org/3/c-api/slice.html
+  // TODO: This
+
+  // Memory View Objects
+  // https://docs.python.org/3/c-api/memoryview.html
+  // TODO: This
+
+  // Weak Reference Objects
+  // https://docs.python.org/3/c-api/weakref.html
+  // TODO: This
+
+  // Capsule Objects
+  // https://docs.python.org/3/c-api/capsule.html
+  // TODO: This
+
+  Func(
+    name: 'PyCapsule_New',
+    parameterTypes: ['*void', cstring, '*void'], // TODO: Fix parameter types
+    returnType: pPyObject,
+    documentation: '''
+Return value: New reference.
+Create a PyCapsule encapsulating the pointer. The pointer argument may not be NULL.
+On failure, set an exception and return NULL.
+The name string may either be NULL or a pointer to a valid C string. If non-NULL, this string must outlive the capsule. (Though it is permitted to free it inside the destructor.)
+If the destructor argument is not NULL, it will be called with the capsule as its argument when it is destroyed.
+If this capsule will be stored as an attribute of a module, the name should be specified as modulename.attributename. This will enable other modules to import the capsule using PyCapsule_Import().''',
+  ),
+  Func(
+    name: 'PyCapsule_GetPointer',
+    parameterTypes: [pPyObject, cstring],
+    returnType: '*void',
+    documentation: '''
+Retrieve the pointer stored in the capsule. On failure, set an exception and return NULL.
+
+The name parameter must compare exactly to the name stored in the capsule. If the name stored in the capsule is NULL, the name passed in must also be NULL. Python uses the C function strcmp() to compare capsule names.''',
+  ),
+// TODO: More
+
+  // Generator objects
+  // https://docs.python.org/3/c-api/gen.html
+  // TODO: This
+
+  // Coroutine objects
+  // https://docs.python.org/3/c-api/coro.html
+  // TODO: This
+
+  // Context Variables Objects
+  // https://docs.python.org/3/c-api/contextvars.html
+  // TODO: This
+
+  // Date Time Objects
+  // https://docs.python.org/3/c-api/datetime.html
+  // TODO: This
+
+  // Initialization, Finalizaiton, Threads
+  // https://docs.python.org/3/c-api/init.html
+  // TODO: This
+  Func(
+    name: 'Py_Initialize',
+    parameterTypes: [],
+    returnType: cvoid,
+    documentation: '''
+Initialize the Python interpreter. In an application embedding Python, this should be called before using any other Python/C API functions; see Before Python Initialization for the few exceptions.
+This initializes the table of loaded modules (sys.modules), and creates the fundamental modules builtins, __main__ and sys. It also initializes the module search path (sys.path). It does not set sys.argv; use PySys_SetArgvEx() for that. This is a no-op when called for a second time (without calling Py_FinalizeEx() first). There is no return value; it is a fatal error if the initialization fails.
+Note On Windows, changes the console mode from O_TEXT to O_BINARY, which will also affect non-Python uses of the console using the C Runtime.''',
+  ),
+  Func(
+    name: 'Py_InitializeEx',
+    parameterTypes: [cint],
+    returnType: cvoid,
+    documentation: '''
+This function works like Py_Initialize() if initsigs is 1. If initsigs is 0, it skips initialization registration of signal handlers, which might be useful when Python is embedded.''',
+  ),
+  Func(
+    name: 'Py_IsInitialized',
+    parameterTypes: [],
+    returnType: cint,
+    documentation: '''
+Return true (nonzero) when the Python interpreter has been initialized, false (zero) if not. After Py_FinalizeEx() is called, this returns false until Py_Initialize() is called again.''',
+  ),
+  Func(
+    name: 'Py_FinalizeEx',
+    returnType: cint,
+    parameterTypes: [],
+    documentation: '''
+Undo all initializations made by Py_Initialize() and subsequent use of Python/C API functions, and destroy all sub-interpreters (see Py_NewInterpreter() below) that were created and not yet destroyed since the last call to Py_Initialize(). Ideally, this frees all memory allocated by the Python interpreter. This is a no-op when called for a second time (without calling Py_Initialize() again first). Normally the return value is 0. If there were errors during finalization (flushing buffered data), -1 is returned.
+This function is provided for a number of reasons. An embedding application might want to restart Python without having to restart the application itself. An application that has loaded the Python interpreter from a dynamically loadable library (or DLL) might want to free all memory allocated by Python before unloading the DLL. During a hunt for memory leaks in an application a developer might want to free all memory allocated by Python before exiting from the application.
+Bugs and caveats: The destruction of modules and objects in modules is done in random order; this may cause destructors (__del__() methods) to fail when they depend on other objects (even functions) or modules. Dynamically loaded extension modules loaded by Python are not unloaded. Small amounts of memory allocated by the Python interpreter may not be freed (if you find a leak, please report it). Memory tied up in circular references between objects is not freed. Some memory allocated by extension modules may not be freed. Some extensions may not work properly if their initialization routine is called more than once; this can happen if an application calls Py_Initialize() and Py_FinalizeEx() more than once.
+Raises an auditing event cpython._PySys_ClearAuditHooks with no arguments.
+New in version 3.6.''',
+  ),
+  Func(
+    name: 'Py_Finalize',
+    returnType: cvoid,
+    parameterTypes: [],
+    documentation: '''
+This is a backwards-compatible version of Py_FinalizeEx() that disregards the return value.''',
+  ),
+
+  // TODO: More
+
+  // Python Initialization Configuration
+  // https://docs.python.org/3/api/init_config.html
+  // TODO: This
+
+  // Memory Management
+  // https://docs.python.org/3/c-api/memory.html
+  // TODO: This
+
+  //Object Implementation Supports
+  // https://docs.python.org/3/c-api/objimpl.html
+  // TODO: Several Sections Here
 ];
