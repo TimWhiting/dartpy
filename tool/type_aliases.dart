@@ -1,5 +1,3 @@
-const ppyObject = 'ffi.Pointer<PyObject>';
-
 const pySsizeT = 'uint32';
 const cint = 'int32';
 const cuint = 'uint32';
