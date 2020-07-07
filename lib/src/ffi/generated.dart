@@ -28,13 +28,6 @@ class PyCompilerFlags extends ffi.Struct {
   }
 }
 
-/// C struct `PyObject`.
-class PyObject extends ffi.Struct {
-  static ffi.Pointer<PyObject> allocate() {
-    return ffi.allocate<PyObject>();
-  }
-}
-
 /// C struct `PyMethodDef`.
 class PyMethodDef extends ffi.Struct {
   
@@ -101,16 +94,16 @@ class PyObject_HEAD_EXTRA extends ffi.Struct {
   }
 }
 
-/// C struct `PyObjectObj`.
-class PyObjectObj extends ffi.Struct {
+/// C struct `PyObject`.
+class PyObject extends ffi.Struct {
   @ffi.Uint32()
   int ob_refcnt;
 
   
   ffi.Pointer ob_type;
 
-  static ffi.Pointer<PyObjectObj> allocate() {
-    return ffi.allocate<PyObjectObj>();
+  static ffi.Pointer<PyObject> allocate() {
+    return ffi.allocate<PyObject>();
   }
 }
 
@@ -132,7 +125,7 @@ class PyObjectVarHeadObj extends ffi.Struct {
 
 /// C struct `PyModuleDef_Base`.
 class PyModuleDef_Base extends ffi.Struct {
-  ffi.Pointer<PyObjectObj> ob_base;
+  ffi.Pointer<PyObject> ob_base;
 
   ffi.Pointer<PyObject> m_init;
 
@@ -177,8 +170,8 @@ class PyModuleDef extends ffi.Struct {
   }
 }
 
-/// C struct `PyTypeObject3Obj`.
-class PyTypeObject3Obj extends ffi.Struct {
+/// C struct `PyTypeObject`.
+class PyTypeObject extends ffi.Struct {
   @ffi.Uint32()
   int ob_refcnt;
 
@@ -272,7 +265,7 @@ class PyTypeObject3Obj extends ffi.Struct {
   
   ffi.Pointer tp_getset;
 
-  ffi.Pointer<PyTypeObject3Obj> tp_vase;
+  ffi.Pointer<PyTypeObject> tp_vase;
 
   ffi.Pointer<PyObject> tp_dict;
 
@@ -300,15 +293,15 @@ class PyTypeObject3Obj extends ffi.Struct {
   
   ffi.Pointer tp_is_gc;
 
-  ffi.Pointer<PyObjectObj> tp_bases;
+  ffi.Pointer<PyObject> tp_bases;
 
   ffi.Pointer<PyObject> tp_mro;
 
   ffi.Pointer<PyObject> tp_cache;
 
-  ffi.Pointer<PyObjectObj> tp_subclasses;
+  ffi.Pointer<PyObject> tp_subclasses;
 
-  ffi.Pointer<PyObjectObj> tp_weaklist;
+  ffi.Pointer<PyObject> tp_weaklist;
 
   
   ffi.Pointer tp_del;
@@ -319,8 +312,8 @@ class PyTypeObject3Obj extends ffi.Struct {
   
   ffi.Pointer tp_finalize;
 
-  static ffi.Pointer<PyTypeObject3Obj> allocate() {
-    return ffi.allocate<PyTypeObject3Obj>();
+  static ffi.Pointer<PyTypeObject> allocate() {
+    return ffi.allocate<PyTypeObject>();
   }
 }
 
@@ -379,7 +372,7 @@ final _PyRun_SimpleString_Dart _PyRun_SimpleString = _dynamicLibrary
     .lookupFunction<_PyRun_SimpleString_C, _PyRun_SimpleString_Dart>(
   'PyRun_SimpleString',
 );
-typedef _PyRun_SimpleString_C = ffi.Uint32 Function(
+typedef _PyRun_SimpleString_C = ffi.Int32 Function(
   ffi.Pointer<ffi.Uint8> arg0,
 );
 typedef _PyRun_SimpleString_Dart = int Function(
@@ -399,7 +392,7 @@ final _PyRun_SimpleStringFlags_Dart _PyRun_SimpleStringFlags = _dynamicLibrary
     .lookupFunction<_PyRun_SimpleStringFlags_C, _PyRun_SimpleStringFlags_Dart>(
   'PyRun_SimpleStringFlags',
 );
-typedef _PyRun_SimpleStringFlags_C = ffi.Uint32 Function(
+typedef _PyRun_SimpleStringFlags_C = ffi.Int32 Function(
   ffi.Pointer<ffi.Uint8> arg0,
   ffi.Pointer<PyCompilerFlags> arg1,
 );
@@ -426,7 +419,9 @@ typedef _Py_IncRef_Dart = void Function(
   ffi.Pointer<PyObject> arg0,
 );
 
-/// Decrement the reference count for object o. The object may be NULL, in which case the macro has no effect; otherwise the effect is the same as for Py_DECREF(), and the same warning applies.
+/// Decrement the reference count for object o. The object may be NULL, in which case the function has no effect.
+/// If the reference count reaches zero, the object’s type’s deallocation function (which must not be NULL) is invoked.
+/// Warning The deallocation function can cause arbitrary Python code to be invoked (e.g. when a class instance with a __del__() method is deallocated). While exceptions in such code are not propagated, the executed code has free access to all Python global variables. This means that any object that is reachable from a global variable should be in a consistent state before Py_DECREF() is invoked. For example, code to delete an object from a list should copy a reference to the deleted object in a temporary variable, update the list data structure, and then call Py_DECREF() for the temporary variable.
 void Py_DecRef(
   ffi.Pointer<PyObject> arg0,
 ) {
@@ -444,33 +439,154 @@ typedef _Py_DecRef_Dart = void Function(
   ffi.Pointer<PyObject> arg0,
 );
 
-/// C function `Py_Initialize`.
-int Py_Initialize() {
-  return _Py_Initialize();
+/// Clear the error indicator. If the error indicator is not set, there is no effect.
+void PyErr_Clear() {
+  _PyErr_Clear();
 }
 
-final _Py_Initialize_Dart _Py_Initialize =
-    _dynamicLibrary.lookupFunction<_Py_Initialize_C, _Py_Initialize_Dart>(
-  'Py_Initialize',
+final _PyErr_Clear_Dart _PyErr_Clear =
+    _dynamicLibrary.lookupFunction<_PyErr_Clear_C, _PyErr_Clear_Dart>(
+  'PyErr_Clear',
 );
-typedef _Py_Initialize_C = ffi.Uint32 Function();
-typedef _Py_Initialize_Dart = int Function();
+typedef _PyErr_Clear_C = ffi.Void Function();
+typedef _PyErr_Clear_Dart = void Function();
 
-/// C function `Py_FinalizeEx`.
-int Py_FinalizeEx() {
-  return _Py_FinalizeEx();
+/// Print a standard traceback to sys.stderr and clear the error indicator. Unless the error is a SystemExit, in that case no traceback is printed and the Python process will exit with the error code specified by the SystemExit instance.
+/// Call this function only when the error indicator is set. Otherwise it will cause a fatal error!
+/// If set_sys_last_vars is nonzero, the variables sys.last_type, sys.last_value and sys.last_traceback will be set to the type, value and traceback of the printed exception, respectively.
+void PyErr_PrintEx(
+  int arg0,
+) {
+  _PyErr_PrintEx(arg0);
 }
 
-final _Py_FinalizeEx_Dart _Py_FinalizeEx =
-    _dynamicLibrary.lookupFunction<_Py_FinalizeEx_C, _Py_FinalizeEx_Dart>(
-  'Py_FinalizeEx',
+final _PyErr_PrintEx_Dart _PyErr_PrintEx =
+    _dynamicLibrary.lookupFunction<_PyErr_PrintEx_C, _PyErr_PrintEx_Dart>(
+  'PyErr_PrintEx',
 );
-typedef _Py_FinalizeEx_C = ffi.Uint32 Function();
-typedef _Py_FinalizeEx_Dart = int Function();
+typedef _PyErr_PrintEx_C = ffi.Void Function(
+  ffi.Int32 arg0,
+);
+typedef _PyErr_PrintEx_Dart = void Function(
+  int arg0,
+);
 
-/// C function `PyImport_Import`.
-ffi.Pointer<PyObject> PyImport_Import(
+/// Alias for [PyErr_PrintEx(1)].
+void PyErr_Print() {
+  _PyErr_Print();
+}
+
+final _PyErr_Print_Dart _PyErr_Print =
+    _dynamicLibrary.lookupFunction<_PyErr_Print_C, _PyErr_Print_Dart>(
+  'PyErr_Print',
+);
+typedef _PyErr_Print_C = ffi.Void Function();
+typedef _PyErr_Print_Dart = void Function();
+
+/// This is the most common way to set the error indicator. The first argument specifies the exception type; it is normally one of the standard exceptions, e.g. PyExc_RuntimeError. You need not increment its reference count. The second argument is an error message; it is decoded from 'utf-8’.
+void PyErr_SetString(
+  ffi.Pointer<PyObject> arg0,
+  ffi.Pointer<ffi.Uint8> arg1,
+) {
+  _PyErr_SetString(arg0, arg1);
+}
+
+final _PyErr_SetString_Dart _PyErr_SetString =
+    _dynamicLibrary.lookupFunction<_PyErr_SetString_C, _PyErr_SetString_Dart>(
+  'PyErr_SetString',
+);
+typedef _PyErr_SetString_C = ffi.Void Function(
+  ffi.Pointer<PyObject> arg0,
+  ffi.Pointer<ffi.Uint8> arg1,
+);
+typedef _PyErr_SetString_Dart = void Function(
+  ffi.Pointer<PyObject> arg0,
+  ffi.Pointer<ffi.Uint8> arg1,
+);
+
+/// This is a shorthand for PyErr_SetObject(type, Py_None).
+void PyErr_SetNone(
+  ffi.Pointer<PyObject> arg0,
+) {
+  _PyErr_SetNone(arg0);
+}
+
+final _PyErr_SetNone_Dart _PyErr_SetNone =
+    _dynamicLibrary.lookupFunction<_PyErr_SetNone_C, _PyErr_SetNone_Dart>(
+  'PyErr_SetNone',
+);
+typedef _PyErr_SetNone_C = ffi.Void Function(
+  ffi.Pointer<PyObject> arg0,
+);
+typedef _PyErr_SetNone_Dart = void Function(
+  ffi.Pointer<PyObject> arg0,
+);
+
+/// Return value: Borrowed reference.
+/// Test whether the error indicator is set. If set, return the exception type (the first argument to the last call to one of the PyErr_Set*() functions or to PyErr_Restore()). If not set, return NULL. You do not own a reference to the return value, so you do not need to Py_DECREF() it.
+/// Note Do not compare the return value to a specific exception; use PyErr_ExceptionMatches() instead, shown below. (The comparison could easily fail since the exception may be an instance instead of a class, in the case of a class exception, or it may be a subclass of the expected exception.)
+ffi.Pointer<PyObject> PyErr_Occurred() {
+  return _PyErr_Occurred();
+}
+
+final _PyErr_Occurred_Dart _PyErr_Occurred =
+    _dynamicLibrary.lookupFunction<_PyErr_Occurred_C, _PyErr_Occurred_Dart>(
+  'PyErr_Occurred',
+);
+typedef _PyErr_Occurred_C = ffi.Pointer<PyObject> Function();
+typedef _PyErr_Occurred_Dart = ffi.Pointer<PyObject> Function();
+
+/// Return value: New reference.
+/// This utility function creates and returns a new exception class. The name argument must be the name of the new exception, a C string of the form module.classname. The base and dict arguments are normally NULL. This creates a class object derived from Exception (accessible in C as PyExc_Exception).
+/// The __module__ attribute of the new class is set to the first part (up to the last dot) of the name argument, and the class name is set to the last part (after the last dot). The base argument can be used to specify alternate base classes; it can either be only one class or a tuple of classes. The dict argument can be used to specify a dictionary of class variables and methods.
+ffi.Pointer<PyObject> PyErr_NewException(
   ffi.Pointer<ffi.Uint8> arg0,
+  ffi.Pointer<PyObject> arg1,
+  ffi.Pointer<PyObject> arg2,
+) {
+  return _PyErr_NewException(arg0, arg1, arg2);
+}
+
+final _PyErr_NewException_Dart _PyErr_NewException = _dynamicLibrary
+    .lookupFunction<_PyErr_NewException_C, _PyErr_NewException_Dart>(
+  'PyErr_NewException',
+);
+typedef _PyErr_NewException_C = ffi.Pointer<PyObject> Function(
+  ffi.Pointer<ffi.Uint8> arg0,
+  ffi.Pointer<PyObject> arg1,
+  ffi.Pointer<PyObject> arg2,
+);
+typedef _PyErr_NewException_Dart = ffi.Pointer<PyObject> Function(
+  ffi.Pointer<ffi.Uint8> arg0,
+  ffi.Pointer<PyObject> arg1,
+  ffi.Pointer<PyObject> arg2,
+);
+
+/// Return value: New reference.
+/// This is a simplified interface to PyImport_ImportModuleEx() below, leaving the globals and locals arguments set to NULL and level set to 0. When the name argument contains a dot (when it specifies a submodule of a package), the fromlist argument is set to the list ['*'] so that the return value is the named module rather than the top-level package containing it as would otherwise be the case. (Unfortunately, this has an additional side effect when name in fact specifies a subpackage instead of a submodule: the submodules specified in the package’s __all__ variable are loaded.) Return a new reference to the imported module, or NULL with an exception set on failure. A failing import of a module doesn’t leave the module in sys.modules.
+/// This function always uses absolute imports.
+ffi.Pointer<PyObject> PyImport_ImportModule(
+  ffi.Pointer<ffi.Uint8> arg0,
+) {
+  return _PyImport_ImportModule(arg0);
+}
+
+final _PyImport_ImportModule_Dart _PyImport_ImportModule = _dynamicLibrary
+    .lookupFunction<_PyImport_ImportModule_C, _PyImport_ImportModule_Dart>(
+  'PyImport_ImportModule',
+);
+typedef _PyImport_ImportModule_C = ffi.Pointer<PyObject> Function(
+  ffi.Pointer<ffi.Uint8> arg0,
+);
+typedef _PyImport_ImportModule_Dart = ffi.Pointer<PyObject> Function(
+  ffi.Pointer<ffi.Uint8> arg0,
+);
+
+/// Return value: New reference.
+/// This is a higher-level interface that calls the current “import hook function” (with an explicit level of 0, meaning absolute import). It invokes the __import__() function from the __builtins__ of the current globals. This means that the import is done using whatever import hooks are installed in the current environment.
+/// This function always uses absolute imports.
+ffi.Pointer<PyObject> PyImport_Import(
+  ffi.Pointer<PyObject> arg0,
 ) {
   return _PyImport_Import(arg0);
 }
@@ -480,322 +596,53 @@ final _PyImport_Import_Dart _PyImport_Import =
   'PyImport_Import',
 );
 typedef _PyImport_Import_C = ffi.Pointer<PyObject> Function(
-  ffi.Pointer<ffi.Uint8> arg0,
+  ffi.Pointer<PyObject> arg0,
 );
 typedef _PyImport_Import_Dart = ffi.Pointer<PyObject> Function(
-  ffi.Pointer<ffi.Uint8> arg0,
+  ffi.Pointer<PyObject> arg0,
 );
 
-/// C function `Py_BuildValue`.
-ffi.Pointer<PyObject> Py_BuildValue(
-  ffi.Pointer<ffi.Uint8> arg0,
-) {
-  return _Py_BuildValue(arg0);
+/// Return value: Borrowed reference.
+/// Return a dictionary of the builtins in the current execution frame, or the interpreter of the thread state if no frame is currently executing.
+ffi.Pointer<PyObject> PyEval_GetBuiltins() {
+  return _PyEval_GetBuiltins();
 }
 
-final _Py_BuildValue_Dart _Py_BuildValue =
-    _dynamicLibrary.lookupFunction<_Py_BuildValue_C, _Py_BuildValue_Dart>(
-  'Py_BuildValue',
+final _PyEval_GetBuiltins_Dart _PyEval_GetBuiltins = _dynamicLibrary
+    .lookupFunction<_PyEval_GetBuiltins_C, _PyEval_GetBuiltins_Dart>(
+  'PyEval_GetBuiltins',
 );
-typedef _Py_BuildValue_C = ffi.Pointer<PyObject> Function(
-  ffi.Pointer<ffi.Uint8> arg0,
-);
-typedef _Py_BuildValue_Dart = ffi.Pointer<PyObject> Function(
-  ffi.Pointer<ffi.Uint8> arg0,
-);
+typedef _PyEval_GetBuiltins_C = ffi.Pointer<PyObject> Function();
+typedef _PyEval_GetBuiltins_Dart = ffi.Pointer<PyObject> Function();
 
-/// C function `PyTuple_New`.
-ffi.Pointer<PyObject> PyTuple_New(
-  int arg0,
-) {
-  return _PyTuple_New(arg0);
+/// Return value: Borrowed reference.
+/// Return a dictionary of the local variables in the current execution frame, or NULL if no frame is currently executing.
+ffi.Pointer<PyObject> PyEval_GetLocals() {
+  return _PyEval_GetLocals();
 }
 
-final _PyTuple_New_Dart _PyTuple_New =
-    _dynamicLibrary.lookupFunction<_PyTuple_New_C, _PyTuple_New_Dart>(
-  'PyTuple_New',
+final _PyEval_GetLocals_Dart _PyEval_GetLocals =
+    _dynamicLibrary.lookupFunction<_PyEval_GetLocals_C, _PyEval_GetLocals_Dart>(
+  'PyEval_GetLocals',
 );
-typedef _PyTuple_New_C = ffi.Pointer<PyObject> Function(
-  ffi.Uint32 arg0,
-);
-typedef _PyTuple_New_Dart = ffi.Pointer<PyObject> Function(
-  int arg0,
-);
+typedef _PyEval_GetLocals_C = ffi.Pointer<PyObject> Function();
+typedef _PyEval_GetLocals_Dart = ffi.Pointer<PyObject> Function();
 
-/// C function `PyTuple_Size`.
-int PyTuple_Size(
-  ffi.Pointer<PyObject> arg0,
-) {
-  return _PyTuple_Size(arg0);
+/// Return value: Borrowed reference.
+/// Return a dictionary of the global variables in the current execution frame, or NULL if no frame is currently executing.
+ffi.Pointer<PyObject> PyEval_GetGlobals() {
+  return _PyEval_GetGlobals();
 }
 
-final _PyTuple_Size_Dart _PyTuple_Size =
-    _dynamicLibrary.lookupFunction<_PyTuple_Size_C, _PyTuple_Size_Dart>(
-  'PyTuple_Size',
+final _PyEval_GetGlobals_Dart _PyEval_GetGlobals = _dynamicLibrary
+    .lookupFunction<_PyEval_GetGlobals_C, _PyEval_GetGlobals_Dart>(
+  'PyEval_GetGlobals',
 );
-typedef _PyTuple_Size_C = ffi.Uint32 Function(
-  ffi.Pointer<PyObject> arg0,
-);
-typedef _PyTuple_Size_Dart = int Function(
-  ffi.Pointer<PyObject> arg0,
-);
+typedef _PyEval_GetGlobals_C = ffi.Pointer<PyObject> Function();
+typedef _PyEval_GetGlobals_Dart = ffi.Pointer<PyObject> Function();
 
-/// C function `PyTuple_GetItem`.
-ffi.Pointer<PyObject> PyTuple_GetItem(
-  ffi.Pointer<PyObject> arg0,
-  int arg1,
-) {
-  return _PyTuple_GetItem(arg0, arg1);
-}
-
-final _PyTuple_GetItem_Dart _PyTuple_GetItem =
-    _dynamicLibrary.lookupFunction<_PyTuple_GetItem_C, _PyTuple_GetItem_Dart>(
-  'PyTuple_GetItem',
-);
-typedef _PyTuple_GetItem_C = ffi.Pointer<PyObject> Function(
-  ffi.Pointer<PyObject> arg0,
-  ffi.Uint32 arg1,
-);
-typedef _PyTuple_GetItem_Dart = ffi.Pointer<PyObject> Function(
-  ffi.Pointer<PyObject> arg0,
-  int arg1,
-);
-
-/// C function `PyTuple_SetItem`.
-int PyTuple_SetItem(
-  ffi.Pointer<PyObject> arg0,
-  int arg1,
-  ffi.Pointer<PyObject> arg2,
-) {
-  return _PyTuple_SetItem(arg0, arg1, arg2);
-}
-
-final _PyTuple_SetItem_Dart _PyTuple_SetItem =
-    _dynamicLibrary.lookupFunction<_PyTuple_SetItem_C, _PyTuple_SetItem_Dart>(
-  'PyTuple_SetItem',
-);
-typedef _PyTuple_SetItem_C = ffi.Uint32 Function(
-  ffi.Pointer<PyObject> arg0,
-  ffi.Uint32 arg1,
-  ffi.Pointer<PyObject> arg2,
-);
-typedef _PyTuple_SetItem_Dart = int Function(
-  ffi.Pointer<PyObject> arg0,
-  int arg1,
-  ffi.Pointer<PyObject> arg2,
-);
-
-/// C function `PyType_Ready`.
-int PyType_Ready(
-  ffi.Pointer arg0,
-) {
-  return _PyType_Ready(arg0);
-}
-
-final _PyType_Ready_Dart _PyType_Ready =
-    _dynamicLibrary.lookupFunction<_PyType_Ready_C, _PyType_Ready_Dart>(
-  'PyType_Ready',
-);
-typedef _PyType_Ready_C = ffi.Int32 Function(
-  ffi.Pointer arg0,
-);
-typedef _PyType_Ready_Dart = int Function(
-  ffi.Pointer arg0,
-);
-
-/// C function `PyType_GenericNew`.
-ffi.Pointer<PyObject> PyType_GenericNew(
-  ffi.Pointer arg0,
-  ffi.Pointer<PyObject> arg1,
-  ffi.Pointer<PyObject> arg2,
-) {
-  return _PyType_GenericNew(arg0, arg1, arg2);
-}
-
-final _PyType_GenericNew_Dart _PyType_GenericNew = _dynamicLibrary
-    .lookupFunction<_PyType_GenericNew_C, _PyType_GenericNew_Dart>(
-  'PyType_GenericNew',
-);
-typedef _PyType_GenericNew_C = ffi.Pointer<PyObject> Function(
-  ffi.Pointer arg0,
-  ffi.Pointer<PyObject> arg1,
-  ffi.Pointer<PyObject> arg2,
-);
-typedef _PyType_GenericNew_Dart = ffi.Pointer<PyObject> Function(
-  ffi.Pointer arg0,
-  ffi.Pointer<PyObject> arg1,
-  ffi.Pointer<PyObject> arg2,
-);
-
-/// C function `PyModule_AddObject`.
-int PyModule_AddObject(
-  ffi.Pointer<PyObject> arg0,
-  ffi.Pointer<ffi.Uint8> arg1,
-  ffi.Pointer<PyObject> arg2,
-) {
-  return _PyModule_AddObject(arg0, arg1, arg2);
-}
-
-final _PyModule_AddObject_Dart _PyModule_AddObject = _dynamicLibrary
-    .lookupFunction<_PyModule_AddObject_C, _PyModule_AddObject_Dart>(
-  'PyModule_AddObject',
-);
-typedef _PyModule_AddObject_C = ffi.Int32 Function(
-  ffi.Pointer<PyObject> arg0,
-  ffi.Pointer<ffi.Uint8> arg1,
-  ffi.Pointer<PyObject> arg2,
-);
-typedef _PyModule_AddObject_Dart = int Function(
-  ffi.Pointer<PyObject> arg0,
-  ffi.Pointer<ffi.Uint8> arg1,
-  ffi.Pointer<PyObject> arg2,
-);
-
-/// C function `PyListNew`.
-ffi.Pointer<PyObject> PyListNew(
-  int arg0,
-) {
-  return _PyListNew(arg0);
-}
-
-final _PyListNew_Dart _PyListNew =
-    _dynamicLibrary.lookupFunction<_PyListNew_C, _PyListNew_Dart>(
-  'PyListNew',
-);
-typedef _PyListNew_C = ffi.Pointer<PyObject> Function(
-  ffi.Uint32 arg0,
-);
-typedef _PyListNew_Dart = ffi.Pointer<PyObject> Function(
-  int arg0,
-);
-
-/// C function `PyList_Size`.
-int PyList_Size(
-  ffi.Pointer<PyObject> arg0,
-) {
-  return _PyList_Size(arg0);
-}
-
-final _PyList_Size_Dart _PyList_Size =
-    _dynamicLibrary.lookupFunction<_PyList_Size_C, _PyList_Size_Dart>(
-  'PyList_Size',
-);
-typedef _PyList_Size_C = ffi.Uint32 Function(
-  ffi.Pointer<PyObject> arg0,
-);
-typedef _PyList_Size_Dart = int Function(
-  ffi.Pointer<PyObject> arg0,
-);
-
-/// C function `PyList_GetItem`.
-ffi.Pointer<PyObject> PyList_GetItem(
-  ffi.Pointer<PyObject> arg0,
-  int arg1,
-) {
-  return _PyList_GetItem(arg0, arg1);
-}
-
-final _PyList_GetItem_Dart _PyList_GetItem =
-    _dynamicLibrary.lookupFunction<_PyList_GetItem_C, _PyList_GetItem_Dart>(
-  'PyList_GetItem',
-);
-typedef _PyList_GetItem_C = ffi.Pointer<PyObject> Function(
-  ffi.Pointer<PyObject> arg0,
-  ffi.Uint32 arg1,
-);
-typedef _PyList_GetItem_Dart = ffi.Pointer<PyObject> Function(
-  ffi.Pointer<PyObject> arg0,
-  int arg1,
-);
-
-/// C function `PyList_SetItem`.
-int PyList_SetItem(
-  ffi.Pointer<PyObject> arg0,
-  int arg1,
-  ffi.Pointer<PyObject> arg2,
-) {
-  return _PyList_SetItem(arg0, arg1, arg2);
-}
-
-final _PyList_SetItem_Dart _PyList_SetItem =
-    _dynamicLibrary.lookupFunction<_PyList_SetItem_C, _PyList_SetItem_Dart>(
-  'PyList_SetItem',
-);
-typedef _PyList_SetItem_C = ffi.Int32 Function(
-  ffi.Pointer<PyObject> arg0,
-  ffi.Uint32 arg1,
-  ffi.Pointer<PyObject> arg2,
-);
-typedef _PyList_SetItem_Dart = int Function(
-  ffi.Pointer<PyObject> arg0,
-  int arg1,
-  ffi.Pointer<PyObject> arg2,
-);
-
-/// C function `PyObject_CallObject`.
-ffi.Pointer<PyObject> PyObject_CallObject(
-  ffi.Pointer<PyObject> arg0,
-  ffi.Pointer<PyObject> arg1,
-) {
-  return _PyObject_CallObject(arg0, arg1);
-}
-
-final _PyObject_CallObject_Dart _PyObject_CallObject = _dynamicLibrary
-    .lookupFunction<_PyObject_CallObject_C, _PyObject_CallObject_Dart>(
-  'PyObject_CallObject',
-);
-typedef _PyObject_CallObject_C = ffi.Pointer<PyObject> Function(
-  ffi.Pointer<PyObject> arg0,
-  ffi.Pointer<PyObject> arg1,
-);
-typedef _PyObject_CallObject_Dart = ffi.Pointer<PyObject> Function(
-  ffi.Pointer<PyObject> arg0,
-  ffi.Pointer<PyObject> arg1,
-);
-
-/// C function `PyObject_Call`.
-ffi.Pointer<PyObject> PyObject_Call(
-  ffi.Pointer<PyObject> arg0,
-  ffi.Pointer<PyObject> arg1,
-  ffi.Pointer<PyObject> arg2,
-) {
-  return _PyObject_Call(arg0, arg1, arg2);
-}
-
-final _PyObject_Call_Dart _PyObject_Call =
-    _dynamicLibrary.lookupFunction<_PyObject_Call_C, _PyObject_Call_Dart>(
-  'PyObject_Call',
-);
-typedef _PyObject_Call_C = ffi.Pointer<PyObject> Function(
-  ffi.Pointer<PyObject> arg0,
-  ffi.Pointer<PyObject> arg1,
-  ffi.Pointer<PyObject> arg2,
-);
-typedef _PyObject_Call_Dart = ffi.Pointer<PyObject> Function(
-  ffi.Pointer<PyObject> arg0,
-  ffi.Pointer<PyObject> arg1,
-  ffi.Pointer<PyObject> arg2,
-);
-
-/// C function `PyObject_IsTrue`.
-int PyObject_IsTrue(
-  ffi.Pointer<PyObject> arg0,
-) {
-  return _PyObject_IsTrue(arg0);
-}
-
-final _PyObject_IsTrue_Dart _PyObject_IsTrue =
-    _dynamicLibrary.lookupFunction<_PyObject_IsTrue_C, _PyObject_IsTrue_Dart>(
-  'PyObject_IsTrue',
-);
-typedef _PyObject_IsTrue_C = ffi.Int32 Function(
-  ffi.Pointer<PyObject> arg0,
-);
-typedef _PyObject_IsTrue_Dart = int Function(
-  ffi.Pointer<PyObject> arg0,
-);
-
-/// C function `PyObject_GetAttrString`.
+/// Return value: New reference.
+/// Retrieve an attribute named attr_name from object o. Returns the attribute value on success, or NULL on failure. This is the equivalent of the Python expression o.attr_name.
 ffi.Pointer<PyObject> PyObject_GetAttrString(
   ffi.Pointer<PyObject> arg0,
   ffi.Pointer<ffi.Uint8> arg1,
@@ -816,7 +663,8 @@ typedef _PyObject_GetAttrString_Dart = ffi.Pointer<PyObject> Function(
   ffi.Pointer<ffi.Uint8> arg1,
 );
 
-/// C function `PyObject_SetAttrString`.
+/// Set the value of the attribute named attr_name, for object o, to the value v. Raise an exception and return -1 on failure; return 0 on success. This is the equivalent of the Python statement o.attr_name = v.
+/// If v is NULL, the attribute is deleted, however this feature is deprecated in favour of using PyObject_DelAttrString().
 int PyObject_SetAttrString(
   ffi.Pointer<PyObject> arg0,
   ffi.Pointer<ffi.Uint8> arg1,
@@ -840,106 +688,8 @@ typedef _PyObject_SetAttrString_Dart = int Function(
   ffi.Pointer<PyObject> arg2,
 );
 
-/// C function `PyObject_Dir`.
-ffi.Pointer<PyObject> PyObject_Dir(
-  ffi.Pointer<PyObject> arg0,
-) {
-  return _PyObject_Dir(arg0);
-}
-
-final _PyObject_Dir_Dart _PyObject_Dir =
-    _dynamicLibrary.lookupFunction<_PyObject_Dir_C, _PyObject_Dir_Dart>(
-  'PyObject_Dir',
-);
-typedef _PyObject_Dir_C = ffi.Pointer<PyObject> Function(
-  ffi.Pointer<PyObject> arg0,
-);
-typedef _PyObject_Dir_Dart = ffi.Pointer<PyObject> Function(
-  ffi.Pointer<PyObject> arg0,
-);
-
-/// C function `PyObject_Str`.
-ffi.Pointer<PyObject> PyObject_Str(
-  ffi.Pointer<PyObject> arg0,
-) {
-  return _PyObject_Str(arg0);
-}
-
-final _PyObject_Str_Dart _PyObject_Str =
-    _dynamicLibrary.lookupFunction<_PyObject_Str_C, _PyObject_Str_Dart>(
-  'PyObject_Str',
-);
-typedef _PyObject_Str_C = ffi.Pointer<PyObject> Function(
-  ffi.Pointer<PyObject> arg0,
-);
-typedef _PyObject_Str_Dart = ffi.Pointer<PyObject> Function(
-  ffi.Pointer<PyObject> arg0,
-);
-
-/// C function `PyObject_GetIter`.
-ffi.Pointer<PyObject> PyObject_GetIter(
-  ffi.Pointer<PyObject> arg0,
-) {
-  return _PyObject_GetIter(arg0);
-}
-
-final _PyObject_GetIter_Dart _PyObject_GetIter =
-    _dynamicLibrary.lookupFunction<_PyObject_GetIter_C, _PyObject_GetIter_Dart>(
-  'PyObject_GetIter',
-);
-typedef _PyObject_GetIter_C = ffi.Pointer<PyObject> Function(
-  ffi.Pointer<PyObject> arg0,
-);
-typedef _PyObject_GetIter_Dart = ffi.Pointer<PyObject> Function(
-  ffi.Pointer<PyObject> arg0,
-);
-
-/// C function `PyObject_GetItem`.
-ffi.Pointer<PyObject> PyObject_GetItem(
-  ffi.Pointer<PyObject> arg0,
-  ffi.Pointer<PyObject> arg1,
-) {
-  return _PyObject_GetItem(arg0, arg1);
-}
-
-final _PyObject_GetItem_Dart _PyObject_GetItem =
-    _dynamicLibrary.lookupFunction<_PyObject_GetItem_C, _PyObject_GetItem_Dart>(
-  'PyObject_GetItem',
-);
-typedef _PyObject_GetItem_C = ffi.Pointer<PyObject> Function(
-  ffi.Pointer<PyObject> arg0,
-  ffi.Pointer<PyObject> arg1,
-);
-typedef _PyObject_GetItem_Dart = ffi.Pointer<PyObject> Function(
-  ffi.Pointer<PyObject> arg0,
-  ffi.Pointer<PyObject> arg1,
-);
-
-/// C function `PyObject_SetItem`.
-int PyObject_SetItem(
-  ffi.Pointer<PyObject> arg0,
-  ffi.Pointer<PyObject> arg1,
-  ffi.Pointer<PyObject> arg2,
-) {
-  return _PyObject_SetItem(arg0, arg1, arg2);
-}
-
-final _PyObject_SetItem_Dart _PyObject_SetItem =
-    _dynamicLibrary.lookupFunction<_PyObject_SetItem_C, _PyObject_SetItem_Dart>(
-  'PyObject_SetItem',
-);
-typedef _PyObject_SetItem_C = ffi.Int32 Function(
-  ffi.Pointer<PyObject> arg0,
-  ffi.Pointer<PyObject> arg1,
-  ffi.Pointer<PyObject> arg2,
-);
-typedef _PyObject_SetItem_Dart = int Function(
-  ffi.Pointer<PyObject> arg0,
-  ffi.Pointer<PyObject> arg1,
-  ffi.Pointer<PyObject> arg2,
-);
-
-/// C function `PyObject_RichCompareBool`.
+/// Compare the values of o1 and o2 using the operation specified by opid, which must be one of Py_LT, Py_LE, Py_EQ, Py_NE, Py_GT, or Py_GE, corresponding to <, <=, ==, !=, >, or >= respectively. Returns -1 on error, 0 if the result is false, 1 otherwise. This is the equivalent of the Python expression o1 op o2, where op is the operator corresponding to opid.
+/// Note If o1 and o2 are the same object, PyObject_RichCompareBool() will always return 1 for Py_EQ and 0 for Py_NE.
 int PyObject_RichCompareBool(
   ffi.Pointer<PyObject> arg0,
   ffi.Pointer<PyObject> arg1,
@@ -964,7 +714,241 @@ typedef _PyObject_RichCompareBool_Dart = int Function(
   int arg2,
 );
 
-/// C function `PyObject_GetBuffer`.
+/// Return value: New reference.
+/// Compute a string representation of object o. Returns the string representation on success, NULL on failure. This is the equivalent of the Python expression str(o). Called by the str() built-in function and, therefore, by the print() function.
+/// Changed in version 3.4: This function now includes a debug assertion to help ensure that it does not silently discard an active exception.
+ffi.Pointer<PyObject> PyObject_Str(
+  ffi.Pointer<PyObject> arg0,
+) {
+  return _PyObject_Str(arg0);
+}
+
+final _PyObject_Str_Dart _PyObject_Str =
+    _dynamicLibrary.lookupFunction<_PyObject_Str_C, _PyObject_Str_Dart>(
+  'PyObject_Str',
+);
+typedef _PyObject_Str_C = ffi.Pointer<PyObject> Function(
+  ffi.Pointer<PyObject> arg0,
+);
+typedef _PyObject_Str_Dart = ffi.Pointer<PyObject> Function(
+  ffi.Pointer<PyObject> arg0,
+);
+
+/// Return value: New reference.
+/// Call a callable Python object callable, with arguments given by the tuple args, and named arguments given by the dictionary kwargs.
+/// args must not be NULL, use an empty tuple if no arguments are needed. If no named arguments are needed, kwargs can be NULL.
+/// Return the result of the call on success, or raise an exception and return NULL on failure.
+/// This is the equivalent of the Python expression: callable(*args, **kwargs).
+ffi.Pointer<PyObject> PyObject_Call(
+  ffi.Pointer<PyObject> arg0,
+  ffi.Pointer<PyObject> arg1,
+  ffi.Pointer<PyObject> arg2,
+) {
+  return _PyObject_Call(arg0, arg1, arg2);
+}
+
+final _PyObject_Call_Dart _PyObject_Call =
+    _dynamicLibrary.lookupFunction<_PyObject_Call_C, _PyObject_Call_Dart>(
+  'PyObject_Call',
+);
+typedef _PyObject_Call_C = ffi.Pointer<PyObject> Function(
+  ffi.Pointer<PyObject> arg0,
+  ffi.Pointer<PyObject> arg1,
+  ffi.Pointer<PyObject> arg2,
+);
+typedef _PyObject_Call_Dart = ffi.Pointer<PyObject> Function(
+  ffi.Pointer<PyObject> arg0,
+  ffi.Pointer<PyObject> arg1,
+  ffi.Pointer<PyObject> arg2,
+);
+
+/// Return value: New reference.
+/// Call a callable Python object callable, with arguments given by the tuple args. If no arguments are needed, then args can be NULL.
+/// Return the result of the call on success, or raise an exception and return NULL on failure.
+/// This is the equivalent of the Python expression: callable(*args).
+ffi.Pointer<PyObject> PyObject_CallObject(
+  ffi.Pointer<PyObject> arg0,
+  ffi.Pointer<PyObject> arg1,
+) {
+  return _PyObject_CallObject(arg0, arg1);
+}
+
+final _PyObject_CallObject_Dart _PyObject_CallObject = _dynamicLibrary
+    .lookupFunction<_PyObject_CallObject_C, _PyObject_CallObject_Dart>(
+  'PyObject_CallObject',
+);
+typedef _PyObject_CallObject_C = ffi.Pointer<PyObject> Function(
+  ffi.Pointer<PyObject> arg0,
+  ffi.Pointer<PyObject> arg1,
+);
+typedef _PyObject_CallObject_Dart = ffi.Pointer<PyObject> Function(
+  ffi.Pointer<PyObject> arg0,
+  ffi.Pointer<PyObject> arg1,
+);
+
+/// Returns 1 if the object o is considered to be true, and 0 otherwise. This is equivalent to the Python expression not not o. On failure, return -1.
+int PyObject_IsTrue(
+  ffi.Pointer<PyObject> arg0,
+) {
+  return _PyObject_IsTrue(arg0);
+}
+
+final _PyObject_IsTrue_Dart _PyObject_IsTrue =
+    _dynamicLibrary.lookupFunction<_PyObject_IsTrue_C, _PyObject_IsTrue_Dart>(
+  'PyObject_IsTrue',
+);
+typedef _PyObject_IsTrue_C = ffi.Int32 Function(
+  ffi.Pointer<PyObject> arg0,
+);
+typedef _PyObject_IsTrue_Dart = int Function(
+  ffi.Pointer<PyObject> arg0,
+);
+
+/// Return value: New reference.
+/// Return element of o corresponding to the object key or NULL on failure. This is the equivalent of the Python expression o[key].
+ffi.Pointer<PyObject> PyObject_GetItem(
+  ffi.Pointer<PyObject> arg0,
+  ffi.Pointer<PyObject> arg1,
+) {
+  return _PyObject_GetItem(arg0, arg1);
+}
+
+final _PyObject_GetItem_Dart _PyObject_GetItem =
+    _dynamicLibrary.lookupFunction<_PyObject_GetItem_C, _PyObject_GetItem_Dart>(
+  'PyObject_GetItem',
+);
+typedef _PyObject_GetItem_C = ffi.Pointer<PyObject> Function(
+  ffi.Pointer<PyObject> arg0,
+  ffi.Pointer<PyObject> arg1,
+);
+typedef _PyObject_GetItem_Dart = ffi.Pointer<PyObject> Function(
+  ffi.Pointer<PyObject> arg0,
+  ffi.Pointer<PyObject> arg1,
+);
+
+/// Map the object key to the value v. Raise an exception and return -1 on failure; return 0 on success. This is the equivalent of the Python statement o[key] = v. This function does not steal a reference to v.
+int PyObject_SetItem(
+  ffi.Pointer<PyObject> arg0,
+  ffi.Pointer<PyObject> arg1,
+  ffi.Pointer<PyObject> arg2,
+) {
+  return _PyObject_SetItem(arg0, arg1, arg2);
+}
+
+final _PyObject_SetItem_Dart _PyObject_SetItem =
+    _dynamicLibrary.lookupFunction<_PyObject_SetItem_C, _PyObject_SetItem_Dart>(
+  'PyObject_SetItem',
+);
+typedef _PyObject_SetItem_C = ffi.Int32 Function(
+  ffi.Pointer<PyObject> arg0,
+  ffi.Pointer<PyObject> arg1,
+  ffi.Pointer<PyObject> arg2,
+);
+typedef _PyObject_SetItem_Dart = int Function(
+  ffi.Pointer<PyObject> arg0,
+  ffi.Pointer<PyObject> arg1,
+  ffi.Pointer<PyObject> arg2,
+);
+
+/// Remove the mapping for the object key from the object o. Return -1 on failure. This is equivalent to the Python statement del o[key].
+int PyObject_DelItem(
+  ffi.Pointer<PyObject> arg0,
+  ffi.Pointer<PyObject> arg1,
+) {
+  return _PyObject_DelItem(arg0, arg1);
+}
+
+final _PyObject_DelItem_Dart _PyObject_DelItem =
+    _dynamicLibrary.lookupFunction<_PyObject_DelItem_C, _PyObject_DelItem_Dart>(
+  'PyObject_DelItem',
+);
+typedef _PyObject_DelItem_C = ffi.Int32 Function(
+  ffi.Pointer<PyObject> arg0,
+  ffi.Pointer<PyObject> arg1,
+);
+typedef _PyObject_DelItem_Dart = int Function(
+  ffi.Pointer<PyObject> arg0,
+  ffi.Pointer<PyObject> arg1,
+);
+
+/// Return value: New reference.
+/// This is equivalent to the Python expression dir(o), returning a (possibly empty) list of strings appropriate for the object argument, or NULL if there was an error. If the argument is NULL, this is like the Python dir(), returning the names of the current locals; in this case, if no execution frame is active then NULL is returned but PyErr_Occurred() will return false.
+ffi.Pointer<PyObject> PyObject_Dir(
+  ffi.Pointer<PyObject> arg0,
+) {
+  return _PyObject_Dir(arg0);
+}
+
+final _PyObject_Dir_Dart _PyObject_Dir =
+    _dynamicLibrary.lookupFunction<_PyObject_Dir_C, _PyObject_Dir_Dart>(
+  'PyObject_Dir',
+);
+typedef _PyObject_Dir_C = ffi.Pointer<PyObject> Function(
+  ffi.Pointer<PyObject> arg0,
+);
+typedef _PyObject_Dir_Dart = ffi.Pointer<PyObject> Function(
+  ffi.Pointer<PyObject> arg0,
+);
+
+/// Return value: New reference.
+/// This is equivalent to the Python expression iter(o). It returns a new iterator for the object argument, or the object itself if the object is already an iterator. Raises TypeError and returns NULL if the object cannot be iterated.
+ffi.Pointer<PyObject> PyObject_GetIter(
+  ffi.Pointer<PyObject> arg0,
+) {
+  return _PyObject_GetIter(arg0);
+}
+
+final _PyObject_GetIter_Dart _PyObject_GetIter =
+    _dynamicLibrary.lookupFunction<_PyObject_GetIter_C, _PyObject_GetIter_Dart>(
+  'PyObject_GetIter',
+);
+typedef _PyObject_GetIter_C = ffi.Pointer<PyObject> Function(
+  ffi.Pointer<PyObject> arg0,
+);
+typedef _PyObject_GetIter_Dart = ffi.Pointer<PyObject> Function(
+  ffi.Pointer<PyObject> arg0,
+);
+
+/// Return true if the object o supports the iterator protocol.
+int PyIter_Check(
+  ffi.Pointer<PyObject> arg0,
+) {
+  return _PyIter_Check(arg0);
+}
+
+final _PyIter_Check_Dart _PyIter_Check =
+    _dynamicLibrary.lookupFunction<_PyIter_Check_C, _PyIter_Check_Dart>(
+  'PyIter_Check',
+);
+typedef _PyIter_Check_C = ffi.Int32 Function(
+  ffi.Pointer<PyObject> arg0,
+);
+typedef _PyIter_Check_Dart = int Function(
+  ffi.Pointer<PyObject> arg0,
+);
+
+/// Return value: New reference.
+/// Return the next value from the iteration o. The object must be an iterator (it is up to the caller to check this). If there are no remaining values, returns NULL with no exception set. If an error occurs while retrieving the item, returns NULL and passes along the exception.
+ffi.Pointer<PyObject> PyIter_Next(
+  ffi.Pointer<PyObject> arg0,
+) {
+  return _PyIter_Next(arg0);
+}
+
+final _PyIter_Next_Dart _PyIter_Next =
+    _dynamicLibrary.lookupFunction<_PyIter_Next_C, _PyIter_Next_Dart>(
+  'PyIter_Next',
+);
+typedef _PyIter_Next_C = ffi.Pointer<PyObject> Function(
+  ffi.Pointer<PyObject> arg0,
+);
+typedef _PyIter_Next_Dart = ffi.Pointer<PyObject> Function(
+  ffi.Pointer<PyObject> arg0,
+);
+
+/// Send a request to exporter to fill in view as specified by flags. If the exporter cannot provide a buffer of the exact type, it MUST raise PyExc_BufferError, set view->obj to NULL and return -1.
+/// On success, fill in view, set view->obj to a new reference to exporter and return 0. In the case of chained buffer providers that redirect requests to a single object, view->obj MAY refer to this object instead of exporter (See Buffer Object Structures).
+/// Successful calls to PyObject_GetBuffer() must be paired with calls to PyBuffer_Release(), similar to malloc() and free(). Thus, after the consumer is done with the buffer, PyBuffer_Release() must be called exactly once.
 int PyObject_GetBuffer(
   ffi.Pointer<PyObject> arg0,
   ffi.Pointer arg1,
@@ -988,124 +972,11 @@ typedef _PyObject_GetBuffer_Dart = int Function(
   int arg2,
 );
 
-/// C function `PyBuffer_Release`.
-int PyBuffer_Release(
-  ffi.Pointer arg0,
-) {
-  return _PyBuffer_Release(arg0);
-}
-
-final _PyBuffer_Release_Dart _PyBuffer_Release =
-    _dynamicLibrary.lookupFunction<_PyBuffer_Release_C, _PyBuffer_Release_Dart>(
-  'PyBuffer_Release',
-);
-typedef _PyBuffer_Release_C = ffi.Int32 Function(
-  ffi.Pointer arg0,
-);
-typedef _PyBuffer_Release_Dart = int Function(
-  ffi.Pointer arg0,
-);
-
-/// C function `PyErr_NewException`.
-ffi.Pointer<PyObject> PyErr_NewException(
-  ffi.Pointer<ffi.Uint8> arg0,
-  ffi.Pointer<PyObject> arg1,
-  ffi.Pointer<PyObject> arg2,
-) {
-  return _PyErr_NewException(arg0, arg1, arg2);
-}
-
-final _PyErr_NewException_Dart _PyErr_NewException = _dynamicLibrary
-    .lookupFunction<_PyErr_NewException_C, _PyErr_NewException_Dart>(
-  'PyErr_NewException',
-);
-typedef _PyErr_NewException_C = ffi.Pointer<PyObject> Function(
-  ffi.Pointer<ffi.Uint8> arg0,
-  ffi.Pointer<PyObject> arg1,
-  ffi.Pointer<PyObject> arg2,
-);
-typedef _PyErr_NewException_Dart = ffi.Pointer<PyObject> Function(
-  ffi.Pointer<ffi.Uint8> arg0,
-  ffi.Pointer<PyObject> arg1,
-  ffi.Pointer<PyObject> arg2,
-);
-
-/// C function `PyIter_Next`.
-ffi.Pointer<PyObject> PyIter_Next(
-  ffi.Pointer<PyObject> arg0,
-) {
-  return _PyIter_Next(arg0);
-}
-
-final _PyIter_Next_Dart _PyIter_Next =
-    _dynamicLibrary.lookupFunction<_PyIter_Next_C, _PyIter_Next_Dart>(
-  'PyIter_Next',
-);
-typedef _PyIter_Next_C = ffi.Pointer<PyObject> Function(
-  ffi.Pointer<PyObject> arg0,
-);
-typedef _PyIter_Next_Dart = ffi.Pointer<PyObject> Function(
-  ffi.Pointer<PyObject> arg0,
-);
-
-/// C function `PyLong_AsLongLong`.
-int PyLong_AsLongLong(
-  ffi.Pointer<PyObject> arg0,
-) {
-  return _PyLong_AsLongLong(arg0);
-}
-
-final _PyLong_AsLongLong_Dart _PyLong_AsLongLong = _dynamicLibrary
-    .lookupFunction<_PyLong_AsLongLong_C, _PyLong_AsLongLong_Dart>(
-  'PyLong_AsLongLong',
-);
-typedef _PyLong_AsLongLong_C = ffi.Int64 Function(
-  ffi.Pointer<PyObject> arg0,
-);
-typedef _PyLong_AsLongLong_Dart = int Function(
-  ffi.Pointer<PyObject> arg0,
-);
-
-/// C function `PyFloat_AsDouble`.
-double PyFloat_AsDouble(
-  ffi.Pointer<PyObject> arg0,
-) {
-  return _PyFloat_AsDouble(arg0);
-}
-
-final _PyFloat_AsDouble_Dart _PyFloat_AsDouble =
-    _dynamicLibrary.lookupFunction<_PyFloat_AsDouble_C, _PyFloat_AsDouble_Dart>(
-  'PyFloat_AsDouble',
-);
-typedef _PyFloat_AsDouble_C = ffi.Double Function(
-  ffi.Pointer<PyObject> arg0,
-);
-typedef _PyFloat_AsDouble_Dart = double Function(
-  ffi.Pointer<PyObject> arg0,
-);
-
-/// C function `PyBool_FromLong`.
-ffi.Pointer<PyObject> PyBool_FromLong(
-  int arg0,
-) {
-  return _PyBool_FromLong(arg0);
-}
-
-final _PyBool_FromLong_Dart _PyBool_FromLong =
-    _dynamicLibrary.lookupFunction<_PyBool_FromLong_C, _PyBool_FromLong_Dart>(
-  'PyBool_FromLong',
-);
-typedef _PyBool_FromLong_C = ffi.Pointer<PyObject> Function(
-  ffi.Int32 arg0,
-);
-typedef _PyBool_FromLong_Dart = ffi.Pointer<PyObject> Function(
-  int arg0,
-);
-
-/// C function `PyType_IsSubtype`.
+/// Return true if a is a subtype of b.
+/// This function only checks for actual subtypes, which means that __subclasscheck__() is not called on b. Call PyObject_IsSubclass() to do the same check that issubclass() would do.
 int PyType_IsSubtype(
-  ffi.Pointer arg0,
-  ffi.Pointer arg1,
+  PyTypeObject arg0,
+  PyTypeObject arg1,
 ) {
   return _PyType_IsSubtype(arg0, arg1);
 }
@@ -1115,148 +986,55 @@ final _PyType_IsSubtype_Dart _PyType_IsSubtype =
   'PyType_IsSubtype',
 );
 typedef _PyType_IsSubtype_C = ffi.Int32 Function(
-  ffi.Pointer arg0,
-  ffi.Pointer arg1,
+  PyTypeObject arg0,
+  PyTypeObject arg1,
 );
 typedef _PyType_IsSubtype_Dart = int Function(
-  ffi.Pointer arg0,
-  ffi.Pointer arg1,
+  PyTypeObject arg0,
+  PyTypeObject arg1,
 );
 
-/// C function `PyComplex_RealAsDouble`.
-double PyComplex_RealAsDouble(
-  ffi.Pointer<PyObject> arg0,
+/// Return value: New reference.
+/// Generic handler for the tp_new slot of a type object. Create a new instance using the type’s tp_alloc slot.
+ffi.Pointer<PyObject> PyType_GenericNew(
+  ffi.Pointer<PyTypeObject> arg0,
+  ffi.Pointer<PyObject> arg1,
+  ffi.Pointer<PyObject> arg2,
 ) {
-  return _PyComplex_RealAsDouble(arg0);
+  return _PyType_GenericNew(arg0, arg1, arg2);
 }
 
-final _PyComplex_RealAsDouble_Dart _PyComplex_RealAsDouble = _dynamicLibrary
-    .lookupFunction<_PyComplex_RealAsDouble_C, _PyComplex_RealAsDouble_Dart>(
-  'PyComplex_RealAsDouble',
+final _PyType_GenericNew_Dart _PyType_GenericNew = _dynamicLibrary
+    .lookupFunction<_PyType_GenericNew_C, _PyType_GenericNew_Dart>(
+  'PyType_GenericNew',
 );
-typedef _PyComplex_RealAsDouble_C = ffi.Double Function(
-  ffi.Pointer<PyObject> arg0,
+typedef _PyType_GenericNew_C = ffi.Pointer<PyObject> Function(
+  ffi.Pointer<PyTypeObject> arg0,
+  ffi.Pointer<PyObject> arg1,
+  ffi.Pointer<PyObject> arg2,
 );
-typedef _PyComplex_RealAsDouble_Dart = double Function(
-  ffi.Pointer<PyObject> arg0,
+typedef _PyType_GenericNew_Dart = ffi.Pointer<PyObject> Function(
+  ffi.Pointer<PyTypeObject> arg0,
+  ffi.Pointer<PyObject> arg1,
+  ffi.Pointer<PyObject> arg2,
 );
 
-/// C function `PyComplex_ImagAsDouble`.
-double PyComplex_ImagAsDouble(
-  ffi.Pointer<PyObject> arg0,
+/// Finalize a type object. This should be called on all type objects to finish their initialization. This function is responsible for adding inherited slots from a type’s base class. Return 0 on success, or return -1 and sets an exception on error.
+int PyType_Ready(
+  ffi.Pointer<PyTypeObject> arg0,
 ) {
-  return _PyComplex_ImagAsDouble(arg0);
+  return _PyType_Ready(arg0);
 }
 
-final _PyComplex_ImagAsDouble_Dart _PyComplex_ImagAsDouble = _dynamicLibrary
-    .lookupFunction<_PyComplex_ImagAsDouble_C, _PyComplex_ImagAsDouble_Dart>(
-  'PyComplex_ImagAsDouble',
+final _PyType_Ready_Dart _PyType_Ready =
+    _dynamicLibrary.lookupFunction<_PyType_Ready_C, _PyType_Ready_Dart>(
+  'PyType_Ready',
 );
-typedef _PyComplex_ImagAsDouble_C = ffi.Double Function(
-  ffi.Pointer<PyObject> arg0,
+typedef _PyType_Ready_C = ffi.Int32 Function(
+  ffi.Pointer<PyTypeObject> arg0,
 );
-typedef _PyComplex_ImagAsDouble_Dart = double Function(
-  ffi.Pointer<PyObject> arg0,
-);
-
-/// C function `PyUnicode_AsUTF8String`.
-ffi.Pointer<PyObject> PyUnicode_AsUTF8String(
-  ffi.Pointer<PyObject> arg0,
-) {
-  return _PyUnicode_AsUTF8String(arg0);
-}
-
-final _PyUnicode_AsUTF8String_Dart _PyUnicode_AsUTF8String = _dynamicLibrary
-    .lookupFunction<_PyUnicode_AsUTF8String_C, _PyUnicode_AsUTF8String_Dart>(
-  'PyUnicode_AsUTF8String',
-);
-typedef _PyUnicode_AsUTF8String_C = ffi.Pointer<PyObject> Function(
-  ffi.Pointer<PyObject> arg0,
-);
-typedef _PyUnicode_AsUTF8String_Dart = ffi.Pointer<PyObject> Function(
-  ffi.Pointer<PyObject> arg0,
-);
-
-/// C function `PyBytes_AsStringAndSize`.
-int PyBytes_AsStringAndSize(
-  ffi.Pointer<PyObject> arg0,
-  ffi.Pointer<ffi.Pointer<ffi.Uint8>> arg1,
-  ffi.Pointer<ffi.Uint32> arg2,
-) {
-  return _PyBytes_AsStringAndSize(arg0, arg1, arg2);
-}
-
-final _PyBytes_AsStringAndSize_Dart _PyBytes_AsStringAndSize = _dynamicLibrary
-    .lookupFunction<_PyBytes_AsStringAndSize_C, _PyBytes_AsStringAndSize_Dart>(
-  'PyBytes_AsStringAndSize',
-);
-typedef _PyBytes_AsStringAndSize_C = ffi.Int32 Function(
-  ffi.Pointer<PyObject> arg0,
-  ffi.Pointer<ffi.Pointer<ffi.Uint8>> arg1,
-  ffi.Pointer<ffi.Uint32> arg2,
-);
-typedef _PyBytes_AsStringAndSize_Dart = int Function(
-  ffi.Pointer<PyObject> arg0,
-  ffi.Pointer<ffi.Pointer<ffi.Uint8>> arg1,
-  ffi.Pointer<ffi.Uint32> arg2,
-);
-
-/// C function `PyUnicode_FromString`.
-ffi.Pointer<PyObject> PyUnicode_FromString(
-  ffi.Pointer<ffi.Uint8> arg0,
-) {
-  return _PyUnicode_FromString(arg0);
-}
-
-final _PyUnicode_FromString_Dart _PyUnicode_FromString = _dynamicLibrary
-    .lookupFunction<_PyUnicode_FromString_C, _PyUnicode_FromString_Dart>(
-  'PyUnicode_FromString',
-);
-typedef _PyUnicode_FromString_C = ffi.Pointer<PyObject> Function(
-  ffi.Pointer<ffi.Uint8> arg0,
-);
-typedef _PyUnicode_FromString_Dart = ffi.Pointer<PyObject> Function(
-  ffi.Pointer<ffi.Uint8> arg0,
-);
-
-/// C function `PyUnicode_CompareWithASCIIString`.
-int PyUnicode_CompareWithASCIIString(
-  ffi.Pointer<PyObject> arg0,
-  ffi.Pointer<ffi.Uint8> arg1,
-) {
-  return _PyUnicode_CompareWithASCIIString(arg0, arg1);
-}
-
-final _PyUnicode_CompareWithASCIIString_Dart _PyUnicode_CompareWithASCIIString =
-    _dynamicLibrary.lookupFunction<_PyUnicode_CompareWithASCIIString_C,
-        _PyUnicode_CompareWithASCIIString_Dart>(
-  'PyUnicode_CompareWithASCIIString',
-);
-typedef _PyUnicode_CompareWithASCIIString_C = ffi.Int32 Function(
-  ffi.Pointer<PyObject> arg0,
-  ffi.Pointer<ffi.Uint8> arg1,
-);
-typedef _PyUnicode_CompareWithASCIIString_Dart = int Function(
-  ffi.Pointer<PyObject> arg0,
-  ffi.Pointer<ffi.Uint8> arg1,
-);
-
-/// C function `PyString_AsString`.
-ffi.Pointer<ffi.Uint8> PyString_AsString(
-  ffi.Pointer<PyObject> arg0,
-) {
-  return _PyString_AsString(arg0);
-}
-
-final _PyString_AsString_Dart _PyString_AsString = _dynamicLibrary
-    .lookupFunction<_PyString_AsString_C, _PyString_AsString_Dart>(
-  'PyString_AsString',
-);
-typedef _PyString_AsString_C = ffi.Pointer<ffi.Uint8> Function(
-  ffi.Pointer<PyObject> arg0,
-);
-typedef _PyString_AsString_Dart = ffi.Pointer<ffi.Uint8> Function(
-  ffi.Pointer<PyObject> arg0,
+typedef _PyType_Ready_Dart = int Function(
+  ffi.Pointer<PyTypeObject> arg0,
 );
 
 /// C function `PyDict_New`.
@@ -1436,50 +1214,423 @@ typedef _PyDict_Contains_Dart = int Function(
   ffi.Pointer<PyObject> arg1,
 );
 
-/// C function `PyErr_Clear`.
-int PyErr_Clear() {
-  return _PyErr_Clear();
+/// C function `Py_Initialize`.
+int Py_Initialize() {
+  return _Py_Initialize();
 }
 
-final _PyErr_Clear_Dart _PyErr_Clear =
-    _dynamicLibrary.lookupFunction<_PyErr_Clear_C, _PyErr_Clear_Dart>(
-  'PyErr_Clear',
+final _Py_Initialize_Dart _Py_Initialize =
+    _dynamicLibrary.lookupFunction<_Py_Initialize_C, _Py_Initialize_Dart>(
+  'Py_Initialize',
 );
-typedef _PyErr_Clear_C = ffi.Int32 Function();
-typedef _PyErr_Clear_Dart = int Function();
+typedef _Py_Initialize_C = ffi.Uint32 Function();
+typedef _Py_Initialize_Dart = int Function();
 
-/// C function `PyErr_SetString`.
-int PyErr_SetString(
+/// C function `Py_FinalizeEx`.
+int Py_FinalizeEx() {
+  return _Py_FinalizeEx();
+}
+
+final _Py_FinalizeEx_Dart _Py_FinalizeEx =
+    _dynamicLibrary.lookupFunction<_Py_FinalizeEx_C, _Py_FinalizeEx_Dart>(
+  'Py_FinalizeEx',
+);
+typedef _Py_FinalizeEx_C = ffi.Uint32 Function();
+typedef _Py_FinalizeEx_Dart = int Function();
+
+/// C function `PyTuple_New`.
+ffi.Pointer<PyObject> PyTuple_New(
+  int arg0,
+) {
+  return _PyTuple_New(arg0);
+}
+
+final _PyTuple_New_Dart _PyTuple_New =
+    _dynamicLibrary.lookupFunction<_PyTuple_New_C, _PyTuple_New_Dart>(
+  'PyTuple_New',
+);
+typedef _PyTuple_New_C = ffi.Pointer<PyObject> Function(
+  ffi.Uint32 arg0,
+);
+typedef _PyTuple_New_Dart = ffi.Pointer<PyObject> Function(
+  int arg0,
+);
+
+/// C function `PyTuple_Size`.
+int PyTuple_Size(
+  ffi.Pointer<PyObject> arg0,
+) {
+  return _PyTuple_Size(arg0);
+}
+
+final _PyTuple_Size_Dart _PyTuple_Size =
+    _dynamicLibrary.lookupFunction<_PyTuple_Size_C, _PyTuple_Size_Dart>(
+  'PyTuple_Size',
+);
+typedef _PyTuple_Size_C = ffi.Uint32 Function(
+  ffi.Pointer<PyObject> arg0,
+);
+typedef _PyTuple_Size_Dart = int Function(
+  ffi.Pointer<PyObject> arg0,
+);
+
+/// C function `PyTuple_GetItem`.
+ffi.Pointer<PyObject> PyTuple_GetItem(
+  ffi.Pointer<PyObject> arg0,
+  int arg1,
+) {
+  return _PyTuple_GetItem(arg0, arg1);
+}
+
+final _PyTuple_GetItem_Dart _PyTuple_GetItem =
+    _dynamicLibrary.lookupFunction<_PyTuple_GetItem_C, _PyTuple_GetItem_Dart>(
+  'PyTuple_GetItem',
+);
+typedef _PyTuple_GetItem_C = ffi.Pointer<PyObject> Function(
+  ffi.Pointer<PyObject> arg0,
+  ffi.Uint32 arg1,
+);
+typedef _PyTuple_GetItem_Dart = ffi.Pointer<PyObject> Function(
+  ffi.Pointer<PyObject> arg0,
+  int arg1,
+);
+
+/// C function `PyTuple_SetItem`.
+int PyTuple_SetItem(
+  ffi.Pointer<PyObject> arg0,
+  int arg1,
+  ffi.Pointer<PyObject> arg2,
+) {
+  return _PyTuple_SetItem(arg0, arg1, arg2);
+}
+
+final _PyTuple_SetItem_Dart _PyTuple_SetItem =
+    _dynamicLibrary.lookupFunction<_PyTuple_SetItem_C, _PyTuple_SetItem_Dart>(
+  'PyTuple_SetItem',
+);
+typedef _PyTuple_SetItem_C = ffi.Uint32 Function(
+  ffi.Pointer<PyObject> arg0,
+  ffi.Uint32 arg1,
+  ffi.Pointer<PyObject> arg2,
+);
+typedef _PyTuple_SetItem_Dart = int Function(
+  ffi.Pointer<PyObject> arg0,
+  int arg1,
+  ffi.Pointer<PyObject> arg2,
+);
+
+/// C function `PyModule_AddObject`.
+int PyModule_AddObject(
+  ffi.Pointer<PyObject> arg0,
+  ffi.Pointer<ffi.Uint8> arg1,
+  ffi.Pointer<PyObject> arg2,
+) {
+  return _PyModule_AddObject(arg0, arg1, arg2);
+}
+
+final _PyModule_AddObject_Dart _PyModule_AddObject = _dynamicLibrary
+    .lookupFunction<_PyModule_AddObject_C, _PyModule_AddObject_Dart>(
+  'PyModule_AddObject',
+);
+typedef _PyModule_AddObject_C = ffi.Int32 Function(
+  ffi.Pointer<PyObject> arg0,
+  ffi.Pointer<ffi.Uint8> arg1,
+  ffi.Pointer<PyObject> arg2,
+);
+typedef _PyModule_AddObject_Dart = int Function(
+  ffi.Pointer<PyObject> arg0,
+  ffi.Pointer<ffi.Uint8> arg1,
+  ffi.Pointer<PyObject> arg2,
+);
+
+/// C function `PyList_New`.
+ffi.Pointer<PyObject> PyList_New(
+  int arg0,
+) {
+  return _PyList_New(arg0);
+}
+
+final _PyList_New_Dart _PyList_New =
+    _dynamicLibrary.lookupFunction<_PyList_New_C, _PyList_New_Dart>(
+  'PyList_New',
+);
+typedef _PyList_New_C = ffi.Pointer<PyObject> Function(
+  ffi.Uint32 arg0,
+);
+typedef _PyList_New_Dart = ffi.Pointer<PyObject> Function(
+  int arg0,
+);
+
+/// C function `PyList_Size`.
+int PyList_Size(
+  ffi.Pointer<PyObject> arg0,
+) {
+  return _PyList_Size(arg0);
+}
+
+final _PyList_Size_Dart _PyList_Size =
+    _dynamicLibrary.lookupFunction<_PyList_Size_C, _PyList_Size_Dart>(
+  'PyList_Size',
+);
+typedef _PyList_Size_C = ffi.Uint32 Function(
+  ffi.Pointer<PyObject> arg0,
+);
+typedef _PyList_Size_Dart = int Function(
+  ffi.Pointer<PyObject> arg0,
+);
+
+/// C function `PyList_GetItem`.
+ffi.Pointer<PyObject> PyList_GetItem(
+  ffi.Pointer<PyObject> arg0,
+  int arg1,
+) {
+  return _PyList_GetItem(arg0, arg1);
+}
+
+final _PyList_GetItem_Dart _PyList_GetItem =
+    _dynamicLibrary.lookupFunction<_PyList_GetItem_C, _PyList_GetItem_Dart>(
+  'PyList_GetItem',
+);
+typedef _PyList_GetItem_C = ffi.Pointer<PyObject> Function(
+  ffi.Pointer<PyObject> arg0,
+  ffi.Uint32 arg1,
+);
+typedef _PyList_GetItem_Dart = ffi.Pointer<PyObject> Function(
+  ffi.Pointer<PyObject> arg0,
+  int arg1,
+);
+
+/// C function `PyList_SetItem`.
+int PyList_SetItem(
+  ffi.Pointer<PyObject> arg0,
+  int arg1,
+  ffi.Pointer<PyObject> arg2,
+) {
+  return _PyList_SetItem(arg0, arg1, arg2);
+}
+
+final _PyList_SetItem_Dart _PyList_SetItem =
+    _dynamicLibrary.lookupFunction<_PyList_SetItem_C, _PyList_SetItem_Dart>(
+  'PyList_SetItem',
+);
+typedef _PyList_SetItem_C = ffi.Int32 Function(
+  ffi.Pointer<PyObject> arg0,
+  ffi.Uint32 arg1,
+  ffi.Pointer<PyObject> arg2,
+);
+typedef _PyList_SetItem_Dart = int Function(
+  ffi.Pointer<PyObject> arg0,
+  int arg1,
+  ffi.Pointer<PyObject> arg2,
+);
+
+/// C function `PyBuffer_Release`.
+int PyBuffer_Release(
+  ffi.Pointer arg0,
+) {
+  return _PyBuffer_Release(arg0);
+}
+
+final _PyBuffer_Release_Dart _PyBuffer_Release =
+    _dynamicLibrary.lookupFunction<_PyBuffer_Release_C, _PyBuffer_Release_Dart>(
+  'PyBuffer_Release',
+);
+typedef _PyBuffer_Release_C = ffi.Int32 Function(
+  ffi.Pointer arg0,
+);
+typedef _PyBuffer_Release_Dart = int Function(
+  ffi.Pointer arg0,
+);
+
+/// C function `PyLong_AsLongLong`.
+int PyLong_AsLongLong(
+  ffi.Pointer<PyObject> arg0,
+) {
+  return _PyLong_AsLongLong(arg0);
+}
+
+final _PyLong_AsLongLong_Dart _PyLong_AsLongLong = _dynamicLibrary
+    .lookupFunction<_PyLong_AsLongLong_C, _PyLong_AsLongLong_Dart>(
+  'PyLong_AsLongLong',
+);
+typedef _PyLong_AsLongLong_C = ffi.Int64 Function(
+  ffi.Pointer<PyObject> arg0,
+);
+typedef _PyLong_AsLongLong_Dart = int Function(
+  ffi.Pointer<PyObject> arg0,
+);
+
+/// C function `PyFloat_AsDouble`.
+double PyFloat_AsDouble(
+  ffi.Pointer<PyObject> arg0,
+) {
+  return _PyFloat_AsDouble(arg0);
+}
+
+final _PyFloat_AsDouble_Dart _PyFloat_AsDouble =
+    _dynamicLibrary.lookupFunction<_PyFloat_AsDouble_C, _PyFloat_AsDouble_Dart>(
+  'PyFloat_AsDouble',
+);
+typedef _PyFloat_AsDouble_C = ffi.Double Function(
+  ffi.Pointer<PyObject> arg0,
+);
+typedef _PyFloat_AsDouble_Dart = double Function(
+  ffi.Pointer<PyObject> arg0,
+);
+
+/// C function `PyBool_FromLong`.
+ffi.Pointer<PyObject> PyBool_FromLong(
+  int arg0,
+) {
+  return _PyBool_FromLong(arg0);
+}
+
+final _PyBool_FromLong_Dart _PyBool_FromLong =
+    _dynamicLibrary.lookupFunction<_PyBool_FromLong_C, _PyBool_FromLong_Dart>(
+  'PyBool_FromLong',
+);
+typedef _PyBool_FromLong_C = ffi.Pointer<PyObject> Function(
+  ffi.Int32 arg0,
+);
+typedef _PyBool_FromLong_Dart = ffi.Pointer<PyObject> Function(
+  int arg0,
+);
+
+/// C function `PyComplex_RealAsDouble`.
+double PyComplex_RealAsDouble(
+  ffi.Pointer<PyObject> arg0,
+) {
+  return _PyComplex_RealAsDouble(arg0);
+}
+
+final _PyComplex_RealAsDouble_Dart _PyComplex_RealAsDouble = _dynamicLibrary
+    .lookupFunction<_PyComplex_RealAsDouble_C, _PyComplex_RealAsDouble_Dart>(
+  'PyComplex_RealAsDouble',
+);
+typedef _PyComplex_RealAsDouble_C = ffi.Double Function(
+  ffi.Pointer<PyObject> arg0,
+);
+typedef _PyComplex_RealAsDouble_Dart = double Function(
+  ffi.Pointer<PyObject> arg0,
+);
+
+/// C function `PyComplex_ImagAsDouble`.
+double PyComplex_ImagAsDouble(
+  ffi.Pointer<PyObject> arg0,
+) {
+  return _PyComplex_ImagAsDouble(arg0);
+}
+
+final _PyComplex_ImagAsDouble_Dart _PyComplex_ImagAsDouble = _dynamicLibrary
+    .lookupFunction<_PyComplex_ImagAsDouble_C, _PyComplex_ImagAsDouble_Dart>(
+  'PyComplex_ImagAsDouble',
+);
+typedef _PyComplex_ImagAsDouble_C = ffi.Double Function(
+  ffi.Pointer<PyObject> arg0,
+);
+typedef _PyComplex_ImagAsDouble_Dart = double Function(
+  ffi.Pointer<PyObject> arg0,
+);
+
+/// C function `PyUnicode_AsUTF8String`.
+ffi.Pointer<PyObject> PyUnicode_AsUTF8String(
+  ffi.Pointer<PyObject> arg0,
+) {
+  return _PyUnicode_AsUTF8String(arg0);
+}
+
+final _PyUnicode_AsUTF8String_Dart _PyUnicode_AsUTF8String = _dynamicLibrary
+    .lookupFunction<_PyUnicode_AsUTF8String_C, _PyUnicode_AsUTF8String_Dart>(
+  'PyUnicode_AsUTF8String',
+);
+typedef _PyUnicode_AsUTF8String_C = ffi.Pointer<PyObject> Function(
+  ffi.Pointer<PyObject> arg0,
+);
+typedef _PyUnicode_AsUTF8String_Dart = ffi.Pointer<PyObject> Function(
+  ffi.Pointer<PyObject> arg0,
+);
+
+/// C function `PyBytes_AsStringAndSize`.
+int PyBytes_AsStringAndSize(
+  ffi.Pointer<PyObject> arg0,
+  ffi.Pointer<ffi.Pointer<ffi.Uint8>> arg1,
+  ffi.Pointer<ffi.Uint32> arg2,
+) {
+  return _PyBytes_AsStringAndSize(arg0, arg1, arg2);
+}
+
+final _PyBytes_AsStringAndSize_Dart _PyBytes_AsStringAndSize = _dynamicLibrary
+    .lookupFunction<_PyBytes_AsStringAndSize_C, _PyBytes_AsStringAndSize_Dart>(
+  'PyBytes_AsStringAndSize',
+);
+typedef _PyBytes_AsStringAndSize_C = ffi.Int32 Function(
+  ffi.Pointer<PyObject> arg0,
+  ffi.Pointer<ffi.Pointer<ffi.Uint8>> arg1,
+  ffi.Pointer<ffi.Uint32> arg2,
+);
+typedef _PyBytes_AsStringAndSize_Dart = int Function(
+  ffi.Pointer<PyObject> arg0,
+  ffi.Pointer<ffi.Pointer<ffi.Uint8>> arg1,
+  ffi.Pointer<ffi.Uint32> arg2,
+);
+
+/// C function `PyUnicode_FromString`.
+ffi.Pointer<PyObject> PyUnicode_FromString(
+  ffi.Pointer<ffi.Uint8> arg0,
+) {
+  return _PyUnicode_FromString(arg0);
+}
+
+final _PyUnicode_FromString_Dart _PyUnicode_FromString = _dynamicLibrary
+    .lookupFunction<_PyUnicode_FromString_C, _PyUnicode_FromString_Dart>(
+  'PyUnicode_FromString',
+);
+typedef _PyUnicode_FromString_C = ffi.Pointer<PyObject> Function(
+  ffi.Pointer<ffi.Uint8> arg0,
+);
+typedef _PyUnicode_FromString_Dart = ffi.Pointer<PyObject> Function(
+  ffi.Pointer<ffi.Uint8> arg0,
+);
+
+/// C function `PyUnicode_CompareWithASCIIString`.
+int PyUnicode_CompareWithASCIIString(
   ffi.Pointer<PyObject> arg0,
   ffi.Pointer<ffi.Uint8> arg1,
 ) {
-  return _PyErr_SetString(arg0, arg1);
+  return _PyUnicode_CompareWithASCIIString(arg0, arg1);
 }
 
-final _PyErr_SetString_Dart _PyErr_SetString =
-    _dynamicLibrary.lookupFunction<_PyErr_SetString_C, _PyErr_SetString_Dart>(
-  'PyErr_SetString',
+final _PyUnicode_CompareWithASCIIString_Dart _PyUnicode_CompareWithASCIIString =
+    _dynamicLibrary.lookupFunction<_PyUnicode_CompareWithASCIIString_C,
+        _PyUnicode_CompareWithASCIIString_Dart>(
+  'PyUnicode_CompareWithASCIIString',
 );
-typedef _PyErr_SetString_C = ffi.Int32 Function(
+typedef _PyUnicode_CompareWithASCIIString_C = ffi.Int32 Function(
   ffi.Pointer<PyObject> arg0,
   ffi.Pointer<ffi.Uint8> arg1,
 );
-typedef _PyErr_SetString_Dart = int Function(
+typedef _PyUnicode_CompareWithASCIIString_Dart = int Function(
   ffi.Pointer<PyObject> arg0,
   ffi.Pointer<ffi.Uint8> arg1,
 );
 
-/// C function `PyErr_Occurred`.
-ffi.Pointer<PyObject> PyErr_Occurred() {
-  return _PyErr_Occurred();
+/// C function `PyString_AsString`.
+ffi.Pointer<ffi.Uint8> PyString_AsString(
+  ffi.Pointer<PyObject> arg0,
+) {
+  return _PyString_AsString(arg0);
 }
 
-final _PyErr_Occurred_Dart _PyErr_Occurred =
-    _dynamicLibrary.lookupFunction<_PyErr_Occurred_C, _PyErr_Occurred_Dart>(
-  'PyErr_Occurred',
+final _PyString_AsString_Dart _PyString_AsString = _dynamicLibrary
+    .lookupFunction<_PyString_AsString_C, _PyString_AsString_Dart>(
+  'PyString_AsString',
 );
-typedef _PyErr_Occurred_C = ffi.Pointer<PyObject> Function();
-typedef _PyErr_Occurred_Dart = ffi.Pointer<PyObject> Function();
+typedef _PyString_AsString_C = ffi.Pointer<ffi.Uint8> Function(
+  ffi.Pointer<PyObject> arg0,
+);
+typedef _PyString_AsString_Dart = ffi.Pointer<ffi.Uint8> Function(
+  ffi.Pointer<PyObject> arg0,
+);
 
 /// C function `PyCapsule_New`.
 ffi.Pointer<PyObject> PyCapsule_New(
@@ -1525,60 +1676,6 @@ typedef _PyCapsule_GetPointer_Dart = ffi.Pointer Function(
   ffi.Pointer<PyObject> arg0,
   ffi.Pointer<ffi.Uint8> arg1,
 );
-
-/// C function `PyImport_ImportModule`.
-ffi.Pointer<PyObject> PyImport_ImportModule(
-  ffi.Pointer<ffi.Uint8> arg0,
-) {
-  return _PyImport_ImportModule(arg0);
-}
-
-final _PyImport_ImportModule_Dart _PyImport_ImportModule = _dynamicLibrary
-    .lookupFunction<_PyImport_ImportModule_C, _PyImport_ImportModule_Dart>(
-  'PyImport_ImportModule',
-);
-typedef _PyImport_ImportModule_C = ffi.Pointer<PyObject> Function(
-  ffi.Pointer<ffi.Uint8> arg0,
-);
-typedef _PyImport_ImportModule_Dart = ffi.Pointer<PyObject> Function(
-  ffi.Pointer<ffi.Uint8> arg0,
-);
-
-/// C function `PyEval_GetBuiltins`.
-ffi.Pointer<PyObject> PyEval_GetBuiltins() {
-  return _PyEval_GetBuiltins();
-}
-
-final _PyEval_GetBuiltins_Dart _PyEval_GetBuiltins = _dynamicLibrary
-    .lookupFunction<_PyEval_GetBuiltins_C, _PyEval_GetBuiltins_Dart>(
-  'PyEval_GetBuiltins',
-);
-typedef _PyEval_GetBuiltins_C = ffi.Pointer<PyObject> Function();
-typedef _PyEval_GetBuiltins_Dart = ffi.Pointer<PyObject> Function();
-
-/// C function `PyEval_GetGlobals`.
-ffi.Pointer<PyObject> PyEval_GetGlobals() {
-  return _PyEval_GetGlobals();
-}
-
-final _PyEval_GetGlobals_Dart _PyEval_GetGlobals = _dynamicLibrary
-    .lookupFunction<_PyEval_GetGlobals_C, _PyEval_GetGlobals_Dart>(
-  'PyEval_GetGlobals',
-);
-typedef _PyEval_GetGlobals_C = ffi.Pointer<PyObject> Function();
-typedef _PyEval_GetGlobals_Dart = ffi.Pointer<PyObject> Function();
-
-/// C function `PyEval_GetLocals`.
-ffi.Pointer<PyObject> PyEval_GetLocals() {
-  return _PyEval_GetLocals();
-}
-
-final _PyEval_GetLocals_Dart _PyEval_GetLocals =
-    _dynamicLibrary.lookupFunction<_PyEval_GetLocals_C, _PyEval_GetLocals_Dart>(
-  'PyEval_GetLocals',
-);
-typedef _PyEval_GetLocals_C = ffi.Pointer<PyObject> Function();
-typedef _PyEval_GetLocals_Dart = ffi.Pointer<PyObject> Function();
 
 /// C function `PyUnicode_DecodeFSDefault`.
 ffi.Pointer<PyObject> PyUnicode_DecodeFSDefault(
@@ -1653,88 +1750,6 @@ typedef _PyLong_AsLong_Dart = int Function(
   ffi.Pointer<PyObject> arg0,
 );
 
-/// C function `PyErr_Print`.
-int PyErr_Print() {
-  return _PyErr_Print();
-}
-
-final _PyErr_Print_Dart _PyErr_Print =
-    _dynamicLibrary.lookupFunction<_PyErr_Print_C, _PyErr_Print_Dart>(
-  'PyErr_Print',
-);
-typedef _PyErr_Print_C = ffi.Uint32 Function();
-typedef _PyErr_Print_Dart = int Function();
-
-/// C global `Py_None`.
-final ffi.Pointer<PyObject> Py_None = _dynamicLibrary
-    .lookup<ffi.Pointer<PyObject>>(
-      'Py_None',
-    )
-    .value;
-
-/// C global `PyFloat_Type`.
-final ffi.Pointer PyFloat_Type = _dynamicLibrary
-    .lookup<ffi.Pointer>(
-      'PyFloat_Type',
-    )
-    .value;
-
-/// C global `PyComplex_Type`.
-final ffi.Pointer PyComplex_Type = _dynamicLibrary
-    .lookup<ffi.Pointer>(
-      'PyComplex_Type',
-    )
-    .value;
-
-/// C global `PyCapsule_Type`.
-final ffi.Pointer PyCapsule_Type = _dynamicLibrary
-    .lookup<ffi.Pointer>(
-      'PyCapsule_Type',
-    )
-    .value;
-
-/// C global `PyTuple_Type`.
-final ffi.Pointer PyTuple_Type = _dynamicLibrary
-    .lookup<ffi.Pointer>(
-      'PyTuple_Type',
-    )
-    .value;
-
-/// C global `PyList_Type`.
-final ffi.Pointer PyList_Type = _dynamicLibrary
-    .lookup<ffi.Pointer>(
-      'PyList_Type',
-    )
-    .value;
-
-/// C global `PyBytes_Type`.
-final ffi.Pointer PyBytes_Type = _dynamicLibrary
-    .lookup<ffi.Pointer>(
-      'PyBytes_Type',
-    )
-    .value;
-
-/// C global `PyUnicode_Type`.
-final ffi.Pointer PyUnicode_Type = _dynamicLibrary
-    .lookup<ffi.Pointer>(
-      'PyUnicode_Type',
-    )
-    .value;
-
-/// C global `PyDict_Type`.
-final ffi.Pointer PyDict_Type = _dynamicLibrary
-    .lookup<ffi.Pointer>(
-      'PyDict_Type',
-    )
-    .value;
-
-/// C global `PyExc_TypeError`.
-final ffi.Pointer<PyObject> PyExc_TypeError = _dynamicLibrary
-    .lookup<ffi.Pointer<PyObject>>(
-      'PyExc_TypeError',
-    )
-    .value;
-
 /// C global `PyExc_BaseException`.
 final ffi.Pointer<PyObject> PyExc_BaseException = _dynamicLibrary
     .lookup<ffi.Pointer<PyObject>>(
@@ -1756,6 +1771,34 @@ final ffi.Pointer<PyObject> PyExc_ArithmeticError = _dynamicLibrary
     )
     .value;
 
+/// C global `PyExc_AssertionError`.
+final ffi.Pointer<PyObject> PyExc_AssertionError = _dynamicLibrary
+    .lookup<ffi.Pointer<PyObject>>(
+      'PyExc_AssertionError',
+    )
+    .value;
+
+/// C global `PyExc_AttributeError`.
+final ffi.Pointer<PyObject> PyExc_AttributeError = _dynamicLibrary
+    .lookup<ffi.Pointer<PyObject>>(
+      'PyExc_AttributeError',
+    )
+    .value;
+
+/// C global `PyExc_BlockingIOError`.
+final ffi.Pointer<PyObject> PyExc_BlockingIOError = _dynamicLibrary
+    .lookup<ffi.Pointer<PyObject>>(
+      'PyExc_BlockingIOError',
+    )
+    .value;
+
+/// C global `PyExc_BrokenPipeError`.
+final ffi.Pointer<PyObject> PyExc_BrokenPipeError = _dynamicLibrary
+    .lookup<ffi.Pointer<PyObject>>(
+      'PyExc_BrokenPipeError',
+    )
+    .value;
+
 /// C global `PyExc_FloatingPointError`.
 final ffi.Pointer<PyObject> PyExc_FloatingPointError = _dynamicLibrary
     .lookup<ffi.Pointer<PyObject>>(
@@ -1774,13 +1817,6 @@ final ffi.Pointer<PyObject> PyExc_OverflowError = _dynamicLibrary
 final ffi.Pointer<PyObject> PyExc_ZeroDivisionError = _dynamicLibrary
     .lookup<ffi.Pointer<PyObject>>(
       'PyExc_ZeroDivisionError',
-    )
-    .value;
-
-/// C global `PyExc_AssertionError`.
-final ffi.Pointer<PyObject> PyExc_AssertionError = _dynamicLibrary
-    .lookup<ffi.Pointer<PyObject>>(
-      'PyExc_AssertionError',
     )
     .value;
 
@@ -1830,5 +1866,34 @@ final ffi.Pointer<PyObject> PyExc_IndexError = _dynamicLibrary
 final ffi.Pointer<PyObject> PyExc_KeyError = _dynamicLibrary
     .lookup<ffi.Pointer<PyObject>>(
       'PyExc_KeyError',
+    )
+    .value;
+
+/// C global `PyExc_TypeError`.
+final ffi.Pointer<PyObject> PyExc_TypeError = _dynamicLibrary
+    .lookup<ffi.Pointer<PyObject>>(
+      'PyExc_TypeError',
+    )
+    .value;
+
+/// The NotImplemented singleton, used to signal that an operation is not implemented for the given type combination.
+/// Increment the reference count before returning it.
+final ffi.Pointer<PyObject> Py_NotImplemented = _dynamicLibrary
+    .lookup<ffi.Pointer<PyObject>>(
+      'Py_NotImplemented',
+    )
+    .value;
+
+/// The C structure of the objects used to describe built-in types.
+final ffi.Pointer<PyObject> PyType_Type = _dynamicLibrary
+    .lookup<ffi.Pointer<PyObject>>(
+      'PyType_Type',
+    )
+    .value;
+
+/// The Python None object, denoting lack of value. This object has no methods. It needs to be treated just like any other object with respect to reference counts.
+final ffi.Pointer<PyObject> Py_None = _dynamicLibrary
+    .lookup<ffi.Pointer<PyObject>>(
+      'Py_None',
     )
     .value;

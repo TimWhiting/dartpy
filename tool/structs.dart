@@ -4,12 +4,13 @@ import 'package:ffi_tool/c.dart';
 import 'type_aliases.dart';
 
 const pPyObject = 'ffi.Pointer<PyObject>';
-const pPyObjectObj = 'ffi.Pointer<PyObjectObj>';
 const pPyModuleDef_Base = 'ffi.Pointer<PyModuleDef_Base>';
 const pPyModuleDef = 'ffi.Pointer<PyModuleDef>';
 const pPyCompilerFlags = 'ffi.Pointer<PyCompilerFlags>';
 const pPyCFunction = 'ffi.Pointer';
 const pPyCFunctionWithKeywords = 'ffi.Pointer';
+const pyTypeObject = 'PyTypeObject';
+const pPyTypeObject = 'ffi.Pointer<PyTypeObject>';
 
 const structs = [
   //https://docs.python.org/3/c-api/veryhigh.html#c.PyCompilerFlags
@@ -23,7 +24,6 @@ const structs = [
 This is the structure used to hold compiler flags. In cases where code is only being compiled, it is passed as int flags, and in cases where code is being executed, it is passed as PyCompilerFlags *flags. In this case, from __future__ import can modify flags.
 Whenever PyCompilerFlags *flags is NULL, cf_flags is treated as equal to 0, and any modification due to from __future__ import is discarded.''',
   ),
-  Struct(name: 'PyObject', fields: []),
   Struct(name: 'PyMethodDef', fields: [
     StructField(name: 'ml_name', type: cstring),
     StructField(name: 'ml_meth', type: pPyCFunctionWithKeywords),
@@ -45,7 +45,7 @@ Whenever PyCompilerFlags *flags is NULL, cf_flags is treated as equal to 0, and 
     StructField(name: 'ob_next', type: cpointer),
     StructField(name: 'ob_prev', type: cpointer),
   ]),
-  Struct(name: 'PyObjectObj', fields: [
+  Struct(name: 'PyObject', fields: [
     StructField(name: 'ob_refcnt', type: pySsizeT),
     StructField(name: 'ob_type', type: cpointer),
   ]),
@@ -57,7 +57,7 @@ Whenever PyCompilerFlags *flags is NULL, cf_flags is treated as equal to 0, and 
     StructField(name: 'ob_size', type: pySsizeT),
   ]),
   Struct(name: 'PyModuleDef_Base', fields: [
-    StructField(name: 'ob_base', type: pPyObjectObj),
+    StructField(name: 'ob_base', type: pPyObject),
     StructField(name: 'm_init', type: pPyObject),
     StructField(name: 'm_index', type: pySsizeT),
     StructField(name: 'm_copy', type: pPyObject),
@@ -74,7 +74,7 @@ Whenever PyCompilerFlags *flags is NULL, cf_flags is treated as equal to 0, and 
     StructField(name: 'm_free', type: cpointer),
   ]),
   //TODO: TypeObjects and buffers
-  Struct(name: 'PyTypeObject3Obj', fields: [
+  Struct(name: 'PyTypeObject', fields: [
     // PyObjectObj
     StructField(name: 'ob_refcnt', type: pySsizeT),
     StructField(name: 'ob_type', type: cpointer),
@@ -109,7 +109,7 @@ Whenever PyCompilerFlags *flags is NULL, cf_flags is treated as equal to 0, and 
     StructField(name: 'tp_methods', type: cpointer),
     StructField(name: 'tp_members', type: cpointer),
     StructField(name: 'tp_getset', type: cpointer),
-    StructField(name: 'tp_vase', type: 'ffi.Pointer<PyTypeObject3Obj>'),
+    StructField(name: 'tp_vase', type: pPyTypeObject),
     StructField(name: 'tp_dict', type: pPyObject),
     StructField(name: 'tp_descr_get', type: cpointer),
     StructField(name: 'tp_descr_set', type: cpointer),
@@ -119,11 +119,11 @@ Whenever PyCompilerFlags *flags is NULL, cf_flags is treated as equal to 0, and 
     StructField(name: 'tp_new', type: cpointer),
     StructField(name: 'tp_free', type: cpointer),
     StructField(name: 'tp_is_gc', type: cpointer),
-    StructField(name: 'tp_bases', type: pPyObjectObj),
+    StructField(name: 'tp_bases', type: pPyObject),
     StructField(name: 'tp_mro', type: pPyObject),
     StructField(name: 'tp_cache', type: pPyObject),
-    StructField(name: 'tp_subclasses', type: pPyObjectObj),
-    StructField(name: 'tp_weaklist', type: pPyObjectObj),
+    StructField(name: 'tp_subclasses', type: pPyObject),
+    StructField(name: 'tp_weaklist', type: pPyObject),
     StructField(name: 'tp_del', type: cpointer),
     StructField(name: 'tp_version_tag', type: cuint),
     StructField(name: 'tp_finalize', type: cpointer),

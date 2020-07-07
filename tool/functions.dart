@@ -196,48 +196,286 @@ Return a dictionary of the global variables in the current execution frame, or N
 
 // Object Protocol
 // https://docs.python.org/3/c-api/object.html
+  // TODO: Do some things
   Func(
-      name: 'PyObject_CallObject',
-      parameterTypes: [pPyObject, pPyObject],
-      returnType: pPyObject),
+    name: 'PyObject_GetAttrString',
+    parameterTypes: [pPyObject, cstring],
+    returnType: pPyObject,
+    documentation: '''
+Return value: New reference.
+Retrieve an attribute named attr_name from object o. Returns the attribute value on success, or NULL on failure. This is the equivalent of the Python expression o.attr_name.''',
+  ),
   Func(
-      name: 'PyObject_Call',
-      parameterTypes: [pPyObject, pPyObject, pPyObject],
-      returnType: pPyObject),
-  Func(name: 'PyObject_IsTrue', parameterTypes: [pPyObject], returnType: cint),
+    name: 'PyObject_SetAttrString',
+    parameterTypes: [pPyObject, cstring, pPyObject],
+    returnType: cint,
+    documentation: '''
+Set the value of the attribute named attr_name, for object o, to the value v. Raise an exception and return -1 on failure; return 0 on success. This is the equivalent of the Python statement o.attr_name = v.
+If v is NULL, the attribute is deleted, however this feature is deprecated in favour of using PyObject_DelAttrString().''',
+  ),
+  // TODO: Some things
   Func(
-      name: 'PyObject_GetAttrString',
+    name: 'PyObject_RichCompareBool',
+    parameterTypes: [pPyObject, pPyObject, cint],
+    returnType: cint,
+    documentation: '''
+Compare the values of o1 and o2 using the operation specified by opid, which must be one of Py_LT, Py_LE, Py_EQ, Py_NE, Py_GT, or Py_GE, corresponding to <, <=, ==, !=, >, or >= respectively. Returns -1 on error, 0 if the result is false, 1 otherwise. This is the equivalent of the Python expression o1 op o2, where op is the operator corresponding to opid.
+Note If o1 and o2 are the same object, PyObject_RichCompareBool() will always return 1 for Py_EQ and 0 for Py_NE.''',
+  ),
+  // TODO: Some things
+  Func(
+    name: 'PyObject_Str',
+    parameterTypes: [pPyObject],
+    returnType: pPyObject,
+    documentation: '''
+Return value: New reference.
+Compute a string representation of object o. Returns the string representation on success, NULL on failure. This is the equivalent of the Python expression str(o). Called by the str() built-in function and, therefore, by the print() function.
+Changed in version 3.4: This function now includes a debug assertion to help ensure that it does not silently discard an active exception.''',
+  ),
+  // TODO: Some things
+  Func(
+    name: 'PyObject_Call',
+    parameterTypes: [pPyObject, pPyObject, pPyObject],
+    returnType: pPyObject,
+    documentation: '''
+Return value: New reference.
+Call a callable Python object callable, with arguments given by the tuple args, and named arguments given by the dictionary kwargs.
+args must not be NULL, use an empty tuple if no arguments are needed. If no named arguments are needed, kwargs can be NULL.
+Return the result of the call on success, or raise an exception and return NULL on failure.
+This is the equivalent of the Python expression: callable(*args, **kwargs).''',
+  ),
+  Func(
+    name: 'PyObject_CallObject',
+    parameterTypes: [pPyObject, pPyObject],
+    returnType: pPyObject,
+    documentation: '''
+Return value: New reference.
+Call a callable Python object callable, with arguments given by the tuple args. If no arguments are needed, then args can be NULL.
+Return the result of the call on success, or raise an exception and return NULL on failure.
+This is the equivalent of the Python expression: callable(*args).''',
+  ),
+  // TODO: Some things
+  Func(
+    name: 'PyObject_IsTrue',
+    parameterTypes: [pPyObject],
+    returnType: cint,
+    documentation: '''
+Returns 1 if the object o is considered to be true, and 0 otherwise. This is equivalent to the Python expression not not o. On failure, return -1.''',
+  ),
+  // TODO: Some things
+  Func(
+    name: 'PyObject_GetItem',
+    parameterTypes: [pPyObject, pPyObject],
+    returnType: pPyObject,
+    documentation: '''
+Return value: New reference.
+Return element of o corresponding to the object key or NULL on failure. This is the equivalent of the Python expression o[key].''',
+  ),
+  Func(
+    name: 'PyObject_SetItem',
+    parameterTypes: [pPyObject, pPyObject, pPyObject],
+    returnType: cint,
+    documentation: '''
+Map the object key to the value v. Raise an exception and return -1 on failure; return 0 on success. This is the equivalent of the Python statement o[key] = v. This function does not steal a reference to v.''',
+  ),
+  Func(
+    name: 'PyObject_DelItem',
+    parameterTypes: [pPyObject, pPyObject],
+    returnType: cint,
+    documentation: '''
+Remove the mapping for the object key from the object o. Return -1 on failure. This is equivalent to the Python statement del o[key].''',
+  ),
+  Func(
+    name: 'PyObject_Dir',
+    parameterTypes: [pPyObject],
+    returnType: pPyObject,
+    documentation: '''
+Return value: New reference.
+This is equivalent to the Python expression dir(o), returning a (possibly empty) list of strings appropriate for the object argument, or NULL if there was an error. If the argument is NULL, this is like the Python dir(), returning the names of the current locals; in this case, if no execution frame is active then NULL is returned but PyErr_Occurred() will return false.''',
+  ),
+  Func(
+    name: 'PyObject_GetIter',
+    parameterTypes: [pPyObject],
+    returnType: pPyObject,
+    documentation: '''
+Return value: New reference.
+This is equivalent to the Python expression iter(o). It returns a new iterator for the object argument, or the object itself if the object is already an iterator. Raises TypeError and returns NULL if the object cannot be iterated.''',
+  ),
+// TODO: Some here
+
+// Number protocol
+// https://docs.python.org/3/c-api/number.html
+// TODO: This
+
+// Sequence protocol
+// https://docs.python.org/3/c-api/sequence.html
+// TODO: This
+
+// Mapping protocol
+// https://docs.python.org/3/c-api/mapping.html
+// TODO: This
+
+// Iterator protocol
+// https://docs.python.org/3/c-api/iter.html
+  Func(
+    name: 'PyIter_Check',
+    parameterTypes: [pPyObject],
+    returnType: cint,
+    documentation: '''
+Return true if the object o supports the iterator protocol.''',
+  ),
+  Func(
+    name: 'PyIter_Next',
+    parameterTypes: [pPyObject],
+    returnType: pPyObject,
+    documentation: '''
+Return value: New reference.
+Return the next value from the iteration o. The object must be an iterator (it is up to the caller to check this). If there are no remaining values, returns NULL with no exception set. If an error occurs while retrieving the item, returns NULL and passes along the exception.''',
+  ),
+
+// Buffer protocol
+// https://docs.python.org/3/c-api/buffer.html
+// TODO: More
+  Func(
+    name: 'PyObject_GetBuffer',
+    parameterTypes: [pPyObject, rawPyBuffer, cint],
+    returnType: cint,
+    documentation: '''
+Send a request to exporter to fill in view as specified by flags. If the exporter cannot provide a buffer of the exact type, it MUST raise PyExc_BufferError, set view->obj to NULL and return -1.
+On success, fill in view, set view->obj to a new reference to exporter and return 0. In the case of chained buffer providers that redirect requests to a single object, view->obj MAY refer to this object instead of exporter (See Buffer Object Structures).
+Successful calls to PyObject_GetBuffer() must be paired with calls to PyBuffer_Release(), similar to malloc() and free(). Thus, after the consumer is done with the buffer, PyBuffer_Release() must be called exactly once.''',
+  ),
+  // TODO: More
+
+// Type Objects
+// https://docs.python.org/3/c-api/type.html
+// TODO: More
+
+  Func(
+    name: 'PyType_IsSubtype',
+    parameterTypes: [pyTypeObject, pyTypeObject],
+    returnType: cint,
+    documentation: '''
+Return true if a is a subtype of b.
+This function only checks for actual subtypes, which means that __subclasscheck__() is not called on b. Call PyObject_IsSubclass() to do the same check that issubclass() would do.''',
+  ),
+  // TODO: more
+  Func(
+    name: 'PyType_GenericNew',
+    parameterTypes: [pPyTypeObject, pPyObject, pPyObject],
+    returnType: pPyObject,
+    documentation: '''
+Return value: New reference.
+Generic handler for the tp_new slot of a type object. Create a new instance using the type’s tp_alloc slot.''',
+  ),
+// TODO: More
+  Func(
+    name: 'PyType_Ready',
+    parameterTypes: [pPyTypeObject],
+    returnType: cint,
+    documentation: '''
+Finalize a type object. This should be called on all type objects to finish their initialization. This function is responsible for adding inherited slots from a type’s base class. Return 0 on success, or return -1 and sets an exception on error.''',
+  ),
+  // TODO: More
+
+// Integer Objects
+// https://docs.python.org/3/c-api/long.html
+// TODO: Some stuff
+  Func(
+    name: 'PyLong_FromLong',
+    parameterTypes: [clong],
+    returnType: pPyObject,
+    documentation: '''
+Return value: New reference.
+Return a new PyLongObject object from v, or NULL on failure.
+The current implementation keeps an array of integer objects for all integers between -5 and 256, when you create an int in that range you actually just get back a reference to the existing object. So it should be possible to change the value of 1. I suspect the behaviour of Python in this case is undefined. :-)''',
+  ),
+  Func(
+    name: 'PyLong_FromUnsignedLong',
+    parameterTypes: [culong],
+    returnType: pPyObject,
+    documentation: '''
+Return value: New reference.
+Return a new PyLongObject object from a C unsigned long, or NULL on failure.''',
+  ),
+  // TODO More
+  Func(
+    name: 'PyLong_AsLong',
+    parameterTypes: [pPyObject],
+    returnType: clong,
+    documentation: '''
+Return a C long representation of obj. If obj is not an instance of PyLongObject, first call its __index__() or __int__() method (if present) to convert it to a PyLongObject.
+Raise OverflowError if the value of obj is out of range for a long.
+Returns -1 on error. Use PyErr_Occurred() to disambiguate.
+Changed in version 3.8: Use __index__() if available.
+Deprecated since version 3.8: Using __int__() is deprecated.''',
+  ),
+  // TODO More
+  Func(
+    name: 'PyLong_AsLongLong',
+    parameterTypes: [pPyObject],
+    returnType: clonglong,
+    documentation: '''
+Return a C long long representation of obj. If obj is not an instance of PyLongObject, first call its __index__() or __int__() method (if present) to convert it to a PyLongObject.
+Raise OverflowError if the value of obj is out of range for a long long.
+Returns -1 on error. Use PyErr_Occurred() to disambiguate.
+Changed in version 3.8: Use __index__() if available.
+Deprecated since version 3.8: Using __int__() is deprecated.''',
+  ),
+
+  // TODO More
+
+  // Boolean Objects
+  // https://docs.python.org/3/c-api/bool.html
+  Func(
+    name: 'PyBool_Check',
+    parameterTypes: [pPyObject],
+    returnType: cint,
+    documentation: '''
+Return true if o is of type PyBool_Type.''',
+  ),
+  Func(
+    name: 'PyBool_FromLong',
+    parameterTypes: [clong],
+    returnType: pPyObject,
+    documentation: '''
+Return value: New reference.
+Return a new reference to Py_True or Py_False depending on the truth value of v.''',
+  ),
+  // Floating Point Objects
+  Func(
+    name: 'PyFloat_AsDouble',
+    parameterTypes: [pPyObject],
+    returnType: cdouble,
+  ),
+
+  Func(name: 'PyDict_New', parameterTypes: [], returnType: pPyObject),
+  Func(name: 'PyDict_Size', parameterTypes: [pPyObject], returnType: pySsizeT),
+  Func(
+      name: 'PyDict_GetItemString',
       parameterTypes: [pPyObject, cstring],
       returnType: pPyObject),
   Func(
-      name: 'PyObject_SetAttrString',
+      name: 'PyDict_SetItemString',
       parameterTypes: [pPyObject, cstring, pPyObject],
       returnType: cint),
   Func(
-      name: 'PyObject_Dir', parameterTypes: [pPyObject], returnType: pPyObject),
-  Func(
-      name: 'PyObject_Str', parameterTypes: [pPyObject], returnType: pPyObject),
-  Func(
-      name: 'PyObject_GetIter',
-      parameterTypes: [pPyObject],
-      returnType: pPyObject),
-  Func(
-      name: 'PyObject_GetItem',
+      name: 'PyDict_GetItem',
       parameterTypes: [pPyObject, pPyObject],
       returnType: pPyObject),
   Func(
-      name: 'PyObject_SetItem',
+      name: 'PyDict_SetItem',
       parameterTypes: [pPyObject, pPyObject, pPyObject],
       returnType: cint),
+  Func(name: 'PyDict_Keys', parameterTypes: [pPyObject], returnType: pPyObject),
   Func(
-      name: 'PyObject_RichCompareBool',
-      parameterTypes: [pPyObject, pPyObject, cint],
-      returnType: cint),
+      name: 'PyDict_Values',
+      parameterTypes: [pPyObject],
+      returnType: pPyObject),
   Func(
-      name: 'PyObject_GetBuffer',
-      parameterTypes: [pPyObject, rawPyBuffer, cint],
+      name: 'PyDict_Contains',
+      parameterTypes: [pPyObject, pPyObject],
       returnType: cint),
-// TODO: Some here
 
   Func(name: 'Py_Initialize', parameterTypes: [], returnType: pySsizeT),
   Func(name: 'Py_FinalizeEx', returnType: pySsizeT, parameterTypes: []),
@@ -253,18 +491,12 @@ Return a dictionary of the global variables in the current execution frame, or N
       parameterTypes: [pPyObject, pySsizeT, pPyObject],
       returnType: pySsizeT),
 
-  // TODO: Py_None ????
-  Func(name: 'PyType_Ready', parameterTypes: [pyTypeObject], returnType: cint),
-  Func(
-      name: 'PyType_GenericNew',
-      parameterTypes: [pyTypeObject, pPyObject, pPyObject],
-      returnType: pPyObject),
   Func(
       name: 'PyModule_AddObject',
       parameterTypes: [pPyObject, cstring, pPyObject],
       returnType: cint),
 
-  Func(name: 'PyListNew', parameterTypes: [pySsizeT], returnType: pPyObject),
+  Func(name: 'PyList_New', parameterTypes: [pySsizeT], returnType: pPyObject),
   Func(name: 'PyList_Size', parameterTypes: [pPyObject], returnType: pySsizeT),
   Func(
       name: 'PyList_GetItem',
@@ -275,31 +507,10 @@ Return a dictionary of the global variables in the current execution frame, or N
       parameterTypes: [pPyObject, pySsizeT, pPyObject],
       returnType: cint),
 
-//TODO: Check keyword versus non keyword function calls
-
   Func(
       name: 'PyBuffer_Release',
       parameterTypes: [rawPyBuffer],
       returnType: cint),
-
-  Func(name: 'PyIter_Next', parameterTypes: [pPyObject], returnType: pPyObject),
-
-  Func(
-      name: 'PyLong_AsLongLong',
-      parameterTypes: [pPyObject],
-      returnType: clonglong),
-  Func(
-      name: 'PyFloat_AsDouble',
-      parameterTypes: [pPyObject],
-      returnType: cdouble),
-  Func(name: 'PyBool_FromLong', parameterTypes: [clong], returnType: pPyObject),
-
-  Func(
-      name: 'PyType_IsSubtype',
-      parameterTypes: [pyTypeObject, pyTypeObject],
-      returnType: cint),
-
-//TODO: Complex -> dart complex
 
   Func(
       name: 'PyComplex_RealAsDouble',
@@ -331,34 +542,6 @@ Return a dictionary of the global variables in the current execution frame, or N
       parameterTypes: [pPyObject],
       returnType: cstring),
 
-  Func(name: 'PyDict_New', parameterTypes: [], returnType: pPyObject),
-  Func(name: 'PyDict_Size', parameterTypes: [pPyObject], returnType: pySsizeT),
-  Func(
-      name: 'PyDict_GetItemString',
-      parameterTypes: [pPyObject, cstring],
-      returnType: pPyObject),
-  Func(
-      name: 'PyDict_SetItemString',
-      parameterTypes: [pPyObject, cstring, pPyObject],
-      returnType: cint),
-  Func(
-      name: 'PyDict_GetItem',
-      parameterTypes: [pPyObject, pPyObject],
-      returnType: pPyObject),
-  Func(
-      name: 'PyDict_SetItem',
-      parameterTypes: [pPyObject, pPyObject, pPyObject],
-      returnType: cint),
-  Func(name: 'PyDict_Keys', parameterTypes: [pPyObject], returnType: pPyObject),
-  Func(
-      name: 'PyDict_Values',
-      parameterTypes: [pPyObject],
-      returnType: pPyObject),
-  Func(
-      name: 'PyDict_Contains',
-      parameterTypes: [pPyObject, pPyObject],
-      returnType: cint),
-
   Func(
       name: 'PyCapsule_New',
       parameterTypes: ['*void', cstring, '*void'],
@@ -377,10 +560,4 @@ Return a dictionary of the global variables in the current execution frame, or N
       name: 'PyCallable_Check',
       parameterTypes: [pPyObject],
       returnType: pySsizeT),
-  Func(
-      name: 'PyLong_FromLong',
-      parameterTypes: ['uint64'],
-      returnType: pPyObject),
-  Func(
-      name: 'PyLong_AsLong', parameterTypes: [pPyObject], returnType: 'uint64'),
 ];

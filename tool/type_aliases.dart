@@ -4,7 +4,6 @@ const cuint = 'uint32';
 const clong = 'int32';
 const culong = 'uint32';
 const clonglong = 'int64';
-const pyTypeObject = '*void';
 const rawPyBuffer = '*void';
 const cstring = '*char';
 const cwstring = '*uint16';

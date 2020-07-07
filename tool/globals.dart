@@ -37,14 +37,40 @@ The NotImplemented singleton, used to signal that an operation is not implemente
 Increment the reference count before returning it.''',
   ),
 
-  ///
-  Global(name: 'Py_None', type: pPyObject),
-  Global(name: 'PyFloat_Type', type: pyTypeObject),
-  Global(name: 'PyComplex_Type', type: pyTypeObject),
-  Global(name: 'PyCapsule_Type', type: pyTypeObject),
-  Global(name: 'PyTuple_Type', type: pyTypeObject),
-  Global(name: 'PyList_Type', type: pyTypeObject),
-  Global(name: 'PyBytes_Type', type: pyTypeObject),
-  Global(name: 'PyUnicode_Type', type: pyTypeObject),
-  Global(name: 'PyDict_Type', type: pyTypeObject),
+  Global(
+    name: 'PyType_Type',
+    type: pPyObject,
+    documentation:
+        'The C structure of the objects used to describe built-in types.',
+  ),
+
+  /// https://docs.python.org/3/c-api/none.html
+  Global(
+    name: 'Py_None',
+    type: pPyObject,
+    documentation: '''
+The Python None object, denoting lack of value. This object has no methods. It needs to be treated just like any other object with respect to reference counts.''',
+  ),
+
+  // https://docs.python.org/3/c-api/bool.html
+  Global(
+    name: 'Py_False',
+    type: pPyObject,
+    documentation: '''
+The Python False object. This object has no methods. It needs to be treated just like any other object with respect to reference counts.''',
+  ),
+  Global(
+    name: 'Py_True',
+    type: pPyObject,
+    documentation: '''
+The Python True object. This object has no methods. It needs to be treated just like any other object with respect to reference counts.''',
+  ),
+  // Global(name: 'PyFloat_Type', type: pyTypeObject),
+  // Global(name: 'PyComplex_Type', type: pyTypeObject),
+  // Global(name: 'PyCapsule_Type', type: pyTypeObject),
+  // Global(name: 'PyTuple_Type', type: pyTypeObject),
+  // Global(name: 'PyList_Type', type: pyTypeObject),
+  // Global(name: 'PyBytes_Type', type: pyTypeObject),
+  // Global(name: 'PyUnicode_Type', type: pyTypeObject),
+  // Global(name: 'PyDict_Type', type: pyTypeObject),
 ];

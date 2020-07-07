@@ -3,7 +3,7 @@ import 'dart:ffi' as ffi;
 import 'generated.dart';
 
 typedef allocfunc = ffi.Pointer<PyObject> Function(
-    ffi.Pointer<PyTypeObject3Obj>, int);
+    ffi.Pointer<PyTypeObject>, int);
 
 typedef destructor = void Function(ffi.Pointer<void>);
 typedef freefunc = void Function(ffi.Pointer<void>);
