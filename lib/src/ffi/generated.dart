@@ -1037,6 +1037,144 @@ typedef _PyType_Ready_Dart = int Function(
   ffi.Pointer<PyTypeObject> arg0,
 );
 
+/// Return value: New reference.
+/// Return a new PyLongObject object from v, or NULL on failure.
+/// The current implementation keeps an array of integer objects for all integers between -5 and 256, when you create an int in that range you actually just get back a reference to the existing object. So it should be possible to change the value of 1. I suspect the behaviour of Python in this case is undefined. :-)
+ffi.Pointer<PyObject> PyLong_FromLong(
+  int arg0,
+) {
+  return _PyLong_FromLong(arg0);
+}
+
+final _PyLong_FromLong_Dart _PyLong_FromLong =
+    _dynamicLibrary.lookupFunction<_PyLong_FromLong_C, _PyLong_FromLong_Dart>(
+  'PyLong_FromLong',
+);
+typedef _PyLong_FromLong_C = ffi.Pointer<PyObject> Function(
+  ffi.Int32 arg0,
+);
+typedef _PyLong_FromLong_Dart = ffi.Pointer<PyObject> Function(
+  int arg0,
+);
+
+/// Return value: New reference.
+/// Return a new PyLongObject object from a C unsigned long, or NULL on failure.
+ffi.Pointer<PyObject> PyLong_FromUnsignedLong(
+  int arg0,
+) {
+  return _PyLong_FromUnsignedLong(arg0);
+}
+
+final _PyLong_FromUnsignedLong_Dart _PyLong_FromUnsignedLong = _dynamicLibrary
+    .lookupFunction<_PyLong_FromUnsignedLong_C, _PyLong_FromUnsignedLong_Dart>(
+  'PyLong_FromUnsignedLong',
+);
+typedef _PyLong_FromUnsignedLong_C = ffi.Pointer<PyObject> Function(
+  ffi.Uint32 arg0,
+);
+typedef _PyLong_FromUnsignedLong_Dart = ffi.Pointer<PyObject> Function(
+  int arg0,
+);
+
+/// Return a C long representation of obj. If obj is not an instance of PyLongObject, first call its __index__() or __int__() method (if present) to convert it to a PyLongObject.
+/// Raise OverflowError if the value of obj is out of range for a long.
+/// Returns -1 on error. Use PyErr_Occurred() to disambiguate.
+/// Changed in version 3.8: Use __index__() if available.
+/// Deprecated since version 3.8: Using __int__() is deprecated.
+int PyLong_AsLong(
+  ffi.Pointer<PyObject> arg0,
+) {
+  return _PyLong_AsLong(arg0);
+}
+
+final _PyLong_AsLong_Dart _PyLong_AsLong =
+    _dynamicLibrary.lookupFunction<_PyLong_AsLong_C, _PyLong_AsLong_Dart>(
+  'PyLong_AsLong',
+);
+typedef _PyLong_AsLong_C = ffi.Int32 Function(
+  ffi.Pointer<PyObject> arg0,
+);
+typedef _PyLong_AsLong_Dart = int Function(
+  ffi.Pointer<PyObject> arg0,
+);
+
+/// Return a C long long representation of obj. If obj is not an instance of PyLongObject, first call its __index__() or __int__() method (if present) to convert it to a PyLongObject.
+/// Raise OverflowError if the value of obj is out of range for a long long.
+/// Returns -1 on error. Use PyErr_Occurred() to disambiguate.
+/// Changed in version 3.8: Use __index__() if available.
+/// Deprecated since version 3.8: Using __int__() is deprecated.
+int PyLong_AsLongLong(
+  ffi.Pointer<PyObject> arg0,
+) {
+  return _PyLong_AsLongLong(arg0);
+}
+
+final _PyLong_AsLongLong_Dart _PyLong_AsLongLong = _dynamicLibrary
+    .lookupFunction<_PyLong_AsLongLong_C, _PyLong_AsLongLong_Dart>(
+  'PyLong_AsLongLong',
+);
+typedef _PyLong_AsLongLong_C = ffi.Int64 Function(
+  ffi.Pointer<PyObject> arg0,
+);
+typedef _PyLong_AsLongLong_Dart = int Function(
+  ffi.Pointer<PyObject> arg0,
+);
+
+/// Return true if o is of type PyBool_Type.
+int PyBool_Check(
+  ffi.Pointer<PyObject> arg0,
+) {
+  return _PyBool_Check(arg0);
+}
+
+final _PyBool_Check_Dart _PyBool_Check =
+    _dynamicLibrary.lookupFunction<_PyBool_Check_C, _PyBool_Check_Dart>(
+  'PyBool_Check',
+);
+typedef _PyBool_Check_C = ffi.Int32 Function(
+  ffi.Pointer<PyObject> arg0,
+);
+typedef _PyBool_Check_Dart = int Function(
+  ffi.Pointer<PyObject> arg0,
+);
+
+/// Return value: New reference.
+/// Return a new reference to Py_True or Py_False depending on the truth value of v.
+ffi.Pointer<PyObject> PyBool_FromLong(
+  int arg0,
+) {
+  return _PyBool_FromLong(arg0);
+}
+
+final _PyBool_FromLong_Dart _PyBool_FromLong =
+    _dynamicLibrary.lookupFunction<_PyBool_FromLong_C, _PyBool_FromLong_Dart>(
+  'PyBool_FromLong',
+);
+typedef _PyBool_FromLong_C = ffi.Pointer<PyObject> Function(
+  ffi.Int32 arg0,
+);
+typedef _PyBool_FromLong_Dart = ffi.Pointer<PyObject> Function(
+  int arg0,
+);
+
+/// C function `PyFloat_AsDouble`.
+double PyFloat_AsDouble(
+  ffi.Pointer<PyObject> arg0,
+) {
+  return _PyFloat_AsDouble(arg0);
+}
+
+final _PyFloat_AsDouble_Dart _PyFloat_AsDouble =
+    _dynamicLibrary.lookupFunction<_PyFloat_AsDouble_C, _PyFloat_AsDouble_Dart>(
+  'PyFloat_AsDouble',
+);
+typedef _PyFloat_AsDouble_C = ffi.Double Function(
+  ffi.Pointer<PyObject> arg0,
+);
+typedef _PyFloat_AsDouble_Dart = double Function(
+  ffi.Pointer<PyObject> arg0,
+);
+
 /// C function `PyDict_New`.
 ffi.Pointer<PyObject> PyDict_New() {
   return _PyDict_New();
@@ -1442,60 +1580,6 @@ typedef _PyBuffer_Release_Dart = int Function(
   ffi.Pointer arg0,
 );
 
-/// C function `PyLong_AsLongLong`.
-int PyLong_AsLongLong(
-  ffi.Pointer<PyObject> arg0,
-) {
-  return _PyLong_AsLongLong(arg0);
-}
-
-final _PyLong_AsLongLong_Dart _PyLong_AsLongLong = _dynamicLibrary
-    .lookupFunction<_PyLong_AsLongLong_C, _PyLong_AsLongLong_Dart>(
-  'PyLong_AsLongLong',
-);
-typedef _PyLong_AsLongLong_C = ffi.Int64 Function(
-  ffi.Pointer<PyObject> arg0,
-);
-typedef _PyLong_AsLongLong_Dart = int Function(
-  ffi.Pointer<PyObject> arg0,
-);
-
-/// C function `PyFloat_AsDouble`.
-double PyFloat_AsDouble(
-  ffi.Pointer<PyObject> arg0,
-) {
-  return _PyFloat_AsDouble(arg0);
-}
-
-final _PyFloat_AsDouble_Dart _PyFloat_AsDouble =
-    _dynamicLibrary.lookupFunction<_PyFloat_AsDouble_C, _PyFloat_AsDouble_Dart>(
-  'PyFloat_AsDouble',
-);
-typedef _PyFloat_AsDouble_C = ffi.Double Function(
-  ffi.Pointer<PyObject> arg0,
-);
-typedef _PyFloat_AsDouble_Dart = double Function(
-  ffi.Pointer<PyObject> arg0,
-);
-
-/// C function `PyBool_FromLong`.
-ffi.Pointer<PyObject> PyBool_FromLong(
-  int arg0,
-) {
-  return _PyBool_FromLong(arg0);
-}
-
-final _PyBool_FromLong_Dart _PyBool_FromLong =
-    _dynamicLibrary.lookupFunction<_PyBool_FromLong_C, _PyBool_FromLong_Dart>(
-  'PyBool_FromLong',
-);
-typedef _PyBool_FromLong_C = ffi.Pointer<PyObject> Function(
-  ffi.Int32 arg0,
-);
-typedef _PyBool_FromLong_Dart = ffi.Pointer<PyObject> Function(
-  int arg0,
-);
-
 /// C function `PyComplex_RealAsDouble`.
 double PyComplex_RealAsDouble(
   ffi.Pointer<PyObject> arg0,
@@ -1714,42 +1798,6 @@ typedef _PyCallable_Check_Dart = int Function(
   ffi.Pointer<PyObject> arg0,
 );
 
-/// C function `PyLong_FromLong`.
-ffi.Pointer<PyObject> PyLong_FromLong(
-  int arg0,
-) {
-  return _PyLong_FromLong(arg0);
-}
-
-final _PyLong_FromLong_Dart _PyLong_FromLong =
-    _dynamicLibrary.lookupFunction<_PyLong_FromLong_C, _PyLong_FromLong_Dart>(
-  'PyLong_FromLong',
-);
-typedef _PyLong_FromLong_C = ffi.Pointer<PyObject> Function(
-  ffi.Uint64 arg0,
-);
-typedef _PyLong_FromLong_Dart = ffi.Pointer<PyObject> Function(
-  int arg0,
-);
-
-/// C function `PyLong_AsLong`.
-int PyLong_AsLong(
-  ffi.Pointer<PyObject> arg0,
-) {
-  return _PyLong_AsLong(arg0);
-}
-
-final _PyLong_AsLong_Dart _PyLong_AsLong =
-    _dynamicLibrary.lookupFunction<_PyLong_AsLong_C, _PyLong_AsLong_Dart>(
-  'PyLong_AsLong',
-);
-typedef _PyLong_AsLong_C = ffi.Uint64 Function(
-  ffi.Pointer<PyObject> arg0,
-);
-typedef _PyLong_AsLong_Dart = int Function(
-  ffi.Pointer<PyObject> arg0,
-);
-
 /// C global `PyExc_BaseException`.
 final ffi.Pointer<PyObject> PyExc_BaseException = _dynamicLibrary
     .lookup<ffi.Pointer<PyObject>>(
@@ -1895,5 +1943,19 @@ final ffi.Pointer<PyObject> PyType_Type = _dynamicLibrary
 final ffi.Pointer<PyObject> Py_None = _dynamicLibrary
     .lookup<ffi.Pointer<PyObject>>(
       'Py_None',
+    )
+    .value;
+
+/// The Python False object. This object has no methods. It needs to be treated just like any other object with respect to reference counts.
+final ffi.Pointer<PyObject> Py_False = _dynamicLibrary
+    .lookup<ffi.Pointer<PyObject>>(
+      'Py_False',
+    )
+    .value;
+
+/// The Python True object. This object has no methods. It needs to be treated just like any other object with respect to reference counts.
+final ffi.Pointer<PyObject> Py_True = _dynamicLibrary
+    .lookup<ffi.Pointer<PyObject>>(
+      'Py_True',
     )
     .value;
