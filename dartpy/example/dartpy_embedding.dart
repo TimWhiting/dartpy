@@ -14,15 +14,12 @@ void main(List<String> args) {
     print(result);
   } on DartPyException catch (e) {
     print(e);
-    pyCleanup();
     if (PyErr_Occurred() != nullptr) {
       PyErr_Print();
     }
-    print('Failed to load ${args[0]} $e');
+    pyCleanup();
     exit(1);
   }
-  if (Py_FinalizeEx() < 0) {
-    exit(120);
-  }
+  pyCleanup();
   exit(0);
 }

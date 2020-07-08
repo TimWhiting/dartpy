@@ -36,9 +36,10 @@ void pyCleanup() {
     mod.dispose();
   }
   _moduleMap.clear();
+  Py_FinalizeEx();
 }
 
-final _moduleMap = Map<String, DartPyModule>();
+final _moduleMap = <String, DartPyModule>{};
 
 DartPyModule pyimport(String module) {
   _ensureInitialized();
