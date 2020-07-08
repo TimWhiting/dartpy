@@ -11,6 +11,9 @@ void main() {
   generateFile(f, library);
   var s = f.readAsStringSync();
   s = s.replaceAll('@ffi.Pointer()', '');
+  s = s.replaceAll('_Py_NoneStruct =', 'Py_None =');
+  s = s.replaceAll('_Py_TrueStruct =', 'Py_True =');
+  s = s.replaceAll('_Py_FalseStruct =', 'Py_False =');
   f.writeAsStringSync(s);
 }
 

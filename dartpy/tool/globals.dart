@@ -46,7 +46,7 @@ Increment the reference count before returning it.''',
 
   /// https://docs.python.org/3/c-api/none.html
   Global(
-    name: 'Py_None',
+    name: '_Py_NoneStruct',
     type: pPyObject,
     documentation: '''
 The Python None object, denoting lack of value. This object has no methods. It needs to be treated just like any other object with respect to reference counts.''',
@@ -54,13 +54,13 @@ The Python None object, denoting lack of value. This object has no methods. It n
 
   // https://docs.python.org/3/c-api/bool.html
   Global(
-    name: 'Py_False',
+    name: '_Py_FalseStruct',
     type: pPyObject,
     documentation: '''
 The Python False object. This object has no methods. It needs to be treated just like any other object with respect to reference counts.''',
   ),
   Global(
-    name: 'Py_True',
+    name: '_Py_TrueStruct',
     type: pPyObject,
     documentation: '''
 The Python True object. This object has no methods. It needs to be treated just like any other object with respect to reference counts.''',

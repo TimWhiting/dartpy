@@ -396,7 +396,20 @@ Finalize a type object. This should be called on all type objects to finish thei
 
 // Integer Objects
 // https://docs.python.org/3/c-api/long.html
-// TODO: Some stuff
+  Func(
+    name: 'PyLong_Check',
+    parameterTypes: [pPyObject],
+    returnType: cint,
+    documentation: '''
+Return true if its argument is a PyLongObject or a subtype of PyLongObject.''',
+  ),
+  Func(
+    name: 'PyLong_CheckExact',
+    parameterTypes: [pPyObject],
+    returnType: cint,
+    documentation: '''
+Return true if its argument is a PyLongObject, but not a subtype of PyLongObject.''',
+  ),
   Func(
     name: 'PyLong_FromLong',
     parameterTypes: [clong],
@@ -443,13 +456,6 @@ Deprecated since version 3.8: Using __int__() is deprecated.''',
 
   // Boolean Objects
   // https://docs.python.org/3/c-api/bool.html
-  Func(
-    name: 'PyBool_Check',
-    parameterTypes: [pPyObject],
-    returnType: cint,
-    documentation: '''
-Return true if o is of type PyBool_Type.''',
-  ),
   Func(
     name: 'PyBool_FromLong',
     parameterTypes: [clong],

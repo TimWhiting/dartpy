@@ -1077,6 +1077,42 @@ typedef _PyType_Ready_Dart = int Function(
   ffi.Pointer<PyTypeObject> arg0,
 );
 
+/// Return true if its argument is a PyLongObject or a subtype of PyLongObject.
+int PyLong_Check(
+  ffi.Pointer<PyObject> arg0,
+) {
+  return _PyLong_Check(arg0);
+}
+
+final _PyLong_Check_Dart _PyLong_Check =
+    _dynamicLibrary.lookupFunction<_PyLong_Check_C, _PyLong_Check_Dart>(
+  'PyLong_Check',
+);
+typedef _PyLong_Check_C = ffi.Int32 Function(
+  ffi.Pointer<PyObject> arg0,
+);
+typedef _PyLong_Check_Dart = int Function(
+  ffi.Pointer<PyObject> arg0,
+);
+
+/// Return true if its argument is a PyLongObject, but not a subtype of PyLongObject.
+int PyLong_CheckExact(
+  ffi.Pointer<PyObject> arg0,
+) {
+  return _PyLong_CheckExact(arg0);
+}
+
+final _PyLong_CheckExact_Dart _PyLong_CheckExact = _dynamicLibrary
+    .lookupFunction<_PyLong_CheckExact_C, _PyLong_CheckExact_Dart>(
+  'PyLong_CheckExact',
+);
+typedef _PyLong_CheckExact_C = ffi.Int32 Function(
+  ffi.Pointer<PyObject> arg0,
+);
+typedef _PyLong_CheckExact_Dart = int Function(
+  ffi.Pointer<PyObject> arg0,
+);
+
 /// Return value: New reference.
 /// Return a new PyLongObject object from v, or NULL on failure.
 /// The current implementation keeps an array of integer objects for all integers between -5 and 256, when you create an int in that range you actually just get back a reference to the existing object. So it should be possible to change the value of 1. I suspect the behaviour of Python in this case is undefined. :-)
@@ -1157,24 +1193,6 @@ typedef _PyLong_AsLongLong_C = ffi.Int64 Function(
   ffi.Pointer<PyObject> arg0,
 );
 typedef _PyLong_AsLongLong_Dart = int Function(
-  ffi.Pointer<PyObject> arg0,
-);
-
-/// Return true if o is of type PyBool_Type.
-int PyBool_Check(
-  ffi.Pointer<PyObject> arg0,
-) {
-  return _PyBool_Check(arg0);
-}
-
-final _PyBool_Check_Dart _PyBool_Check =
-    _dynamicLibrary.lookupFunction<_PyBool_Check_C, _PyBool_Check_Dart>(
-  'PyBool_Check',
-);
-typedef _PyBool_Check_C = ffi.Int32 Function(
-  ffi.Pointer<PyObject> arg0,
-);
-typedef _PyBool_Check_Dart = int Function(
   ffi.Pointer<PyObject> arg0,
 );
 
@@ -2029,20 +2047,20 @@ final ffi.Pointer<PyObject> PyType_Type = _dynamicLibrary
 /// The Python None object, denoting lack of value. This object has no methods. It needs to be treated just like any other object with respect to reference counts.
 final ffi.Pointer<PyObject> Py_None = _dynamicLibrary
     .lookup<ffi.Pointer<PyObject>>(
-      'Py_None',
+      '_Py_NoneStruct',
     )
     .value;
 
 /// The Python False object. This object has no methods. It needs to be treated just like any other object with respect to reference counts.
 final ffi.Pointer<PyObject> Py_False = _dynamicLibrary
     .lookup<ffi.Pointer<PyObject>>(
-      'Py_False',
+      '_Py_FalseStruct',
     )
     .value;
 
 /// The Python True object. This object has no methods. It needs to be treated just like any other object with respect to reference counts.
 final ffi.Pointer<PyObject> Py_True = _dynamicLibrary
     .lookup<ffi.Pointer<PyObject>>(
-      'Py_True',
+      '_Py_TrueStruct',
     )
     .value;

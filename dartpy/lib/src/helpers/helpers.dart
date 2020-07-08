@@ -19,26 +19,52 @@ bool pyIsCallable(Pointer<PyObject> object) {
   return PyCallable_Check(object) != 0;
 }
 
-PyModule pyimport(String module) {
+bool pyIsBool(Pointer<PyObject> object) {
+  return object == Py_True || object == Py_False;
+}
+
+bool pyIsInt(Pointer<PyObject> object) {
+  return PyLong_Check(object) != 0;
+}
+
+bool pyErrOccurred() {
+  return PyErr_Occurred() != nullptr;
+}
+
+void pyCleanup() {
+  for (final mod in _moduleMap.values) {
+    mod.dispose();
+  }
+  _moduleMap.clear();
+}
+
+final _moduleMap = Map<String, DartPyModule>();
+
+DartPyModule pyimport(String module) {
   _ensureInitialized();
+  if (_moduleMap.containsKey(module)) {
+    return _moduleMap[module];
+  }
   final mstring = Utf8.toUtf8(module);
   final pyString = PyUnicode_DecodeFSDefault(mstring.cast<Uint8>());
   free(mstring);
   final pyImport = PyImport_Import(pyString);
   Py_DecRef(pyString);
   if (pyImport != nullptr) {
-    return PyModule(module, pyImport);
+    final _mod = DartPyModule(module, pyImport);
+    _moduleMap[module] = _mod;
+    return _mod;
   } else {
     throw DartPyException('PyImport_Import failed, module $module not found');
   }
 }
 
-class PyModule {
-  PyModule(this.moduleName, this._moduleRef);
+class DartPyModule {
+  DartPyModule(this.moduleName, this._moduleRef);
   final String moduleName;
   final Pointer<PyObject> _moduleRef;
-  final Map<String, PyFunction> _functions = {};
-  PyFunction getFunction(String name) {
+  final Map<String, DartPyFunction> _functions = {};
+  DartPyFunction getFunction(String name) {
     if (_functions.containsKey(name)) {
       return _functions[name];
     }
@@ -47,7 +73,7 @@ class PyModule {
     free(funcName);
     if (pFunc != nullptr) {
       if (pyIsCallable(pFunc)) {
-        _functions[name] = PyFunction(pFunc);
+        _functions[name] = DartPyFunction(pFunc);
         return _functions[name];
       } else {
         Py_DecRef(pFunc);
@@ -67,10 +93,10 @@ class PyModule {
   }
 }
 
-class PyFunction {
+class DartPyFunction {
   final Pointer<PyObject> _function;
   final List<Pointer<PyObject>> _argumentAllocations = [];
-  PyFunction(this._function);
+  DartPyFunction(this._function);
   void dispose() {
     disposeArguments();
     Py_DecRef(_function);
@@ -89,8 +115,8 @@ class DartPyException implements Exception {
   DartPyException(this.message);
 }
 
-extension CallablePyObjectList on PyFunction {
-  Pointer<PyObject> call(List<Object> args) {
+extension CallablePyObjectList on DartPyFunction {
+  Object call(List<Object> args) {
     final pArgs = PyTuple_New(args.length);
     if (pArgs == nullptr) {
       throw DartPyException('Creating argument tuple failed');
@@ -109,7 +135,7 @@ extension CallablePyObjectList on PyFunction {
     }
     final result = PyObject_CallObject(_function, pArgs);
     Py_DecRef(pArgs);
-    return result;
+    return convertResult(result);
   }
 
   /// Converts a Dart object to the python equivalent
@@ -135,6 +161,34 @@ extension CallablePyObjectList on PyFunction {
       throw UnimplementedError();
     } else if (o is Map) {
       throw UnimplementedError();
+    }
+    throw UnimplementedError();
+  }
+
+  Object convertResult(Pointer<PyObject> result) {
+    if (result == nullptr) {
+      if (pyErrOccurred()) {
+        throw UnimplementedError('Python error occurred');
+      }
+      return null;
+    }
+
+    if (result == Py_None) {
+      Py_DecRef(result);
+      return null;
+    } else if (pyIsBool(result)) {
+      if (result == Py_True) {
+        Py_DecRef(result);
+        return true;
+      }
+      Py_DecRef(result);
+      return false;
+    } else {
+      final res = PyLong_AsLong(result);
+      if (!pyErrOccurred()) {
+        Py_DecRef(result);
+        return res;
+      }
     }
     throw UnimplementedError();
   }
