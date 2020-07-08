@@ -140,9 +140,7 @@ This function always uses absolute imports.''',
   // TODO More
   Func(
     name: 'PyImport_Import',
-    parameterTypes: [
-      cstring
-    ], // TODO: Figure out the mismatch of string / pyObject args
+    parameterTypes: [pPyObject],
     returnType: pPyObject,
     documentation: '''
 Return value: New reference.

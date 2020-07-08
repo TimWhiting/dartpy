@@ -10,6 +10,7 @@ dependencies:
   path: ^1.6.0
   ffi: any
   ffi_tool: any
+  basics: any
 
 dev_dependencies:
   pedantic: ^1.8.0

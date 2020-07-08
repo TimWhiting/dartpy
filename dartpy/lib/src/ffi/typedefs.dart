@@ -4,7 +4,6 @@ import 'generated.dart';
 
 typedef allocfunc = ffi.Pointer<PyObject> Function(
     ffi.Pointer<PyTypeObject>, int);
-
 typedef destructor = void Function(ffi.Pointer<void>);
 typedef freefunc = void Function(ffi.Pointer<void>);
 typedef traverseproc = int Function(

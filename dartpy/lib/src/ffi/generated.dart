@@ -589,7 +589,7 @@ typedef _PyImport_ImportModule_Dart = ffi.Pointer<PyObject> Function(
 /// This is a higher-level interface that calls the current “import hook function” (with an explicit level of 0, meaning absolute import). It invokes the __import__() function from the __builtins__ of the current globals. This means that the import is done using whatever import hooks are installed in the current environment.
 /// This function always uses absolute imports.
 ffi.Pointer<PyObject> PyImport_Import(
-  ffi.Pointer<ffi.Uint8> arg0,
+  ffi.Pointer<PyObject> arg0,
 ) {
   return _PyImport_Import(arg0);
 }
@@ -599,10 +599,10 @@ final _PyImport_Import_Dart _PyImport_Import =
   'PyImport_Import',
 );
 typedef _PyImport_Import_C = ffi.Pointer<PyObject> Function(
-  ffi.Pointer<ffi.Uint8> arg0,
+  ffi.Pointer<PyObject> arg0,
 );
 typedef _PyImport_Import_Dart = ffi.Pointer<PyObject> Function(
-  ffi.Pointer<ffi.Uint8> arg0,
+  ffi.Pointer<PyObject> arg0,
 );
 
 /// Return value: Borrowed reference.
