@@ -35,7 +35,6 @@ void pyCleanup() {
   for (final mod in _moduleMap.values) {
     mod.dispose();
   }
-  _moduleMap.clear();
   Py_FinalizeEx();
 }
 
@@ -86,6 +85,7 @@ class DartPyModule {
   }
 
   void dispose() {
+    _moduleMap.remove(moduleName);
     for (final func in _functions.entries) {
       func.value.dispose();
     }
