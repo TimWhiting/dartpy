@@ -12,9 +12,6 @@ void main(List<String> args) {
     print(result);
   } on DartPyException catch (e) {
     print(e);
-    if (pyErrOccurred()) {
-      PyErr_Print();
-    }
     pyCleanup();
     exit(1);
   }

@@ -28,14 +28,14 @@ Pointer<Utf16> _pprogramLoc, _pathString;
 void pyStart() {
   _pprogramLoc = Utf16.toUtf16('python3');
   Py_SetProgramName(_pprogramLoc.cast<Uint16>());
-
   Py_Initialize();
-  final p = Py_GetPath();
-  final pathString = path.join(
-      fromUtf16(p.cast<Utf16>()), ':', Directory.current.absolute.path);
-  print(pathString);
+  final pathString =
+      '${Platform.environment["PYTHONPATH"]}:${Directory.current.absolute.path}';
   _pathString = Utf16.toUtf16(pathString);
   Py_SetPath(_pathString.cast<Uint16>());
+  if (pyErrOccurred()) {
+    print('Error during initialization');
+  }
   _ensureInitialized();
 }
 
@@ -46,6 +46,10 @@ void _ensureInitialized() {
 }
 
 void pyCleanup() {
+  if (pyErrOccurred()) {
+    print('Exited with python error:');
+    PyErr_Print();
+  }
   for (final mod in List.of(_moduleMap.values)) {
     mod.dispose();
   }
@@ -75,7 +79,8 @@ DartPyModule pyimport(String module) {
     _moduleMap[module] = _mod;
     return _mod;
   } else {
-    throw DartPyException('PyImport_Import failed, module $module not found');
+    throw DartPyException(
+        'Importing python module $module failed, make sure the $module is on your PYTHONPATH\n eg. export PYTHONPATH=\$PYTHONPATH:/path/to/$module');
   }
 }
 
