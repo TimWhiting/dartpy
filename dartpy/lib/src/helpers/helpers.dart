@@ -1,13 +1,23 @@
 import 'dart:ffi';
+import 'dart:io';
 import 'package:basics/basics.dart';
 import 'package:ffi/ffi.dart';
-
+import 'package:path/path.dart' as path;
 import '../dartpy_base.dart';
 import 'bool_functions.dart';
 export 'bool_functions.dart';
 export 'converters/converters.dart';
 import 'error.dart';
 export 'error.dart';
+
+Pointer<Utf16> _pprogramLoc = null;
+void pyStart(String fileName) {
+  final programLoc = path.join(Directory.current.absolute.path, fileName);
+  print(programLoc);
+  _pprogramLoc = Utf16.toUtf16(programLoc);
+  Py_SetProgramName(_pprogramLoc.cast<Uint16>());
+  _ensureInitialized();
+}
 
 void _ensureInitialized() {
   if (!pyInitialized) {
@@ -16,10 +26,13 @@ void _ensureInitialized() {
 }
 
 void pyCleanup() {
-  for (final mod in _moduleMap.values) {
+  for (final mod in List.of(_moduleMap.values)) {
     mod.dispose();
   }
   Py_FinalizeEx();
+  if (_pprogramLoc == nullptr) {
+    free(_pprogramLoc);
+  }
 }
 
 final _moduleMap = <String, DartPyModule>{};

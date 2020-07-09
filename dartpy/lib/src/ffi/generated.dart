@@ -1903,6 +1903,24 @@ final _Py_Finalize_Dart _Py_Finalize =
 typedef _Py_Finalize_C = ffi.Void Function();
 typedef _Py_Finalize_Dart = void Function();
 
+/// This is a backwards-compatible version of Py_FinalizeEx() that disregards the return value.
+void Py_SetProgramName(
+  ffi.Pointer<ffi.Uint16> arg0,
+) {
+  _Py_SetProgramName(arg0);
+}
+
+final _Py_SetProgramName_Dart _Py_SetProgramName = _dynamicLibrary
+    .lookupFunction<_Py_SetProgramName_C, _Py_SetProgramName_Dart>(
+  'Py_SetProgramName',
+);
+typedef _Py_SetProgramName_C = ffi.Void Function(
+  ffi.Pointer<ffi.Uint16> arg0,
+);
+typedef _Py_SetProgramName_Dart = void Function(
+  ffi.Pointer<ffi.Uint16> arg0,
+);
+
 /// C global `PyExc_BaseException`.
 final ffi.Pointer<PyObject> PyExc_BaseException = _dynamicLibrary
     .lookup<ffi.Pointer<PyObject>>(

@@ -4,6 +4,7 @@ import 'package:dartpy/dartpy.dart';
 
 void main(List<String> args) {
   print(args);
+  pyStart('dartpy_embedding.dart');
   try {
     final pyModule = pyimport(args[0]);
     final pFunc = pyModule.getFunction(args[1]);

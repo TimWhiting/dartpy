@@ -874,7 +874,15 @@ This is a backwards-compatible version of Py_FinalizeEx() that disregards the re
   ),
 
   // TODO: More
-
+  Func(
+    name: 'Py_SetProgramName',
+    returnType: cvoid,
+    parameterTypes: [cwstring],
+    documentation: '''
+This function should be called before Py_Initialize() is called for the first time, if it is called at all. It tells the interpreter the value of the argv[0] argument to the main() function of the program (converted to wide characters). This is used by Py_GetPath() and some other functions below to find the Python run-time libraries relative to the interpreter executable. The default value is 'python'. The argument should point to a zero-terminated wide character string in static storage whose contents will not change for the duration of the program’s execution. No code in the Python interpreter will change the contents of this storage.
+Use Py_DecodeLocale() to decode a bytes string to get a wchar_* string.''',
+  ),
+  // TODO: More
   // Python Initialization Configuration
   // https://docs.python.org/3/api/init_config.html
   // TODO: This
