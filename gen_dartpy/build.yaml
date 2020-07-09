@@ -1,0 +1,15 @@
+targets:
+  $default:
+    builders:
+      gen_dartpy|dartpy_function:
+        enabled: true
+
+builders:
+  dartpy_function:
+    target: ":gen_dartpy"
+    import: "package:gen_dartpy/builder.dart"
+    builder_factories: ["dartpyFunction"]
+    build_extensions: { ".dart": [".dartpy.g.part"] }
+    auto_apply: dependents
+    build_to: cache
+    applies_builders: ["source_gen|combining_builder"]

@@ -4,9 +4,12 @@ description: A starting point for Dart libraries or applications.
 # homepage: https://www.example.com
 
 environment:
-  sdk: '>=2.7.0 <3.0.0'
+  sdk: ">=2.7.0 <3.0.0"
 
-#dependencies:
+dependencies:
+  source_gen: any
+  dartpy:
+    path: ../dartpy
 #  path: ^1.6.0
 
 dev_dependencies:
