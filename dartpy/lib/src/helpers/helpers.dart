@@ -1,5 +1,7 @@
 import 'dart:ffi';
 import 'dart:io';
+import 'dart:convert';
+import 'dart:typed_data';
 import 'package:basics/basics.dart';
 import 'package:ffi/ffi.dart';
 import 'package:path/path.dart' as path;
@@ -10,12 +12,30 @@ export 'converters/converters.dart';
 import 'error.dart';
 export 'error.dart';
 
-Pointer<Utf16> _pprogramLoc = null;
-void pyStart(String fileName) {
-  final programLoc = path.join(Directory.current.absolute.path, fileName);
-  print(programLoc);
-  _pprogramLoc = Utf16.toUtf16(programLoc);
+int strlen(Pointer<Utf16> string) {
+  final array = string.cast<Uint16>();
+  final nativeString = array.asTypedList(1000000);
+  return nativeString.indexWhere((char) => char == 0);
+}
+
+String fromUtf16(Pointer<Utf16> string) {
+  final length = strlen(string);
+  return utf8.decode(Uint16List.view(
+      string.cast<Uint16>().asTypedList(length).buffer, 0, length));
+}
+
+Pointer<Utf16> _pprogramLoc, _pathString;
+void pyStart() {
+  _pprogramLoc = Utf16.toUtf16('python3');
   Py_SetProgramName(_pprogramLoc.cast<Uint16>());
+
+  Py_Initialize();
+  final p = Py_GetPath();
+  final pathString = path.join(
+      fromUtf16(p.cast<Utf16>()), ':', Directory.current.absolute.path);
+  print(pathString);
+  _pathString = Utf16.toUtf16(pathString);
+  Py_SetPath(_pathString.cast<Uint16>());
   _ensureInitialized();
 }
 
@@ -32,6 +52,9 @@ void pyCleanup() {
   Py_FinalizeEx();
   if (_pprogramLoc == nullptr) {
     free(_pprogramLoc);
+  }
+  if (_pathString == nullptr) {
+    free(_pathString);
   }
 }
 

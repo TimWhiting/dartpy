@@ -1903,7 +1903,8 @@ final _Py_Finalize_Dart _Py_Finalize =
 typedef _Py_Finalize_C = ffi.Void Function();
 typedef _Py_Finalize_Dart = void Function();
 
-/// This is a backwards-compatible version of Py_FinalizeEx() that disregards the return value.
+/// This function should be called before Py_Initialize() is called for the first time, if it is called at all. It tells the interpreter the value of the argv[0] argument to the main() function of the program (converted to wide characters). This is used by Py_GetPath() and some other functions below to find the Python run-time libraries relative to the interpreter executable. The default value is 'python'. The argument should point to a zero-terminated wide character string in static storage whose contents will not change for the duration of the program’s execution. No code in the Python interpreter will change the contents of this storage.
+/// Use Py_DecodeLocale() to decode a bytes string to get a wchar_* string.
 void Py_SetProgramName(
   ffi.Pointer<ffi.Uint16> arg0,
 ) {
@@ -1918,6 +1919,40 @@ typedef _Py_SetProgramName_C = ffi.Void Function(
   ffi.Pointer<ffi.Uint16> arg0,
 );
 typedef _Py_SetProgramName_Dart = void Function(
+  ffi.Pointer<ffi.Uint16> arg0,
+);
+
+/// Return the default module search path; this is computed from the program name (set by Py_SetProgramName() above) and some environment variables. The returned string consists of a series of directory names separated by a platform dependent delimiter character. The delimiter character is ':' on Unix and Mac OS X, ';' on Windows. The returned string points into static storage; the caller should not modify its value. The list sys.path is initialized with this value on interpreter startup; it can be (and usually is) modified later to change the search path for loading modules.
+ffi.Pointer<ffi.Uint16> Py_GetPath() {
+  return _Py_GetPath();
+}
+
+final _Py_GetPath_Dart _Py_GetPath =
+    _dynamicLibrary.lookupFunction<_Py_GetPath_C, _Py_GetPath_Dart>(
+  'Py_GetPath',
+);
+typedef _Py_GetPath_C = ffi.Pointer<ffi.Uint16> Function();
+typedef _Py_GetPath_Dart = ffi.Pointer<ffi.Uint16> Function();
+
+/// Set the default module search path. If this function is called before Py_Initialize(), then Py_GetPath() won’t attempt to compute a default search path but uses the one provided instead. This is useful if Python is embedded by an application that has full knowledge of the location of all modules. The path components should be separated by the platform dependent delimiter character, which is ':' on Unix and Mac OS X, ';' on Windows.
+/// This also causes sys.executable to be set to the program full path (see Py_GetProgramFullPath()) and for sys.prefix and sys.exec_prefix to be empty. It is up to the caller to modify these if required after calling Py_Initialize().
+/// Use Py_DecodeLocale() to decode a bytes string to get a wchar_* string.
+/// The path argument is copied internally, so the caller may free it after the call completes.
+/// Changed in version 3.8: The program full path is now used for sys.executable, instead of the program name.
+void Py_SetPath(
+  ffi.Pointer<ffi.Uint16> arg0,
+) {
+  _Py_SetPath(arg0);
+}
+
+final _Py_SetPath_Dart _Py_SetPath =
+    _dynamicLibrary.lookupFunction<_Py_SetPath_C, _Py_SetPath_Dart>(
+  'Py_SetPath',
+);
+typedef _Py_SetPath_C = ffi.Void Function(
+  ffi.Pointer<ffi.Uint16> arg0,
+);
+typedef _Py_SetPath_Dart = void Function(
   ffi.Pointer<ffi.Uint16> arg0,
 );
 

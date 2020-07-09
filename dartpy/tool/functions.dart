@@ -883,6 +883,25 @@ This function should be called before Py_Initialize() is called for the first ti
 Use Py_DecodeLocale() to decode a bytes string to get a wchar_* string.''',
   ),
   // TODO: More
+  Func(
+    name: 'Py_GetPath',
+    returnType: cwstring,
+    parameterTypes: [],
+    documentation: '''
+Return the default module search path; this is computed from the program name (set by Py_SetProgramName() above) and some environment variables. The returned string consists of a series of directory names separated by a platform dependent delimiter character. The delimiter character is ':' on Unix and Mac OS X, ';' on Windows. The returned string points into static storage; the caller should not modify its value. The list sys.path is initialized with this value on interpreter startup; it can be (and usually is) modified later to change the search path for loading modules.''',
+  ),
+  Func(
+    name: 'Py_SetPath',
+    returnType: cvoid,
+    parameterTypes: [cwstring],
+    documentation: '''
+Set the default module search path. If this function is called before Py_Initialize(), then Py_GetPath() won’t attempt to compute a default search path but uses the one provided instead. This is useful if Python is embedded by an application that has full knowledge of the location of all modules. The path components should be separated by the platform dependent delimiter character, which is ':' on Unix and Mac OS X, ';' on Windows.
+This also causes sys.executable to be set to the program full path (see Py_GetProgramFullPath()) and for sys.prefix and sys.exec_prefix to be empty. It is up to the caller to modify these if required after calling Py_Initialize().
+Use Py_DecodeLocale() to decode a bytes string to get a wchar_* string.
+The path argument is copied internally, so the caller may free it after the call completes.
+Changed in version 3.8: The program full path is now used for sys.executable, instead of the program name.''',
+  ),
+  // TODO: More
   // Python Initialization Configuration
   // https://docs.python.org/3/api/init_config.html
   // TODO: This
