@@ -1,9 +1,11 @@
 import 'dart:ffi';
 
+import 'package:dartpy/src/ffi/gen.dart';
+
 import '../dartpy_base.dart';
 
 bool pyIsCallable(Pointer<PyObject> object) {
-  return PyCallable_Check(object) != 0;
+  return dartpyc.PyCallable_Check(object) != 0;
 }
 
 bool pyIsBool(Pointer<PyObject> object) {
@@ -11,14 +13,14 @@ bool pyIsBool(Pointer<PyObject> object) {
 }
 
 bool pyIsInt(Pointer<PyObject> object) {
-  return PyLong_Check(object) != 0;
+  return dartpyc.PyLong_Check(object) != 0;
 }
 
 bool pyErrOccurred() {
-  return PyErr_Occurred() != nullptr;
+  return dartpyc.PyErr_Occurred() != nullptr;
 }
 
 bool get pyInitialized {
-  final inited = Py_IsInitialized();
+  final inited = dartpyc.Py_IsInitialized();
   return inited != 0;
 }

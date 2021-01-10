@@ -6,7 +6,7 @@ class PyFunction {
   final String module;
   final String name;
 
-  const PyFunction({this.name, @required this.module});
+  const PyFunction({required this.name, required this.module});
 }
 
 @freezed

@@ -4,22 +4,43 @@ description: A starting point for Dart libraries or applications.
 # homepage: https://www.example.com
 
 environment:
-  sdk: ">=2.9.0-1 <3.0.0"
+  sdk: ">=2.12.0-133.0.dev <3.0.0"
 
 dependencies:
   path: ^1.6.0
   ffi: any
-  ffi_tool: any
-  basics: any
   freezed_annotation: any
 
 dev_dependencies:
   pedantic: ^1.8.0
   test: ^1.6.0
-  build_runner: any
+  ffigen: 2.0.0-dev.2
   freezed: any
 
 dependency_overrides:
-  ffi_tool:
+  ffigen:
     git:
-      url: https://github.com/dart-interop/ffi_tool
+      url: https://github.com/mannprerak2/ffigen.git
+      ref: dev-remove-no-sound-null-safety-flag
+
+ffigen:
+  output: "lib/src/ffi/gen.dart"
+  functions:
+    rename:
+      "_(.*)": "$1"
+      "__(.*)": "$1"
+  enums:
+    rename:
+      "_(.*)": "$1"
+    member-rename:
+      "_(.*)":
+        "_(.*)": "$1"
+  headers:
+    entry-points:
+      - "/usr/local/Frameworks/Python.framework/Versions/3.8/include/python3.8/Python.h"
+    include-directives:
+      - "/usr/local/Frameworks/Python.framework/Versions/3.8/include/python3.8/*"
+  name: "DartPyC"
+  compiler-opts: "-I/usr/local/opt/llvm/lib/clang/10.0.0/include/ -I/usr/local/Frameworks/Python.framework/Versions/3.8/include/python3.8/"
+  description: "Bindings to Python C interface"
+  array-workaround: true

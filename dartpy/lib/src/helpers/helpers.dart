@@ -2,9 +2,8 @@ import 'dart:ffi';
 import 'dart:io';
 import 'dart:convert';
 import 'dart:typed_data';
-import 'package:basics/basics.dart';
+import 'package:dartpy/src/ffi/gen.dart';
 import 'package:ffi/ffi.dart';
-import 'package:path/path.dart' as path;
 import '../dartpy_base.dart';
 import 'bool_functions.dart';
 export 'bool_functions.dart';
@@ -24,15 +23,15 @@ String fromUtf16(Pointer<Utf16> string) {
       string.cast<Uint16>().asTypedList(length).buffer, 0, length));
 }
 
-Pointer<Utf16> _pprogramLoc, _pathString;
+late Pointer<Utf16> _pprogramLoc, _pathString;
 void pyStart() {
   _pprogramLoc = Utf16.toUtf16('python3');
-  Py_SetProgramName(_pprogramLoc.cast<Uint16>());
-  Py_Initialize();
+  dartpyc.Py_SetProgramName(_pprogramLoc.cast<Int32>());
+  dartpyc.Py_Initialize();
   final pathString =
       '${Platform.environment["PYTHONPATH"]}:${Directory.current.absolute.path}';
   _pathString = Utf16.toUtf16(pathString);
-  Py_SetPath(_pathString.cast<Uint16>());
+  dartpyc.Py_SetPath(_pathString.cast<Int32>());
   if (pyErrOccurred()) {
     print('Error during initialization');
   }
@@ -41,19 +40,19 @@ void pyStart() {
 
 void _ensureInitialized() {
   if (!pyInitialized) {
-    Py_Initialize();
+    dartpyc.Py_Initialize();
   }
 }
 
 void pyCleanup() {
   if (pyErrOccurred()) {
     print('Exited with python error:');
-    PyErr_Print();
+    dartpyc.PyErr_Print();
   }
   for (final mod in List.of(_moduleMap.values)) {
     mod.dispose();
   }
-  Py_FinalizeEx();
+  dartpyc.Py_FinalizeEx();
   if (_pprogramLoc == nullptr) {
     free(_pprogramLoc);
   }
@@ -67,13 +66,13 @@ final _moduleMap = <String, DartPyModule>{};
 DartPyModule pyimport(String module) {
   _ensureInitialized();
   if (_moduleMap.containsKey(module)) {
-    return _moduleMap[module];
+    return _moduleMap[module]!;
   }
   final mstring = Utf8.toUtf8(module);
-  final pyString = PyUnicode_DecodeFSDefault(mstring.cast<Uint8>());
+  final pyString = dartpyc.PyUnicode_DecodeFSDefault(mstring.cast<Int8>());
   free(mstring);
-  final pyImport = PyImport_Import(pyString);
-  Py_DecRef(pyString);
+  final pyImport = dartpyc.PyImport_Import(pyString);
+  dartpyc.Py_DecRef(pyString);
   if (pyImport != nullptr) {
     final _mod = DartPyModule(module, pyImport);
     _moduleMap[module] = _mod;
@@ -91,17 +90,18 @@ class DartPyModule {
   final Map<String, DartPyFunction> _functions = {};
   DartPyFunction getFunction(String name) {
     if (_functions.containsKey(name)) {
-      return _functions[name];
+      return _functions[name]!;
     }
     final funcName = Utf8.toUtf8(name);
-    final pFunc = PyObject_GetAttrString(_moduleRef, funcName.cast<Uint8>());
+    final pFunc =
+        dartpyc.PyObject_GetAttrString(_moduleRef, funcName.cast<Int8>());
     free(funcName);
     if (pFunc != nullptr) {
       if (pyIsCallable(pFunc)) {
         _functions[name] = DartPyFunction(pFunc);
-        return _functions[name];
+        return _functions[name]!;
       } else {
-        Py_DecRef(pFunc);
+        dartpyc.Py_DecRef(pFunc);
         throw DartPyException('$name is not callable');
       }
     } else {
@@ -115,7 +115,7 @@ class DartPyModule {
       func.value.dispose();
     }
     _functions.clear();
-    Py_DecRef(_moduleRef);
+    dartpyc.Py_DecRef(_moduleRef);
   }
 }
 
@@ -126,12 +126,12 @@ class DartPyFunction {
   DartPyFunction(this._function);
   void dispose() {
     disposeArguments();
-    Py_DecRef(_function);
+    dartpyc.Py_DecRef(_function);
   }
 
   void disposeArguments() {
     for (final arg in _argumentAllocations) {
-      Py_DecRef(arg);
+      dartpyc.Py_DecRef(arg);
     }
     _argumentAllocations.clear();
   }
@@ -139,24 +139,26 @@ class DartPyFunction {
 
 extension CallablePyObjectList on DartPyFunction {
   Object call(List<Object> args) {
-    final pArgs = PyTuple_New(args.length);
+    final pArgs = dartpyc.PyTuple_New(args.length);
     if (pArgs == nullptr) {
       throw DartPyException('Creating argument tuple failed');
     }
-    for (final i in args.length.range) {
-      Pointer<PyObject> arg;
+    for (var i = 0; i < args.length; i++) {
+      Pointer<PyObject>? arg;
       try {
         arg = pyConvertDynamic(args[i]);
-        PyTuple_SetItem(pArgs, i, arg);
+        dartpyc.PyTuple_SetItem(pArgs, i, arg);
       } on DartPyException catch (e) {
-        Py_DecRef(arg);
-        Py_DecRef(pArgs);
+        if (arg != null) {
+          dartpyc.Py_DecRef(arg);
+        }
+        dartpyc.Py_DecRef(pArgs);
         throw DartPyException(
             'Failed while converting argument ${args[i]} with error $e');
       }
     }
-    final result = PyObject_CallObject(_function, pArgs);
-    Py_DecRef(pArgs);
-    return pyConvertBackDynamic(result);
+    final result = dartpyc.PyObject_CallObject(_function, pArgs);
+    dartpyc.Py_DecRef(pArgs);
+    return pyConvertBackDynamic(result)!;
   }
 }

@@ -1,28 +1,30 @@
 import 'dart:ffi';
 
+import 'package:dartpy/src/ffi/gen.dart';
+
 import '../../dartpy_base.dart';
 
 Pointer<PyObject> pyConvertInt(int o) {
-  return PyLong_FromLong(o);
+  return dartpyc.PyLong_FromLong(o);
 }
 
 int pyConvertBackInt(Pointer<PyObject> o) {
-  final res = PyLong_AsLong(o);
+  final res = dartpyc.PyLong_AsLong(o);
   if (!pyErrOccurred()) {
-    Py_DecRef(o);
+    dartpyc.Py_DecRef(o);
     return res;
   }
   throw DartPyException('Error in converting back to an int');
 }
 
 Pointer<PyObject> pyConvertDouble(double o) {
-  return PyFloat_FromDouble(o);
+  return dartpyc.PyFloat_FromDouble(o);
 }
 
 double pyConvertBackDouble(Pointer<PyObject> o) {
-  final res = PyFloat_AsDouble(o);
+  final res = dartpyc.PyFloat_AsDouble(o);
   if (!pyErrOccurred()) {
-    Py_DecRef(o);
+    dartpyc.Py_DecRef(o);
     return res;
   }
   throw DartPyException('Error in converting back to an double');
@@ -32,13 +34,13 @@ Pointer<PyObject> pyConvertNum(num o) {
   if (o is int) {
     return pyConvertInt(o);
   } else {
-    return pyConvertDouble(o);
+    return pyConvertDouble(o as double);
   }
 }
 
 num pyConvertBackNum(Pointer<PyObject> o) {
   try {
-    Py_IncRef(o);
+    dartpyc.Py_IncRef(o);
     final d = pyConvertBackDouble(o);
     final i = pyConvertBackInt(o);
     if (d != i) {

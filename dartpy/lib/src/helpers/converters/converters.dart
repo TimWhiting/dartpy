@@ -3,6 +3,8 @@ export 'collections.dart';
 
 import 'dart:ffi';
 
+import 'package:dartpy/src/ffi/gen.dart';
+
 import '../../dartpy_base.dart';
 import '../bool_functions.dart';
 
@@ -10,7 +12,7 @@ import '../bool_functions.dart';
 ///
 /// The caller of this function takes ownership of the python object
 /// and must call Py_DecRef after they are done with it.
-Pointer<PyObject> pyConvertDynamic(Object o) {
+Pointer<PyObject> pyConvertDynamic(Object? o) {
   if (o == null) {
     return Py_None;
   } else if (o is bool) {
@@ -33,7 +35,7 @@ Pointer<PyObject> pyConvertDynamic(Object o) {
   throw UnimplementedError();
 }
 
-Object pyConvertBackDynamic(Pointer<PyObject> result) {
+Object? pyConvertBackDynamic(Pointer<PyObject> result) {
   if (result == nullptr) {
     if (pyErrOccurred()) {
       throw UnimplementedError('Python error occurred');
@@ -42,19 +44,19 @@ Object pyConvertBackDynamic(Pointer<PyObject> result) {
   }
 
   if (result == Py_None) {
-    Py_DecRef(result);
+    dartpyc.Py_DecRef(result);
     return null;
   } else if (pyIsBool(result)) {
     if (result == Py_True) {
-      Py_DecRef(result);
+      dartpyc.Py_DecRef(result);
       return true;
     }
-    Py_DecRef(result);
+    dartpyc.Py_DecRef(result);
     return false;
   } else {
-    final res = PyLong_AsLong(result);
+    final res = dartpyc.PyLong_AsLong(result);
     if (!pyErrOccurred()) {
-      Py_DecRef(result);
+      dartpyc.Py_DecRef(result);
       return res;
     }
   }

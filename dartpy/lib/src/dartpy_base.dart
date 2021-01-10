@@ -1,3 +1,2 @@
-export 'ffi/typedefs.dart';
-export 'ffi/generated.dart';
+export 'ffi/dartpyc.dart';
 export 'helpers/helpers.dart';
