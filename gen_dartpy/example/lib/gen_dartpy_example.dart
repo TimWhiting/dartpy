@@ -19,7 +19,7 @@ void main() {
     print(mult_num(6, 2));
   } on DartPyException catch (e) {
     if (pyErrOccurred()) {
-      PyErr_Print();
+      dartpyc.PyErr_Print();
     }
     print(e.message);
   }

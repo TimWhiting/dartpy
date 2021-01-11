@@ -24,10 +24,9 @@ class DartpyFunctionGenerator extends GeneratorForAnnotation<PyFunction> {
         module: annotation.read('module').stringValue);
     final funcName = pf.name ?? e.name;
 
-    print(e);
     return '''
 ${e.documentationComment == null ? '/// Calls the python function ' + funcName : e.documentationComment.split('\n').map((l) => '/// ' + l).join('\n')}
-${e.returnType} ${redirectedName}(${e.parameters.map((p) => p.getDisplayString(withNullability: false)).join(',')}){${createWrapperFor(e, pf)}}''';
+${e.returnType.getDisplayString(withNullability: false)} ${redirectedName}(${e.parameters.map((p) => p.getDisplayString(withNullability: false)).join(',')}){${createWrapperFor(e, pf)}}''';
   }
 
   String createWrapperFor(FunctionElement e, PyFunction func) {
@@ -35,10 +34,10 @@ ${e.returnType} ${redirectedName}(${e.parameters.map((p) => p.getDisplayString(w
     final paramConversion = parameters.map((p) => '''
 try {
   arg = ${convertParameter(p)}(${p.name});
-  PyTuple_SetItem(pArgs, ${parameters.indexOf(p)}, arg);
+  dartpyc.PyTuple_SetItem(pArgs, ${parameters.indexOf(p)}, arg);
 } on DartPyException catch (e) {
-  Py_DecRef(arg);
-  Py_DecRef(pArgs);
+  dartpyc.Py_DecRef(arg);
+  dartpyc.Py_DecRef(pArgs);
   throw DartPyException(
       'Failed while converting argument \${arg} with error \$e');
 }''').join('\n');
@@ -46,14 +45,14 @@ try {
     return '''
 final pyModule = pyimport('${func.module}');
 final pFunc = pyModule.getFunction('${func.name ?? e.name}');
-final pArgs = PyTuple_New(${parameters.length});
+final pArgs = dartpyc.PyTuple_New(${parameters.length});
 if (pArgs == nullptr) {
   throw DartPyException('Creating argument tuple failed');
 }
 Pointer<PyObject> arg;
 $paramConversion
-final result = PyObject_CallObject(pFunc.pyFunctionObject, pArgs);
-Py_DecRef(pArgs);
+final result = dartpyc.PyObject_CallObject(pFunc.pyFunctionObject, pArgs);
+dartpyc.Py_DecRef(pArgs);
 return ${convertReturnType(e.returnType)};''';
   }
 
@@ -68,6 +67,8 @@ return ${convertReturnType(e.returnType)};''';
     if (pType.isDartCoreNum) {
       return 'pyConvertNum';
     }
+    throw UnimplementedError(
+        'Converting $pType failed, type is not implemented');
   }
 
   String convertReturnType(DartType returnType) {
