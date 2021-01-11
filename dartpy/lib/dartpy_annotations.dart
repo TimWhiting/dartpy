@@ -1,3 +1,4 @@
+// @dart=2.9
 import 'package:freezed_annotation/freezed_annotation.dart';
 export 'dart:ffi';
 part 'dartpy_annotations.freezed.dart';
@@ -6,7 +7,7 @@ class PyFunction {
   final String module;
   final String name;
 
-  const PyFunction({required this.name, required this.module});
+  const PyFunction({@required this.name, @required this.module});
 }
 
 @freezed
