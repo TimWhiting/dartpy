@@ -3,8 +3,6 @@ export 'collections.dart';
 
 import 'dart:ffi';
 
-import 'package:dartpy/src/ffi/gen.dart';
-
 import '../../dartpy_base.dart';
 import '../bool_functions.dart';
 

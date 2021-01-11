@@ -12,9 +12,9 @@ bool pyIsBool(Pointer<PyObject> object) {
   return object == Py_True || object == Py_False;
 }
 
-bool pyIsInt(Pointer<PyObject> object) {
-  return dartpyc.PyLong_Check(object) != 0;
-}
+// bool pyIsInt(Pointer<PyObject> object) {
+//   return PyLong_Check(object) != 0;
+// }
 
 bool pyErrOccurred() {
   return dartpyc.PyErr_Occurred() != nullptr;
