@@ -12,12 +12,12 @@ import '../bool_functions.dart';
 /// and must call Py_DecRef after they are done with it.
 Pointer<PyObject> pyConvertDynamic(Object? o) {
   if (o == null) {
-    return Py_None;
+    return dartpyc.Py_None;
   } else if (o is bool) {
     if (o) {
-      return Py_True;
+      return dartpyc.Py_True;
     } else {
-      return Py_False;
+      return dartpyc.Py_False;
     }
   } else if (o is int) {
     return pyConvertInt(o);
@@ -41,11 +41,11 @@ Object? pyConvertBackDynamic(Pointer<PyObject> result) {
     return null;
   }
 
-  if (result == Py_None) {
+  if (result == dartpyc.Py_None) {
     dartpyc.Py_DecRef(result);
     return null;
   } else if (pyIsBool(result)) {
-    if (result == Py_True) {
+    if (result == dartpyc.Py_True) {
       dartpyc.Py_DecRef(result);
       return true;
     }

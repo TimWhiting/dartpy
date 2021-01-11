@@ -9,7 +9,7 @@ bool pyIsCallable(Pointer<PyObject> object) {
 }
 
 bool pyIsBool(Pointer<PyObject> object) {
-  return object == Py_True || object == Py_False;
+  return object == dartpyc.Py_True || object == dartpyc.Py_False;
 }
 
 // bool pyIsInt(Pointer<PyObject> object) {
