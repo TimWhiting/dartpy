@@ -47,6 +47,9 @@ class DartPyC {
 
   _dart_PyMem_Free? _PyMem_Free;
 
+  late final _PyTraceMalloc_Config Py_tracemalloc_config =
+      _dylib.lookup<_PyTraceMalloc_Config>('_Py_tracemalloc_config').ref;
+
   ffi.Pointer<PyObject> PyType_FromSpec(
     ffi.Pointer<PyType_Spec> arg0,
   ) {
@@ -100,6 +103,15 @@ class DartPyC {
   }
 
   _dart_PyType_IsSubtype? _PyType_IsSubtype;
+
+  late final _typeobject PyType_Type =
+      _dylib.lookup<_typeobject>('PyType_Type').ref;
+
+  late final _typeobject PyBaseObject_Type =
+      _dylib.lookup<_typeobject>('PyBaseObject_Type').ref;
+
+  late final _typeobject PySuper_Type =
+      _dylib.lookup<_typeobject>('PySuper_Type').ref;
 
   int PyType_GetFlags(
     ffi.Pointer<_typeobject> arg0,
@@ -619,6 +631,12 @@ class DartPyC {
   }
 
   _dart_Py_DecRef? _Py_DecRef;
+
+  late final PyObject Py_NoneStruct =
+      _dylib.lookup<PyObject>('_Py_NoneStruct').ref;
+
+  late final PyObject Py_NotImplementedStruct =
+      _dylib.lookup<PyObject>('_Py_NotImplementedStruct').ref;
 
   void PyTrash_thread_deposit_object(
     ffi.Pointer<PyObject> arg0,
@@ -1313,6 +1331,55 @@ class DartPyC {
 
   _dart_PyHash_GetFuncDef? _PyHash_GetFuncDef;
 
+  late final int Py_DebugFlag = _dylib.lookup<ffi.Int32>('Py_DebugFlag').value;
+
+  late final int Py_VerboseFlag =
+      _dylib.lookup<ffi.Int32>('Py_VerboseFlag').value;
+
+  late final int Py_QuietFlag = _dylib.lookup<ffi.Int32>('Py_QuietFlag').value;
+
+  late final int Py_InteractiveFlag =
+      _dylib.lookup<ffi.Int32>('Py_InteractiveFlag').value;
+
+  late final int Py_InspectFlag =
+      _dylib.lookup<ffi.Int32>('Py_InspectFlag').value;
+
+  late final int Py_OptimizeFlag =
+      _dylib.lookup<ffi.Int32>('Py_OptimizeFlag').value;
+
+  late final int Py_NoSiteFlag =
+      _dylib.lookup<ffi.Int32>('Py_NoSiteFlag').value;
+
+  late final int Py_BytesWarningFlag =
+      _dylib.lookup<ffi.Int32>('Py_BytesWarningFlag').value;
+
+  late final int Py_FrozenFlag =
+      _dylib.lookup<ffi.Int32>('Py_FrozenFlag').value;
+
+  late final int Py_IgnoreEnvironmentFlag =
+      _dylib.lookup<ffi.Int32>('Py_IgnoreEnvironmentFlag').value;
+
+  late final int Py_DontWriteBytecodeFlag =
+      _dylib.lookup<ffi.Int32>('Py_DontWriteBytecodeFlag').value;
+
+  late final int Py_NoUserSiteDirectory =
+      _dylib.lookup<ffi.Int32>('Py_NoUserSiteDirectory').value;
+
+  late final int Py_UnbufferedStdioFlag =
+      _dylib.lookup<ffi.Int32>('Py_UnbufferedStdioFlag').value;
+
+  late final int Py_HashRandomizationFlag =
+      _dylib.lookup<ffi.Int32>('Py_HashRandomizationFlag').value;
+
+  late final int Py_IsolatedFlag =
+      _dylib.lookup<ffi.Int32>('Py_IsolatedFlag').value;
+
+  late final _typeobject PyByteArray_Type =
+      _dylib.lookup<_typeobject>('PyByteArray_Type').ref;
+
+  late final _typeobject PyByteArrayIter_Type =
+      _dylib.lookup<_typeobject>('PyByteArrayIter_Type').ref;
+
   ffi.Pointer<PyObject> PyByteArray_FromObject(
     ffi.Pointer<PyObject> arg0,
   ) {
@@ -1390,6 +1457,15 @@ class DartPyC {
   }
 
   _dart_PyByteArray_Resize? _PyByteArray_Resize;
+
+  late final ffi.Pointer<ffi.Int8> PyByteArray_empty_string =
+      _dylib.lookup<ffi.Pointer<ffi.Int8>>('_PyByteArray_empty_string').value;
+
+  late final _typeobject PyBytes_Type =
+      _dylib.lookup<_typeobject>('PyBytes_Type').ref;
+
+  late final _typeobject PyBytesIter_Type =
+      _dylib.lookup<_typeobject>('PyBytesIter_Type').ref;
 
   ffi.Pointer<PyObject> PyBytes_FromStringAndSize(
     ffi.Pointer<ffi.Int8> arg0,
@@ -1784,6 +1860,12 @@ class DartPyC {
   }
 
   _dart_PyBytesWriter_WriteBytes? _PyBytesWriter_WriteBytes;
+
+  late final _typeobject PyUnicode_Type =
+      _dylib.lookup<_typeobject>('PyUnicode_Type').ref;
+
+  late final _typeobject PyUnicodeIter_Type =
+      _dylib.lookup<_typeobject>('PyUnicodeIter_Type').ref;
 
   ffi.Pointer<PyObject> PyUnicode_FromStringAndSize(
     ffi.Pointer<ffi.Int8> u,
@@ -2962,6 +3044,9 @@ class DartPyC {
 
   _dart_PyUnicode_IsIdentifier? _PyUnicode_IsIdentifier;
 
+  late final _typeobject PyLong_Type =
+      _dylib.lookup<_typeobject>('PyLong_Type').ref;
+
   ffi.Pointer<PyObject> PyLong_FromLong(
     int arg0,
   ) {
@@ -3186,6 +3271,9 @@ class DartPyC {
   }
 
   _dart_PyLong_Size_t_Converter? _PyLong_Size_t_Converter;
+
+  late final ffi.Pointer<ffi.Uint8> PyLong_DigitValue =
+      _dylib.lookup<ffi.Pointer<ffi.Uint8>>('_PyLong_DigitValue').value;
 
   double PyLong_Frexp(
     ffi.Pointer<_longobject> a,
@@ -3586,6 +3674,12 @@ class DartPyC {
 
   _dart_PyLong_GCD? _PyLong_GCD;
 
+  late final ffi.Pointer<PyObject> PyLong_Zero =
+      _dylib.lookup<ffi.Pointer<PyObject>>('_PyLong_Zero').value;
+
+  late final ffi.Pointer<PyObject> PyLong_One =
+      _dylib.lookup<ffi.Pointer<PyObject>>('_PyLong_One').value;
+
   ffi.Pointer<PyObject> PyLong_Rshift(
     ffi.Pointer<PyObject> arg0,
     int arg1,
@@ -3636,6 +3730,15 @@ class DartPyC {
 
   _dart_PyLong_Copy? _PyLong_Copy;
 
+  late final _typeobject PyBool_Type =
+      _dylib.lookup<_typeobject>('PyBool_Type').ref;
+
+  late final _longobject Py_FalseStruct =
+      _dylib.lookup<_longobject>('_Py_FalseStruct').ref;
+
+  late final _longobject Py_TrueStruct =
+      _dylib.lookup<_longobject>('_Py_TrueStruct').ref;
+
   ffi.Pointer<PyObject> PyBool_FromLong(
     int arg0,
   ) {
@@ -3647,6 +3750,9 @@ class DartPyC {
   }
 
   _dart_PyBool_FromLong? _PyBool_FromLong;
+
+  late final _typeobject PyFloat_Type =
+      _dylib.lookup<_typeobject>('PyFloat_Type').ref;
 
   double PyFloat_GetMax() {
     return (_PyFloat_GetMax ??=
@@ -3964,6 +4070,9 @@ class DartPyC {
 
   _dart_Py_c_abs? _Py_c_abs;
 
+  late final _typeobject PyComplex_Type =
+      _dylib.lookup<_typeobject>('PyComplex_Type').ref;
+
   ffi.Pointer<PyObject> PyComplex_FromCComplex(
     Py_complex arg0,
   ) {
@@ -4047,6 +4156,21 @@ class DartPyC {
 
   _dart_PyComplex_FormatAdvancedWriter? _PyComplex_FormatAdvancedWriter;
 
+  late final _typeobject PyRange_Type =
+      _dylib.lookup<_typeobject>('PyRange_Type').ref;
+
+  late final _typeobject PyRangeIter_Type =
+      _dylib.lookup<_typeobject>('PyRangeIter_Type').ref;
+
+  late final _typeobject PyLongRangeIter_Type =
+      _dylib.lookup<_typeobject>('PyLongRangeIter_Type').ref;
+
+  late final _typeobject PyManagedBuffer_Type =
+      _dylib.lookup<_typeobject>('_PyManagedBuffer_Type').ref;
+
+  late final _typeobject PyMemoryView_Type =
+      _dylib.lookup<_typeobject>('PyMemoryView_Type').ref;
+
   ffi.Pointer<PyObject> PyMemoryView_FromObject(
     ffi.Pointer<PyObject> base,
   ) {
@@ -4102,6 +4226,12 @@ class DartPyC {
   }
 
   _dart_PyMemoryView_GetContiguous? _PyMemoryView_GetContiguous;
+
+  late final _typeobject PyTuple_Type =
+      _dylib.lookup<_typeobject>('PyTuple_Type').ref;
+
+  late final _typeobject PyTupleIter_Type =
+      _dylib.lookup<_typeobject>('PyTupleIter_Type').ref;
 
   ffi.Pointer<PyObject> PyTuple_New(
     int size,
@@ -4189,6 +4319,18 @@ class DartPyC {
   }
 
   _dart_PyTuple_ClearFreeList? _PyTuple_ClearFreeList;
+
+  late final _typeobject PyList_Type =
+      _dylib.lookup<_typeobject>('PyList_Type').ref;
+
+  late final _typeobject PyListIter_Type =
+      _dylib.lookup<_typeobject>('PyListIter_Type').ref;
+
+  late final _typeobject PyListRevIter_Type =
+      _dylib.lookup<_typeobject>('PyListRevIter_Type').ref;
+
+  late final _typeobject PySortWrapper_Type =
+      _dylib.lookup<_typeobject>('PySortWrapper_Type').ref;
 
   ffi.Pointer<PyObject> PyList_New(
     int size,
@@ -4374,6 +4516,9 @@ class DartPyC {
   }
 
   _dart_PyList_DebugMallocStats? _PyList_DebugMallocStats;
+
+  late final _typeobject PyDict_Type =
+      _dylib.lookup<_typeobject>('PyDict_Type').ref;
 
   ffi.Pointer<PyObject> PyDict_New() {
     return (_PyDict_New ??=
@@ -4627,6 +4772,48 @@ class DartPyC {
 
   _dart_PyDict_DelItemString? _PyDict_DelItemString;
 
+  late final _typeobject PyDictKeys_Type =
+      _dylib.lookup<_typeobject>('PyDictKeys_Type').ref;
+
+  late final _typeobject PyDictValues_Type =
+      _dylib.lookup<_typeobject>('PyDictValues_Type').ref;
+
+  late final _typeobject PyDictItems_Type =
+      _dylib.lookup<_typeobject>('PyDictItems_Type').ref;
+
+  late final _typeobject PyDictIterKey_Type =
+      _dylib.lookup<_typeobject>('PyDictIterKey_Type').ref;
+
+  late final _typeobject PyDictIterValue_Type =
+      _dylib.lookup<_typeobject>('PyDictIterValue_Type').ref;
+
+  late final _typeobject PyDictIterItem_Type =
+      _dylib.lookup<_typeobject>('PyDictIterItem_Type').ref;
+
+  late final _typeobject PyDictRevIterKey_Type =
+      _dylib.lookup<_typeobject>('PyDictRevIterKey_Type').ref;
+
+  late final _typeobject PyDictRevIterItem_Type =
+      _dylib.lookup<_typeobject>('PyDictRevIterItem_Type').ref;
+
+  late final _typeobject PyDictRevIterValue_Type =
+      _dylib.lookup<_typeobject>('PyDictRevIterValue_Type').ref;
+
+  late final _typeobject PyODict_Type =
+      _dylib.lookup<_typeobject>('PyODict_Type').ref;
+
+  late final _typeobject PyODictIter_Type =
+      _dylib.lookup<_typeobject>('PyODictIter_Type').ref;
+
+  late final _typeobject PyODictKeys_Type =
+      _dylib.lookup<_typeobject>('PyODictKeys_Type').ref;
+
+  late final _typeobject PyODictItems_Type =
+      _dylib.lookup<_typeobject>('PyODictItems_Type').ref;
+
+  late final _typeobject PyODictValues_Type =
+      _dylib.lookup<_typeobject>('PyODictValues_Type').ref;
+
   ffi.Pointer<PyObject> PyODict_New() {
     return (_PyODict_New ??= _dylib
         .lookupFunction<_c_PyODict_New, _dart_PyODict_New>('PyODict_New'))();
@@ -4663,6 +4850,15 @@ class DartPyC {
   }
 
   _dart_PyODict_DelItem? _PyODict_DelItem;
+
+  late final _typeobject PyEnum_Type =
+      _dylib.lookup<_typeobject>('PyEnum_Type').ref;
+
+  late final _typeobject PyReversed_Type =
+      _dylib.lookup<_typeobject>('PyReversed_Type').ref;
+
+  late final ffi.Pointer<PyObject> PySet_Dummy =
+      _dylib.lookup<ffi.Pointer<PyObject>>('_PySet_Dummy').value;
 
   int PySet_NextEntry(
     ffi.Pointer<PyObject> set_1,
@@ -4702,6 +4898,15 @@ class DartPyC {
   }
 
   _dart_PySet_ClearFreeList? _PySet_ClearFreeList;
+
+  late final _typeobject PySet_Type =
+      _dylib.lookup<_typeobject>('PySet_Type').ref;
+
+  late final _typeobject PyFrozenSet_Type =
+      _dylib.lookup<_typeobject>('PyFrozenSet_Type').ref;
+
+  late final _typeobject PySetIter_Type =
+      _dylib.lookup<_typeobject>('PySetIter_Type').ref;
 
   ffi.Pointer<PyObject> PySet_New(
     ffi.Pointer<PyObject> arg0,
@@ -4799,6 +5004,9 @@ class DartPyC {
   }
 
   _dart_PySet_Size? _PySet_Size;
+
+  late final _typeobject PyCFunction_Type =
+      _dylib.lookup<_typeobject>('PyCFunction_Type').ref;
 
   ffi.Pointer<ffi.NativeFunction<PyCFunction>> PyCFunction_GetFunction(
     ffi.Pointer<PyObject> arg0,
@@ -4959,6 +5167,9 @@ class DartPyC {
 
   _dart_PyMethod_DebugMallocStats? _PyMethod_DebugMallocStats;
 
+  late final _typeobject PyModule_Type =
+      _dylib.lookup<_typeobject>('PyModule_Type').ref;
+
   ffi.Pointer<PyObject> PyModule_NewObject(
     ffi.Pointer<PyObject> name,
   ) {
@@ -5113,6 +5324,12 @@ class DartPyC {
   }
 
   _dart_PyModuleDef_Init? _PyModuleDef_Init;
+
+  late final _typeobject PyModuleDef_Type =
+      _dylib.lookup<_typeobject>('PyModuleDef_Type').ref;
+
+  late final _typeobject PyFunction_Type =
+      _dylib.lookup<_typeobject>('PyFunction_Type').ref;
 
   ffi.Pointer<PyObject> PyFunction_New(
     ffi.Pointer<PyObject> arg0,
@@ -5320,6 +5537,12 @@ class DartPyC {
 
   _dart_PyFunction_Vectorcall? _PyFunction_Vectorcall;
 
+  late final _typeobject PyClassMethod_Type =
+      _dylib.lookup<_typeobject>('PyClassMethod_Type').ref;
+
+  late final _typeobject PyStaticMethod_Type =
+      _dylib.lookup<_typeobject>('PyStaticMethod_Type').ref;
+
   ffi.Pointer<PyObject> PyClassMethod_New(
     ffi.Pointer<PyObject> arg0,
   ) {
@@ -5343,6 +5566,9 @@ class DartPyC {
   }
 
   _dart_PyStaticMethod_New? _PyStaticMethod_New;
+
+  late final _typeobject PyMethod_Type =
+      _dylib.lookup<_typeobject>('PyMethod_Type').ref;
 
   ffi.Pointer<PyObject> PyMethod_New(
     ffi.Pointer<PyObject> arg0,
@@ -5388,6 +5614,9 @@ class DartPyC {
   }
 
   _dart_PyMethod_ClearFreeList? _PyMethod_ClearFreeList;
+
+  late final _typeobject PyInstanceMethod_Type =
+      _dylib.lookup<_typeobject>('PyInstanceMethod_Type').ref;
 
   ffi.Pointer<PyObject> PyInstanceMethod_New(
     ffi.Pointer<PyObject> arg0,
@@ -5494,6 +5723,16 @@ class DartPyC {
   }
 
   _dart_PyObject_AsFileDescriptor? _PyObject_AsFileDescriptor;
+
+  late final ffi.Pointer<ffi.Int8> Py_FileSystemDefaultEncoding = _dylib
+      .lookup<ffi.Pointer<ffi.Int8>>('Py_FileSystemDefaultEncoding')
+      .value;
+
+  late final int Py_HasFileSystemDefaultEncoding =
+      _dylib.lookup<ffi.Int32>('Py_HasFileSystemDefaultEncoding').value;
+
+  late final _typeobject PyCapsule_Type =
+      _dylib.lookup<_typeobject>('PyCapsule_Type').ref;
 
   ffi.Pointer<PyObject> PyCapsule_New(
     ffi.Pointer<ffi.Void> pointer,
@@ -5671,6 +5910,18 @@ class DartPyC {
 
   _dart_PyTraceBack_Print? _PyTraceBack_Print;
 
+  late final _typeobject PyTraceBack_Type =
+      _dylib.lookup<_typeobject>('PyTraceBack_Type').ref;
+
+  late final PyObject Py_EllipsisObject =
+      _dylib.lookup<PyObject>('_Py_EllipsisObject').ref;
+
+  late final _typeobject PySlice_Type =
+      _dylib.lookup<_typeobject>('PySlice_Type').ref;
+
+  late final _typeobject PyEllipsis_Type =
+      _dylib.lookup<_typeobject>('PyEllipsis_Type').ref;
+
   ffi.Pointer<PyObject> PySlice_New(
     ffi.Pointer<PyObject> start,
     ffi.Pointer<PyObject> stop,
@@ -5798,6 +6049,9 @@ class DartPyC {
 
   _dart_PySlice_AdjustIndices? _PySlice_AdjustIndices;
 
+  late final _typeobject PyCell_Type =
+      _dylib.lookup<_typeobject>('PyCell_Type').ref;
+
   ffi.Pointer<PyObject> PyCell_New(
     ffi.Pointer<PyObject> arg0,
   ) {
@@ -5832,6 +6086,15 @@ class DartPyC {
   }
 
   _dart_PyCell_Set? _PyCell_Set;
+
+  late final _typeobject PySeqIter_Type =
+      _dylib.lookup<_typeobject>('PySeqIter_Type').ref;
+
+  late final _typeobject PyCallIter_Type =
+      _dylib.lookup<_typeobject>('PyCallIter_Type').ref;
+
+  late final _typeobject PyCmpWrapper_Type =
+      _dylib.lookup<_typeobject>('PyCmpWrapper_Type').ref;
 
   ffi.Pointer<PyObject> PySeqIter_New(
     ffi.Pointer<PyObject> arg0,
@@ -6353,6 +6616,9 @@ class DartPyC {
 
   _dart_PyGILState_GetThisThreadState? _PyGILState_GetThisThreadState;
 
+  late final _typeobject PyGen_Type =
+      _dylib.lookup<_typeobject>('PyGen_Type').ref;
+
   ffi.Pointer<PyObject> PyGen_New(
     ffi.Pointer<_frame> arg0,
   ) {
@@ -6452,6 +6718,15 @@ class DartPyC {
 
   _dart_PyGen_Finalize? _PyGen_Finalize;
 
+  late final _typeobject PyCoro_Type =
+      _dylib.lookup<_typeobject>('PyCoro_Type').ref;
+
+  late final _typeobject PyCoroWrapper_Type =
+      _dylib.lookup<_typeobject>('_PyCoroWrapper_Type').ref;
+
+  late final _typeobject PyAIterWrapper_Type =
+      _dylib.lookup<_typeobject>('_PyAIterWrapper_Type').ref;
+
   ffi.Pointer<PyObject> PyCoro_GetAwaitableIter(
     ffi.Pointer<PyObject> o,
   ) {
@@ -6478,6 +6753,18 @@ class DartPyC {
   }
 
   _dart_PyCoro_New? _PyCoro_New;
+
+  late final _typeobject PyAsyncGen_Type =
+      _dylib.lookup<_typeobject>('PyAsyncGen_Type').ref;
+
+  late final _typeobject PyAsyncGenASend_Type =
+      _dylib.lookup<_typeobject>('_PyAsyncGenASend_Type').ref;
+
+  late final _typeobject PyAsyncGenWrappedValue_Type =
+      _dylib.lookup<_typeobject>('_PyAsyncGenWrappedValue_Type').ref;
+
+  late final _typeobject PyAsyncGenAThrow_Type =
+      _dylib.lookup<_typeobject>('_PyAsyncGenAThrow_Type').ref;
 
   ffi.Pointer<PyObject> PyAsyncGen_New(
     ffi.Pointer<_frame> arg0,
@@ -6514,6 +6801,27 @@ class DartPyC {
   }
 
   _dart_PyAsyncGen_ClearFreeLists? _PyAsyncGen_ClearFreeLists;
+
+  late final _typeobject PyClassMethodDescr_Type =
+      _dylib.lookup<_typeobject>('PyClassMethodDescr_Type').ref;
+
+  late final _typeobject PyGetSetDescr_Type =
+      _dylib.lookup<_typeobject>('PyGetSetDescr_Type').ref;
+
+  late final _typeobject PyMemberDescr_Type =
+      _dylib.lookup<_typeobject>('PyMemberDescr_Type').ref;
+
+  late final _typeobject PyMethodDescr_Type =
+      _dylib.lookup<_typeobject>('PyMethodDescr_Type').ref;
+
+  late final _typeobject PyWrapperDescr_Type =
+      _dylib.lookup<_typeobject>('PyWrapperDescr_Type').ref;
+
+  late final _typeobject PyDictProxy_Type =
+      _dylib.lookup<_typeobject>('PyDictProxy_Type').ref;
+
+  late final _typeobject PyMethodWrapper_Type =
+      _dylib.lookup<_typeobject>('_PyMethodWrapper_Type').ref;
 
   ffi.Pointer<PyObject> PyDescr_NewMethod(
     ffi.Pointer<_typeobject> arg0,
@@ -6612,6 +6920,9 @@ class DartPyC {
   }
 
   _dart_PyWrapper_New? _PyWrapper_New;
+
+  late final _typeobject PyProperty_Type =
+      _dylib.lookup<_typeobject>('PyProperty_Type').ref;
 
   ffi.Pointer<PyObject> PyWarnings_Init() {
     return (_PyWarnings_Init ??=
@@ -6746,6 +7057,15 @@ class DartPyC {
 
   _dart_PyErr_WarnUnawaitedCoroutine? _PyErr_WarnUnawaitedCoroutine;
 
+  late final _typeobject PyWeakref_RefType =
+      _dylib.lookup<_typeobject>('_PyWeakref_RefType').ref;
+
+  late final _typeobject PyWeakref_ProxyType =
+      _dylib.lookup<_typeobject>('_PyWeakref_ProxyType').ref;
+
+  late final _typeobject PyWeakref_CallableProxyType =
+      _dylib.lookup<_typeobject>('_PyWeakref_CallableProxyType').ref;
+
   ffi.Pointer<PyObject> PyWeakref_NewRef(
     ffi.Pointer<PyObject> ob,
     ffi.Pointer<PyObject> callback,
@@ -6809,6 +7129,10 @@ class DartPyC {
   }
 
   _dart_PyWeakref_ClearRef? _PyWeakref_ClearRef;
+
+  late final ffi.Pointer<ffi.Int8> PyStructSequence_UnnamedField = _dylib
+      .lookup<ffi.Pointer<ffi.Int8>>('PyStructSequence_UnnamedField')
+      .value;
 
   void PyStructSequence_InitType(
     ffi.Pointer<_typeobject> type,
@@ -6892,6 +7216,9 @@ class DartPyC {
 
   _dart_PyStructSequence_GetItem? _PyStructSequence_GetItem;
 
+  late final _typeobject PyNamespace_Type =
+      _dylib.lookup<_typeobject>('_PyNamespace_Type').ref;
+
   ffi.Pointer<PyObject> PyNamespace_New(
     ffi.Pointer<PyObject> kwds,
   ) {
@@ -6903,6 +7230,9 @@ class DartPyC {
   }
 
   _dart_PyNamespace_New? _PyNamespace_New;
+
+  late final _typeobject PyPickleBuffer_Type =
+      _dylib.lookup<_typeobject>('PyPickleBuffer_Type').ref;
 
   ffi.Pointer<PyObject> PyPickleBuffer_FromObject(
     ffi.Pointer<PyObject> arg0,
@@ -7280,6 +7610,9 @@ class DartPyC {
 
   _dart_PyCodec_NameReplaceErrors? _PyCodec_NameReplaceErrors;
 
+  late final ffi.Pointer<ffi.Int8> Py_hexdigits =
+      _dylib.lookup<ffi.Pointer<ffi.Int8>>('Py_hexdigits').value;
+
   void PyErr_SetNone(
     ffi.Pointer<PyObject> arg0,
   ) {
@@ -7541,6 +7874,207 @@ class DartPyC {
   }
 
   _dart_PyExceptionClass_Name? _PyExceptionClass_Name;
+
+  late final ffi.Pointer<PyObject> PyExc_BaseException =
+      _dylib.lookup<ffi.Pointer<PyObject>>('PyExc_BaseException').value;
+
+  late final ffi.Pointer<PyObject> PyExc_Exception =
+      _dylib.lookup<ffi.Pointer<PyObject>>('PyExc_Exception').value;
+
+  late final ffi.Pointer<PyObject> PyExc_StopAsyncIteration =
+      _dylib.lookup<ffi.Pointer<PyObject>>('PyExc_StopAsyncIteration').value;
+
+  late final ffi.Pointer<PyObject> PyExc_StopIteration =
+      _dylib.lookup<ffi.Pointer<PyObject>>('PyExc_StopIteration').value;
+
+  late final ffi.Pointer<PyObject> PyExc_GeneratorExit =
+      _dylib.lookup<ffi.Pointer<PyObject>>('PyExc_GeneratorExit').value;
+
+  late final ffi.Pointer<PyObject> PyExc_ArithmeticError =
+      _dylib.lookup<ffi.Pointer<PyObject>>('PyExc_ArithmeticError').value;
+
+  late final ffi.Pointer<PyObject> PyExc_LookupError =
+      _dylib.lookup<ffi.Pointer<PyObject>>('PyExc_LookupError').value;
+
+  late final ffi.Pointer<PyObject> PyExc_AssertionError =
+      _dylib.lookup<ffi.Pointer<PyObject>>('PyExc_AssertionError').value;
+
+  late final ffi.Pointer<PyObject> PyExc_AttributeError =
+      _dylib.lookup<ffi.Pointer<PyObject>>('PyExc_AttributeError').value;
+
+  late final ffi.Pointer<PyObject> PyExc_BufferError =
+      _dylib.lookup<ffi.Pointer<PyObject>>('PyExc_BufferError').value;
+
+  late final ffi.Pointer<PyObject> PyExc_EOFError =
+      _dylib.lookup<ffi.Pointer<PyObject>>('PyExc_EOFError').value;
+
+  late final ffi.Pointer<PyObject> PyExc_FloatingPointError =
+      _dylib.lookup<ffi.Pointer<PyObject>>('PyExc_FloatingPointError').value;
+
+  late final ffi.Pointer<PyObject> PyExc_OSError =
+      _dylib.lookup<ffi.Pointer<PyObject>>('PyExc_OSError').value;
+
+  late final ffi.Pointer<PyObject> PyExc_ImportError =
+      _dylib.lookup<ffi.Pointer<PyObject>>('PyExc_ImportError').value;
+
+  late final ffi.Pointer<PyObject> PyExc_ModuleNotFoundError =
+      _dylib.lookup<ffi.Pointer<PyObject>>('PyExc_ModuleNotFoundError').value;
+
+  late final ffi.Pointer<PyObject> PyExc_IndexError =
+      _dylib.lookup<ffi.Pointer<PyObject>>('PyExc_IndexError').value;
+
+  late final ffi.Pointer<PyObject> PyExc_KeyError =
+      _dylib.lookup<ffi.Pointer<PyObject>>('PyExc_KeyError').value;
+
+  late final ffi.Pointer<PyObject> PyExc_KeyboardInterrupt =
+      _dylib.lookup<ffi.Pointer<PyObject>>('PyExc_KeyboardInterrupt').value;
+
+  late final ffi.Pointer<PyObject> PyExc_MemoryError =
+      _dylib.lookup<ffi.Pointer<PyObject>>('PyExc_MemoryError').value;
+
+  late final ffi.Pointer<PyObject> PyExc_NameError =
+      _dylib.lookup<ffi.Pointer<PyObject>>('PyExc_NameError').value;
+
+  late final ffi.Pointer<PyObject> PyExc_OverflowError =
+      _dylib.lookup<ffi.Pointer<PyObject>>('PyExc_OverflowError').value;
+
+  late final ffi.Pointer<PyObject> PyExc_RuntimeError =
+      _dylib.lookup<ffi.Pointer<PyObject>>('PyExc_RuntimeError').value;
+
+  late final ffi.Pointer<PyObject> PyExc_RecursionError =
+      _dylib.lookup<ffi.Pointer<PyObject>>('PyExc_RecursionError').value;
+
+  late final ffi.Pointer<PyObject> PyExc_NotImplementedError =
+      _dylib.lookup<ffi.Pointer<PyObject>>('PyExc_NotImplementedError').value;
+
+  late final ffi.Pointer<PyObject> PyExc_SyntaxError =
+      _dylib.lookup<ffi.Pointer<PyObject>>('PyExc_SyntaxError').value;
+
+  late final ffi.Pointer<PyObject> PyExc_IndentationError =
+      _dylib.lookup<ffi.Pointer<PyObject>>('PyExc_IndentationError').value;
+
+  late final ffi.Pointer<PyObject> PyExc_TabError =
+      _dylib.lookup<ffi.Pointer<PyObject>>('PyExc_TabError').value;
+
+  late final ffi.Pointer<PyObject> PyExc_ReferenceError =
+      _dylib.lookup<ffi.Pointer<PyObject>>('PyExc_ReferenceError').value;
+
+  late final ffi.Pointer<PyObject> PyExc_SystemError =
+      _dylib.lookup<ffi.Pointer<PyObject>>('PyExc_SystemError').value;
+
+  late final ffi.Pointer<PyObject> PyExc_SystemExit =
+      _dylib.lookup<ffi.Pointer<PyObject>>('PyExc_SystemExit').value;
+
+  late final ffi.Pointer<PyObject> PyExc_TypeError =
+      _dylib.lookup<ffi.Pointer<PyObject>>('PyExc_TypeError').value;
+
+  late final ffi.Pointer<PyObject> PyExc_UnboundLocalError =
+      _dylib.lookup<ffi.Pointer<PyObject>>('PyExc_UnboundLocalError').value;
+
+  late final ffi.Pointer<PyObject> PyExc_UnicodeError =
+      _dylib.lookup<ffi.Pointer<PyObject>>('PyExc_UnicodeError').value;
+
+  late final ffi.Pointer<PyObject> PyExc_UnicodeEncodeError =
+      _dylib.lookup<ffi.Pointer<PyObject>>('PyExc_UnicodeEncodeError').value;
+
+  late final ffi.Pointer<PyObject> PyExc_UnicodeDecodeError =
+      _dylib.lookup<ffi.Pointer<PyObject>>('PyExc_UnicodeDecodeError').value;
+
+  late final ffi.Pointer<PyObject> PyExc_UnicodeTranslateError =
+      _dylib.lookup<ffi.Pointer<PyObject>>('PyExc_UnicodeTranslateError').value;
+
+  late final ffi.Pointer<PyObject> PyExc_ValueError =
+      _dylib.lookup<ffi.Pointer<PyObject>>('PyExc_ValueError').value;
+
+  late final ffi.Pointer<PyObject> PyExc_ZeroDivisionError =
+      _dylib.lookup<ffi.Pointer<PyObject>>('PyExc_ZeroDivisionError').value;
+
+  late final ffi.Pointer<PyObject> PyExc_BlockingIOError =
+      _dylib.lookup<ffi.Pointer<PyObject>>('PyExc_BlockingIOError').value;
+
+  late final ffi.Pointer<PyObject> PyExc_BrokenPipeError =
+      _dylib.lookup<ffi.Pointer<PyObject>>('PyExc_BrokenPipeError').value;
+
+  late final ffi.Pointer<PyObject> PyExc_ChildProcessError =
+      _dylib.lookup<ffi.Pointer<PyObject>>('PyExc_ChildProcessError').value;
+
+  late final ffi.Pointer<PyObject> PyExc_ConnectionError =
+      _dylib.lookup<ffi.Pointer<PyObject>>('PyExc_ConnectionError').value;
+
+  late final ffi.Pointer<PyObject> PyExc_ConnectionAbortedError = _dylib
+      .lookup<ffi.Pointer<PyObject>>('PyExc_ConnectionAbortedError')
+      .value;
+
+  late final ffi.Pointer<PyObject> PyExc_ConnectionRefusedError = _dylib
+      .lookup<ffi.Pointer<PyObject>>('PyExc_ConnectionRefusedError')
+      .value;
+
+  late final ffi.Pointer<PyObject> PyExc_ConnectionResetError =
+      _dylib.lookup<ffi.Pointer<PyObject>>('PyExc_ConnectionResetError').value;
+
+  late final ffi.Pointer<PyObject> PyExc_FileExistsError =
+      _dylib.lookup<ffi.Pointer<PyObject>>('PyExc_FileExistsError').value;
+
+  late final ffi.Pointer<PyObject> PyExc_FileNotFoundError =
+      _dylib.lookup<ffi.Pointer<PyObject>>('PyExc_FileNotFoundError').value;
+
+  late final ffi.Pointer<PyObject> PyExc_InterruptedError =
+      _dylib.lookup<ffi.Pointer<PyObject>>('PyExc_InterruptedError').value;
+
+  late final ffi.Pointer<PyObject> PyExc_IsADirectoryError =
+      _dylib.lookup<ffi.Pointer<PyObject>>('PyExc_IsADirectoryError').value;
+
+  late final ffi.Pointer<PyObject> PyExc_NotADirectoryError =
+      _dylib.lookup<ffi.Pointer<PyObject>>('PyExc_NotADirectoryError').value;
+
+  late final ffi.Pointer<PyObject> PyExc_PermissionError =
+      _dylib.lookup<ffi.Pointer<PyObject>>('PyExc_PermissionError').value;
+
+  late final ffi.Pointer<PyObject> PyExc_ProcessLookupError =
+      _dylib.lookup<ffi.Pointer<PyObject>>('PyExc_ProcessLookupError').value;
+
+  late final ffi.Pointer<PyObject> PyExc_TimeoutError =
+      _dylib.lookup<ffi.Pointer<PyObject>>('PyExc_TimeoutError').value;
+
+  late final ffi.Pointer<PyObject> PyExc_EnvironmentError =
+      _dylib.lookup<ffi.Pointer<PyObject>>('PyExc_EnvironmentError').value;
+
+  late final ffi.Pointer<PyObject> PyExc_IOError =
+      _dylib.lookup<ffi.Pointer<PyObject>>('PyExc_IOError').value;
+
+  late final ffi.Pointer<PyObject> PyExc_Warning =
+      _dylib.lookup<ffi.Pointer<PyObject>>('PyExc_Warning').value;
+
+  late final ffi.Pointer<PyObject> PyExc_UserWarning =
+      _dylib.lookup<ffi.Pointer<PyObject>>('PyExc_UserWarning').value;
+
+  late final ffi.Pointer<PyObject> PyExc_DeprecationWarning =
+      _dylib.lookup<ffi.Pointer<PyObject>>('PyExc_DeprecationWarning').value;
+
+  late final ffi.Pointer<PyObject> PyExc_PendingDeprecationWarning = _dylib
+      .lookup<ffi.Pointer<PyObject>>('PyExc_PendingDeprecationWarning')
+      .value;
+
+  late final ffi.Pointer<PyObject> PyExc_SyntaxWarning =
+      _dylib.lookup<ffi.Pointer<PyObject>>('PyExc_SyntaxWarning').value;
+
+  late final ffi.Pointer<PyObject> PyExc_RuntimeWarning =
+      _dylib.lookup<ffi.Pointer<PyObject>>('PyExc_RuntimeWarning').value;
+
+  late final ffi.Pointer<PyObject> PyExc_FutureWarning =
+      _dylib.lookup<ffi.Pointer<PyObject>>('PyExc_FutureWarning').value;
+
+  late final ffi.Pointer<PyObject> PyExc_ImportWarning =
+      _dylib.lookup<ffi.Pointer<PyObject>>('PyExc_ImportWarning').value;
+
+  late final ffi.Pointer<PyObject> PyExc_UnicodeWarning =
+      _dylib.lookup<ffi.Pointer<PyObject>>('PyExc_UnicodeWarning').value;
+
+  late final ffi.Pointer<PyObject> PyExc_BytesWarning =
+      _dylib.lookup<ffi.Pointer<PyObject>>('PyExc_BytesWarning').value;
+
+  late final ffi.Pointer<PyObject> PyExc_ResourceWarning =
+      _dylib.lookup<ffi.Pointer<PyObject>>('PyExc_ResourceWarning').value;
 
   int PyErr_BadArgument() {
     return (_PyErr_BadArgument ??=
@@ -8186,6 +8720,15 @@ class DartPyC {
   }
 
   _dart_PyOS_vsnprintf? _PyOS_vsnprintf;
+
+  late final _typeobject PyContext_Type =
+      _dylib.lookup<_typeobject>('PyContext_Type').ref;
+
+  late final _typeobject PyContextVar_Type =
+      _dylib.lookup<_typeobject>('PyContextVar_Type').ref;
+
+  late final _typeobject PyContextToken_Type =
+      _dylib.lookup<_typeobject>('PyContextToken_Type').ref;
 
   ffi.Pointer<PyObject> PyContext_New() {
     return (_PyContext_New ??=
@@ -8885,6 +9428,12 @@ class DartPyC {
   }
 
   _dart_PyModule_FromDefAndSpec2? _PyModule_FromDefAndSpec2;
+
+  late final ffi.Pointer<ffi.Int8> Py_PackageContext =
+      _dylib.lookup<ffi.Pointer<ffi.Int8>>('_Py_PackageContext').value;
+
+  late final _typeobject PyCode_Type =
+      _dylib.lookup<_typeobject>('PyCode_Type').ref;
 
   ffi.Pointer<PyCodeObject> PyCode_New(
     int arg0,
@@ -9867,6 +10416,21 @@ class DartPyC {
 
   _dart_PyOS_Readline? _PyOS_Readline;
 
+  late final ffi.Pointer<ffi.NativeFunction<_typedefC_10>> PyOS_InputHook =
+      _dylib
+          .lookup<ffi.Pointer<ffi.NativeFunction<_typedefC_10>>>(
+              'PyOS_InputHook')
+          .value;
+
+  late final ffi.Pointer<ffi.NativeFunction<_typedefC_12>>
+      PyOS_ReadlineFunctionPointer = _dylib
+          .lookup<ffi.Pointer<ffi.NativeFunction<_typedefC_12>>>(
+              'PyOS_ReadlineFunctionPointer')
+          .value;
+
+  late final ffi.Pointer<_ts> PyOS_ReadlineTState =
+      _dylib.lookup<ffi.Pointer<_ts>>('_PyOS_ReadlineTState').value;
+
   void Py_Initialize() {
     return (_Py_Initialize ??=
         _dylib.lookupFunction<_c_Py_Initialize, _dart_Py_Initialize>(
@@ -9931,7 +10495,7 @@ class DartPyC {
   _dart_Py_EndInterpreter? _Py_EndInterpreter;
 
   int Py_AtExit(
-    ffi.Pointer<ffi.NativeFunction<_typedefC_9>> func,
+    ffi.Pointer<ffi.NativeFunction<_typedefC_13>> func,
   ) {
     return (_Py_AtExit ??=
         _dylib.lookupFunction<_c_Py_AtExit, _dart_Py_AtExit>('Py_AtExit'))(
@@ -10318,7 +10882,7 @@ class DartPyC {
   _dart_PyEval_MergeCompilerFlags? _PyEval_MergeCompilerFlags;
 
   int Py_AddPendingCall(
-    ffi.Pointer<ffi.NativeFunction<_typedefC_10>> func,
+    ffi.Pointer<ffi.NativeFunction<_typedefC_14>> func,
     ffi.Pointer<ffi.Void> arg,
   ) {
     return (_Py_AddPendingCall ??=
@@ -10370,6 +10934,9 @@ class DartPyC {
   }
 
   _dart_Py_CheckRecursiveCall? _Py_CheckRecursiveCall;
+
+  late final int Py_CheckRecursionLimit =
+      _dylib.lookup<ffi.Int32>('_Py_CheckRecursionLimit').value;
 
   ffi.Pointer<ffi.Int8> PyEval_GetFuncName(
     ffi.Pointer<PyObject> arg0,
@@ -11260,6 +11827,9 @@ class DartPyC {
 
   _dart_PyImport_FixupExtensionObject? _PyImport_FixupExtensionObject;
 
+  late final ffi.Pointer<_inittab> PyImport_Inittab =
+      _dylib.lookup<ffi.Pointer<_inittab>>('PyImport_Inittab').value;
+
   int PyImport_ExtendInittab(
     ffi.Pointer<_inittab> newtab,
   ) {
@@ -11272,9 +11842,12 @@ class DartPyC {
 
   _dart_PyImport_ExtendInittab? _PyImport_ExtendInittab;
 
+  late final _typeobject PyNullImporter_Type =
+      _dylib.lookup<_typeobject>('PyNullImporter_Type').ref;
+
   int PyImport_AppendInittab(
     ffi.Pointer<ffi.Int8> name,
-    ffi.Pointer<ffi.NativeFunction<_typedefC_12>> initfunc,
+    ffi.Pointer<ffi.NativeFunction<_typedefC_16>> initfunc,
   ) {
     return (_PyImport_AppendInittab ??= _dylib.lookupFunction<
         _c_PyImport_AppendInittab,
@@ -11285,6 +11858,9 @@ class DartPyC {
   }
 
   _dart_PyImport_AppendInittab? _PyImport_AppendInittab;
+
+  late final ffi.Pointer<_frozen> PyImport_FrozenModules =
+      _dylib.lookup<ffi.Pointer<_frozen>>('PyImport_FrozenModules').value;
 
   ffi.Pointer<PyObject> PyObject_Call(
     ffi.Pointer<PyObject> callable,
@@ -12557,6 +13133,15 @@ class DartPyC {
 
   _dart_PyObject_IsSubclass? _PyObject_IsSubclass;
 
+  late final _typeobject PyFilter_Type =
+      _dylib.lookup<_typeobject>('PyFilter_Type').ref;
+
+  late final _typeobject PyMap_Type =
+      _dylib.lookup<_typeobject>('PyMap_Type').ref;
+
+  late final _typeobject PyZip_Type =
+      _dylib.lookup<_typeobject>('PyZip_Type').ref;
+
   ffi.Pointer<PyObject> PyEval_EvalCode(
     ffi.Pointer<PyObject> arg0,
     ffi.Pointer<PyObject> arg1,
@@ -12659,6 +13244,15 @@ class DartPyC {
 
   _dart_PyEval_CallTracing? _PyEval_CallTracing;
 
+  late final ffi.Pointer<ffi.Uint32> Py_ctype_table =
+      _dylib.lookup<ffi.Pointer<ffi.Uint32>>('_Py_ctype_table').value;
+
+  late final ffi.Pointer<ffi.Uint8> Py_ctype_tolower =
+      _dylib.lookup<ffi.Pointer<ffi.Uint8>>('_Py_ctype_tolower').value;
+
+  late final ffi.Pointer<ffi.Uint8> Py_ctype_toupper =
+      _dylib.lookup<ffi.Pointer<ffi.Uint8>>('_Py_ctype_toupper').value;
+
   double PyOS_string_to_double(
     ffi.Pointer<ffi.Int8> str,
     ffi.Pointer<ffi.Pointer<ffi.Int8>> endptr,
@@ -12701,7 +13295,7 @@ class DartPyC {
     ffi.Pointer<ffi.Int8> what,
     ffi.Pointer<PyObject> obj,
     ffi.Pointer<ffi.Void> arg,
-    ffi.Pointer<ffi.NativeFunction<_typedefC_13>> innerfunc,
+    ffi.Pointer<ffi.NativeFunction<_typedefC_17>> innerfunc,
   ) {
     return (_Py_string_to_number_with_underscores ??= _dylib.lookupFunction<
             _c_Py_string_to_number_with_underscores,
@@ -18210,7 +18804,7 @@ class _Py_Identifier extends ffi.Struct {
 class _inittab extends ffi.Struct {
   external ffi.Pointer<ffi.Int8> name;
 
-  external ffi.Pointer<ffi.NativeFunction<_typedefC_11>> initfunc;
+  external ffi.Pointer<ffi.NativeFunction<_typedefC_15>> initfunc;
 }
 
 class _frozen extends ffi.Struct {
@@ -26625,6 +27219,14 @@ typedef _dart_PyOS_Readline = ffi.Pointer<ffi.Int8> Function(
   ffi.Pointer<ffi.Int8> arg2,
 );
 
+typedef _typedefC_10 = ffi.Int32 Function();
+
+typedef _typedefC_12 = ffi.Pointer<ffi.Int8> Function(
+  ffi.Pointer<FILE>,
+  ffi.Pointer<FILE>,
+  ffi.Pointer<ffi.Int8>,
+);
+
 typedef _c_Py_Initialize = ffi.Void Function();
 
 typedef _dart_Py_Initialize = void Function();
@@ -26661,14 +27263,14 @@ typedef _dart_Py_EndInterpreter = void Function(
   ffi.Pointer<_ts> arg0,
 );
 
-typedef _typedefC_9 = ffi.Void Function();
+typedef _typedefC_13 = ffi.Void Function();
 
 typedef _c_Py_AtExit = ffi.Int32 Function(
-  ffi.Pointer<ffi.NativeFunction<_typedefC_9>> func,
+  ffi.Pointer<ffi.NativeFunction<_typedefC_13>> func,
 );
 
 typedef _dart_Py_AtExit = int Function(
-  ffi.Pointer<ffi.NativeFunction<_typedefC_9>> func,
+  ffi.Pointer<ffi.NativeFunction<_typedefC_13>> func,
 );
 
 typedef _c_Py_Exit = ffi.Void Function(
@@ -26922,17 +27524,17 @@ typedef _dart_PyEval_MergeCompilerFlags = int Function(
   ffi.Pointer<PyCompilerFlags> cf,
 );
 
-typedef _typedefC_10 = ffi.Int32 Function(
+typedef _typedefC_14 = ffi.Int32 Function(
   ffi.Pointer<ffi.Void>,
 );
 
 typedef _c_Py_AddPendingCall = ffi.Int32 Function(
-  ffi.Pointer<ffi.NativeFunction<_typedefC_10>> func,
+  ffi.Pointer<ffi.NativeFunction<_typedefC_14>> func,
   ffi.Pointer<ffi.Void> arg,
 );
 
 typedef _dart_Py_AddPendingCall = int Function(
-  ffi.Pointer<ffi.NativeFunction<_typedefC_10>> func,
+  ffi.Pointer<ffi.NativeFunction<_typedefC_14>> func,
   ffi.Pointer<ffi.Void> arg,
 );
 
@@ -27556,16 +28158,16 @@ typedef _dart_PyImport_ExtendInittab = int Function(
   ffi.Pointer<_inittab> newtab,
 );
 
-typedef _typedefC_12 = ffi.Pointer<PyObject> Function();
+typedef _typedefC_16 = ffi.Pointer<PyObject> Function();
 
 typedef _c_PyImport_AppendInittab = ffi.Int32 Function(
   ffi.Pointer<ffi.Int8> name,
-  ffi.Pointer<ffi.NativeFunction<_typedefC_12>> initfunc,
+  ffi.Pointer<ffi.NativeFunction<_typedefC_16>> initfunc,
 );
 
 typedef _dart_PyImport_AppendInittab = int Function(
   ffi.Pointer<ffi.Int8> name,
-  ffi.Pointer<ffi.NativeFunction<_typedefC_12>> initfunc,
+  ffi.Pointer<ffi.NativeFunction<_typedefC_16>> initfunc,
 );
 
 typedef _c_PyObject_Call = ffi.Pointer<PyObject> Function(
@@ -28586,7 +29188,7 @@ typedef _dart_PyOS_double_to_string = ffi.Pointer<ffi.Int8> Function(
   ffi.Pointer<ffi.Int32> type,
 );
 
-typedef _typedefC_13 = ffi.Pointer<PyObject> Function(
+typedef _typedefC_17 = ffi.Pointer<PyObject> Function(
   ffi.Pointer<ffi.Int8>,
   ffi.Int64,
   ffi.Pointer<ffi.Void>,
@@ -28599,7 +29201,7 @@ typedef _c_Py_string_to_number_with_underscores = ffi.Pointer<PyObject>
   ffi.Pointer<ffi.Int8> what,
   ffi.Pointer<PyObject> obj,
   ffi.Pointer<ffi.Void> arg,
-  ffi.Pointer<ffi.NativeFunction<_typedefC_13>> innerfunc,
+  ffi.Pointer<ffi.NativeFunction<_typedefC_17>> innerfunc,
 );
 
 typedef _dart_Py_string_to_number_with_underscores = ffi.Pointer<PyObject>
@@ -28609,7 +29211,7 @@ typedef _dart_Py_string_to_number_with_underscores = ffi.Pointer<PyObject>
   ffi.Pointer<ffi.Int8> what,
   ffi.Pointer<PyObject> obj,
   ffi.Pointer<ffi.Void> arg,
-  ffi.Pointer<ffi.NativeFunction<_typedefC_13>> innerfunc,
+  ffi.Pointer<ffi.NativeFunction<_typedefC_17>> innerfunc,
 );
 
 typedef _c_Py_parse_inf_or_nan = ffi.Double Function(
@@ -29221,4 +29823,4 @@ typedef wrapperfunc = ffi.Pointer<PyObject> Function(
   ffi.Pointer<ffi.Void>,
 );
 
-typedef _typedefC_11 = ffi.Pointer<PyObject> Function();
+typedef _typedefC_15 = ffi.Pointer<PyObject> Function();

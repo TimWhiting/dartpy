@@ -9,6 +9,9 @@ enums:
   member-rename:
     "_(.*)":
       "_(.*)": "$1"
+globals:
+  rename:
+    "_(.*)": "$1"
 headers:
   entry-points:
     - "/usr/local/Frameworks/Python.framework/Versions/3.8/include/python3.8/Python.h"
