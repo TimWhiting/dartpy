@@ -1,0 +1,20 @@
+output: "lib/src/ffi/gen.dart"
+functions:
+  rename:
+    "_(.*)": "$1"
+    "__(.*)": "$1"
+enums:
+  rename:
+    "_(.*)": "$1"
+  member-rename:
+    "_(.*)":
+      "_(.*)": "$1"
+headers:
+  entry-points:
+    - "/usr/include/python3.7m/Python.h"
+  include-directives:
+    - "/usr/include/python3.7m/*"
+name: "DartPyC"
+compiler-opts: "-I/usr/lib/llvm-10.0/lib/clang/10.0.0/include/ -I/usr/include/python3.7m/"
+description: "Bindings to Python C interface"
+array-workaround: true
