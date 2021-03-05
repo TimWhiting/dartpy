@@ -1,7 +1,5 @@
 import 'dart:ffi';
 import 'dart:io';
-import 'dart:convert';
-import 'dart:typed_data';
 import 'package:dartpy/src/ffi/gen.dart';
 import 'package:ffi/ffi.dart';
 import '../dartpy_base.dart';
@@ -11,19 +9,9 @@ export 'converters/converters.dart';
 import 'error.dart';
 export 'error.dart';
 
-int strlen(Pointer<Utf16> string) {
-  final array = string.cast<Uint16>();
-  final nativeString = array.asTypedList(1000000);
-  return nativeString.indexWhere((char) => char == 0);
-}
-
-String fromUtf16(Pointer<Utf16> string) {
-  final length = strlen(string);
-  return utf8.decode(Uint16List.view(
-      string.cast<Uint16>().asTypedList(length).buffer, 0, length));
-}
-
 late Pointer<Utf16> _pprogramLoc, _pathString;
+
+/// Initializes the python runtime
 void pyStart() {
   _pprogramLoc = 'python3'.toNativeUtf16();
   dartpyc.Py_SetProgramName(_pprogramLoc.cast<Int32>());
@@ -44,6 +32,7 @@ void _ensureInitialized() {
   }
 }
 
+/// Cleans up the memory of the loaded modules
 void pyCleanup() {
   if (pyErrOccurred()) {
     print('Exited with python error:');
@@ -63,6 +52,7 @@ void pyCleanup() {
 
 final _moduleMap = <String, DartPyModule>{};
 
+/// Loads a python module
 DartPyModule pyimport(String module) {
   _ensureInitialized();
   if (_moduleMap.containsKey(module)) {
@@ -83,11 +73,14 @@ DartPyModule pyimport(String module) {
   }
 }
 
+/// A dart representation for the python module
 class DartPyModule {
   DartPyModule(this.moduleName, this._moduleRef);
   final String moduleName;
   final Pointer<PyObject> _moduleRef;
   final Map<String, DartPyFunction> _functions = {};
+
+  /// Gets a function from the module
   DartPyFunction getFunction(String name) {
     if (_functions.containsKey(name)) {
       return _functions[name]!;
@@ -109,6 +102,7 @@ class DartPyModule {
     }
   }
 
+  /// Disposes the python module
   void dispose() {
     _moduleMap.remove(moduleName);
     for (final func in _functions.entries) {
@@ -119,16 +113,20 @@ class DartPyModule {
   }
 }
 
+/// A dart representation of a python function
 class DartPyFunction {
   final Pointer<PyObject> _function;
   final List<Pointer<PyObject>> _argumentAllocations = [];
   Pointer<PyObject> get pyFunctionObject => _function;
   DartPyFunction(this._function);
+
+  /// Disposes of the function
   void dispose() {
     disposeArguments();
     dartpyc.Py_DecRef(_function);
   }
 
+  /// Disposes of the arguments to the function
   void disposeArguments() {
     for (final arg in _argumentAllocations) {
       dartpyc.Py_DecRef(arg);
@@ -138,6 +136,7 @@ class DartPyFunction {
 }
 
 extension CallablePyObjectList on DartPyFunction {
+  /// Calls the python function with dart args marshalled back and forth
   Object call(List<Object> args) {
     final pArgs = dartpyc.PyTuple_New(args.length);
     if (pArgs == nullptr) {

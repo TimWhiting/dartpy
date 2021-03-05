@@ -5,6 +5,7 @@ export 'gen.dart';
 import 'dart:io' as io show Platform;
 part 'globals.dart';
 
+/// A variable to override the python dynamic library location on your computer
 String? pyLibLocation;
 final _pyLib = pyLibLocation != null
     ? ffi.DynamicLibrary.open(pyLibLocation!)

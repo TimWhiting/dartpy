@@ -33,6 +33,7 @@ Pointer<PyObject> pyConvertDynamic(Object? o) {
   throw UnimplementedError();
 }
 
+/// Convers a python object back to a dart representation
 Object? pyConvertBackDynamic(Pointer<PyObject> result) {
   if (result == nullptr) {
     if (pyErrOccurred()) {

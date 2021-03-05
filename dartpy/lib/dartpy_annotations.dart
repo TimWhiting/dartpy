@@ -1,15 +1,20 @@
-// @dart=2.9
 import 'package:freezed_annotation/freezed_annotation.dart';
 export 'dart:ffi';
 part 'dartpy_annotations.freezed.dart';
 
+/// Annotation for a dart function to automatically create the python bindings
+///
+/// Work in progress
 class PyFunction {
   final String module;
   final String name;
 
-  const PyFunction({@required this.name, @required this.module});
+  const PyFunction({required this.name, required this.module});
 }
 
+/// Annotation for a dart function to automatically create the python bindings
+///
+/// Work in progress
 @freezed
 abstract class PyTypeAnnotation with _$PyTypeAnnotation {
   const factory PyTypeAnnotation.pyint() = PyInt;

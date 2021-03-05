@@ -1,6 +1,5 @@
-// @dart=2.9
 // GENERATED CODE - DO NOT MODIFY BY HAND
-// ignore_for_file: deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named
+// ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides
 
 part of 'dartpy_annotations.dart';
 
@@ -10,6 +9,10 @@ part of 'dartpy_annotations.dart';
 
 T _$identity<T>(T value) => value;
 
+final _privateConstructorUsedError = UnsupportedError(
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more informations: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
+
+/// @nodoc
 class _$PyTypeAnnotationTearOff {
   const _$PyTypeAnnotationTearOff();
 
@@ -41,53 +44,62 @@ class _$PyTypeAnnotationTearOff {
   }
 }
 
-// ignore: unused_element
+/// @nodoc
 const $PyTypeAnnotation = _$PyTypeAnnotationTearOff();
 
+/// @nodoc
 mixin _$PyTypeAnnotation {
   @optionalTypeArgs
-  Result when<Result extends Object>({
-    @required Result pyint(),
-    @required Result pydouble(),
-    @required Result pytuple(List<PyTypeAnnotation> elements),
-    @required Result pylist(PyTypeAnnotation listType),
-    @required
-        Result pymap(PyTypeAnnotation keyType, PyTypeAnnotation valueType),
-  });
+  TResult when<TResult extends Object?>({
+    required TResult Function() pyint,
+    required TResult Function() pydouble,
+    required TResult Function(List<PyTypeAnnotation> elements) pytuple,
+    required TResult Function(PyTypeAnnotation listType) pylist,
+    required TResult Function(
+            PyTypeAnnotation keyType, PyTypeAnnotation valueType)
+        pymap,
+  }) =>
+      throw _privateConstructorUsedError;
   @optionalTypeArgs
-  Result maybeWhen<Result extends Object>({
-    Result pyint(),
-    Result pydouble(),
-    Result pytuple(List<PyTypeAnnotation> elements),
-    Result pylist(PyTypeAnnotation listType),
-    Result pymap(PyTypeAnnotation keyType, PyTypeAnnotation valueType),
-    @required Result orElse(),
-  });
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? pyint,
+    TResult Function()? pydouble,
+    TResult Function(List<PyTypeAnnotation> elements)? pytuple,
+    TResult Function(PyTypeAnnotation listType)? pylist,
+    TResult Function(PyTypeAnnotation keyType, PyTypeAnnotation valueType)?
+        pymap,
+    required TResult orElse(),
+  }) =>
+      throw _privateConstructorUsedError;
   @optionalTypeArgs
-  Result map<Result extends Object>({
-    @required Result pyint(PyInt value),
-    @required Result pydouble(PyDouble value),
-    @required Result pytuple(PyTuple value),
-    @required Result pylist(PyList value),
-    @required Result pymap(PyMap value),
-  });
+  TResult map<TResult extends Object?>({
+    required TResult Function(PyInt value) pyint,
+    required TResult Function(PyDouble value) pydouble,
+    required TResult Function(PyTuple value) pytuple,
+    required TResult Function(PyList value) pylist,
+    required TResult Function(PyMap value) pymap,
+  }) =>
+      throw _privateConstructorUsedError;
   @optionalTypeArgs
-  Result maybeMap<Result extends Object>({
-    Result pyint(PyInt value),
-    Result pydouble(PyDouble value),
-    Result pytuple(PyTuple value),
-    Result pylist(PyList value),
-    Result pymap(PyMap value),
-    @required Result orElse(),
-  });
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(PyInt value)? pyint,
+    TResult Function(PyDouble value)? pydouble,
+    TResult Function(PyTuple value)? pytuple,
+    TResult Function(PyList value)? pylist,
+    TResult Function(PyMap value)? pymap,
+    required TResult orElse(),
+  }) =>
+      throw _privateConstructorUsedError;
 }
 
+/// @nodoc
 abstract class $PyTypeAnnotationCopyWith<$Res> {
   factory $PyTypeAnnotationCopyWith(
           PyTypeAnnotation value, $Res Function(PyTypeAnnotation) then) =
       _$PyTypeAnnotationCopyWithImpl<$Res>;
 }
 
+/// @nodoc
 class _$PyTypeAnnotationCopyWithImpl<$Res>
     implements $PyTypeAnnotationCopyWith<$Res> {
   _$PyTypeAnnotationCopyWithImpl(this._value, this._then);
@@ -97,11 +109,13 @@ class _$PyTypeAnnotationCopyWithImpl<$Res>
   final $Res Function(PyTypeAnnotation) _then;
 }
 
+/// @nodoc
 abstract class $PyIntCopyWith<$Res> {
   factory $PyIntCopyWith(PyInt value, $Res Function(PyInt) then) =
       _$PyIntCopyWithImpl<$Res>;
 }
 
+/// @nodoc
 class _$PyIntCopyWithImpl<$Res> extends _$PyTypeAnnotationCopyWithImpl<$Res>
     implements $PyIntCopyWith<$Res> {
   _$PyIntCopyWithImpl(PyInt _value, $Res Function(PyInt) _then)
@@ -111,6 +125,7 @@ class _$PyIntCopyWithImpl<$Res> extends _$PyTypeAnnotationCopyWithImpl<$Res>
   PyInt get _value => super._value as PyInt;
 }
 
+/// @nodoc
 class _$PyInt implements PyInt {
   const _$PyInt();
 
@@ -129,33 +144,29 @@ class _$PyInt implements PyInt {
 
   @override
   @optionalTypeArgs
-  Result when<Result extends Object>({
-    @required Result pyint(),
-    @required Result pydouble(),
-    @required Result pytuple(List<PyTypeAnnotation> elements),
-    @required Result pylist(PyTypeAnnotation listType),
-    @required
-        Result pymap(PyTypeAnnotation keyType, PyTypeAnnotation valueType),
+  TResult when<TResult extends Object?>({
+    required TResult Function() pyint,
+    required TResult Function() pydouble,
+    required TResult Function(List<PyTypeAnnotation> elements) pytuple,
+    required TResult Function(PyTypeAnnotation listType) pylist,
+    required TResult Function(
+            PyTypeAnnotation keyType, PyTypeAnnotation valueType)
+        pymap,
   }) {
-    assert(pyint != null);
-    assert(pydouble != null);
-    assert(pytuple != null);
-    assert(pylist != null);
-    assert(pymap != null);
     return pyint();
   }
 
   @override
   @optionalTypeArgs
-  Result maybeWhen<Result extends Object>({
-    Result pyint(),
-    Result pydouble(),
-    Result pytuple(List<PyTypeAnnotation> elements),
-    Result pylist(PyTypeAnnotation listType),
-    Result pymap(PyTypeAnnotation keyType, PyTypeAnnotation valueType),
-    @required Result orElse(),
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? pyint,
+    TResult Function()? pydouble,
+    TResult Function(List<PyTypeAnnotation> elements)? pytuple,
+    TResult Function(PyTypeAnnotation listType)? pylist,
+    TResult Function(PyTypeAnnotation keyType, PyTypeAnnotation valueType)?
+        pymap,
+    required TResult orElse(),
   }) {
-    assert(orElse != null);
     if (pyint != null) {
       return pyint();
     }
@@ -164,32 +175,26 @@ class _$PyInt implements PyInt {
 
   @override
   @optionalTypeArgs
-  Result map<Result extends Object>({
-    @required Result pyint(PyInt value),
-    @required Result pydouble(PyDouble value),
-    @required Result pytuple(PyTuple value),
-    @required Result pylist(PyList value),
-    @required Result pymap(PyMap value),
+  TResult map<TResult extends Object?>({
+    required TResult Function(PyInt value) pyint,
+    required TResult Function(PyDouble value) pydouble,
+    required TResult Function(PyTuple value) pytuple,
+    required TResult Function(PyList value) pylist,
+    required TResult Function(PyMap value) pymap,
   }) {
-    assert(pyint != null);
-    assert(pydouble != null);
-    assert(pytuple != null);
-    assert(pylist != null);
-    assert(pymap != null);
     return pyint(this);
   }
 
   @override
   @optionalTypeArgs
-  Result maybeMap<Result extends Object>({
-    Result pyint(PyInt value),
-    Result pydouble(PyDouble value),
-    Result pytuple(PyTuple value),
-    Result pylist(PyList value),
-    Result pymap(PyMap value),
-    @required Result orElse(),
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(PyInt value)? pyint,
+    TResult Function(PyDouble value)? pydouble,
+    TResult Function(PyTuple value)? pytuple,
+    TResult Function(PyList value)? pylist,
+    TResult Function(PyMap value)? pymap,
+    required TResult orElse(),
   }) {
-    assert(orElse != null);
     if (pyint != null) {
       return pyint(this);
     }
@@ -201,11 +206,13 @@ abstract class PyInt implements PyTypeAnnotation {
   const factory PyInt() = _$PyInt;
 }
 
+/// @nodoc
 abstract class $PyDoubleCopyWith<$Res> {
   factory $PyDoubleCopyWith(PyDouble value, $Res Function(PyDouble) then) =
       _$PyDoubleCopyWithImpl<$Res>;
 }
 
+/// @nodoc
 class _$PyDoubleCopyWithImpl<$Res> extends _$PyTypeAnnotationCopyWithImpl<$Res>
     implements $PyDoubleCopyWith<$Res> {
   _$PyDoubleCopyWithImpl(PyDouble _value, $Res Function(PyDouble) _then)
@@ -215,6 +222,7 @@ class _$PyDoubleCopyWithImpl<$Res> extends _$PyTypeAnnotationCopyWithImpl<$Res>
   PyDouble get _value => super._value as PyDouble;
 }
 
+/// @nodoc
 class _$PyDouble implements PyDouble {
   const _$PyDouble();
 
@@ -233,33 +241,29 @@ class _$PyDouble implements PyDouble {
 
   @override
   @optionalTypeArgs
-  Result when<Result extends Object>({
-    @required Result pyint(),
-    @required Result pydouble(),
-    @required Result pytuple(List<PyTypeAnnotation> elements),
-    @required Result pylist(PyTypeAnnotation listType),
-    @required
-        Result pymap(PyTypeAnnotation keyType, PyTypeAnnotation valueType),
+  TResult when<TResult extends Object?>({
+    required TResult Function() pyint,
+    required TResult Function() pydouble,
+    required TResult Function(List<PyTypeAnnotation> elements) pytuple,
+    required TResult Function(PyTypeAnnotation listType) pylist,
+    required TResult Function(
+            PyTypeAnnotation keyType, PyTypeAnnotation valueType)
+        pymap,
   }) {
-    assert(pyint != null);
-    assert(pydouble != null);
-    assert(pytuple != null);
-    assert(pylist != null);
-    assert(pymap != null);
     return pydouble();
   }
 
   @override
   @optionalTypeArgs
-  Result maybeWhen<Result extends Object>({
-    Result pyint(),
-    Result pydouble(),
-    Result pytuple(List<PyTypeAnnotation> elements),
-    Result pylist(PyTypeAnnotation listType),
-    Result pymap(PyTypeAnnotation keyType, PyTypeAnnotation valueType),
-    @required Result orElse(),
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? pyint,
+    TResult Function()? pydouble,
+    TResult Function(List<PyTypeAnnotation> elements)? pytuple,
+    TResult Function(PyTypeAnnotation listType)? pylist,
+    TResult Function(PyTypeAnnotation keyType, PyTypeAnnotation valueType)?
+        pymap,
+    required TResult orElse(),
   }) {
-    assert(orElse != null);
     if (pydouble != null) {
       return pydouble();
     }
@@ -268,32 +272,26 @@ class _$PyDouble implements PyDouble {
 
   @override
   @optionalTypeArgs
-  Result map<Result extends Object>({
-    @required Result pyint(PyInt value),
-    @required Result pydouble(PyDouble value),
-    @required Result pytuple(PyTuple value),
-    @required Result pylist(PyList value),
-    @required Result pymap(PyMap value),
+  TResult map<TResult extends Object?>({
+    required TResult Function(PyInt value) pyint,
+    required TResult Function(PyDouble value) pydouble,
+    required TResult Function(PyTuple value) pytuple,
+    required TResult Function(PyList value) pylist,
+    required TResult Function(PyMap value) pymap,
   }) {
-    assert(pyint != null);
-    assert(pydouble != null);
-    assert(pytuple != null);
-    assert(pylist != null);
-    assert(pymap != null);
     return pydouble(this);
   }
 
   @override
   @optionalTypeArgs
-  Result maybeMap<Result extends Object>({
-    Result pyint(PyInt value),
-    Result pydouble(PyDouble value),
-    Result pytuple(PyTuple value),
-    Result pylist(PyList value),
-    Result pymap(PyMap value),
-    @required Result orElse(),
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(PyInt value)? pyint,
+    TResult Function(PyDouble value)? pydouble,
+    TResult Function(PyTuple value)? pytuple,
+    TResult Function(PyList value)? pylist,
+    TResult Function(PyMap value)? pymap,
+    required TResult orElse(),
   }) {
-    assert(orElse != null);
     if (pydouble != null) {
       return pydouble(this);
     }
@@ -305,12 +303,14 @@ abstract class PyDouble implements PyTypeAnnotation {
   const factory PyDouble() = _$PyDouble;
 }
 
+/// @nodoc
 abstract class $PyTupleCopyWith<$Res> {
   factory $PyTupleCopyWith(PyTuple value, $Res Function(PyTuple) then) =
       _$PyTupleCopyWithImpl<$Res>;
   $Res call({List<PyTypeAnnotation> elements});
 }
 
+/// @nodoc
 class _$PyTupleCopyWithImpl<$Res> extends _$PyTypeAnnotationCopyWithImpl<$Res>
     implements $PyTupleCopyWith<$Res> {
   _$PyTupleCopyWithImpl(PyTuple _value, $Res Function(PyTuple) _then)
@@ -321,7 +321,7 @@ class _$PyTupleCopyWithImpl<$Res> extends _$PyTypeAnnotationCopyWithImpl<$Res>
 
   @override
   $Res call({
-    Object elements = freezed,
+    Object? elements = freezed,
   }) {
     return _then(PyTuple(
       elements == freezed
@@ -331,8 +331,9 @@ class _$PyTupleCopyWithImpl<$Res> extends _$PyTypeAnnotationCopyWithImpl<$Res>
   }
 }
 
+/// @nodoc
 class _$PyTuple implements PyTuple {
-  const _$PyTuple(this.elements) : assert(elements != null);
+  const _$PyTuple(this.elements);
 
   @override
   final List<PyTypeAnnotation> elements;
@@ -355,39 +356,36 @@ class _$PyTuple implements PyTuple {
   int get hashCode =>
       runtimeType.hashCode ^ const DeepCollectionEquality().hash(elements);
 
+  @JsonKey(ignore: true)
   @override
   $PyTupleCopyWith<PyTuple> get copyWith =>
       _$PyTupleCopyWithImpl<PyTuple>(this, _$identity);
 
   @override
   @optionalTypeArgs
-  Result when<Result extends Object>({
-    @required Result pyint(),
-    @required Result pydouble(),
-    @required Result pytuple(List<PyTypeAnnotation> elements),
-    @required Result pylist(PyTypeAnnotation listType),
-    @required
-        Result pymap(PyTypeAnnotation keyType, PyTypeAnnotation valueType),
+  TResult when<TResult extends Object?>({
+    required TResult Function() pyint,
+    required TResult Function() pydouble,
+    required TResult Function(List<PyTypeAnnotation> elements) pytuple,
+    required TResult Function(PyTypeAnnotation listType) pylist,
+    required TResult Function(
+            PyTypeAnnotation keyType, PyTypeAnnotation valueType)
+        pymap,
   }) {
-    assert(pyint != null);
-    assert(pydouble != null);
-    assert(pytuple != null);
-    assert(pylist != null);
-    assert(pymap != null);
     return pytuple(elements);
   }
 
   @override
   @optionalTypeArgs
-  Result maybeWhen<Result extends Object>({
-    Result pyint(),
-    Result pydouble(),
-    Result pytuple(List<PyTypeAnnotation> elements),
-    Result pylist(PyTypeAnnotation listType),
-    Result pymap(PyTypeAnnotation keyType, PyTypeAnnotation valueType),
-    @required Result orElse(),
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? pyint,
+    TResult Function()? pydouble,
+    TResult Function(List<PyTypeAnnotation> elements)? pytuple,
+    TResult Function(PyTypeAnnotation listType)? pylist,
+    TResult Function(PyTypeAnnotation keyType, PyTypeAnnotation valueType)?
+        pymap,
+    required TResult orElse(),
   }) {
-    assert(orElse != null);
     if (pytuple != null) {
       return pytuple(elements);
     }
@@ -396,32 +394,26 @@ class _$PyTuple implements PyTuple {
 
   @override
   @optionalTypeArgs
-  Result map<Result extends Object>({
-    @required Result pyint(PyInt value),
-    @required Result pydouble(PyDouble value),
-    @required Result pytuple(PyTuple value),
-    @required Result pylist(PyList value),
-    @required Result pymap(PyMap value),
+  TResult map<TResult extends Object?>({
+    required TResult Function(PyInt value) pyint,
+    required TResult Function(PyDouble value) pydouble,
+    required TResult Function(PyTuple value) pytuple,
+    required TResult Function(PyList value) pylist,
+    required TResult Function(PyMap value) pymap,
   }) {
-    assert(pyint != null);
-    assert(pydouble != null);
-    assert(pytuple != null);
-    assert(pylist != null);
-    assert(pymap != null);
     return pytuple(this);
   }
 
   @override
   @optionalTypeArgs
-  Result maybeMap<Result extends Object>({
-    Result pyint(PyInt value),
-    Result pydouble(PyDouble value),
-    Result pytuple(PyTuple value),
-    Result pylist(PyList value),
-    Result pymap(PyMap value),
-    @required Result orElse(),
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(PyInt value)? pyint,
+    TResult Function(PyDouble value)? pydouble,
+    TResult Function(PyTuple value)? pytuple,
+    TResult Function(PyList value)? pylist,
+    TResult Function(PyMap value)? pymap,
+    required TResult orElse(),
   }) {
-    assert(orElse != null);
     if (pytuple != null) {
       return pytuple(this);
     }
@@ -432,16 +424,21 @@ class _$PyTuple implements PyTuple {
 abstract class PyTuple implements PyTypeAnnotation {
   const factory PyTuple(List<PyTypeAnnotation> elements) = _$PyTuple;
 
-  List<PyTypeAnnotation> get elements;
-  $PyTupleCopyWith<PyTuple> get copyWith;
+  List<PyTypeAnnotation> get elements => throw _privateConstructorUsedError;
+  @JsonKey(ignore: true)
+  $PyTupleCopyWith<PyTuple> get copyWith => throw _privateConstructorUsedError;
 }
 
+/// @nodoc
 abstract class $PyListCopyWith<$Res> {
   factory $PyListCopyWith(PyList value, $Res Function(PyList) then) =
       _$PyListCopyWithImpl<$Res>;
   $Res call({PyTypeAnnotation listType});
+
+  $PyTypeAnnotationCopyWith<$Res> get listType;
 }
 
+/// @nodoc
 class _$PyListCopyWithImpl<$Res> extends _$PyTypeAnnotationCopyWithImpl<$Res>
     implements $PyListCopyWith<$Res> {
   _$PyListCopyWithImpl(PyList _value, $Res Function(PyList) _then)
@@ -452,16 +449,24 @@ class _$PyListCopyWithImpl<$Res> extends _$PyTypeAnnotationCopyWithImpl<$Res>
 
   @override
   $Res call({
-    Object listType = freezed,
+    Object? listType = freezed,
   }) {
     return _then(PyList(
       listType == freezed ? _value.listType : listType as PyTypeAnnotation,
     ));
   }
+
+  @override
+  $PyTypeAnnotationCopyWith<$Res> get listType {
+    return $PyTypeAnnotationCopyWith<$Res>(_value.listType, (value) {
+      return _then(_value.copyWith(listType: value));
+    });
+  }
 }
 
+/// @nodoc
 class _$PyList implements PyList {
-  const _$PyList(this.listType) : assert(listType != null);
+  const _$PyList(this.listType);
 
   @override
   final PyTypeAnnotation listType;
@@ -484,39 +489,36 @@ class _$PyList implements PyList {
   int get hashCode =>
       runtimeType.hashCode ^ const DeepCollectionEquality().hash(listType);
 
+  @JsonKey(ignore: true)
   @override
   $PyListCopyWith<PyList> get copyWith =>
       _$PyListCopyWithImpl<PyList>(this, _$identity);
 
   @override
   @optionalTypeArgs
-  Result when<Result extends Object>({
-    @required Result pyint(),
-    @required Result pydouble(),
-    @required Result pytuple(List<PyTypeAnnotation> elements),
-    @required Result pylist(PyTypeAnnotation listType),
-    @required
-        Result pymap(PyTypeAnnotation keyType, PyTypeAnnotation valueType),
+  TResult when<TResult extends Object?>({
+    required TResult Function() pyint,
+    required TResult Function() pydouble,
+    required TResult Function(List<PyTypeAnnotation> elements) pytuple,
+    required TResult Function(PyTypeAnnotation listType) pylist,
+    required TResult Function(
+            PyTypeAnnotation keyType, PyTypeAnnotation valueType)
+        pymap,
   }) {
-    assert(pyint != null);
-    assert(pydouble != null);
-    assert(pytuple != null);
-    assert(pylist != null);
-    assert(pymap != null);
     return pylist(listType);
   }
 
   @override
   @optionalTypeArgs
-  Result maybeWhen<Result extends Object>({
-    Result pyint(),
-    Result pydouble(),
-    Result pytuple(List<PyTypeAnnotation> elements),
-    Result pylist(PyTypeAnnotation listType),
-    Result pymap(PyTypeAnnotation keyType, PyTypeAnnotation valueType),
-    @required Result orElse(),
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? pyint,
+    TResult Function()? pydouble,
+    TResult Function(List<PyTypeAnnotation> elements)? pytuple,
+    TResult Function(PyTypeAnnotation listType)? pylist,
+    TResult Function(PyTypeAnnotation keyType, PyTypeAnnotation valueType)?
+        pymap,
+    required TResult orElse(),
   }) {
-    assert(orElse != null);
     if (pylist != null) {
       return pylist(listType);
     }
@@ -525,32 +527,26 @@ class _$PyList implements PyList {
 
   @override
   @optionalTypeArgs
-  Result map<Result extends Object>({
-    @required Result pyint(PyInt value),
-    @required Result pydouble(PyDouble value),
-    @required Result pytuple(PyTuple value),
-    @required Result pylist(PyList value),
-    @required Result pymap(PyMap value),
+  TResult map<TResult extends Object?>({
+    required TResult Function(PyInt value) pyint,
+    required TResult Function(PyDouble value) pydouble,
+    required TResult Function(PyTuple value) pytuple,
+    required TResult Function(PyList value) pylist,
+    required TResult Function(PyMap value) pymap,
   }) {
-    assert(pyint != null);
-    assert(pydouble != null);
-    assert(pytuple != null);
-    assert(pylist != null);
-    assert(pymap != null);
     return pylist(this);
   }
 
   @override
   @optionalTypeArgs
-  Result maybeMap<Result extends Object>({
-    Result pyint(PyInt value),
-    Result pydouble(PyDouble value),
-    Result pytuple(PyTuple value),
-    Result pylist(PyList value),
-    Result pymap(PyMap value),
-    @required Result orElse(),
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(PyInt value)? pyint,
+    TResult Function(PyDouble value)? pydouble,
+    TResult Function(PyTuple value)? pytuple,
+    TResult Function(PyList value)? pylist,
+    TResult Function(PyMap value)? pymap,
+    required TResult orElse(),
   }) {
-    assert(orElse != null);
     if (pylist != null) {
       return pylist(this);
     }
@@ -561,16 +557,22 @@ class _$PyList implements PyList {
 abstract class PyList implements PyTypeAnnotation {
   const factory PyList(PyTypeAnnotation listType) = _$PyList;
 
-  PyTypeAnnotation get listType;
-  $PyListCopyWith<PyList> get copyWith;
+  PyTypeAnnotation get listType => throw _privateConstructorUsedError;
+  @JsonKey(ignore: true)
+  $PyListCopyWith<PyList> get copyWith => throw _privateConstructorUsedError;
 }
 
+/// @nodoc
 abstract class $PyMapCopyWith<$Res> {
   factory $PyMapCopyWith(PyMap value, $Res Function(PyMap) then) =
       _$PyMapCopyWithImpl<$Res>;
   $Res call({PyTypeAnnotation keyType, PyTypeAnnotation valueType});
+
+  $PyTypeAnnotationCopyWith<$Res> get keyType;
+  $PyTypeAnnotationCopyWith<$Res> get valueType;
 }
 
+/// @nodoc
 class _$PyMapCopyWithImpl<$Res> extends _$PyTypeAnnotationCopyWithImpl<$Res>
     implements $PyMapCopyWith<$Res> {
   _$PyMapCopyWithImpl(PyMap _value, $Res Function(PyMap) _then)
@@ -581,20 +583,33 @@ class _$PyMapCopyWithImpl<$Res> extends _$PyTypeAnnotationCopyWithImpl<$Res>
 
   @override
   $Res call({
-    Object keyType = freezed,
-    Object valueType = freezed,
+    Object? keyType = freezed,
+    Object? valueType = freezed,
   }) {
     return _then(PyMap(
       keyType == freezed ? _value.keyType : keyType as PyTypeAnnotation,
       valueType == freezed ? _value.valueType : valueType as PyTypeAnnotation,
     ));
   }
+
+  @override
+  $PyTypeAnnotationCopyWith<$Res> get keyType {
+    return $PyTypeAnnotationCopyWith<$Res>(_value.keyType, (value) {
+      return _then(_value.copyWith(keyType: value));
+    });
+  }
+
+  @override
+  $PyTypeAnnotationCopyWith<$Res> get valueType {
+    return $PyTypeAnnotationCopyWith<$Res>(_value.valueType, (value) {
+      return _then(_value.copyWith(valueType: value));
+    });
+  }
 }
 
+/// @nodoc
 class _$PyMap implements PyMap {
-  const _$PyMap(this.keyType, this.valueType)
-      : assert(keyType != null),
-        assert(valueType != null);
+  const _$PyMap(this.keyType, this.valueType);
 
   @override
   final PyTypeAnnotation keyType;
@@ -624,39 +639,36 @@ class _$PyMap implements PyMap {
       const DeepCollectionEquality().hash(keyType) ^
       const DeepCollectionEquality().hash(valueType);
 
+  @JsonKey(ignore: true)
   @override
   $PyMapCopyWith<PyMap> get copyWith =>
       _$PyMapCopyWithImpl<PyMap>(this, _$identity);
 
   @override
   @optionalTypeArgs
-  Result when<Result extends Object>({
-    @required Result pyint(),
-    @required Result pydouble(),
-    @required Result pytuple(List<PyTypeAnnotation> elements),
-    @required Result pylist(PyTypeAnnotation listType),
-    @required
-        Result pymap(PyTypeAnnotation keyType, PyTypeAnnotation valueType),
+  TResult when<TResult extends Object?>({
+    required TResult Function() pyint,
+    required TResult Function() pydouble,
+    required TResult Function(List<PyTypeAnnotation> elements) pytuple,
+    required TResult Function(PyTypeAnnotation listType) pylist,
+    required TResult Function(
+            PyTypeAnnotation keyType, PyTypeAnnotation valueType)
+        pymap,
   }) {
-    assert(pyint != null);
-    assert(pydouble != null);
-    assert(pytuple != null);
-    assert(pylist != null);
-    assert(pymap != null);
     return pymap(keyType, valueType);
   }
 
   @override
   @optionalTypeArgs
-  Result maybeWhen<Result extends Object>({
-    Result pyint(),
-    Result pydouble(),
-    Result pytuple(List<PyTypeAnnotation> elements),
-    Result pylist(PyTypeAnnotation listType),
-    Result pymap(PyTypeAnnotation keyType, PyTypeAnnotation valueType),
-    @required Result orElse(),
+  TResult maybeWhen<TResult extends Object?>({
+    TResult Function()? pyint,
+    TResult Function()? pydouble,
+    TResult Function(List<PyTypeAnnotation> elements)? pytuple,
+    TResult Function(PyTypeAnnotation listType)? pylist,
+    TResult Function(PyTypeAnnotation keyType, PyTypeAnnotation valueType)?
+        pymap,
+    required TResult orElse(),
   }) {
-    assert(orElse != null);
     if (pymap != null) {
       return pymap(keyType, valueType);
     }
@@ -665,32 +677,26 @@ class _$PyMap implements PyMap {
 
   @override
   @optionalTypeArgs
-  Result map<Result extends Object>({
-    @required Result pyint(PyInt value),
-    @required Result pydouble(PyDouble value),
-    @required Result pytuple(PyTuple value),
-    @required Result pylist(PyList value),
-    @required Result pymap(PyMap value),
+  TResult map<TResult extends Object?>({
+    required TResult Function(PyInt value) pyint,
+    required TResult Function(PyDouble value) pydouble,
+    required TResult Function(PyTuple value) pytuple,
+    required TResult Function(PyList value) pylist,
+    required TResult Function(PyMap value) pymap,
   }) {
-    assert(pyint != null);
-    assert(pydouble != null);
-    assert(pytuple != null);
-    assert(pylist != null);
-    assert(pymap != null);
     return pymap(this);
   }
 
   @override
   @optionalTypeArgs
-  Result maybeMap<Result extends Object>({
-    Result pyint(PyInt value),
-    Result pydouble(PyDouble value),
-    Result pytuple(PyTuple value),
-    Result pylist(PyList value),
-    Result pymap(PyMap value),
-    @required Result orElse(),
+  TResult maybeMap<TResult extends Object?>({
+    TResult Function(PyInt value)? pyint,
+    TResult Function(PyDouble value)? pydouble,
+    TResult Function(PyTuple value)? pytuple,
+    TResult Function(PyList value)? pylist,
+    TResult Function(PyMap value)? pymap,
+    required TResult orElse(),
   }) {
-    assert(orElse != null);
     if (pymap != null) {
       return pymap(this);
     }
@@ -702,7 +708,8 @@ abstract class PyMap implements PyTypeAnnotation {
   const factory PyMap(PyTypeAnnotation keyType, PyTypeAnnotation valueType) =
       _$PyMap;
 
-  PyTypeAnnotation get keyType;
-  PyTypeAnnotation get valueType;
-  $PyMapCopyWith<PyMap> get copyWith;
+  PyTypeAnnotation get keyType => throw _privateConstructorUsedError;
+  PyTypeAnnotation get valueType => throw _privateConstructorUsedError;
+  @JsonKey(ignore: true)
+  $PyMapCopyWith<PyMap> get copyWith => throw _privateConstructorUsedError;
 }

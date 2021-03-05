@@ -8,6 +8,6 @@ pubspec.lock
 build/
 
 # Directory created by dartdoc
-doc/api/
 .vscode/settings.json
 __pycache__
+**/doc/api
