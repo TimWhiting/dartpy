@@ -1,4 +1,4 @@
-An dart-ffi library allowing calls to Python®
+A dart-ffi library allowing calls to Python®
 
 ## Usage
 
