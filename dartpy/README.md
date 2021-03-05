@@ -4,7 +4,7 @@ A dart-ffi library allowing calls to Python®
 
 A simple usage example:
 
-Darpy is a library that allows dart to call out to python code
+dartpy is a library that allows dart to call out to python code
 
 For a simple python script inline you can do the following:
 ```dart
