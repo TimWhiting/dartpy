@@ -25,12 +25,12 @@ String fromUtf16(Pointer<Utf16> string) {
 
 late Pointer<Utf16> _pprogramLoc, _pathString;
 void pyStart() {
-  _pprogramLoc = Utf16.toUtf16('python3');
+  _pprogramLoc = 'python3'.toNativeUtf16();
   dartpyc.Py_SetProgramName(_pprogramLoc.cast<Int32>());
   dartpyc.Py_Initialize();
   final pathString =
       '${Platform.environment["PYTHONPATH"]}:${Directory.current.absolute.path}';
-  _pathString = Utf16.toUtf16(pathString);
+  _pathString = pathString.toNativeUtf16();
   dartpyc.Py_SetPath(_pathString.cast<Int32>());
   if (pyErrOccurred()) {
     print('Error during initialization');
@@ -54,10 +54,10 @@ void pyCleanup() {
   }
   dartpyc.Py_FinalizeEx();
   if (_pprogramLoc == nullptr) {
-    free(_pprogramLoc);
+    malloc.free(_pprogramLoc);
   }
   if (_pathString == nullptr) {
-    free(_pathString);
+    malloc.free(_pathString);
   }
 }
 
@@ -68,9 +68,9 @@ DartPyModule pyimport(String module) {
   if (_moduleMap.containsKey(module)) {
     return _moduleMap[module]!;
   }
-  final mstring = Utf8.toUtf8(module);
+  final mstring = module.toNativeUtf8();
   final pyString = dartpyc.PyUnicode_DecodeFSDefault(mstring.cast<Int8>());
-  free(mstring);
+  malloc.free(mstring);
   final pyImport = dartpyc.PyImport_Import(pyString);
   dartpyc.Py_DecRef(pyString);
   if (pyImport != nullptr) {
@@ -92,10 +92,10 @@ class DartPyModule {
     if (_functions.containsKey(name)) {
       return _functions[name]!;
     }
-    final funcName = Utf8.toUtf8(name);
+    final funcName = name.toNativeUtf8();
     final pFunc =
         dartpyc.PyObject_GetAttrString(_moduleRef, funcName.cast<Int8>());
-    free(funcName);
+    malloc.free(funcName);
     if (pFunc != nullptr) {
       if (pyIsCallable(pFunc)) {
         _functions[name] = DartPyFunction(pFunc);

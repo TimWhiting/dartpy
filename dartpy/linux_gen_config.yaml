@@ -14,10 +14,10 @@ globals:
     "_(.*)": "$1"
 headers:
   entry-points:
-    - "/usr/include/python3.7m/Python.h"
+    - "/usr/include/python3.8/Python.h"
   include-directives:
-    - "/usr/include/python3.7m/*"
+    - "/usr/include/python3.8/*"
 name: "DartPyC"
-compiler-opts: "-I/usr/lib/llvm-10.0/lib/clang/10.0.0/include/ -I/usr/include/python3.7m/"
+compiler-opts: "-I/usr/lib/llvm-10.0/lib/clang/10.0.0/include/ -I/usr/include/python3.8/"
 description: "Bindings to Python C interface"
 array-workaround: true

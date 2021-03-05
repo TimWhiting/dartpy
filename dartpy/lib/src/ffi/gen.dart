@@ -5,698 +5,749 @@ import 'dart:ffi' as ffi;
 
 /// Bindings to Python C interface
 class DartPyC {
-  /// Holds the Dynamic library.
-  final ffi.DynamicLibrary _dylib;
+  /// Holds the symbol lookup function.
+  final ffi.Pointer<T> Function<T extends ffi.NativeType>(String symbolName)
+      _lookup;
 
   /// The symbols are looked up in [dynamicLibrary].
-  DartPyC(ffi.DynamicLibrary dynamicLibrary) : _dylib = dynamicLibrary;
+  DartPyC(ffi.DynamicLibrary dynamicLibrary) : _lookup = dynamicLibrary.lookup;
+
+  /// The symbols are looked up with [lookup].
+  DartPyC.fromLookup(
+      ffi.Pointer<T> Function<T extends ffi.NativeType>(String symbolName)
+          lookup)
+      : _lookup = lookup;
+
+  int Py_get_387controlword() {
+    return _Py_get_387controlword();
+  }
+
+  late final _Py_get_387controlword_ptr =
+      _lookup<ffi.NativeFunction<_c_Py_get_387controlword>>(
+          '_Py_get_387controlword');
+  late final _dart_Py_get_387controlword _Py_get_387controlword =
+      _Py_get_387controlword_ptr.asFunction<_dart_Py_get_387controlword>();
+
+  void Py_set_387controlword(
+    int arg0,
+  ) {
+    return _Py_set_387controlword(
+      arg0,
+    );
+  }
+
+  late final _Py_set_387controlword_ptr =
+      _lookup<ffi.NativeFunction<_c_Py_set_387controlword>>(
+          '_Py_set_387controlword');
+  late final _dart_Py_set_387controlword _Py_set_387controlword =
+      _Py_set_387controlword_ptr.asFunction<_dart_Py_set_387controlword>();
 
   ffi.Pointer<ffi.Void> PyMem_Malloc(
     int size,
   ) {
-    return (_PyMem_Malloc ??= _dylib
-        .lookupFunction<_c_PyMem_Malloc, _dart_PyMem_Malloc>('PyMem_Malloc'))(
+    return _PyMem_Malloc(
       size,
     );
   }
 
-  _dart_PyMem_Malloc? _PyMem_Malloc;
+  late final _PyMem_Malloc_ptr =
+      _lookup<ffi.NativeFunction<_c_PyMem_Malloc>>('PyMem_Malloc');
+  late final _dart_PyMem_Malloc _PyMem_Malloc =
+      _PyMem_Malloc_ptr.asFunction<_dart_PyMem_Malloc>();
 
   ffi.Pointer<ffi.Void> PyMem_Realloc(
     ffi.Pointer<ffi.Void> ptr,
     int new_size,
   ) {
-    return (_PyMem_Realloc ??=
-        _dylib.lookupFunction<_c_PyMem_Realloc, _dart_PyMem_Realloc>(
-            'PyMem_Realloc'))(
+    return _PyMem_Realloc(
       ptr,
       new_size,
     );
   }
 
-  _dart_PyMem_Realloc? _PyMem_Realloc;
+  late final _PyMem_Realloc_ptr =
+      _lookup<ffi.NativeFunction<_c_PyMem_Realloc>>('PyMem_Realloc');
+  late final _dart_PyMem_Realloc _PyMem_Realloc =
+      _PyMem_Realloc_ptr.asFunction<_dart_PyMem_Realloc>();
 
   void PyMem_Free(
     ffi.Pointer<ffi.Void> ptr,
   ) {
-    return (_PyMem_Free ??=
-        _dylib.lookupFunction<_c_PyMem_Free, _dart_PyMem_Free>('PyMem_Free'))(
+    return _PyMem_Free(
       ptr,
     );
   }
 
-  _dart_PyMem_Free? _PyMem_Free;
+  late final _PyMem_Free_ptr =
+      _lookup<ffi.NativeFunction<_c_PyMem_Free>>('PyMem_Free');
+  late final _dart_PyMem_Free _PyMem_Free =
+      _PyMem_Free_ptr.asFunction<_dart_PyMem_Free>();
 
-  late final _PyTraceMalloc_Config Py_tracemalloc_config =
-      _dylib.lookup<_PyTraceMalloc_Config>('_Py_tracemalloc_config').ref;
+  late final ffi.Pointer<_PyTraceMalloc_Config> _Py_tracemalloc_config =
+      _lookup<_PyTraceMalloc_Config>('_Py_tracemalloc_config');
+
+  _PyTraceMalloc_Config get Py_tracemalloc_config => _Py_tracemalloc_config.ref;
 
   ffi.Pointer<PyObject> PyType_FromSpec(
     ffi.Pointer<PyType_Spec> arg0,
   ) {
-    return (_PyType_FromSpec ??=
-        _dylib.lookupFunction<_c_PyType_FromSpec, _dart_PyType_FromSpec>(
-            'PyType_FromSpec'))(
+    return _PyType_FromSpec(
       arg0,
     );
   }
 
-  _dart_PyType_FromSpec? _PyType_FromSpec;
+  late final _PyType_FromSpec_ptr =
+      _lookup<ffi.NativeFunction<_c_PyType_FromSpec>>('PyType_FromSpec');
+  late final _dart_PyType_FromSpec _PyType_FromSpec =
+      _PyType_FromSpec_ptr.asFunction<_dart_PyType_FromSpec>();
 
   ffi.Pointer<PyObject> PyType_FromSpecWithBases(
     ffi.Pointer<PyType_Spec> arg0,
     ffi.Pointer<PyObject> arg1,
   ) {
-    return (_PyType_FromSpecWithBases ??= _dylib.lookupFunction<
-        _c_PyType_FromSpecWithBases,
-        _dart_PyType_FromSpecWithBases>('PyType_FromSpecWithBases'))(
+    return _PyType_FromSpecWithBases(
       arg0,
       arg1,
     );
   }
 
-  _dart_PyType_FromSpecWithBases? _PyType_FromSpecWithBases;
+  late final _PyType_FromSpecWithBases_ptr =
+      _lookup<ffi.NativeFunction<_c_PyType_FromSpecWithBases>>(
+          'PyType_FromSpecWithBases');
+  late final _dart_PyType_FromSpecWithBases _PyType_FromSpecWithBases =
+      _PyType_FromSpecWithBases_ptr.asFunction<
+          _dart_PyType_FromSpecWithBases>();
 
   ffi.Pointer<ffi.Void> PyType_GetSlot(
     ffi.Pointer<_typeobject> arg0,
     int arg1,
   ) {
-    return (_PyType_GetSlot ??=
-        _dylib.lookupFunction<_c_PyType_GetSlot, _dart_PyType_GetSlot>(
-            'PyType_GetSlot'))(
+    return _PyType_GetSlot(
       arg0,
       arg1,
     );
   }
 
-  _dart_PyType_GetSlot? _PyType_GetSlot;
+  late final _PyType_GetSlot_ptr =
+      _lookup<ffi.NativeFunction<_c_PyType_GetSlot>>('PyType_GetSlot');
+  late final _dart_PyType_GetSlot _PyType_GetSlot =
+      _PyType_GetSlot_ptr.asFunction<_dart_PyType_GetSlot>();
 
   int PyType_IsSubtype(
     ffi.Pointer<_typeobject> arg0,
     ffi.Pointer<_typeobject> arg1,
   ) {
-    return (_PyType_IsSubtype ??=
-        _dylib.lookupFunction<_c_PyType_IsSubtype, _dart_PyType_IsSubtype>(
-            'PyType_IsSubtype'))(
+    return _PyType_IsSubtype(
       arg0,
       arg1,
     );
   }
 
-  _dart_PyType_IsSubtype? _PyType_IsSubtype;
+  late final _PyType_IsSubtype_ptr =
+      _lookup<ffi.NativeFunction<_c_PyType_IsSubtype>>('PyType_IsSubtype');
+  late final _dart_PyType_IsSubtype _PyType_IsSubtype =
+      _PyType_IsSubtype_ptr.asFunction<_dart_PyType_IsSubtype>();
 
-  late final _typeobject PyType_Type =
-      _dylib.lookup<_typeobject>('PyType_Type').ref;
+  late final ffi.Pointer<_typeobject> _PyType_Type =
+      _lookup<_typeobject>('PyType_Type');
 
-  late final _typeobject PyBaseObject_Type =
-      _dylib.lookup<_typeobject>('PyBaseObject_Type').ref;
+  _typeobject get PyType_Type => _PyType_Type.ref;
 
-  late final _typeobject PySuper_Type =
-      _dylib.lookup<_typeobject>('PySuper_Type').ref;
+  late final ffi.Pointer<_typeobject> _PyBaseObject_Type =
+      _lookup<_typeobject>('PyBaseObject_Type');
+
+  _typeobject get PyBaseObject_Type => _PyBaseObject_Type.ref;
+
+  late final ffi.Pointer<_typeobject> _PySuper_Type =
+      _lookup<_typeobject>('PySuper_Type');
+
+  _typeobject get PySuper_Type => _PySuper_Type.ref;
 
   int PyType_GetFlags(
     ffi.Pointer<_typeobject> arg0,
   ) {
-    return (_PyType_GetFlags ??=
-        _dylib.lookupFunction<_c_PyType_GetFlags, _dart_PyType_GetFlags>(
-            'PyType_GetFlags'))(
+    return _PyType_GetFlags(
       arg0,
     );
   }
 
-  _dart_PyType_GetFlags? _PyType_GetFlags;
+  late final _PyType_GetFlags_ptr =
+      _lookup<ffi.NativeFunction<_c_PyType_GetFlags>>('PyType_GetFlags');
+  late final _dart_PyType_GetFlags _PyType_GetFlags =
+      _PyType_GetFlags_ptr.asFunction<_dart_PyType_GetFlags>();
 
   int PyType_Ready(
     ffi.Pointer<_typeobject> arg0,
   ) {
-    return (_PyType_Ready ??= _dylib
-        .lookupFunction<_c_PyType_Ready, _dart_PyType_Ready>('PyType_Ready'))(
+    return _PyType_Ready(
       arg0,
     );
   }
 
-  _dart_PyType_Ready? _PyType_Ready;
+  late final _PyType_Ready_ptr =
+      _lookup<ffi.NativeFunction<_c_PyType_Ready>>('PyType_Ready');
+  late final _dart_PyType_Ready _PyType_Ready =
+      _PyType_Ready_ptr.asFunction<_dart_PyType_Ready>();
 
   ffi.Pointer<PyObject> PyType_GenericAlloc(
     ffi.Pointer<_typeobject> arg0,
     int arg1,
   ) {
-    return (_PyType_GenericAlloc ??= _dylib.lookupFunction<
-        _c_PyType_GenericAlloc,
-        _dart_PyType_GenericAlloc>('PyType_GenericAlloc'))(
+    return _PyType_GenericAlloc(
       arg0,
       arg1,
     );
   }
 
-  _dart_PyType_GenericAlloc? _PyType_GenericAlloc;
+  late final _PyType_GenericAlloc_ptr =
+      _lookup<ffi.NativeFunction<_c_PyType_GenericAlloc>>(
+          'PyType_GenericAlloc');
+  late final _dart_PyType_GenericAlloc _PyType_GenericAlloc =
+      _PyType_GenericAlloc_ptr.asFunction<_dart_PyType_GenericAlloc>();
 
   ffi.Pointer<PyObject> PyType_GenericNew(
     ffi.Pointer<_typeobject> arg0,
     ffi.Pointer<PyObject> arg1,
     ffi.Pointer<PyObject> arg2,
   ) {
-    return (_PyType_GenericNew ??=
-        _dylib.lookupFunction<_c_PyType_GenericNew, _dart_PyType_GenericNew>(
-            'PyType_GenericNew'))(
+    return _PyType_GenericNew(
       arg0,
       arg1,
       arg2,
     );
   }
 
-  _dart_PyType_GenericNew? _PyType_GenericNew;
+  late final _PyType_GenericNew_ptr =
+      _lookup<ffi.NativeFunction<_c_PyType_GenericNew>>('PyType_GenericNew');
+  late final _dart_PyType_GenericNew _PyType_GenericNew =
+      _PyType_GenericNew_ptr.asFunction<_dart_PyType_GenericNew>();
 
   int PyType_ClearCache() {
-    return (_PyType_ClearCache ??=
-        _dylib.lookupFunction<_c_PyType_ClearCache, _dart_PyType_ClearCache>(
-            'PyType_ClearCache'))();
+    return _PyType_ClearCache();
   }
 
-  _dart_PyType_ClearCache? _PyType_ClearCache;
+  late final _PyType_ClearCache_ptr =
+      _lookup<ffi.NativeFunction<_c_PyType_ClearCache>>('PyType_ClearCache');
+  late final _dart_PyType_ClearCache _PyType_ClearCache =
+      _PyType_ClearCache_ptr.asFunction<_dart_PyType_ClearCache>();
 
   void PyType_Modified(
     ffi.Pointer<_typeobject> arg0,
   ) {
-    return (_PyType_Modified ??=
-        _dylib.lookupFunction<_c_PyType_Modified, _dart_PyType_Modified>(
-            'PyType_Modified'))(
+    return _PyType_Modified(
       arg0,
     );
   }
 
-  _dart_PyType_Modified? _PyType_Modified;
+  late final _PyType_Modified_ptr =
+      _lookup<ffi.NativeFunction<_c_PyType_Modified>>('PyType_Modified');
+  late final _dart_PyType_Modified _PyType_Modified =
+      _PyType_Modified_ptr.asFunction<_dart_PyType_Modified>();
 
   ffi.Pointer<PyObject> PyObject_Repr(
     ffi.Pointer<PyObject> arg0,
   ) {
-    return (_PyObject_Repr ??=
-        _dylib.lookupFunction<_c_PyObject_Repr, _dart_PyObject_Repr>(
-            'PyObject_Repr'))(
+    return _PyObject_Repr(
       arg0,
     );
   }
 
-  _dart_PyObject_Repr? _PyObject_Repr;
+  late final _PyObject_Repr_ptr =
+      _lookup<ffi.NativeFunction<_c_PyObject_Repr>>('PyObject_Repr');
+  late final _dart_PyObject_Repr _PyObject_Repr =
+      _PyObject_Repr_ptr.asFunction<_dart_PyObject_Repr>();
 
   ffi.Pointer<PyObject> PyObject_Str(
     ffi.Pointer<PyObject> arg0,
   ) {
-    return (_PyObject_Str ??= _dylib
-        .lookupFunction<_c_PyObject_Str, _dart_PyObject_Str>('PyObject_Str'))(
+    return _PyObject_Str(
       arg0,
     );
   }
 
-  _dart_PyObject_Str? _PyObject_Str;
+  late final _PyObject_Str_ptr =
+      _lookup<ffi.NativeFunction<_c_PyObject_Str>>('PyObject_Str');
+  late final _dart_PyObject_Str _PyObject_Str =
+      _PyObject_Str_ptr.asFunction<_dart_PyObject_Str>();
 
   ffi.Pointer<PyObject> PyObject_ASCII(
     ffi.Pointer<PyObject> arg0,
   ) {
-    return (_PyObject_ASCII ??=
-        _dylib.lookupFunction<_c_PyObject_ASCII, _dart_PyObject_ASCII>(
-            'PyObject_ASCII'))(
+    return _PyObject_ASCII(
       arg0,
     );
   }
 
-  _dart_PyObject_ASCII? _PyObject_ASCII;
+  late final _PyObject_ASCII_ptr =
+      _lookup<ffi.NativeFunction<_c_PyObject_ASCII>>('PyObject_ASCII');
+  late final _dart_PyObject_ASCII _PyObject_ASCII =
+      _PyObject_ASCII_ptr.asFunction<_dart_PyObject_ASCII>();
 
   ffi.Pointer<PyObject> PyObject_Bytes(
     ffi.Pointer<PyObject> arg0,
   ) {
-    return (_PyObject_Bytes ??=
-        _dylib.lookupFunction<_c_PyObject_Bytes, _dart_PyObject_Bytes>(
-            'PyObject_Bytes'))(
+    return _PyObject_Bytes(
       arg0,
     );
   }
 
-  _dart_PyObject_Bytes? _PyObject_Bytes;
+  late final _PyObject_Bytes_ptr =
+      _lookup<ffi.NativeFunction<_c_PyObject_Bytes>>('PyObject_Bytes');
+  late final _dart_PyObject_Bytes _PyObject_Bytes =
+      _PyObject_Bytes_ptr.asFunction<_dart_PyObject_Bytes>();
 
   ffi.Pointer<PyObject> PyObject_RichCompare(
     ffi.Pointer<PyObject> arg0,
     ffi.Pointer<PyObject> arg1,
     int arg2,
   ) {
-    return (_PyObject_RichCompare ??= _dylib.lookupFunction<
-        _c_PyObject_RichCompare,
-        _dart_PyObject_RichCompare>('PyObject_RichCompare'))(
+    return _PyObject_RichCompare(
       arg0,
       arg1,
       arg2,
     );
   }
 
-  _dart_PyObject_RichCompare? _PyObject_RichCompare;
+  late final _PyObject_RichCompare_ptr =
+      _lookup<ffi.NativeFunction<_c_PyObject_RichCompare>>(
+          'PyObject_RichCompare');
+  late final _dart_PyObject_RichCompare _PyObject_RichCompare =
+      _PyObject_RichCompare_ptr.asFunction<_dart_PyObject_RichCompare>();
 
   int PyObject_RichCompareBool(
     ffi.Pointer<PyObject> arg0,
     ffi.Pointer<PyObject> arg1,
     int arg2,
   ) {
-    return (_PyObject_RichCompareBool ??= _dylib.lookupFunction<
-        _c_PyObject_RichCompareBool,
-        _dart_PyObject_RichCompareBool>('PyObject_RichCompareBool'))(
+    return _PyObject_RichCompareBool(
       arg0,
       arg1,
       arg2,
     );
   }
 
-  _dart_PyObject_RichCompareBool? _PyObject_RichCompareBool;
+  late final _PyObject_RichCompareBool_ptr =
+      _lookup<ffi.NativeFunction<_c_PyObject_RichCompareBool>>(
+          'PyObject_RichCompareBool');
+  late final _dart_PyObject_RichCompareBool _PyObject_RichCompareBool =
+      _PyObject_RichCompareBool_ptr.asFunction<
+          _dart_PyObject_RichCompareBool>();
 
   ffi.Pointer<PyObject> PyObject_GetAttrString(
     ffi.Pointer<PyObject> arg0,
     ffi.Pointer<ffi.Int8> arg1,
   ) {
-    return (_PyObject_GetAttrString ??= _dylib.lookupFunction<
-        _c_PyObject_GetAttrString,
-        _dart_PyObject_GetAttrString>('PyObject_GetAttrString'))(
+    return _PyObject_GetAttrString(
       arg0,
       arg1,
     );
   }
 
-  _dart_PyObject_GetAttrString? _PyObject_GetAttrString;
+  late final _PyObject_GetAttrString_ptr =
+      _lookup<ffi.NativeFunction<_c_PyObject_GetAttrString>>(
+          'PyObject_GetAttrString');
+  late final _dart_PyObject_GetAttrString _PyObject_GetAttrString =
+      _PyObject_GetAttrString_ptr.asFunction<_dart_PyObject_GetAttrString>();
 
   int PyObject_SetAttrString(
     ffi.Pointer<PyObject> arg0,
     ffi.Pointer<ffi.Int8> arg1,
     ffi.Pointer<PyObject> arg2,
   ) {
-    return (_PyObject_SetAttrString ??= _dylib.lookupFunction<
-        _c_PyObject_SetAttrString,
-        _dart_PyObject_SetAttrString>('PyObject_SetAttrString'))(
+    return _PyObject_SetAttrString(
       arg0,
       arg1,
       arg2,
     );
   }
 
-  _dart_PyObject_SetAttrString? _PyObject_SetAttrString;
+  late final _PyObject_SetAttrString_ptr =
+      _lookup<ffi.NativeFunction<_c_PyObject_SetAttrString>>(
+          'PyObject_SetAttrString');
+  late final _dart_PyObject_SetAttrString _PyObject_SetAttrString =
+      _PyObject_SetAttrString_ptr.asFunction<_dart_PyObject_SetAttrString>();
 
   int PyObject_HasAttrString(
     ffi.Pointer<PyObject> arg0,
     ffi.Pointer<ffi.Int8> arg1,
   ) {
-    return (_PyObject_HasAttrString ??= _dylib.lookupFunction<
-        _c_PyObject_HasAttrString,
-        _dart_PyObject_HasAttrString>('PyObject_HasAttrString'))(
+    return _PyObject_HasAttrString(
       arg0,
       arg1,
     );
   }
 
-  _dart_PyObject_HasAttrString? _PyObject_HasAttrString;
+  late final _PyObject_HasAttrString_ptr =
+      _lookup<ffi.NativeFunction<_c_PyObject_HasAttrString>>(
+          'PyObject_HasAttrString');
+  late final _dart_PyObject_HasAttrString _PyObject_HasAttrString =
+      _PyObject_HasAttrString_ptr.asFunction<_dart_PyObject_HasAttrString>();
 
   ffi.Pointer<PyObject> PyObject_GetAttr(
     ffi.Pointer<PyObject> arg0,
     ffi.Pointer<PyObject> arg1,
   ) {
-    return (_PyObject_GetAttr ??=
-        _dylib.lookupFunction<_c_PyObject_GetAttr, _dart_PyObject_GetAttr>(
-            'PyObject_GetAttr'))(
+    return _PyObject_GetAttr(
       arg0,
       arg1,
     );
   }
 
-  _dart_PyObject_GetAttr? _PyObject_GetAttr;
+  late final _PyObject_GetAttr_ptr =
+      _lookup<ffi.NativeFunction<_c_PyObject_GetAttr>>('PyObject_GetAttr');
+  late final _dart_PyObject_GetAttr _PyObject_GetAttr =
+      _PyObject_GetAttr_ptr.asFunction<_dart_PyObject_GetAttr>();
 
   int PyObject_SetAttr(
     ffi.Pointer<PyObject> arg0,
     ffi.Pointer<PyObject> arg1,
     ffi.Pointer<PyObject> arg2,
   ) {
-    return (_PyObject_SetAttr ??=
-        _dylib.lookupFunction<_c_PyObject_SetAttr, _dart_PyObject_SetAttr>(
-            'PyObject_SetAttr'))(
+    return _PyObject_SetAttr(
       arg0,
       arg1,
       arg2,
     );
   }
 
-  _dart_PyObject_SetAttr? _PyObject_SetAttr;
+  late final _PyObject_SetAttr_ptr =
+      _lookup<ffi.NativeFunction<_c_PyObject_SetAttr>>('PyObject_SetAttr');
+  late final _dart_PyObject_SetAttr _PyObject_SetAttr =
+      _PyObject_SetAttr_ptr.asFunction<_dart_PyObject_SetAttr>();
 
   int PyObject_HasAttr(
     ffi.Pointer<PyObject> arg0,
     ffi.Pointer<PyObject> arg1,
   ) {
-    return (_PyObject_HasAttr ??=
-        _dylib.lookupFunction<_c_PyObject_HasAttr, _dart_PyObject_HasAttr>(
-            'PyObject_HasAttr'))(
+    return _PyObject_HasAttr(
       arg0,
       arg1,
     );
   }
 
-  _dart_PyObject_HasAttr? _PyObject_HasAttr;
+  late final _PyObject_HasAttr_ptr =
+      _lookup<ffi.NativeFunction<_c_PyObject_HasAttr>>('PyObject_HasAttr');
+  late final _dart_PyObject_HasAttr _PyObject_HasAttr =
+      _PyObject_HasAttr_ptr.asFunction<_dart_PyObject_HasAttr>();
 
   ffi.Pointer<PyObject> PyObject_SelfIter(
     ffi.Pointer<PyObject> arg0,
   ) {
-    return (_PyObject_SelfIter ??=
-        _dylib.lookupFunction<_c_PyObject_SelfIter, _dart_PyObject_SelfIter>(
-            'PyObject_SelfIter'))(
+    return _PyObject_SelfIter(
       arg0,
     );
   }
 
-  _dart_PyObject_SelfIter? _PyObject_SelfIter;
+  late final _PyObject_SelfIter_ptr =
+      _lookup<ffi.NativeFunction<_c_PyObject_SelfIter>>('PyObject_SelfIter');
+  late final _dart_PyObject_SelfIter _PyObject_SelfIter =
+      _PyObject_SelfIter_ptr.asFunction<_dart_PyObject_SelfIter>();
 
   ffi.Pointer<PyObject> PyObject_GenericGetAttr(
     ffi.Pointer<PyObject> arg0,
     ffi.Pointer<PyObject> arg1,
   ) {
-    return (_PyObject_GenericGetAttr ??= _dylib.lookupFunction<
-        _c_PyObject_GenericGetAttr,
-        _dart_PyObject_GenericGetAttr>('PyObject_GenericGetAttr'))(
+    return _PyObject_GenericGetAttr(
       arg0,
       arg1,
     );
   }
 
-  _dart_PyObject_GenericGetAttr? _PyObject_GenericGetAttr;
+  late final _PyObject_GenericGetAttr_ptr =
+      _lookup<ffi.NativeFunction<_c_PyObject_GenericGetAttr>>(
+          'PyObject_GenericGetAttr');
+  late final _dart_PyObject_GenericGetAttr _PyObject_GenericGetAttr =
+      _PyObject_GenericGetAttr_ptr.asFunction<_dart_PyObject_GenericGetAttr>();
 
   int PyObject_GenericSetAttr(
     ffi.Pointer<PyObject> arg0,
     ffi.Pointer<PyObject> arg1,
     ffi.Pointer<PyObject> arg2,
   ) {
-    return (_PyObject_GenericSetAttr ??= _dylib.lookupFunction<
-        _c_PyObject_GenericSetAttr,
-        _dart_PyObject_GenericSetAttr>('PyObject_GenericSetAttr'))(
+    return _PyObject_GenericSetAttr(
       arg0,
       arg1,
       arg2,
     );
   }
 
-  _dart_PyObject_GenericSetAttr? _PyObject_GenericSetAttr;
+  late final _PyObject_GenericSetAttr_ptr =
+      _lookup<ffi.NativeFunction<_c_PyObject_GenericSetAttr>>(
+          'PyObject_GenericSetAttr');
+  late final _dart_PyObject_GenericSetAttr _PyObject_GenericSetAttr =
+      _PyObject_GenericSetAttr_ptr.asFunction<_dart_PyObject_GenericSetAttr>();
 
   int PyObject_GenericSetDict(
     ffi.Pointer<PyObject> arg0,
     ffi.Pointer<PyObject> arg1,
     ffi.Pointer<ffi.Void> arg2,
   ) {
-    return (_PyObject_GenericSetDict ??= _dylib.lookupFunction<
-        _c_PyObject_GenericSetDict,
-        _dart_PyObject_GenericSetDict>('PyObject_GenericSetDict'))(
+    return _PyObject_GenericSetDict(
       arg0,
       arg1,
       arg2,
     );
   }
 
-  _dart_PyObject_GenericSetDict? _PyObject_GenericSetDict;
+  late final _PyObject_GenericSetDict_ptr =
+      _lookup<ffi.NativeFunction<_c_PyObject_GenericSetDict>>(
+          'PyObject_GenericSetDict');
+  late final _dart_PyObject_GenericSetDict _PyObject_GenericSetDict =
+      _PyObject_GenericSetDict_ptr.asFunction<_dart_PyObject_GenericSetDict>();
 
   int PyObject_Hash(
     ffi.Pointer<PyObject> arg0,
   ) {
-    return (_PyObject_Hash ??=
-        _dylib.lookupFunction<_c_PyObject_Hash, _dart_PyObject_Hash>(
-            'PyObject_Hash'))(
+    return _PyObject_Hash(
       arg0,
     );
   }
 
-  _dart_PyObject_Hash? _PyObject_Hash;
+  late final _PyObject_Hash_ptr =
+      _lookup<ffi.NativeFunction<_c_PyObject_Hash>>('PyObject_Hash');
+  late final _dart_PyObject_Hash _PyObject_Hash =
+      _PyObject_Hash_ptr.asFunction<_dart_PyObject_Hash>();
 
   int PyObject_HashNotImplemented(
     ffi.Pointer<PyObject> arg0,
   ) {
-    return (_PyObject_HashNotImplemented ??= _dylib.lookupFunction<
-        _c_PyObject_HashNotImplemented,
-        _dart_PyObject_HashNotImplemented>('PyObject_HashNotImplemented'))(
+    return _PyObject_HashNotImplemented(
       arg0,
     );
   }
 
-  _dart_PyObject_HashNotImplemented? _PyObject_HashNotImplemented;
+  late final _PyObject_HashNotImplemented_ptr =
+      _lookup<ffi.NativeFunction<_c_PyObject_HashNotImplemented>>(
+          'PyObject_HashNotImplemented');
+  late final _dart_PyObject_HashNotImplemented _PyObject_HashNotImplemented =
+      _PyObject_HashNotImplemented_ptr.asFunction<
+          _dart_PyObject_HashNotImplemented>();
 
   int PyObject_IsTrue(
     ffi.Pointer<PyObject> arg0,
   ) {
-    return (_PyObject_IsTrue ??=
-        _dylib.lookupFunction<_c_PyObject_IsTrue, _dart_PyObject_IsTrue>(
-            'PyObject_IsTrue'))(
+    return _PyObject_IsTrue(
       arg0,
     );
   }
 
-  _dart_PyObject_IsTrue? _PyObject_IsTrue;
+  late final _PyObject_IsTrue_ptr =
+      _lookup<ffi.NativeFunction<_c_PyObject_IsTrue>>('PyObject_IsTrue');
+  late final _dart_PyObject_IsTrue _PyObject_IsTrue =
+      _PyObject_IsTrue_ptr.asFunction<_dart_PyObject_IsTrue>();
 
   int PyObject_Not(
     ffi.Pointer<PyObject> arg0,
   ) {
-    return (_PyObject_Not ??= _dylib
-        .lookupFunction<_c_PyObject_Not, _dart_PyObject_Not>('PyObject_Not'))(
+    return _PyObject_Not(
       arg0,
     );
   }
 
-  _dart_PyObject_Not? _PyObject_Not;
+  late final _PyObject_Not_ptr =
+      _lookup<ffi.NativeFunction<_c_PyObject_Not>>('PyObject_Not');
+  late final _dart_PyObject_Not _PyObject_Not =
+      _PyObject_Not_ptr.asFunction<_dart_PyObject_Not>();
 
   int PyCallable_Check(
     ffi.Pointer<PyObject> arg0,
   ) {
-    return (_PyCallable_Check ??=
-        _dylib.lookupFunction<_c_PyCallable_Check, _dart_PyCallable_Check>(
-            'PyCallable_Check'))(
+    return _PyCallable_Check(
       arg0,
     );
   }
 
-  _dart_PyCallable_Check? _PyCallable_Check;
+  late final _PyCallable_Check_ptr =
+      _lookup<ffi.NativeFunction<_c_PyCallable_Check>>('PyCallable_Check');
+  late final _dart_PyCallable_Check _PyCallable_Check =
+      _PyCallable_Check_ptr.asFunction<_dart_PyCallable_Check>();
 
   void PyObject_ClearWeakRefs(
     ffi.Pointer<PyObject> arg0,
   ) {
-    return (_PyObject_ClearWeakRefs ??= _dylib.lookupFunction<
-        _c_PyObject_ClearWeakRefs,
-        _dart_PyObject_ClearWeakRefs>('PyObject_ClearWeakRefs'))(
+    return _PyObject_ClearWeakRefs(
       arg0,
     );
   }
 
-  _dart_PyObject_ClearWeakRefs? _PyObject_ClearWeakRefs;
+  late final _PyObject_ClearWeakRefs_ptr =
+      _lookup<ffi.NativeFunction<_c_PyObject_ClearWeakRefs>>(
+          'PyObject_ClearWeakRefs');
+  late final _dart_PyObject_ClearWeakRefs _PyObject_ClearWeakRefs =
+      _PyObject_ClearWeakRefs_ptr.asFunction<_dart_PyObject_ClearWeakRefs>();
 
   ffi.Pointer<PyObject> PyObject_Dir(
     ffi.Pointer<PyObject> arg0,
   ) {
-    return (_PyObject_Dir ??= _dylib
-        .lookupFunction<_c_PyObject_Dir, _dart_PyObject_Dir>('PyObject_Dir'))(
+    return _PyObject_Dir(
       arg0,
     );
   }
 
-  _dart_PyObject_Dir? _PyObject_Dir;
+  late final _PyObject_Dir_ptr =
+      _lookup<ffi.NativeFunction<_c_PyObject_Dir>>('PyObject_Dir');
+  late final _dart_PyObject_Dir _PyObject_Dir =
+      _PyObject_Dir_ptr.asFunction<_dart_PyObject_Dir>();
 
   int Py_ReprEnter(
     ffi.Pointer<PyObject> arg0,
   ) {
-    return (_Py_ReprEnter ??= _dylib
-        .lookupFunction<_c_Py_ReprEnter, _dart_Py_ReprEnter>('Py_ReprEnter'))(
+    return _Py_ReprEnter(
       arg0,
     );
   }
 
-  _dart_Py_ReprEnter? _Py_ReprEnter;
+  late final _Py_ReprEnter_ptr =
+      _lookup<ffi.NativeFunction<_c_Py_ReprEnter>>('Py_ReprEnter');
+  late final _dart_Py_ReprEnter _Py_ReprEnter =
+      _Py_ReprEnter_ptr.asFunction<_dart_Py_ReprEnter>();
 
   void Py_ReprLeave(
     ffi.Pointer<PyObject> arg0,
   ) {
-    return (_Py_ReprLeave ??= _dylib
-        .lookupFunction<_c_Py_ReprLeave, _dart_Py_ReprLeave>('Py_ReprLeave'))(
+    return _Py_ReprLeave(
       arg0,
     );
   }
 
-  _dart_Py_ReprLeave? _Py_ReprLeave;
+  late final _Py_ReprLeave_ptr =
+      _lookup<ffi.NativeFunction<_c_Py_ReprLeave>>('Py_ReprLeave');
+  late final _dart_Py_ReprLeave _Py_ReprLeave =
+      _Py_ReprLeave_ptr.asFunction<_dart_Py_ReprLeave>();
 
   int PyTraceMalloc_NewReference(
     ffi.Pointer<PyObject> op,
   ) {
-    return (_PyTraceMalloc_NewReference ??= _dylib.lookupFunction<
-        _c_PyTraceMalloc_NewReference,
-        _dart_PyTraceMalloc_NewReference>('_PyTraceMalloc_NewReference'))(
+    return _PyTraceMalloc_NewReference(
       op,
     );
   }
 
-  _dart_PyTraceMalloc_NewReference? _PyTraceMalloc_NewReference;
-
-  void Py_NewReference(
-    ffi.Pointer<PyObject> op,
-  ) {
-    return (_Py_NewReference ??=
-        _dylib.lookupFunction<_c_Py_NewReference, _dart_Py_NewReference>(
-            '_Py_NewReference'))(
-      op,
-    );
-  }
-
-  _dart_Py_NewReference? _Py_NewReference;
-
-  void Py_ForgetReference(
-    ffi.Pointer<PyObject> op,
-  ) {
-    return (_Py_ForgetReference ??=
-        _dylib.lookupFunction<_c_Py_ForgetReference, _dart_Py_ForgetReference>(
-            '_Py_ForgetReference'))(
-      op,
-    );
-  }
-
-  _dart_Py_ForgetReference? _Py_ForgetReference;
+  late final _PyTraceMalloc_NewReference_ptr =
+      _lookup<ffi.NativeFunction<_c_PyTraceMalloc_NewReference>>(
+          '_PyTraceMalloc_NewReference');
+  late final _dart_PyTraceMalloc_NewReference _PyTraceMalloc_NewReference =
+      _PyTraceMalloc_NewReference_ptr.asFunction<
+          _dart_PyTraceMalloc_NewReference>();
 
   void Py_Dealloc(
     ffi.Pointer<PyObject> arg0,
   ) {
-    return (_Py_Dealloc ??=
-        _dylib.lookupFunction<_c_Py_Dealloc, _dart_Py_Dealloc>('_Py_Dealloc'))(
+    return _Py_Dealloc(
       arg0,
     );
   }
 
-  _dart_Py_Dealloc? _Py_Dealloc;
-
-  void Py_INCREF(
-    ffi.Pointer<PyObject> op,
-  ) {
-    return (_Py_INCREF ??=
-        _dylib.lookupFunction<_c_Py_INCREF, _dart_Py_INCREF>('_Py_INCREF'))(
-      op,
-    );
-  }
-
-  _dart_Py_INCREF? _Py_INCREF;
-
-  void Py_DECREF(
-    ffi.Pointer<ffi.Int8> filename,
-    int lineno,
-    ffi.Pointer<PyObject> op,
-  ) {
-    return (_Py_DECREF ??=
-        _dylib.lookupFunction<_c_Py_DECREF, _dart_Py_DECREF>('_Py_DECREF'))(
-      filename,
-      lineno,
-      op,
-    );
-  }
-
-  _dart_Py_DECREF? _Py_DECREF;
-
-  void Py_XINCREF(
-    ffi.Pointer<PyObject> op,
-  ) {
-    return (_Py_XINCREF ??=
-        _dylib.lookupFunction<_c_Py_XINCREF, _dart_Py_XINCREF>('_Py_XINCREF'))(
-      op,
-    );
-  }
-
-  _dart_Py_XINCREF? _Py_XINCREF;
-
-  void Py_XDECREF(
-    ffi.Pointer<PyObject> op,
-  ) {
-    return (_Py_XDECREF ??=
-        _dylib.lookupFunction<_c_Py_XDECREF, _dart_Py_XDECREF>('_Py_XDECREF'))(
-      op,
-    );
-  }
-
-  _dart_Py_XDECREF? _Py_XDECREF;
+  late final _Py_Dealloc_ptr =
+      _lookup<ffi.NativeFunction<_c_Py_Dealloc>>('_Py_Dealloc');
+  late final _dart_Py_Dealloc _Py_Dealloc =
+      _Py_Dealloc_ptr.asFunction<_dart_Py_Dealloc>();
 
   void Py_IncRef(
     ffi.Pointer<PyObject> arg0,
   ) {
-    return (_Py_IncRef ??=
-        _dylib.lookupFunction<_c_Py_IncRef, _dart_Py_IncRef>('Py_IncRef'))(
+    return _Py_IncRef(
       arg0,
     );
   }
 
-  _dart_Py_IncRef? _Py_IncRef;
+  late final _Py_IncRef_ptr =
+      _lookup<ffi.NativeFunction<_c_Py_IncRef>>('Py_IncRef');
+  late final _dart_Py_IncRef _Py_IncRef =
+      _Py_IncRef_ptr.asFunction<_dart_Py_IncRef>();
 
   void Py_DecRef(
     ffi.Pointer<PyObject> arg0,
   ) {
-    return (_Py_DecRef ??=
-        _dylib.lookupFunction<_c_Py_DecRef, _dart_Py_DecRef>('Py_DecRef'))(
+    return _Py_DecRef(
       arg0,
     );
   }
 
-  _dart_Py_DecRef? _Py_DecRef;
+  late final _Py_DecRef_ptr =
+      _lookup<ffi.NativeFunction<_c_Py_DecRef>>('Py_DecRef');
+  late final _dart_Py_DecRef _Py_DecRef =
+      _Py_DecRef_ptr.asFunction<_dart_Py_DecRef>();
 
-  late final PyObject Py_NoneStruct =
-      _dylib.lookup<PyObject>('_Py_NoneStruct').ref;
+  late final ffi.Pointer<PyObject> _Py_NoneStruct =
+      _lookup<PyObject>('_Py_NoneStruct');
 
-  late final PyObject Py_NotImplementedStruct =
-      _dylib.lookup<PyObject>('_Py_NotImplementedStruct').ref;
+  PyObject get Py_NoneStruct => _Py_NoneStruct.ref;
+
+  late final ffi.Pointer<PyObject> _Py_NotImplementedStruct =
+      _lookup<PyObject>('_Py_NotImplementedStruct');
+
+  PyObject get Py_NotImplementedStruct => _Py_NotImplementedStruct.ref;
 
   void PyTrash_thread_deposit_object(
     ffi.Pointer<PyObject> arg0,
   ) {
-    return (_PyTrash_thread_deposit_object ??= _dylib.lookupFunction<
-        _c_PyTrash_thread_deposit_object,
-        _dart_PyTrash_thread_deposit_object>('_PyTrash_thread_deposit_object'))(
+    return _PyTrash_thread_deposit_object(
       arg0,
     );
   }
 
-  _dart_PyTrash_thread_deposit_object? _PyTrash_thread_deposit_object;
+  late final _PyTrash_thread_deposit_object_ptr =
+      _lookup<ffi.NativeFunction<_c_PyTrash_thread_deposit_object>>(
+          '_PyTrash_thread_deposit_object');
+  late final _dart_PyTrash_thread_deposit_object
+      _PyTrash_thread_deposit_object = _PyTrash_thread_deposit_object_ptr
+          .asFunction<_dart_PyTrash_thread_deposit_object>();
 
   void PyTrash_thread_destroy_chain() {
-    return (_PyTrash_thread_destroy_chain ??= _dylib.lookupFunction<
-        _c_PyTrash_thread_destroy_chain,
-        _dart_PyTrash_thread_destroy_chain>('_PyTrash_thread_destroy_chain'))();
+    return _PyTrash_thread_destroy_chain();
   }
 
-  _dart_PyTrash_thread_destroy_chain? _PyTrash_thread_destroy_chain;
+  late final _PyTrash_thread_destroy_chain_ptr =
+      _lookup<ffi.NativeFunction<_c_PyTrash_thread_destroy_chain>>(
+          '_PyTrash_thread_destroy_chain');
+  late final _dart_PyTrash_thread_destroy_chain _PyTrash_thread_destroy_chain =
+      _PyTrash_thread_destroy_chain_ptr.asFunction<
+          _dart_PyTrash_thread_destroy_chain>();
 
   ffi.Pointer<PyObject> PyLong_FromTime_t(
     int sec,
   ) {
-    return (_PyLong_FromTime_t ??=
-        _dylib.lookupFunction<_c_PyLong_FromTime_t, _dart_PyLong_FromTime_t>(
-            '_PyLong_FromTime_t'))(
+    return _PyLong_FromTime_t(
       sec,
     );
   }
 
-  _dart_PyLong_FromTime_t? _PyLong_FromTime_t;
+  late final _PyLong_FromTime_t_ptr =
+      _lookup<ffi.NativeFunction<_c_PyLong_FromTime_t>>('_PyLong_FromTime_t');
+  late final _dart_PyLong_FromTime_t _PyLong_FromTime_t =
+      _PyLong_FromTime_t_ptr.asFunction<_dart_PyLong_FromTime_t>();
 
   int PyLong_AsTime_t(
     ffi.Pointer<PyObject> obj,
   ) {
-    return (_PyLong_AsTime_t ??=
-        _dylib.lookupFunction<_c_PyLong_AsTime_t, _dart_PyLong_AsTime_t>(
-            '_PyLong_AsTime_t'))(
+    return _PyLong_AsTime_t(
       obj,
     );
   }
 
-  _dart_PyLong_AsTime_t? _PyLong_AsTime_t;
+  late final _PyLong_AsTime_t_ptr =
+      _lookup<ffi.NativeFunction<_c_PyLong_AsTime_t>>('_PyLong_AsTime_t');
+  late final _dart_PyLong_AsTime_t _PyLong_AsTime_t =
+      _PyLong_AsTime_t_ptr.asFunction<_dart_PyLong_AsTime_t>();
 
   int PyTime_ObjectToTime_t(
     ffi.Pointer<PyObject> obj,
     ffi.Pointer<ffi.Int64> sec,
     int arg2,
   ) {
-    return (_PyTime_ObjectToTime_t ??= _dylib.lookupFunction<
-        _c_PyTime_ObjectToTime_t,
-        _dart_PyTime_ObjectToTime_t>('_PyTime_ObjectToTime_t'))(
+    return _PyTime_ObjectToTime_t(
       obj,
       sec,
       arg2,
     );
   }
 
-  _dart_PyTime_ObjectToTime_t? _PyTime_ObjectToTime_t;
+  late final _PyTime_ObjectToTime_t_ptr =
+      _lookup<ffi.NativeFunction<_c_PyTime_ObjectToTime_t>>(
+          '_PyTime_ObjectToTime_t');
+  late final _dart_PyTime_ObjectToTime_t _PyTime_ObjectToTime_t =
+      _PyTime_ObjectToTime_t_ptr.asFunction<_dart_PyTime_ObjectToTime_t>();
 
   int PyTime_ObjectToTimeval(
     ffi.Pointer<PyObject> obj,
@@ -704,9 +755,7 @@ class DartPyC {
     ffi.Pointer<ffi.Int64> usec,
     int arg3,
   ) {
-    return (_PyTime_ObjectToTimeval ??= _dylib.lookupFunction<
-        _c_PyTime_ObjectToTimeval,
-        _dart_PyTime_ObjectToTimeval>('_PyTime_ObjectToTimeval'))(
+    return _PyTime_ObjectToTimeval(
       obj,
       sec,
       usec,
@@ -714,7 +763,11 @@ class DartPyC {
     );
   }
 
-  _dart_PyTime_ObjectToTimeval? _PyTime_ObjectToTimeval;
+  late final _PyTime_ObjectToTimeval_ptr =
+      _lookup<ffi.NativeFunction<_c_PyTime_ObjectToTimeval>>(
+          '_PyTime_ObjectToTimeval');
+  late final _dart_PyTime_ObjectToTimeval _PyTime_ObjectToTimeval =
+      _PyTime_ObjectToTimeval_ptr.asFunction<_dart_PyTime_ObjectToTimeval>();
 
   int PyTime_ObjectToTimespec(
     ffi.Pointer<PyObject> obj,
@@ -722,9 +775,7 @@ class DartPyC {
     ffi.Pointer<ffi.Int64> nsec,
     int arg3,
   ) {
-    return (_PyTime_ObjectToTimespec ??= _dylib.lookupFunction<
-        _c_PyTime_ObjectToTimespec,
-        _dart_PyTime_ObjectToTimespec>('_PyTime_ObjectToTimespec'))(
+    return _PyTime_ObjectToTimespec(
       obj,
       sec,
       nsec,
@@ -732,175 +783,205 @@ class DartPyC {
     );
   }
 
-  _dart_PyTime_ObjectToTimespec? _PyTime_ObjectToTimespec;
+  late final _PyTime_ObjectToTimespec_ptr =
+      _lookup<ffi.NativeFunction<_c_PyTime_ObjectToTimespec>>(
+          '_PyTime_ObjectToTimespec');
+  late final _dart_PyTime_ObjectToTimespec _PyTime_ObjectToTimespec =
+      _PyTime_ObjectToTimespec_ptr.asFunction<_dart_PyTime_ObjectToTimespec>();
 
   int PyTime_FromSeconds(
     int seconds,
   ) {
-    return (_PyTime_FromSeconds ??=
-        _dylib.lookupFunction<_c_PyTime_FromSeconds, _dart_PyTime_FromSeconds>(
-            '_PyTime_FromSeconds'))(
+    return _PyTime_FromSeconds(
       seconds,
     );
   }
 
-  _dart_PyTime_FromSeconds? _PyTime_FromSeconds;
+  late final _PyTime_FromSeconds_ptr =
+      _lookup<ffi.NativeFunction<_c_PyTime_FromSeconds>>('_PyTime_FromSeconds');
+  late final _dart_PyTime_FromSeconds _PyTime_FromSeconds =
+      _PyTime_FromSeconds_ptr.asFunction<_dart_PyTime_FromSeconds>();
 
   int PyTime_FromNanoseconds(
     int ns,
   ) {
-    return (_PyTime_FromNanoseconds ??= _dylib.lookupFunction<
-        _c_PyTime_FromNanoseconds,
-        _dart_PyTime_FromNanoseconds>('_PyTime_FromNanoseconds'))(
+    return _PyTime_FromNanoseconds(
       ns,
     );
   }
 
-  _dart_PyTime_FromNanoseconds? _PyTime_FromNanoseconds;
+  late final _PyTime_FromNanoseconds_ptr =
+      _lookup<ffi.NativeFunction<_c_PyTime_FromNanoseconds>>(
+          '_PyTime_FromNanoseconds');
+  late final _dart_PyTime_FromNanoseconds _PyTime_FromNanoseconds =
+      _PyTime_FromNanoseconds_ptr.asFunction<_dart_PyTime_FromNanoseconds>();
 
   int PyTime_FromNanosecondsObject(
     ffi.Pointer<ffi.Int64> t,
     ffi.Pointer<PyObject> obj,
   ) {
-    return (_PyTime_FromNanosecondsObject ??= _dylib.lookupFunction<
-        _c_PyTime_FromNanosecondsObject,
-        _dart_PyTime_FromNanosecondsObject>('_PyTime_FromNanosecondsObject'))(
+    return _PyTime_FromNanosecondsObject(
       t,
       obj,
     );
   }
 
-  _dart_PyTime_FromNanosecondsObject? _PyTime_FromNanosecondsObject;
+  late final _PyTime_FromNanosecondsObject_ptr =
+      _lookup<ffi.NativeFunction<_c_PyTime_FromNanosecondsObject>>(
+          '_PyTime_FromNanosecondsObject');
+  late final _dart_PyTime_FromNanosecondsObject _PyTime_FromNanosecondsObject =
+      _PyTime_FromNanosecondsObject_ptr.asFunction<
+          _dart_PyTime_FromNanosecondsObject>();
 
   int PyTime_FromSecondsObject(
     ffi.Pointer<ffi.Int64> t,
     ffi.Pointer<PyObject> obj,
     int round,
   ) {
-    return (_PyTime_FromSecondsObject ??= _dylib.lookupFunction<
-        _c_PyTime_FromSecondsObject,
-        _dart_PyTime_FromSecondsObject>('_PyTime_FromSecondsObject'))(
+    return _PyTime_FromSecondsObject(
       t,
       obj,
       round,
     );
   }
 
-  _dart_PyTime_FromSecondsObject? _PyTime_FromSecondsObject;
+  late final _PyTime_FromSecondsObject_ptr =
+      _lookup<ffi.NativeFunction<_c_PyTime_FromSecondsObject>>(
+          '_PyTime_FromSecondsObject');
+  late final _dart_PyTime_FromSecondsObject _PyTime_FromSecondsObject =
+      _PyTime_FromSecondsObject_ptr.asFunction<
+          _dart_PyTime_FromSecondsObject>();
 
   int PyTime_FromMillisecondsObject(
     ffi.Pointer<ffi.Int64> t,
     ffi.Pointer<PyObject> obj,
     int round,
   ) {
-    return (_PyTime_FromMillisecondsObject ??= _dylib.lookupFunction<
-        _c_PyTime_FromMillisecondsObject,
-        _dart_PyTime_FromMillisecondsObject>('_PyTime_FromMillisecondsObject'))(
+    return _PyTime_FromMillisecondsObject(
       t,
       obj,
       round,
     );
   }
 
-  _dart_PyTime_FromMillisecondsObject? _PyTime_FromMillisecondsObject;
+  late final _PyTime_FromMillisecondsObject_ptr =
+      _lookup<ffi.NativeFunction<_c_PyTime_FromMillisecondsObject>>(
+          '_PyTime_FromMillisecondsObject');
+  late final _dart_PyTime_FromMillisecondsObject
+      _PyTime_FromMillisecondsObject = _PyTime_FromMillisecondsObject_ptr
+          .asFunction<_dart_PyTime_FromMillisecondsObject>();
 
   double PyTime_AsSecondsDouble(
     int t,
   ) {
-    return (_PyTime_AsSecondsDouble ??= _dylib.lookupFunction<
-        _c_PyTime_AsSecondsDouble,
-        _dart_PyTime_AsSecondsDouble>('_PyTime_AsSecondsDouble'))(
+    return _PyTime_AsSecondsDouble(
       t,
     );
   }
 
-  _dart_PyTime_AsSecondsDouble? _PyTime_AsSecondsDouble;
+  late final _PyTime_AsSecondsDouble_ptr =
+      _lookup<ffi.NativeFunction<_c_PyTime_AsSecondsDouble>>(
+          '_PyTime_AsSecondsDouble');
+  late final _dart_PyTime_AsSecondsDouble _PyTime_AsSecondsDouble =
+      _PyTime_AsSecondsDouble_ptr.asFunction<_dart_PyTime_AsSecondsDouble>();
 
   int PyTime_AsMilliseconds(
     int t,
     int round,
   ) {
-    return (_PyTime_AsMilliseconds ??= _dylib.lookupFunction<
-        _c_PyTime_AsMilliseconds,
-        _dart_PyTime_AsMilliseconds>('_PyTime_AsMilliseconds'))(
+    return _PyTime_AsMilliseconds(
       t,
       round,
     );
   }
 
-  _dart_PyTime_AsMilliseconds? _PyTime_AsMilliseconds;
+  late final _PyTime_AsMilliseconds_ptr =
+      _lookup<ffi.NativeFunction<_c_PyTime_AsMilliseconds>>(
+          '_PyTime_AsMilliseconds');
+  late final _dart_PyTime_AsMilliseconds _PyTime_AsMilliseconds =
+      _PyTime_AsMilliseconds_ptr.asFunction<_dart_PyTime_AsMilliseconds>();
 
   int PyTime_AsMicroseconds(
     int t,
     int round,
   ) {
-    return (_PyTime_AsMicroseconds ??= _dylib.lookupFunction<
-        _c_PyTime_AsMicroseconds,
-        _dart_PyTime_AsMicroseconds>('_PyTime_AsMicroseconds'))(
+    return _PyTime_AsMicroseconds(
       t,
       round,
     );
   }
 
-  _dart_PyTime_AsMicroseconds? _PyTime_AsMicroseconds;
+  late final _PyTime_AsMicroseconds_ptr =
+      _lookup<ffi.NativeFunction<_c_PyTime_AsMicroseconds>>(
+          '_PyTime_AsMicroseconds');
+  late final _dart_PyTime_AsMicroseconds _PyTime_AsMicroseconds =
+      _PyTime_AsMicroseconds_ptr.asFunction<_dart_PyTime_AsMicroseconds>();
 
   ffi.Pointer<PyObject> PyTime_AsNanosecondsObject(
     int t,
   ) {
-    return (_PyTime_AsNanosecondsObject ??= _dylib.lookupFunction<
-        _c_PyTime_AsNanosecondsObject,
-        _dart_PyTime_AsNanosecondsObject>('_PyTime_AsNanosecondsObject'))(
+    return _PyTime_AsNanosecondsObject(
       t,
     );
   }
 
-  _dart_PyTime_AsNanosecondsObject? _PyTime_AsNanosecondsObject;
+  late final _PyTime_AsNanosecondsObject_ptr =
+      _lookup<ffi.NativeFunction<_c_PyTime_AsNanosecondsObject>>(
+          '_PyTime_AsNanosecondsObject');
+  late final _dart_PyTime_AsNanosecondsObject _PyTime_AsNanosecondsObject =
+      _PyTime_AsNanosecondsObject_ptr.asFunction<
+          _dart_PyTime_AsNanosecondsObject>();
 
   int PyTime_FromTimeval(
     ffi.Pointer<ffi.Int64> tp,
     ffi.Pointer<timeval> tv,
   ) {
-    return (_PyTime_FromTimeval ??=
-        _dylib.lookupFunction<_c_PyTime_FromTimeval, _dart_PyTime_FromTimeval>(
-            '_PyTime_FromTimeval'))(
+    return _PyTime_FromTimeval(
       tp,
       tv,
     );
   }
 
-  _dart_PyTime_FromTimeval? _PyTime_FromTimeval;
+  late final _PyTime_FromTimeval_ptr =
+      _lookup<ffi.NativeFunction<_c_PyTime_FromTimeval>>('_PyTime_FromTimeval');
+  late final _dart_PyTime_FromTimeval _PyTime_FromTimeval =
+      _PyTime_FromTimeval_ptr.asFunction<_dart_PyTime_FromTimeval>();
 
   int PyTime_AsTimeval(
     int t,
     ffi.Pointer<timeval> tv,
     int round,
   ) {
-    return (_PyTime_AsTimeval ??=
-        _dylib.lookupFunction<_c_PyTime_AsTimeval, _dart_PyTime_AsTimeval>(
-            '_PyTime_AsTimeval'))(
+    return _PyTime_AsTimeval(
       t,
       tv,
       round,
     );
   }
 
-  _dart_PyTime_AsTimeval? _PyTime_AsTimeval;
+  late final _PyTime_AsTimeval_ptr =
+      _lookup<ffi.NativeFunction<_c_PyTime_AsTimeval>>('_PyTime_AsTimeval');
+  late final _dart_PyTime_AsTimeval _PyTime_AsTimeval =
+      _PyTime_AsTimeval_ptr.asFunction<_dart_PyTime_AsTimeval>();
 
   int PyTime_AsTimeval_noraise(
     int t,
     ffi.Pointer<timeval> tv,
     int round,
   ) {
-    return (_PyTime_AsTimeval_noraise ??= _dylib.lookupFunction<
-        _c_PyTime_AsTimeval_noraise,
-        _dart_PyTime_AsTimeval_noraise>('_PyTime_AsTimeval_noraise'))(
+    return _PyTime_AsTimeval_noraise(
       t,
       tv,
       round,
     );
   }
 
-  _dart_PyTime_AsTimeval_noraise? _PyTime_AsTimeval_noraise;
+  late final _PyTime_AsTimeval_noraise_ptr =
+      _lookup<ffi.NativeFunction<_c_PyTime_AsTimeval_noraise>>(
+          '_PyTime_AsTimeval_noraise');
+  late final _dart_PyTime_AsTimeval_noraise _PyTime_AsTimeval_noraise =
+      _PyTime_AsTimeval_noraise_ptr.asFunction<
+          _dart_PyTime_AsTimeval_noraise>();
 
   int PyTime_AsTimevalTime_t(
     int t,
@@ -908,9 +989,7 @@ class DartPyC {
     ffi.Pointer<ffi.Int32> us,
     int round,
   ) {
-    return (_PyTime_AsTimevalTime_t ??= _dylib.lookupFunction<
-        _c_PyTime_AsTimevalTime_t,
-        _dart_PyTime_AsTimevalTime_t>('_PyTime_AsTimevalTime_t'))(
+    return _PyTime_AsTimevalTime_t(
       t,
       secs,
       us,
@@ -918,696 +997,824 @@ class DartPyC {
     );
   }
 
-  _dart_PyTime_AsTimevalTime_t? _PyTime_AsTimevalTime_t;
+  late final _PyTime_AsTimevalTime_t_ptr =
+      _lookup<ffi.NativeFunction<_c_PyTime_AsTimevalTime_t>>(
+          '_PyTime_AsTimevalTime_t');
+  late final _dart_PyTime_AsTimevalTime_t _PyTime_AsTimevalTime_t =
+      _PyTime_AsTimevalTime_t_ptr.asFunction<_dart_PyTime_AsTimevalTime_t>();
 
   int PyTime_FromTimespec(
     ffi.Pointer<ffi.Int64> tp,
     ffi.Pointer<timespec> ts,
   ) {
-    return (_PyTime_FromTimespec ??= _dylib.lookupFunction<
-        _c_PyTime_FromTimespec,
-        _dart_PyTime_FromTimespec>('_PyTime_FromTimespec'))(
+    return _PyTime_FromTimespec(
       tp,
       ts,
     );
   }
 
-  _dart_PyTime_FromTimespec? _PyTime_FromTimespec;
+  late final _PyTime_FromTimespec_ptr =
+      _lookup<ffi.NativeFunction<_c_PyTime_FromTimespec>>(
+          '_PyTime_FromTimespec');
+  late final _dart_PyTime_FromTimespec _PyTime_FromTimespec =
+      _PyTime_FromTimespec_ptr.asFunction<_dart_PyTime_FromTimespec>();
 
   int PyTime_AsTimespec(
     int t,
     ffi.Pointer<timespec> ts,
   ) {
-    return (_PyTime_AsTimespec ??=
-        _dylib.lookupFunction<_c_PyTime_AsTimespec, _dart_PyTime_AsTimespec>(
-            '_PyTime_AsTimespec'))(
+    return _PyTime_AsTimespec(
       t,
       ts,
     );
   }
 
-  _dart_PyTime_AsTimespec? _PyTime_AsTimespec;
+  late final _PyTime_AsTimespec_ptr =
+      _lookup<ffi.NativeFunction<_c_PyTime_AsTimespec>>('_PyTime_AsTimespec');
+  late final _dart_PyTime_AsTimespec _PyTime_AsTimespec =
+      _PyTime_AsTimespec_ptr.asFunction<_dart_PyTime_AsTimespec>();
 
   int PyTime_MulDiv(
     int ticks,
     int mul,
     int div,
   ) {
-    return (_PyTime_MulDiv ??=
-        _dylib.lookupFunction<_c_PyTime_MulDiv, _dart_PyTime_MulDiv>(
-            '_PyTime_MulDiv'))(
+    return _PyTime_MulDiv(
       ticks,
       mul,
       div,
     );
   }
 
-  _dart_PyTime_MulDiv? _PyTime_MulDiv;
+  late final _PyTime_MulDiv_ptr =
+      _lookup<ffi.NativeFunction<_c_PyTime_MulDiv>>('_PyTime_MulDiv');
+  late final _dart_PyTime_MulDiv _PyTime_MulDiv =
+      _PyTime_MulDiv_ptr.asFunction<_dart_PyTime_MulDiv>();
 
   int PyTime_GetSystemClock() {
-    return (_PyTime_GetSystemClock ??= _dylib.lookupFunction<
-        _c_PyTime_GetSystemClock,
-        _dart_PyTime_GetSystemClock>('_PyTime_GetSystemClock'))();
+    return _PyTime_GetSystemClock();
   }
 
-  _dart_PyTime_GetSystemClock? _PyTime_GetSystemClock;
+  late final _PyTime_GetSystemClock_ptr =
+      _lookup<ffi.NativeFunction<_c_PyTime_GetSystemClock>>(
+          '_PyTime_GetSystemClock');
+  late final _dart_PyTime_GetSystemClock _PyTime_GetSystemClock =
+      _PyTime_GetSystemClock_ptr.asFunction<_dart_PyTime_GetSystemClock>();
 
   int PyTime_GetMonotonicClock() {
-    return (_PyTime_GetMonotonicClock ??= _dylib.lookupFunction<
-        _c_PyTime_GetMonotonicClock,
-        _dart_PyTime_GetMonotonicClock>('_PyTime_GetMonotonicClock'))();
+    return _PyTime_GetMonotonicClock();
   }
 
-  _dart_PyTime_GetMonotonicClock? _PyTime_GetMonotonicClock;
+  late final _PyTime_GetMonotonicClock_ptr =
+      _lookup<ffi.NativeFunction<_c_PyTime_GetMonotonicClock>>(
+          '_PyTime_GetMonotonicClock');
+  late final _dart_PyTime_GetMonotonicClock _PyTime_GetMonotonicClock =
+      _PyTime_GetMonotonicClock_ptr.asFunction<
+          _dart_PyTime_GetMonotonicClock>();
 
   int PyTime_GetSystemClockWithInfo(
     ffi.Pointer<ffi.Int64> t,
     ffi.Pointer<_Py_clock_info_t> info,
   ) {
-    return (_PyTime_GetSystemClockWithInfo ??= _dylib.lookupFunction<
-        _c_PyTime_GetSystemClockWithInfo,
-        _dart_PyTime_GetSystemClockWithInfo>('_PyTime_GetSystemClockWithInfo'))(
+    return _PyTime_GetSystemClockWithInfo(
       t,
       info,
     );
   }
 
-  _dart_PyTime_GetSystemClockWithInfo? _PyTime_GetSystemClockWithInfo;
+  late final _PyTime_GetSystemClockWithInfo_ptr =
+      _lookup<ffi.NativeFunction<_c_PyTime_GetSystemClockWithInfo>>(
+          '_PyTime_GetSystemClockWithInfo');
+  late final _dart_PyTime_GetSystemClockWithInfo
+      _PyTime_GetSystemClockWithInfo = _PyTime_GetSystemClockWithInfo_ptr
+          .asFunction<_dart_PyTime_GetSystemClockWithInfo>();
 
   int PyTime_GetMonotonicClockWithInfo(
     ffi.Pointer<ffi.Int64> t,
     ffi.Pointer<_Py_clock_info_t> info,
   ) {
-    return (_PyTime_GetMonotonicClockWithInfo ??= _dylib.lookupFunction<
-            _c_PyTime_GetMonotonicClockWithInfo,
-            _dart_PyTime_GetMonotonicClockWithInfo>(
-        '_PyTime_GetMonotonicClockWithInfo'))(
+    return _PyTime_GetMonotonicClockWithInfo(
       t,
       info,
     );
   }
 
-  _dart_PyTime_GetMonotonicClockWithInfo? _PyTime_GetMonotonicClockWithInfo;
+  late final _PyTime_GetMonotonicClockWithInfo_ptr =
+      _lookup<ffi.NativeFunction<_c_PyTime_GetMonotonicClockWithInfo>>(
+          '_PyTime_GetMonotonicClockWithInfo');
+  late final _dart_PyTime_GetMonotonicClockWithInfo
+      _PyTime_GetMonotonicClockWithInfo = _PyTime_GetMonotonicClockWithInfo_ptr
+          .asFunction<_dart_PyTime_GetMonotonicClockWithInfo>();
 
   int PyTime_Init() {
-    return (_PyTime_Init ??= _dylib
-        .lookupFunction<_c_PyTime_Init, _dart_PyTime_Init>('_PyTime_Init'))();
+    return _PyTime_Init();
   }
 
-  _dart_PyTime_Init? _PyTime_Init;
+  late final _PyTime_Init_ptr =
+      _lookup<ffi.NativeFunction<_c_PyTime_Init>>('_PyTime_Init');
+  late final _dart_PyTime_Init _PyTime_Init =
+      _PyTime_Init_ptr.asFunction<_dart_PyTime_Init>();
 
   int PyTime_localtime(
     int t,
     ffi.Pointer<tm> tm,
   ) {
-    return (_PyTime_localtime ??=
-        _dylib.lookupFunction<_c_PyTime_localtime, _dart_PyTime_localtime>(
-            '_PyTime_localtime'))(
+    return _PyTime_localtime(
       t,
       tm,
     );
   }
 
-  _dart_PyTime_localtime? _PyTime_localtime;
+  late final _PyTime_localtime_ptr =
+      _lookup<ffi.NativeFunction<_c_PyTime_localtime>>('_PyTime_localtime');
+  late final _dart_PyTime_localtime _PyTime_localtime =
+      _PyTime_localtime_ptr.asFunction<_dart_PyTime_localtime>();
 
   int PyTime_gmtime(
     int t,
     ffi.Pointer<tm> tm,
   ) {
-    return (_PyTime_gmtime ??=
-        _dylib.lookupFunction<_c_PyTime_gmtime, _dart_PyTime_gmtime>(
-            '_PyTime_gmtime'))(
+    return _PyTime_gmtime(
       t,
       tm,
     );
   }
 
-  _dart_PyTime_gmtime? _PyTime_gmtime;
+  late final _PyTime_gmtime_ptr =
+      _lookup<ffi.NativeFunction<_c_PyTime_gmtime>>('_PyTime_gmtime');
+  late final _dart_PyTime_gmtime _PyTime_gmtime =
+      _PyTime_gmtime_ptr.asFunction<_dart_PyTime_gmtime>();
 
   int PyTime_GetPerfCounter() {
-    return (_PyTime_GetPerfCounter ??= _dylib.lookupFunction<
-        _c_PyTime_GetPerfCounter,
-        _dart_PyTime_GetPerfCounter>('_PyTime_GetPerfCounter'))();
+    return _PyTime_GetPerfCounter();
   }
 
-  _dart_PyTime_GetPerfCounter? _PyTime_GetPerfCounter;
+  late final _PyTime_GetPerfCounter_ptr =
+      _lookup<ffi.NativeFunction<_c_PyTime_GetPerfCounter>>(
+          '_PyTime_GetPerfCounter');
+  late final _dart_PyTime_GetPerfCounter _PyTime_GetPerfCounter =
+      _PyTime_GetPerfCounter_ptr.asFunction<_dart_PyTime_GetPerfCounter>();
 
   int PyTime_GetPerfCounterWithInfo(
     ffi.Pointer<ffi.Int64> t,
     ffi.Pointer<_Py_clock_info_t> info,
   ) {
-    return (_PyTime_GetPerfCounterWithInfo ??= _dylib.lookupFunction<
-        _c_PyTime_GetPerfCounterWithInfo,
-        _dart_PyTime_GetPerfCounterWithInfo>('_PyTime_GetPerfCounterWithInfo'))(
+    return _PyTime_GetPerfCounterWithInfo(
       t,
       info,
     );
   }
 
-  _dart_PyTime_GetPerfCounterWithInfo? _PyTime_GetPerfCounterWithInfo;
+  late final _PyTime_GetPerfCounterWithInfo_ptr =
+      _lookup<ffi.NativeFunction<_c_PyTime_GetPerfCounterWithInfo>>(
+          '_PyTime_GetPerfCounterWithInfo');
+  late final _dart_PyTime_GetPerfCounterWithInfo
+      _PyTime_GetPerfCounterWithInfo = _PyTime_GetPerfCounterWithInfo_ptr
+          .asFunction<_dart_PyTime_GetPerfCounterWithInfo>();
 
   ffi.Pointer<ffi.Void> PyObject_Malloc(
     int size,
   ) {
-    return (_PyObject_Malloc ??=
-        _dylib.lookupFunction<_c_PyObject_Malloc, _dart_PyObject_Malloc>(
-            'PyObject_Malloc'))(
+    return _PyObject_Malloc(
       size,
     );
   }
 
-  _dart_PyObject_Malloc? _PyObject_Malloc;
+  late final _PyObject_Malloc_ptr =
+      _lookup<ffi.NativeFunction<_c_PyObject_Malloc>>('PyObject_Malloc');
+  late final _dart_PyObject_Malloc _PyObject_Malloc =
+      _PyObject_Malloc_ptr.asFunction<_dart_PyObject_Malloc>();
 
   ffi.Pointer<ffi.Void> PyObject_Calloc(
     int nelem,
     int elsize,
   ) {
-    return (_PyObject_Calloc ??=
-        _dylib.lookupFunction<_c_PyObject_Calloc, _dart_PyObject_Calloc>(
-            'PyObject_Calloc'))(
+    return _PyObject_Calloc(
       nelem,
       elsize,
     );
   }
 
-  _dart_PyObject_Calloc? _PyObject_Calloc;
+  late final _PyObject_Calloc_ptr =
+      _lookup<ffi.NativeFunction<_c_PyObject_Calloc>>('PyObject_Calloc');
+  late final _dart_PyObject_Calloc _PyObject_Calloc =
+      _PyObject_Calloc_ptr.asFunction<_dart_PyObject_Calloc>();
 
   ffi.Pointer<ffi.Void> PyObject_Realloc(
     ffi.Pointer<ffi.Void> ptr,
     int new_size,
   ) {
-    return (_PyObject_Realloc ??=
-        _dylib.lookupFunction<_c_PyObject_Realloc, _dart_PyObject_Realloc>(
-            'PyObject_Realloc'))(
+    return _PyObject_Realloc(
       ptr,
       new_size,
     );
   }
 
-  _dart_PyObject_Realloc? _PyObject_Realloc;
+  late final _PyObject_Realloc_ptr =
+      _lookup<ffi.NativeFunction<_c_PyObject_Realloc>>('PyObject_Realloc');
+  late final _dart_PyObject_Realloc _PyObject_Realloc =
+      _PyObject_Realloc_ptr.asFunction<_dart_PyObject_Realloc>();
 
   void PyObject_Free(
     ffi.Pointer<ffi.Void> ptr,
   ) {
-    return (_PyObject_Free ??=
-        _dylib.lookupFunction<_c_PyObject_Free, _dart_PyObject_Free>(
-            'PyObject_Free'))(
+    return _PyObject_Free(
       ptr,
     );
   }
 
-  _dart_PyObject_Free? _PyObject_Free;
+  late final _PyObject_Free_ptr =
+      _lookup<ffi.NativeFunction<_c_PyObject_Free>>('PyObject_Free');
+  late final _dart_PyObject_Free _PyObject_Free =
+      _PyObject_Free_ptr.asFunction<_dart_PyObject_Free>();
 
   ffi.Pointer<PyObject> PyObject_Init(
     ffi.Pointer<PyObject> arg0,
     ffi.Pointer<_typeobject> arg1,
   ) {
-    return (_PyObject_Init ??=
-        _dylib.lookupFunction<_c_PyObject_Init, _dart_PyObject_Init>(
-            'PyObject_Init'))(
+    return _PyObject_Init(
       arg0,
       arg1,
     );
   }
 
-  _dart_PyObject_Init? _PyObject_Init;
+  late final _PyObject_Init_ptr =
+      _lookup<ffi.NativeFunction<_c_PyObject_Init>>('PyObject_Init');
+  late final _dart_PyObject_Init _PyObject_Init =
+      _PyObject_Init_ptr.asFunction<_dart_PyObject_Init>();
 
   ffi.Pointer<PyVarObject> PyObject_InitVar(
     ffi.Pointer<PyVarObject> arg0,
     ffi.Pointer<_typeobject> arg1,
     int arg2,
   ) {
-    return (_PyObject_InitVar ??=
-        _dylib.lookupFunction<_c_PyObject_InitVar, _dart_PyObject_InitVar>(
-            'PyObject_InitVar'))(
+    return _PyObject_InitVar(
       arg0,
       arg1,
       arg2,
     );
   }
 
-  _dart_PyObject_InitVar? _PyObject_InitVar;
+  late final _PyObject_InitVar_ptr =
+      _lookup<ffi.NativeFunction<_c_PyObject_InitVar>>('PyObject_InitVar');
+  late final _dart_PyObject_InitVar _PyObject_InitVar =
+      _PyObject_InitVar_ptr.asFunction<_dart_PyObject_InitVar>();
 
   ffi.Pointer<PyObject> PyObject_New(
     ffi.Pointer<_typeobject> arg0,
   ) {
-    return (_PyObject_New ??= _dylib
-        .lookupFunction<_c_PyObject_New, _dart_PyObject_New>('_PyObject_New'))(
+    return _PyObject_New(
       arg0,
     );
   }
 
-  _dart_PyObject_New? _PyObject_New;
+  late final _PyObject_New_ptr =
+      _lookup<ffi.NativeFunction<_c_PyObject_New>>('_PyObject_New');
+  late final _dart_PyObject_New _PyObject_New =
+      _PyObject_New_ptr.asFunction<_dart_PyObject_New>();
 
   ffi.Pointer<PyVarObject> PyObject_NewVar(
     ffi.Pointer<_typeobject> arg0,
     int arg1,
   ) {
-    return (_PyObject_NewVar ??=
-        _dylib.lookupFunction<_c_PyObject_NewVar, _dart_PyObject_NewVar>(
-            '_PyObject_NewVar'))(
+    return _PyObject_NewVar(
       arg0,
       arg1,
     );
   }
 
-  _dart_PyObject_NewVar? _PyObject_NewVar;
-
-  ffi.Pointer<PyObject> PyObject_INIT(
-    ffi.Pointer<PyObject> op,
-    ffi.Pointer<_typeobject> typeobj,
-  ) {
-    return (_PyObject_INIT ??=
-        _dylib.lookupFunction<_c_PyObject_INIT, _dart_PyObject_INIT>(
-            '_PyObject_INIT'))(
-      op,
-      typeobj,
-    );
-  }
-
-  _dart_PyObject_INIT? _PyObject_INIT;
-
-  ffi.Pointer<PyVarObject> PyObject_INIT_VAR(
-    ffi.Pointer<PyVarObject> op,
-    ffi.Pointer<_typeobject> typeobj,
-    int size,
-  ) {
-    return (_PyObject_INIT_VAR ??=
-        _dylib.lookupFunction<_c_PyObject_INIT_VAR, _dart_PyObject_INIT_VAR>(
-            '_PyObject_INIT_VAR'))(
-      op,
-      typeobj,
-      size,
-    );
-  }
-
-  _dart_PyObject_INIT_VAR? _PyObject_INIT_VAR;
+  late final _PyObject_NewVar_ptr =
+      _lookup<ffi.NativeFunction<_c_PyObject_NewVar>>('_PyObject_NewVar');
+  late final _dart_PyObject_NewVar _PyObject_NewVar =
+      _PyObject_NewVar_ptr.asFunction<_dart_PyObject_NewVar>();
 
   int PyGC_Collect() {
-    return (_PyGC_Collect ??= _dylib
-        .lookupFunction<_c_PyGC_Collect, _dart_PyGC_Collect>('PyGC_Collect'))();
+    return _PyGC_Collect();
   }
 
-  _dart_PyGC_Collect? _PyGC_Collect;
+  late final _PyGC_Collect_ptr =
+      _lookup<ffi.NativeFunction<_c_PyGC_Collect>>('PyGC_Collect');
+  late final _dart_PyGC_Collect _PyGC_Collect =
+      _PyGC_Collect_ptr.asFunction<_dart_PyGC_Collect>();
 
   ffi.Pointer<PyVarObject> PyObject_GC_Resize(
     ffi.Pointer<PyVarObject> arg0,
     int arg1,
   ) {
-    return (_PyObject_GC_Resize ??=
-        _dylib.lookupFunction<_c_PyObject_GC_Resize, _dart_PyObject_GC_Resize>(
-            '_PyObject_GC_Resize'))(
+    return _PyObject_GC_Resize(
       arg0,
       arg1,
     );
   }
 
-  _dart_PyObject_GC_Resize? _PyObject_GC_Resize;
+  late final _PyObject_GC_Resize_ptr =
+      _lookup<ffi.NativeFunction<_c_PyObject_GC_Resize>>('_PyObject_GC_Resize');
+  late final _dart_PyObject_GC_Resize _PyObject_GC_Resize =
+      _PyObject_GC_Resize_ptr.asFunction<_dart_PyObject_GC_Resize>();
 
   ffi.Pointer<PyObject> PyObject_GC_New(
     ffi.Pointer<_typeobject> arg0,
   ) {
-    return (_PyObject_GC_New ??=
-        _dylib.lookupFunction<_c_PyObject_GC_New, _dart_PyObject_GC_New>(
-            '_PyObject_GC_New'))(
+    return _PyObject_GC_New(
       arg0,
     );
   }
 
-  _dart_PyObject_GC_New? _PyObject_GC_New;
+  late final _PyObject_GC_New_ptr =
+      _lookup<ffi.NativeFunction<_c_PyObject_GC_New>>('_PyObject_GC_New');
+  late final _dart_PyObject_GC_New _PyObject_GC_New =
+      _PyObject_GC_New_ptr.asFunction<_dart_PyObject_GC_New>();
 
   ffi.Pointer<PyVarObject> PyObject_GC_NewVar(
     ffi.Pointer<_typeobject> arg0,
     int arg1,
   ) {
-    return (_PyObject_GC_NewVar ??=
-        _dylib.lookupFunction<_c_PyObject_GC_NewVar, _dart_PyObject_GC_NewVar>(
-            '_PyObject_GC_NewVar'))(
+    return _PyObject_GC_NewVar(
       arg0,
       arg1,
     );
   }
 
-  _dart_PyObject_GC_NewVar? _PyObject_GC_NewVar;
+  late final _PyObject_GC_NewVar_ptr =
+      _lookup<ffi.NativeFunction<_c_PyObject_GC_NewVar>>('_PyObject_GC_NewVar');
+  late final _dart_PyObject_GC_NewVar _PyObject_GC_NewVar =
+      _PyObject_GC_NewVar_ptr.asFunction<_dart_PyObject_GC_NewVar>();
 
   void PyObject_GC_Track(
     ffi.Pointer<ffi.Void> arg0,
   ) {
-    return (_PyObject_GC_Track ??=
-        _dylib.lookupFunction<_c_PyObject_GC_Track, _dart_PyObject_GC_Track>(
-            'PyObject_GC_Track'))(
+    return _PyObject_GC_Track(
       arg0,
     );
   }
 
-  _dart_PyObject_GC_Track? _PyObject_GC_Track;
+  late final _PyObject_GC_Track_ptr =
+      _lookup<ffi.NativeFunction<_c_PyObject_GC_Track>>('PyObject_GC_Track');
+  late final _dart_PyObject_GC_Track _PyObject_GC_Track =
+      _PyObject_GC_Track_ptr.asFunction<_dart_PyObject_GC_Track>();
 
   void PyObject_GC_UnTrack(
     ffi.Pointer<ffi.Void> arg0,
   ) {
-    return (_PyObject_GC_UnTrack ??= _dylib.lookupFunction<
-        _c_PyObject_GC_UnTrack,
-        _dart_PyObject_GC_UnTrack>('PyObject_GC_UnTrack'))(
+    return _PyObject_GC_UnTrack(
       arg0,
     );
   }
 
-  _dart_PyObject_GC_UnTrack? _PyObject_GC_UnTrack;
+  late final _PyObject_GC_UnTrack_ptr =
+      _lookup<ffi.NativeFunction<_c_PyObject_GC_UnTrack>>(
+          'PyObject_GC_UnTrack');
+  late final _dart_PyObject_GC_UnTrack _PyObject_GC_UnTrack =
+      _PyObject_GC_UnTrack_ptr.asFunction<_dart_PyObject_GC_UnTrack>();
 
   void PyObject_GC_Del(
     ffi.Pointer<ffi.Void> arg0,
   ) {
-    return (_PyObject_GC_Del ??=
-        _dylib.lookupFunction<_c_PyObject_GC_Del, _dart_PyObject_GC_Del>(
-            'PyObject_GC_Del'))(
+    return _PyObject_GC_Del(
       arg0,
     );
   }
 
-  _dart_PyObject_GC_Del? _PyObject_GC_Del;
+  late final _PyObject_GC_Del_ptr =
+      _lookup<ffi.NativeFunction<_c_PyObject_GC_Del>>('PyObject_GC_Del');
+  late final _dart_PyObject_GC_Del _PyObject_GC_Del =
+      _PyObject_GC_Del_ptr.asFunction<_dart_PyObject_GC_Del>();
 
   int Py_HashDouble(
     double arg0,
   ) {
-    return (_Py_HashDouble ??=
-        _dylib.lookupFunction<_c_Py_HashDouble, _dart_Py_HashDouble>(
-            '_Py_HashDouble'))(
+    return _Py_HashDouble(
       arg0,
     );
   }
 
-  _dart_Py_HashDouble? _Py_HashDouble;
+  late final _Py_HashDouble_ptr =
+      _lookup<ffi.NativeFunction<_c_Py_HashDouble>>('_Py_HashDouble');
+  late final _dart_Py_HashDouble _Py_HashDouble =
+      _Py_HashDouble_ptr.asFunction<_dart_Py_HashDouble>();
 
   int Py_HashPointer(
     ffi.Pointer<ffi.Void> arg0,
   ) {
-    return (_Py_HashPointer ??=
-        _dylib.lookupFunction<_c_Py_HashPointer, _dart_Py_HashPointer>(
-            '_Py_HashPointer'))(
+    return _Py_HashPointer(
       arg0,
     );
   }
 
-  _dart_Py_HashPointer? _Py_HashPointer;
+  late final _Py_HashPointer_ptr =
+      _lookup<ffi.NativeFunction<_c_Py_HashPointer>>('_Py_HashPointer');
+  late final _dart_Py_HashPointer _Py_HashPointer =
+      _Py_HashPointer_ptr.asFunction<_dart_Py_HashPointer>();
 
   int Py_HashBytes(
     ffi.Pointer<ffi.Void> arg0,
     int arg1,
   ) {
-    return (_Py_HashBytes ??= _dylib
-        .lookupFunction<_c_Py_HashBytes, _dart_Py_HashBytes>('_Py_HashBytes'))(
+    return _Py_HashBytes(
       arg0,
       arg1,
     );
   }
 
-  _dart_Py_HashBytes? _Py_HashBytes;
+  late final _Py_HashBytes_ptr =
+      _lookup<ffi.NativeFunction<_c_Py_HashBytes>>('_Py_HashBytes');
+  late final _dart_Py_HashBytes _Py_HashBytes =
+      _Py_HashBytes_ptr.asFunction<_dart_Py_HashBytes>();
 
   ffi.Pointer<PyHash_FuncDef> PyHash_GetFuncDef() {
-    return (_PyHash_GetFuncDef ??=
-        _dylib.lookupFunction<_c_PyHash_GetFuncDef, _dart_PyHash_GetFuncDef>(
-            'PyHash_GetFuncDef'))();
+    return _PyHash_GetFuncDef();
   }
 
-  _dart_PyHash_GetFuncDef? _PyHash_GetFuncDef;
+  late final _PyHash_GetFuncDef_ptr =
+      _lookup<ffi.NativeFunction<_c_PyHash_GetFuncDef>>('PyHash_GetFuncDef');
+  late final _dart_PyHash_GetFuncDef _PyHash_GetFuncDef =
+      _PyHash_GetFuncDef_ptr.asFunction<_dart_PyHash_GetFuncDef>();
 
-  late final int Py_DebugFlag = _dylib.lookup<ffi.Int32>('Py_DebugFlag').value;
+  late final ffi.Pointer<ffi.Int32> _Py_DebugFlag =
+      _lookup<ffi.Int32>('Py_DebugFlag');
 
-  late final int Py_VerboseFlag =
-      _dylib.lookup<ffi.Int32>('Py_VerboseFlag').value;
+  int get Py_DebugFlag => _Py_DebugFlag.value;
 
-  late final int Py_QuietFlag = _dylib.lookup<ffi.Int32>('Py_QuietFlag').value;
+  set Py_DebugFlag(int value) => _Py_DebugFlag.value = value;
 
-  late final int Py_InteractiveFlag =
-      _dylib.lookup<ffi.Int32>('Py_InteractiveFlag').value;
+  late final ffi.Pointer<ffi.Int32> _Py_VerboseFlag =
+      _lookup<ffi.Int32>('Py_VerboseFlag');
 
-  late final int Py_InspectFlag =
-      _dylib.lookup<ffi.Int32>('Py_InspectFlag').value;
+  int get Py_VerboseFlag => _Py_VerboseFlag.value;
 
-  late final int Py_OptimizeFlag =
-      _dylib.lookup<ffi.Int32>('Py_OptimizeFlag').value;
+  set Py_VerboseFlag(int value) => _Py_VerboseFlag.value = value;
 
-  late final int Py_NoSiteFlag =
-      _dylib.lookup<ffi.Int32>('Py_NoSiteFlag').value;
+  late final ffi.Pointer<ffi.Int32> _Py_QuietFlag =
+      _lookup<ffi.Int32>('Py_QuietFlag');
 
-  late final int Py_BytesWarningFlag =
-      _dylib.lookup<ffi.Int32>('Py_BytesWarningFlag').value;
+  int get Py_QuietFlag => _Py_QuietFlag.value;
 
-  late final int Py_FrozenFlag =
-      _dylib.lookup<ffi.Int32>('Py_FrozenFlag').value;
+  set Py_QuietFlag(int value) => _Py_QuietFlag.value = value;
 
-  late final int Py_IgnoreEnvironmentFlag =
-      _dylib.lookup<ffi.Int32>('Py_IgnoreEnvironmentFlag').value;
+  late final ffi.Pointer<ffi.Int32> _Py_InteractiveFlag =
+      _lookup<ffi.Int32>('Py_InteractiveFlag');
 
-  late final int Py_DontWriteBytecodeFlag =
-      _dylib.lookup<ffi.Int32>('Py_DontWriteBytecodeFlag').value;
+  int get Py_InteractiveFlag => _Py_InteractiveFlag.value;
 
-  late final int Py_NoUserSiteDirectory =
-      _dylib.lookup<ffi.Int32>('Py_NoUserSiteDirectory').value;
+  set Py_InteractiveFlag(int value) => _Py_InteractiveFlag.value = value;
 
-  late final int Py_UnbufferedStdioFlag =
-      _dylib.lookup<ffi.Int32>('Py_UnbufferedStdioFlag').value;
+  late final ffi.Pointer<ffi.Int32> _Py_InspectFlag =
+      _lookup<ffi.Int32>('Py_InspectFlag');
 
-  late final int Py_HashRandomizationFlag =
-      _dylib.lookup<ffi.Int32>('Py_HashRandomizationFlag').value;
+  int get Py_InspectFlag => _Py_InspectFlag.value;
 
-  late final int Py_IsolatedFlag =
-      _dylib.lookup<ffi.Int32>('Py_IsolatedFlag').value;
+  set Py_InspectFlag(int value) => _Py_InspectFlag.value = value;
 
-  late final _typeobject PyByteArray_Type =
-      _dylib.lookup<_typeobject>('PyByteArray_Type').ref;
+  late final ffi.Pointer<ffi.Int32> _Py_OptimizeFlag =
+      _lookup<ffi.Int32>('Py_OptimizeFlag');
 
-  late final _typeobject PyByteArrayIter_Type =
-      _dylib.lookup<_typeobject>('PyByteArrayIter_Type').ref;
+  int get Py_OptimizeFlag => _Py_OptimizeFlag.value;
+
+  set Py_OptimizeFlag(int value) => _Py_OptimizeFlag.value = value;
+
+  late final ffi.Pointer<ffi.Int32> _Py_NoSiteFlag =
+      _lookup<ffi.Int32>('Py_NoSiteFlag');
+
+  int get Py_NoSiteFlag => _Py_NoSiteFlag.value;
+
+  set Py_NoSiteFlag(int value) => _Py_NoSiteFlag.value = value;
+
+  late final ffi.Pointer<ffi.Int32> _Py_BytesWarningFlag =
+      _lookup<ffi.Int32>('Py_BytesWarningFlag');
+
+  int get Py_BytesWarningFlag => _Py_BytesWarningFlag.value;
+
+  set Py_BytesWarningFlag(int value) => _Py_BytesWarningFlag.value = value;
+
+  late final ffi.Pointer<ffi.Int32> _Py_FrozenFlag =
+      _lookup<ffi.Int32>('Py_FrozenFlag');
+
+  int get Py_FrozenFlag => _Py_FrozenFlag.value;
+
+  set Py_FrozenFlag(int value) => _Py_FrozenFlag.value = value;
+
+  late final ffi.Pointer<ffi.Int32> _Py_IgnoreEnvironmentFlag =
+      _lookup<ffi.Int32>('Py_IgnoreEnvironmentFlag');
+
+  int get Py_IgnoreEnvironmentFlag => _Py_IgnoreEnvironmentFlag.value;
+
+  set Py_IgnoreEnvironmentFlag(int value) =>
+      _Py_IgnoreEnvironmentFlag.value = value;
+
+  late final ffi.Pointer<ffi.Int32> _Py_DontWriteBytecodeFlag =
+      _lookup<ffi.Int32>('Py_DontWriteBytecodeFlag');
+
+  int get Py_DontWriteBytecodeFlag => _Py_DontWriteBytecodeFlag.value;
+
+  set Py_DontWriteBytecodeFlag(int value) =>
+      _Py_DontWriteBytecodeFlag.value = value;
+
+  late final ffi.Pointer<ffi.Int32> _Py_NoUserSiteDirectory =
+      _lookup<ffi.Int32>('Py_NoUserSiteDirectory');
+
+  int get Py_NoUserSiteDirectory => _Py_NoUserSiteDirectory.value;
+
+  set Py_NoUserSiteDirectory(int value) =>
+      _Py_NoUserSiteDirectory.value = value;
+
+  late final ffi.Pointer<ffi.Int32> _Py_UnbufferedStdioFlag =
+      _lookup<ffi.Int32>('Py_UnbufferedStdioFlag');
+
+  int get Py_UnbufferedStdioFlag => _Py_UnbufferedStdioFlag.value;
+
+  set Py_UnbufferedStdioFlag(int value) =>
+      _Py_UnbufferedStdioFlag.value = value;
+
+  late final ffi.Pointer<ffi.Int32> _Py_HashRandomizationFlag =
+      _lookup<ffi.Int32>('Py_HashRandomizationFlag');
+
+  int get Py_HashRandomizationFlag => _Py_HashRandomizationFlag.value;
+
+  set Py_HashRandomizationFlag(int value) =>
+      _Py_HashRandomizationFlag.value = value;
+
+  late final ffi.Pointer<ffi.Int32> _Py_IsolatedFlag =
+      _lookup<ffi.Int32>('Py_IsolatedFlag');
+
+  int get Py_IsolatedFlag => _Py_IsolatedFlag.value;
+
+  set Py_IsolatedFlag(int value) => _Py_IsolatedFlag.value = value;
+
+  late final ffi.Pointer<_typeobject> _PyByteArray_Type =
+      _lookup<_typeobject>('PyByteArray_Type');
+
+  _typeobject get PyByteArray_Type => _PyByteArray_Type.ref;
+
+  late final ffi.Pointer<_typeobject> _PyByteArrayIter_Type =
+      _lookup<_typeobject>('PyByteArrayIter_Type');
+
+  _typeobject get PyByteArrayIter_Type => _PyByteArrayIter_Type.ref;
 
   ffi.Pointer<PyObject> PyByteArray_FromObject(
     ffi.Pointer<PyObject> arg0,
   ) {
-    return (_PyByteArray_FromObject ??= _dylib.lookupFunction<
-        _c_PyByteArray_FromObject,
-        _dart_PyByteArray_FromObject>('PyByteArray_FromObject'))(
+    return _PyByteArray_FromObject(
       arg0,
     );
   }
 
-  _dart_PyByteArray_FromObject? _PyByteArray_FromObject;
+  late final _PyByteArray_FromObject_ptr =
+      _lookup<ffi.NativeFunction<_c_PyByteArray_FromObject>>(
+          'PyByteArray_FromObject');
+  late final _dart_PyByteArray_FromObject _PyByteArray_FromObject =
+      _PyByteArray_FromObject_ptr.asFunction<_dart_PyByteArray_FromObject>();
 
   ffi.Pointer<PyObject> PyByteArray_Concat(
     ffi.Pointer<PyObject> arg0,
     ffi.Pointer<PyObject> arg1,
   ) {
-    return (_PyByteArray_Concat ??=
-        _dylib.lookupFunction<_c_PyByteArray_Concat, _dart_PyByteArray_Concat>(
-            'PyByteArray_Concat'))(
+    return _PyByteArray_Concat(
       arg0,
       arg1,
     );
   }
 
-  _dart_PyByteArray_Concat? _PyByteArray_Concat;
+  late final _PyByteArray_Concat_ptr =
+      _lookup<ffi.NativeFunction<_c_PyByteArray_Concat>>('PyByteArray_Concat');
+  late final _dart_PyByteArray_Concat _PyByteArray_Concat =
+      _PyByteArray_Concat_ptr.asFunction<_dart_PyByteArray_Concat>();
 
   ffi.Pointer<PyObject> PyByteArray_FromStringAndSize(
     ffi.Pointer<ffi.Int8> arg0,
     int arg1,
   ) {
-    return (_PyByteArray_FromStringAndSize ??= _dylib.lookupFunction<
-        _c_PyByteArray_FromStringAndSize,
-        _dart_PyByteArray_FromStringAndSize>('PyByteArray_FromStringAndSize'))(
+    return _PyByteArray_FromStringAndSize(
       arg0,
       arg1,
     );
   }
 
-  _dart_PyByteArray_FromStringAndSize? _PyByteArray_FromStringAndSize;
+  late final _PyByteArray_FromStringAndSize_ptr =
+      _lookup<ffi.NativeFunction<_c_PyByteArray_FromStringAndSize>>(
+          'PyByteArray_FromStringAndSize');
+  late final _dart_PyByteArray_FromStringAndSize
+      _PyByteArray_FromStringAndSize = _PyByteArray_FromStringAndSize_ptr
+          .asFunction<_dart_PyByteArray_FromStringAndSize>();
 
   int PyByteArray_Size(
     ffi.Pointer<PyObject> arg0,
   ) {
-    return (_PyByteArray_Size ??=
-        _dylib.lookupFunction<_c_PyByteArray_Size, _dart_PyByteArray_Size>(
-            'PyByteArray_Size'))(
+    return _PyByteArray_Size(
       arg0,
     );
   }
 
-  _dart_PyByteArray_Size? _PyByteArray_Size;
+  late final _PyByteArray_Size_ptr =
+      _lookup<ffi.NativeFunction<_c_PyByteArray_Size>>('PyByteArray_Size');
+  late final _dart_PyByteArray_Size _PyByteArray_Size =
+      _PyByteArray_Size_ptr.asFunction<_dart_PyByteArray_Size>();
 
   ffi.Pointer<ffi.Int8> PyByteArray_AsString(
     ffi.Pointer<PyObject> arg0,
   ) {
-    return (_PyByteArray_AsString ??= _dylib.lookupFunction<
-        _c_PyByteArray_AsString,
-        _dart_PyByteArray_AsString>('PyByteArray_AsString'))(
+    return _PyByteArray_AsString(
       arg0,
     );
   }
 
-  _dart_PyByteArray_AsString? _PyByteArray_AsString;
+  late final _PyByteArray_AsString_ptr =
+      _lookup<ffi.NativeFunction<_c_PyByteArray_AsString>>(
+          'PyByteArray_AsString');
+  late final _dart_PyByteArray_AsString _PyByteArray_AsString =
+      _PyByteArray_AsString_ptr.asFunction<_dart_PyByteArray_AsString>();
 
   int PyByteArray_Resize(
     ffi.Pointer<PyObject> arg0,
     int arg1,
   ) {
-    return (_PyByteArray_Resize ??=
-        _dylib.lookupFunction<_c_PyByteArray_Resize, _dart_PyByteArray_Resize>(
-            'PyByteArray_Resize'))(
+    return _PyByteArray_Resize(
       arg0,
       arg1,
     );
   }
 
-  _dart_PyByteArray_Resize? _PyByteArray_Resize;
+  late final _PyByteArray_Resize_ptr =
+      _lookup<ffi.NativeFunction<_c_PyByteArray_Resize>>('PyByteArray_Resize');
+  late final _dart_PyByteArray_Resize _PyByteArray_Resize =
+      _PyByteArray_Resize_ptr.asFunction<_dart_PyByteArray_Resize>();
 
-  late final ffi.Pointer<ffi.Int8> PyByteArray_empty_string =
-      _dylib.lookup<ffi.Pointer<ffi.Int8>>('_PyByteArray_empty_string').value;
+  late final ffi.Pointer<ffi.Pointer<ffi.Int8>> _PyByteArray_empty_string =
+      _lookup<ffi.Pointer<ffi.Int8>>('_PyByteArray_empty_string');
 
-  late final _typeobject PyBytes_Type =
-      _dylib.lookup<_typeobject>('PyBytes_Type').ref;
+  ffi.Pointer<ffi.Int8> get PyByteArray_empty_string =>
+      _PyByteArray_empty_string.value;
 
-  late final _typeobject PyBytesIter_Type =
-      _dylib.lookup<_typeobject>('PyBytesIter_Type').ref;
+  set PyByteArray_empty_string(ffi.Pointer<ffi.Int8> value) =>
+      _PyByteArray_empty_string.value = value;
+
+  late final ffi.Pointer<_typeobject> _PyBytes_Type =
+      _lookup<_typeobject>('PyBytes_Type');
+
+  _typeobject get PyBytes_Type => _PyBytes_Type.ref;
+
+  late final ffi.Pointer<_typeobject> _PyBytesIter_Type =
+      _lookup<_typeobject>('PyBytesIter_Type');
+
+  _typeobject get PyBytesIter_Type => _PyBytesIter_Type.ref;
 
   ffi.Pointer<PyObject> PyBytes_FromStringAndSize(
     ffi.Pointer<ffi.Int8> arg0,
     int arg1,
   ) {
-    return (_PyBytes_FromStringAndSize ??= _dylib.lookupFunction<
-        _c_PyBytes_FromStringAndSize,
-        _dart_PyBytes_FromStringAndSize>('PyBytes_FromStringAndSize'))(
+    return _PyBytes_FromStringAndSize(
       arg0,
       arg1,
     );
   }
 
-  _dart_PyBytes_FromStringAndSize? _PyBytes_FromStringAndSize;
+  late final _PyBytes_FromStringAndSize_ptr =
+      _lookup<ffi.NativeFunction<_c_PyBytes_FromStringAndSize>>(
+          'PyBytes_FromStringAndSize');
+  late final _dart_PyBytes_FromStringAndSize _PyBytes_FromStringAndSize =
+      _PyBytes_FromStringAndSize_ptr.asFunction<
+          _dart_PyBytes_FromStringAndSize>();
 
   ffi.Pointer<PyObject> PyBytes_FromString(
     ffi.Pointer<ffi.Int8> arg0,
   ) {
-    return (_PyBytes_FromString ??=
-        _dylib.lookupFunction<_c_PyBytes_FromString, _dart_PyBytes_FromString>(
-            'PyBytes_FromString'))(
+    return _PyBytes_FromString(
       arg0,
     );
   }
 
-  _dart_PyBytes_FromString? _PyBytes_FromString;
+  late final _PyBytes_FromString_ptr =
+      _lookup<ffi.NativeFunction<_c_PyBytes_FromString>>('PyBytes_FromString');
+  late final _dart_PyBytes_FromString _PyBytes_FromString =
+      _PyBytes_FromString_ptr.asFunction<_dart_PyBytes_FromString>();
 
   ffi.Pointer<PyObject> PyBytes_FromObject(
     ffi.Pointer<PyObject> arg0,
   ) {
-    return (_PyBytes_FromObject ??=
-        _dylib.lookupFunction<_c_PyBytes_FromObject, _dart_PyBytes_FromObject>(
-            'PyBytes_FromObject'))(
+    return _PyBytes_FromObject(
       arg0,
     );
   }
 
-  _dart_PyBytes_FromObject? _PyBytes_FromObject;
+  late final _PyBytes_FromObject_ptr =
+      _lookup<ffi.NativeFunction<_c_PyBytes_FromObject>>('PyBytes_FromObject');
+  late final _dart_PyBytes_FromObject _PyBytes_FromObject =
+      _PyBytes_FromObject_ptr.asFunction<_dart_PyBytes_FromObject>();
 
   ffi.Pointer<PyObject> PyBytes_FromFormatV(
     ffi.Pointer<ffi.Int8> arg0,
     ffi.Pointer<__va_list_tag> arg1,
   ) {
-    return (_PyBytes_FromFormatV ??= _dylib.lookupFunction<
-        _c_PyBytes_FromFormatV,
-        _dart_PyBytes_FromFormatV>('PyBytes_FromFormatV'))(
+    return _PyBytes_FromFormatV(
       arg0,
       arg1,
     );
   }
 
-  _dart_PyBytes_FromFormatV? _PyBytes_FromFormatV;
+  late final _PyBytes_FromFormatV_ptr =
+      _lookup<ffi.NativeFunction<_c_PyBytes_FromFormatV>>(
+          'PyBytes_FromFormatV');
+  late final _dart_PyBytes_FromFormatV _PyBytes_FromFormatV =
+      _PyBytes_FromFormatV_ptr.asFunction<_dart_PyBytes_FromFormatV>();
 
   ffi.Pointer<PyObject> PyBytes_FromFormat(
     ffi.Pointer<ffi.Int8> arg0,
   ) {
-    return (_PyBytes_FromFormat ??=
-        _dylib.lookupFunction<_c_PyBytes_FromFormat, _dart_PyBytes_FromFormat>(
-            'PyBytes_FromFormat'))(
+    return _PyBytes_FromFormat(
       arg0,
     );
   }
 
-  _dart_PyBytes_FromFormat? _PyBytes_FromFormat;
+  late final _PyBytes_FromFormat_ptr =
+      _lookup<ffi.NativeFunction<_c_PyBytes_FromFormat>>('PyBytes_FromFormat');
+  late final _dart_PyBytes_FromFormat _PyBytes_FromFormat =
+      _PyBytes_FromFormat_ptr.asFunction<_dart_PyBytes_FromFormat>();
 
   int PyBytes_Size(
     ffi.Pointer<PyObject> arg0,
   ) {
-    return (_PyBytes_Size ??= _dylib
-        .lookupFunction<_c_PyBytes_Size, _dart_PyBytes_Size>('PyBytes_Size'))(
+    return _PyBytes_Size(
       arg0,
     );
   }
 
-  _dart_PyBytes_Size? _PyBytes_Size;
+  late final _PyBytes_Size_ptr =
+      _lookup<ffi.NativeFunction<_c_PyBytes_Size>>('PyBytes_Size');
+  late final _dart_PyBytes_Size _PyBytes_Size =
+      _PyBytes_Size_ptr.asFunction<_dart_PyBytes_Size>();
 
   ffi.Pointer<ffi.Int8> PyBytes_AsString(
     ffi.Pointer<PyObject> arg0,
   ) {
-    return (_PyBytes_AsString ??=
-        _dylib.lookupFunction<_c_PyBytes_AsString, _dart_PyBytes_AsString>(
-            'PyBytes_AsString'))(
+    return _PyBytes_AsString(
       arg0,
     );
   }
 
-  _dart_PyBytes_AsString? _PyBytes_AsString;
+  late final _PyBytes_AsString_ptr =
+      _lookup<ffi.NativeFunction<_c_PyBytes_AsString>>('PyBytes_AsString');
+  late final _dart_PyBytes_AsString _PyBytes_AsString =
+      _PyBytes_AsString_ptr.asFunction<_dart_PyBytes_AsString>();
 
   ffi.Pointer<PyObject> PyBytes_Repr(
     ffi.Pointer<PyObject> arg0,
     int arg1,
   ) {
-    return (_PyBytes_Repr ??= _dylib
-        .lookupFunction<_c_PyBytes_Repr, _dart_PyBytes_Repr>('PyBytes_Repr'))(
+    return _PyBytes_Repr(
       arg0,
       arg1,
     );
   }
 
-  _dart_PyBytes_Repr? _PyBytes_Repr;
+  late final _PyBytes_Repr_ptr =
+      _lookup<ffi.NativeFunction<_c_PyBytes_Repr>>('PyBytes_Repr');
+  late final _dart_PyBytes_Repr _PyBytes_Repr =
+      _PyBytes_Repr_ptr.asFunction<_dart_PyBytes_Repr>();
 
   void PyBytes_Concat(
     ffi.Pointer<ffi.Pointer<PyObject>> arg0,
     ffi.Pointer<PyObject> arg1,
   ) {
-    return (_PyBytes_Concat ??=
-        _dylib.lookupFunction<_c_PyBytes_Concat, _dart_PyBytes_Concat>(
-            'PyBytes_Concat'))(
+    return _PyBytes_Concat(
       arg0,
       arg1,
     );
   }
 
-  _dart_PyBytes_Concat? _PyBytes_Concat;
+  late final _PyBytes_Concat_ptr =
+      _lookup<ffi.NativeFunction<_c_PyBytes_Concat>>('PyBytes_Concat');
+  late final _dart_PyBytes_Concat _PyBytes_Concat =
+      _PyBytes_Concat_ptr.asFunction<_dart_PyBytes_Concat>();
 
   void PyBytes_ConcatAndDel(
     ffi.Pointer<ffi.Pointer<PyObject>> arg0,
     ffi.Pointer<PyObject> arg1,
   ) {
-    return (_PyBytes_ConcatAndDel ??= _dylib.lookupFunction<
-        _c_PyBytes_ConcatAndDel,
-        _dart_PyBytes_ConcatAndDel>('PyBytes_ConcatAndDel'))(
+    return _PyBytes_ConcatAndDel(
       arg0,
       arg1,
     );
   }
 
-  _dart_PyBytes_ConcatAndDel? _PyBytes_ConcatAndDel;
+  late final _PyBytes_ConcatAndDel_ptr =
+      _lookup<ffi.NativeFunction<_c_PyBytes_ConcatAndDel>>(
+          'PyBytes_ConcatAndDel');
+  late final _dart_PyBytes_ConcatAndDel _PyBytes_ConcatAndDel =
+      _PyBytes_ConcatAndDel_ptr.asFunction<_dart_PyBytes_ConcatAndDel>();
 
   int PyBytes_Resize(
     ffi.Pointer<ffi.Pointer<PyObject>> arg0,
     int arg1,
   ) {
-    return (_PyBytes_Resize ??=
-        _dylib.lookupFunction<_c_PyBytes_Resize, _dart_PyBytes_Resize>(
-            '_PyBytes_Resize'))(
+    return _PyBytes_Resize(
       arg0,
       arg1,
     );
   }
 
-  _dart_PyBytes_Resize? _PyBytes_Resize;
+  late final _PyBytes_Resize_ptr =
+      _lookup<ffi.NativeFunction<_c_PyBytes_Resize>>('_PyBytes_Resize');
+  late final _dart_PyBytes_Resize _PyBytes_Resize =
+      _PyBytes_Resize_ptr.asFunction<_dart_PyBytes_Resize>();
 
   ffi.Pointer<PyObject> PyBytes_FormatEx(
     ffi.Pointer<ffi.Int8> format,
@@ -1615,9 +1822,7 @@ class DartPyC {
     ffi.Pointer<PyObject> args,
     int use_bytearray,
   ) {
-    return (_PyBytes_FormatEx ??=
-        _dylib.lookupFunction<_c_PyBytes_FormatEx, _dart_PyBytes_FormatEx>(
-            '_PyBytes_FormatEx'))(
+    return _PyBytes_FormatEx(
       format,
       format_len,
       args,
@@ -1625,21 +1830,25 @@ class DartPyC {
     );
   }
 
-  _dart_PyBytes_FormatEx? _PyBytes_FormatEx;
+  late final _PyBytes_FormatEx_ptr =
+      _lookup<ffi.NativeFunction<_c_PyBytes_FormatEx>>('_PyBytes_FormatEx');
+  late final _dart_PyBytes_FormatEx _PyBytes_FormatEx =
+      _PyBytes_FormatEx_ptr.asFunction<_dart_PyBytes_FormatEx>();
 
   ffi.Pointer<PyObject> PyBytes_FromHex(
     ffi.Pointer<PyObject> string,
     int use_bytearray,
   ) {
-    return (_PyBytes_FromHex ??=
-        _dylib.lookupFunction<_c_PyBytes_FromHex, _dart_PyBytes_FromHex>(
-            '_PyBytes_FromHex'))(
+    return _PyBytes_FromHex(
       string,
       use_bytearray,
     );
   }
 
-  _dart_PyBytes_FromHex? _PyBytes_FromHex;
+  late final _PyBytes_FromHex_ptr =
+      _lookup<ffi.NativeFunction<_c_PyBytes_FromHex>>('_PyBytes_FromHex');
+  late final _dart_PyBytes_FromHex _PyBytes_FromHex =
+      _PyBytes_FromHex_ptr.asFunction<_dart_PyBytes_FromHex>();
 
   ffi.Pointer<PyObject> PyBytes_DecodeEscape(
     ffi.Pointer<ffi.Int8> arg0,
@@ -1648,9 +1857,7 @@ class DartPyC {
     int arg3,
     ffi.Pointer<ffi.Int8> arg4,
   ) {
-    return (_PyBytes_DecodeEscape ??= _dylib.lookupFunction<
-        _c_PyBytes_DecodeEscape,
-        _dart_PyBytes_DecodeEscape>('PyBytes_DecodeEscape'))(
+    return _PyBytes_DecodeEscape(
       arg0,
       arg1,
       arg2,
@@ -1659,7 +1866,11 @@ class DartPyC {
     );
   }
 
-  _dart_PyBytes_DecodeEscape? _PyBytes_DecodeEscape;
+  late final _PyBytes_DecodeEscape_ptr =
+      _lookup<ffi.NativeFunction<_c_PyBytes_DecodeEscape>>(
+          'PyBytes_DecodeEscape');
+  late final _dart_PyBytes_DecodeEscape _PyBytes_DecodeEscape =
+      _PyBytes_DecodeEscape_ptr.asFunction<_dart_PyBytes_DecodeEscape>();
 
   ffi.Pointer<PyObject> PyBytes_DecodeEscape_1(
     ffi.Pointer<ffi.Int8> arg0,
@@ -1669,9 +1880,7 @@ class DartPyC {
     ffi.Pointer<ffi.Int8> arg4,
     ffi.Pointer<ffi.Pointer<ffi.Int8>> arg5,
   ) {
-    return (_PyBytes_DecodeEscape_1 ??= _dylib.lookupFunction<
-        _c_PyBytes_DecodeEscape_1,
-        _dart_PyBytes_DecodeEscape_1>('_PyBytes_DecodeEscape'))(
+    return _PyBytes_DecodeEscape_1(
       arg0,
       arg1,
       arg2,
@@ -1681,36 +1890,44 @@ class DartPyC {
     );
   }
 
-  _dart_PyBytes_DecodeEscape_1? _PyBytes_DecodeEscape_1;
+  late final _PyBytes_DecodeEscape_1_ptr =
+      _lookup<ffi.NativeFunction<_c_PyBytes_DecodeEscape_1>>(
+          '_PyBytes_DecodeEscape');
+  late final _dart_PyBytes_DecodeEscape_1 _PyBytes_DecodeEscape_1 =
+      _PyBytes_DecodeEscape_1_ptr.asFunction<_dart_PyBytes_DecodeEscape_1>();
 
   ffi.Pointer<PyObject> PyBytes_Join(
     ffi.Pointer<PyObject> sep,
     ffi.Pointer<PyObject> x,
   ) {
-    return (_PyBytes_Join ??= _dylib
-        .lookupFunction<_c_PyBytes_Join, _dart_PyBytes_Join>('_PyBytes_Join'))(
+    return _PyBytes_Join(
       sep,
       x,
     );
   }
 
-  _dart_PyBytes_Join? _PyBytes_Join;
+  late final _PyBytes_Join_ptr =
+      _lookup<ffi.NativeFunction<_c_PyBytes_Join>>('_PyBytes_Join');
+  late final _dart_PyBytes_Join _PyBytes_Join =
+      _PyBytes_Join_ptr.asFunction<_dart_PyBytes_Join>();
 
   int PyBytes_AsStringAndSize(
     ffi.Pointer<PyObject> obj,
     ffi.Pointer<ffi.Pointer<ffi.Int8>> s,
     ffi.Pointer<ffi.Int64> len,
   ) {
-    return (_PyBytes_AsStringAndSize ??= _dylib.lookupFunction<
-        _c_PyBytes_AsStringAndSize,
-        _dart_PyBytes_AsStringAndSize>('PyBytes_AsStringAndSize'))(
+    return _PyBytes_AsStringAndSize(
       obj,
       s,
       len,
     );
   }
 
-  _dart_PyBytes_AsStringAndSize? _PyBytes_AsStringAndSize;
+  late final _PyBytes_AsStringAndSize_ptr =
+      _lookup<ffi.NativeFunction<_c_PyBytes_AsStringAndSize>>(
+          'PyBytes_AsStringAndSize');
+  late final _dart_PyBytes_AsStringAndSize _PyBytes_AsStringAndSize =
+      _PyBytes_AsStringAndSize_ptr.asFunction<_dart_PyBytes_AsStringAndSize>();
 
   int PyBytes_InsertThousandsGroupingLocale(
     ffi.Pointer<ffi.Int8> buffer,
@@ -1719,10 +1936,7 @@ class DartPyC {
     int n_digits,
     int min_width,
   ) {
-    return (_PyBytes_InsertThousandsGroupingLocale ??= _dylib.lookupFunction<
-            _c_PyBytes_InsertThousandsGroupingLocale,
-            _dart_PyBytes_InsertThousandsGroupingLocale>(
-        '_PyBytes_InsertThousandsGroupingLocale'))(
+    return _PyBytes_InsertThousandsGroupingLocale(
       buffer,
       n_buffer,
       digits,
@@ -1731,8 +1945,13 @@ class DartPyC {
     );
   }
 
-  _dart_PyBytes_InsertThousandsGroupingLocale?
-      _PyBytes_InsertThousandsGroupingLocale;
+  late final _PyBytes_InsertThousandsGroupingLocale_ptr =
+      _lookup<ffi.NativeFunction<_c_PyBytes_InsertThousandsGroupingLocale>>(
+          '_PyBytes_InsertThousandsGroupingLocale');
+  late final _dart_PyBytes_InsertThousandsGroupingLocale
+      _PyBytes_InsertThousandsGroupingLocale =
+      _PyBytes_InsertThousandsGroupingLocale_ptr.asFunction<
+          _dart_PyBytes_InsertThousandsGroupingLocale>();
 
   int PyBytes_InsertThousandsGrouping(
     ffi.Pointer<ffi.Int8> buffer,
@@ -1743,10 +1962,7 @@ class DartPyC {
     ffi.Pointer<ffi.Int8> grouping,
     ffi.Pointer<ffi.Int8> thousands_sep,
   ) {
-    return (_PyBytes_InsertThousandsGrouping ??= _dylib.lookupFunction<
-            _c_PyBytes_InsertThousandsGrouping,
-            _dart_PyBytes_InsertThousandsGrouping>(
-        '_PyBytes_InsertThousandsGrouping'))(
+    return _PyBytes_InsertThousandsGrouping(
       buffer,
       n_buffer,
       digits,
@@ -1757,91 +1973,107 @@ class DartPyC {
     );
   }
 
-  _dart_PyBytes_InsertThousandsGrouping? _PyBytes_InsertThousandsGrouping;
+  late final _PyBytes_InsertThousandsGrouping_ptr =
+      _lookup<ffi.NativeFunction<_c_PyBytes_InsertThousandsGrouping>>(
+          '_PyBytes_InsertThousandsGrouping');
+  late final _dart_PyBytes_InsertThousandsGrouping
+      _PyBytes_InsertThousandsGrouping = _PyBytes_InsertThousandsGrouping_ptr
+          .asFunction<_dart_PyBytes_InsertThousandsGrouping>();
 
   void PyBytesWriter_Init(
     ffi.Pointer<_PyBytesWriter> writer,
   ) {
-    return (_PyBytesWriter_Init ??=
-        _dylib.lookupFunction<_c_PyBytesWriter_Init, _dart_PyBytesWriter_Init>(
-            '_PyBytesWriter_Init'))(
+    return _PyBytesWriter_Init(
       writer,
     );
   }
 
-  _dart_PyBytesWriter_Init? _PyBytesWriter_Init;
+  late final _PyBytesWriter_Init_ptr =
+      _lookup<ffi.NativeFunction<_c_PyBytesWriter_Init>>('_PyBytesWriter_Init');
+  late final _dart_PyBytesWriter_Init _PyBytesWriter_Init =
+      _PyBytesWriter_Init_ptr.asFunction<_dart_PyBytesWriter_Init>();
 
   ffi.Pointer<PyObject> PyBytesWriter_Finish(
     ffi.Pointer<_PyBytesWriter> writer,
     ffi.Pointer<ffi.Void> str,
   ) {
-    return (_PyBytesWriter_Finish ??= _dylib.lookupFunction<
-        _c_PyBytesWriter_Finish,
-        _dart_PyBytesWriter_Finish>('_PyBytesWriter_Finish'))(
+    return _PyBytesWriter_Finish(
       writer,
       str,
     );
   }
 
-  _dart_PyBytesWriter_Finish? _PyBytesWriter_Finish;
+  late final _PyBytesWriter_Finish_ptr =
+      _lookup<ffi.NativeFunction<_c_PyBytesWriter_Finish>>(
+          '_PyBytesWriter_Finish');
+  late final _dart_PyBytesWriter_Finish _PyBytesWriter_Finish =
+      _PyBytesWriter_Finish_ptr.asFunction<_dart_PyBytesWriter_Finish>();
 
   void PyBytesWriter_Dealloc(
     ffi.Pointer<_PyBytesWriter> writer,
   ) {
-    return (_PyBytesWriter_Dealloc ??= _dylib.lookupFunction<
-        _c_PyBytesWriter_Dealloc,
-        _dart_PyBytesWriter_Dealloc>('_PyBytesWriter_Dealloc'))(
+    return _PyBytesWriter_Dealloc(
       writer,
     );
   }
 
-  _dart_PyBytesWriter_Dealloc? _PyBytesWriter_Dealloc;
+  late final _PyBytesWriter_Dealloc_ptr =
+      _lookup<ffi.NativeFunction<_c_PyBytesWriter_Dealloc>>(
+          '_PyBytesWriter_Dealloc');
+  late final _dart_PyBytesWriter_Dealloc _PyBytesWriter_Dealloc =
+      _PyBytesWriter_Dealloc_ptr.asFunction<_dart_PyBytesWriter_Dealloc>();
 
   ffi.Pointer<ffi.Void> PyBytesWriter_Alloc(
     ffi.Pointer<_PyBytesWriter> writer,
     int size,
   ) {
-    return (_PyBytesWriter_Alloc ??= _dylib.lookupFunction<
-        _c_PyBytesWriter_Alloc,
-        _dart_PyBytesWriter_Alloc>('_PyBytesWriter_Alloc'))(
+    return _PyBytesWriter_Alloc(
       writer,
       size,
     );
   }
 
-  _dart_PyBytesWriter_Alloc? _PyBytesWriter_Alloc;
+  late final _PyBytesWriter_Alloc_ptr =
+      _lookup<ffi.NativeFunction<_c_PyBytesWriter_Alloc>>(
+          '_PyBytesWriter_Alloc');
+  late final _dart_PyBytesWriter_Alloc _PyBytesWriter_Alloc =
+      _PyBytesWriter_Alloc_ptr.asFunction<_dart_PyBytesWriter_Alloc>();
 
   ffi.Pointer<ffi.Void> PyBytesWriter_Prepare(
     ffi.Pointer<_PyBytesWriter> writer,
     ffi.Pointer<ffi.Void> str,
     int size,
   ) {
-    return (_PyBytesWriter_Prepare ??= _dylib.lookupFunction<
-        _c_PyBytesWriter_Prepare,
-        _dart_PyBytesWriter_Prepare>('_PyBytesWriter_Prepare'))(
+    return _PyBytesWriter_Prepare(
       writer,
       str,
       size,
     );
   }
 
-  _dart_PyBytesWriter_Prepare? _PyBytesWriter_Prepare;
+  late final _PyBytesWriter_Prepare_ptr =
+      _lookup<ffi.NativeFunction<_c_PyBytesWriter_Prepare>>(
+          '_PyBytesWriter_Prepare');
+  late final _dart_PyBytesWriter_Prepare _PyBytesWriter_Prepare =
+      _PyBytesWriter_Prepare_ptr.asFunction<_dart_PyBytesWriter_Prepare>();
 
   ffi.Pointer<ffi.Void> PyBytesWriter_Resize(
     ffi.Pointer<_PyBytesWriter> writer,
     ffi.Pointer<ffi.Void> str,
     int size,
   ) {
-    return (_PyBytesWriter_Resize ??= _dylib.lookupFunction<
-        _c_PyBytesWriter_Resize,
-        _dart_PyBytesWriter_Resize>('_PyBytesWriter_Resize'))(
+    return _PyBytesWriter_Resize(
       writer,
       str,
       size,
     );
   }
 
-  _dart_PyBytesWriter_Resize? _PyBytesWriter_Resize;
+  late final _PyBytesWriter_Resize_ptr =
+      _lookup<ffi.NativeFunction<_c_PyBytesWriter_Resize>>(
+          '_PyBytesWriter_Resize');
+  late final _dart_PyBytesWriter_Resize _PyBytesWriter_Resize =
+      _PyBytesWriter_Resize_ptr.asFunction<_dart_PyBytesWriter_Resize>();
 
   ffi.Pointer<ffi.Void> PyBytesWriter_WriteBytes(
     ffi.Pointer<_PyBytesWriter> writer,
@@ -1849,9 +2081,7 @@ class DartPyC {
     ffi.Pointer<ffi.Void> bytes,
     int size,
   ) {
-    return (_PyBytesWriter_WriteBytes ??= _dylib.lookupFunction<
-        _c_PyBytesWriter_WriteBytes,
-        _dart_PyBytesWriter_WriteBytes>('_PyBytesWriter_WriteBytes'))(
+    return _PyBytesWriter_WriteBytes(
       writer,
       str,
       bytes,
@@ -1859,55 +2089,71 @@ class DartPyC {
     );
   }
 
-  _dart_PyBytesWriter_WriteBytes? _PyBytesWriter_WriteBytes;
+  late final _PyBytesWriter_WriteBytes_ptr =
+      _lookup<ffi.NativeFunction<_c_PyBytesWriter_WriteBytes>>(
+          '_PyBytesWriter_WriteBytes');
+  late final _dart_PyBytesWriter_WriteBytes _PyBytesWriter_WriteBytes =
+      _PyBytesWriter_WriteBytes_ptr.asFunction<
+          _dart_PyBytesWriter_WriteBytes>();
 
-  late final _typeobject PyUnicode_Type =
-      _dylib.lookup<_typeobject>('PyUnicode_Type').ref;
+  late final ffi.Pointer<_typeobject> _PyUnicode_Type =
+      _lookup<_typeobject>('PyUnicode_Type');
 
-  late final _typeobject PyUnicodeIter_Type =
-      _dylib.lookup<_typeobject>('PyUnicodeIter_Type').ref;
+  _typeobject get PyUnicode_Type => _PyUnicode_Type.ref;
+
+  late final ffi.Pointer<_typeobject> _PyUnicodeIter_Type =
+      _lookup<_typeobject>('PyUnicodeIter_Type');
+
+  _typeobject get PyUnicodeIter_Type => _PyUnicodeIter_Type.ref;
 
   ffi.Pointer<PyObject> PyUnicode_FromStringAndSize(
     ffi.Pointer<ffi.Int8> u,
     int size,
   ) {
-    return (_PyUnicode_FromStringAndSize ??= _dylib.lookupFunction<
-        _c_PyUnicode_FromStringAndSize,
-        _dart_PyUnicode_FromStringAndSize>('PyUnicode_FromStringAndSize'))(
+    return _PyUnicode_FromStringAndSize(
       u,
       size,
     );
   }
 
-  _dart_PyUnicode_FromStringAndSize? _PyUnicode_FromStringAndSize;
+  late final _PyUnicode_FromStringAndSize_ptr =
+      _lookup<ffi.NativeFunction<_c_PyUnicode_FromStringAndSize>>(
+          'PyUnicode_FromStringAndSize');
+  late final _dart_PyUnicode_FromStringAndSize _PyUnicode_FromStringAndSize =
+      _PyUnicode_FromStringAndSize_ptr.asFunction<
+          _dart_PyUnicode_FromStringAndSize>();
 
   ffi.Pointer<PyObject> PyUnicode_FromString(
     ffi.Pointer<ffi.Int8> u,
   ) {
-    return (_PyUnicode_FromString ??= _dylib.lookupFunction<
-        _c_PyUnicode_FromString,
-        _dart_PyUnicode_FromString>('PyUnicode_FromString'))(
+    return _PyUnicode_FromString(
       u,
     );
   }
 
-  _dart_PyUnicode_FromString? _PyUnicode_FromString;
+  late final _PyUnicode_FromString_ptr =
+      _lookup<ffi.NativeFunction<_c_PyUnicode_FromString>>(
+          'PyUnicode_FromString');
+  late final _dart_PyUnicode_FromString _PyUnicode_FromString =
+      _PyUnicode_FromString_ptr.asFunction<_dart_PyUnicode_FromString>();
 
   ffi.Pointer<PyObject> PyUnicode_Substring(
     ffi.Pointer<PyObject> str,
     int start,
     int end,
   ) {
-    return (_PyUnicode_Substring ??= _dylib.lookupFunction<
-        _c_PyUnicode_Substring,
-        _dart_PyUnicode_Substring>('PyUnicode_Substring'))(
+    return _PyUnicode_Substring(
       str,
       start,
       end,
     );
   }
 
-  _dart_PyUnicode_Substring? _PyUnicode_Substring;
+  late final _PyUnicode_Substring_ptr =
+      _lookup<ffi.NativeFunction<_c_PyUnicode_Substring>>(
+          'PyUnicode_Substring');
+  late final _dart_PyUnicode_Substring _PyUnicode_Substring =
+      _PyUnicode_Substring_ptr.asFunction<_dart_PyUnicode_Substring>();
 
   ffi.Pointer<ffi.Uint32> PyUnicode_AsUCS4(
     ffi.Pointer<PyObject> unicode,
@@ -1915,9 +2161,7 @@ class DartPyC {
     int buflen,
     int copy_null,
   ) {
-    return (_PyUnicode_AsUCS4 ??=
-        _dylib.lookupFunction<_c_PyUnicode_AsUCS4, _dart_PyUnicode_AsUCS4>(
-            'PyUnicode_AsUCS4'))(
+    return _PyUnicode_AsUCS4(
       unicode,
       buffer,
       buflen,
@@ -1925,249 +2169,292 @@ class DartPyC {
     );
   }
 
-  _dart_PyUnicode_AsUCS4? _PyUnicode_AsUCS4;
+  late final _PyUnicode_AsUCS4_ptr =
+      _lookup<ffi.NativeFunction<_c_PyUnicode_AsUCS4>>('PyUnicode_AsUCS4');
+  late final _dart_PyUnicode_AsUCS4 _PyUnicode_AsUCS4 =
+      _PyUnicode_AsUCS4_ptr.asFunction<_dart_PyUnicode_AsUCS4>();
 
   ffi.Pointer<ffi.Uint32> PyUnicode_AsUCS4Copy(
     ffi.Pointer<PyObject> unicode,
   ) {
-    return (_PyUnicode_AsUCS4Copy ??= _dylib.lookupFunction<
-        _c_PyUnicode_AsUCS4Copy,
-        _dart_PyUnicode_AsUCS4Copy>('PyUnicode_AsUCS4Copy'))(
+    return _PyUnicode_AsUCS4Copy(
       unicode,
     );
   }
 
-  _dart_PyUnicode_AsUCS4Copy? _PyUnicode_AsUCS4Copy;
+  late final _PyUnicode_AsUCS4Copy_ptr =
+      _lookup<ffi.NativeFunction<_c_PyUnicode_AsUCS4Copy>>(
+          'PyUnicode_AsUCS4Copy');
+  late final _dart_PyUnicode_AsUCS4Copy _PyUnicode_AsUCS4Copy =
+      _PyUnicode_AsUCS4Copy_ptr.asFunction<_dart_PyUnicode_AsUCS4Copy>();
 
   int PyUnicode_GetLength(
     ffi.Pointer<PyObject> unicode,
   ) {
-    return (_PyUnicode_GetLength ??= _dylib.lookupFunction<
-        _c_PyUnicode_GetLength,
-        _dart_PyUnicode_GetLength>('PyUnicode_GetLength'))(
+    return _PyUnicode_GetLength(
       unicode,
     );
   }
 
-  _dart_PyUnicode_GetLength? _PyUnicode_GetLength;
+  late final _PyUnicode_GetLength_ptr =
+      _lookup<ffi.NativeFunction<_c_PyUnicode_GetLength>>(
+          'PyUnicode_GetLength');
+  late final _dart_PyUnicode_GetLength _PyUnicode_GetLength =
+      _PyUnicode_GetLength_ptr.asFunction<_dart_PyUnicode_GetLength>();
 
   int PyUnicode_GetSize(
     ffi.Pointer<PyObject> unicode,
   ) {
-    return (_PyUnicode_GetSize ??=
-        _dylib.lookupFunction<_c_PyUnicode_GetSize, _dart_PyUnicode_GetSize>(
-            'PyUnicode_GetSize'))(
+    return _PyUnicode_GetSize(
       unicode,
     );
   }
 
-  _dart_PyUnicode_GetSize? _PyUnicode_GetSize;
+  late final _PyUnicode_GetSize_ptr =
+      _lookup<ffi.NativeFunction<_c_PyUnicode_GetSize>>('PyUnicode_GetSize');
+  late final _dart_PyUnicode_GetSize _PyUnicode_GetSize =
+      _PyUnicode_GetSize_ptr.asFunction<_dart_PyUnicode_GetSize>();
 
   int PyUnicode_ReadChar(
     ffi.Pointer<PyObject> unicode,
     int index,
   ) {
-    return (_PyUnicode_ReadChar ??=
-        _dylib.lookupFunction<_c_PyUnicode_ReadChar, _dart_PyUnicode_ReadChar>(
-            'PyUnicode_ReadChar'))(
+    return _PyUnicode_ReadChar(
       unicode,
       index,
     );
   }
 
-  _dart_PyUnicode_ReadChar? _PyUnicode_ReadChar;
+  late final _PyUnicode_ReadChar_ptr =
+      _lookup<ffi.NativeFunction<_c_PyUnicode_ReadChar>>('PyUnicode_ReadChar');
+  late final _dart_PyUnicode_ReadChar _PyUnicode_ReadChar =
+      _PyUnicode_ReadChar_ptr.asFunction<_dart_PyUnicode_ReadChar>();
 
   int PyUnicode_WriteChar(
     ffi.Pointer<PyObject> unicode,
     int index,
     int character,
   ) {
-    return (_PyUnicode_WriteChar ??= _dylib.lookupFunction<
-        _c_PyUnicode_WriteChar,
-        _dart_PyUnicode_WriteChar>('PyUnicode_WriteChar'))(
+    return _PyUnicode_WriteChar(
       unicode,
       index,
       character,
     );
   }
 
-  _dart_PyUnicode_WriteChar? _PyUnicode_WriteChar;
+  late final _PyUnicode_WriteChar_ptr =
+      _lookup<ffi.NativeFunction<_c_PyUnicode_WriteChar>>(
+          'PyUnicode_WriteChar');
+  late final _dart_PyUnicode_WriteChar _PyUnicode_WriteChar =
+      _PyUnicode_WriteChar_ptr.asFunction<_dart_PyUnicode_WriteChar>();
 
   int PyUnicode_Resize(
     ffi.Pointer<ffi.Pointer<PyObject>> unicode,
     int length,
   ) {
-    return (_PyUnicode_Resize ??=
-        _dylib.lookupFunction<_c_PyUnicode_Resize, _dart_PyUnicode_Resize>(
-            'PyUnicode_Resize'))(
+    return _PyUnicode_Resize(
       unicode,
       length,
     );
   }
 
-  _dart_PyUnicode_Resize? _PyUnicode_Resize;
+  late final _PyUnicode_Resize_ptr =
+      _lookup<ffi.NativeFunction<_c_PyUnicode_Resize>>('PyUnicode_Resize');
+  late final _dart_PyUnicode_Resize _PyUnicode_Resize =
+      _PyUnicode_Resize_ptr.asFunction<_dart_PyUnicode_Resize>();
 
   ffi.Pointer<PyObject> PyUnicode_FromEncodedObject(
     ffi.Pointer<PyObject> obj,
     ffi.Pointer<ffi.Int8> encoding,
     ffi.Pointer<ffi.Int8> errors,
   ) {
-    return (_PyUnicode_FromEncodedObject ??= _dylib.lookupFunction<
-        _c_PyUnicode_FromEncodedObject,
-        _dart_PyUnicode_FromEncodedObject>('PyUnicode_FromEncodedObject'))(
+    return _PyUnicode_FromEncodedObject(
       obj,
       encoding,
       errors,
     );
   }
 
-  _dart_PyUnicode_FromEncodedObject? _PyUnicode_FromEncodedObject;
+  late final _PyUnicode_FromEncodedObject_ptr =
+      _lookup<ffi.NativeFunction<_c_PyUnicode_FromEncodedObject>>(
+          'PyUnicode_FromEncodedObject');
+  late final _dart_PyUnicode_FromEncodedObject _PyUnicode_FromEncodedObject =
+      _PyUnicode_FromEncodedObject_ptr.asFunction<
+          _dart_PyUnicode_FromEncodedObject>();
 
   ffi.Pointer<PyObject> PyUnicode_FromObject(
     ffi.Pointer<PyObject> obj,
   ) {
-    return (_PyUnicode_FromObject ??= _dylib.lookupFunction<
-        _c_PyUnicode_FromObject,
-        _dart_PyUnicode_FromObject>('PyUnicode_FromObject'))(
+    return _PyUnicode_FromObject(
       obj,
     );
   }
 
-  _dart_PyUnicode_FromObject? _PyUnicode_FromObject;
+  late final _PyUnicode_FromObject_ptr =
+      _lookup<ffi.NativeFunction<_c_PyUnicode_FromObject>>(
+          'PyUnicode_FromObject');
+  late final _dart_PyUnicode_FromObject _PyUnicode_FromObject =
+      _PyUnicode_FromObject_ptr.asFunction<_dart_PyUnicode_FromObject>();
 
   ffi.Pointer<PyObject> PyUnicode_FromFormatV(
     ffi.Pointer<ffi.Int8> format,
     ffi.Pointer<__va_list_tag> vargs,
   ) {
-    return (_PyUnicode_FromFormatV ??= _dylib.lookupFunction<
-        _c_PyUnicode_FromFormatV,
-        _dart_PyUnicode_FromFormatV>('PyUnicode_FromFormatV'))(
+    return _PyUnicode_FromFormatV(
       format,
       vargs,
     );
   }
 
-  _dart_PyUnicode_FromFormatV? _PyUnicode_FromFormatV;
+  late final _PyUnicode_FromFormatV_ptr =
+      _lookup<ffi.NativeFunction<_c_PyUnicode_FromFormatV>>(
+          'PyUnicode_FromFormatV');
+  late final _dart_PyUnicode_FromFormatV _PyUnicode_FromFormatV =
+      _PyUnicode_FromFormatV_ptr.asFunction<_dart_PyUnicode_FromFormatV>();
 
   ffi.Pointer<PyObject> PyUnicode_FromFormat(
     ffi.Pointer<ffi.Int8> format,
   ) {
-    return (_PyUnicode_FromFormat ??= _dylib.lookupFunction<
-        _c_PyUnicode_FromFormat,
-        _dart_PyUnicode_FromFormat>('PyUnicode_FromFormat'))(
+    return _PyUnicode_FromFormat(
       format,
     );
   }
 
-  _dart_PyUnicode_FromFormat? _PyUnicode_FromFormat;
+  late final _PyUnicode_FromFormat_ptr =
+      _lookup<ffi.NativeFunction<_c_PyUnicode_FromFormat>>(
+          'PyUnicode_FromFormat');
+  late final _dart_PyUnicode_FromFormat _PyUnicode_FromFormat =
+      _PyUnicode_FromFormat_ptr.asFunction<_dart_PyUnicode_FromFormat>();
 
   void PyUnicode_InternInPlace(
     ffi.Pointer<ffi.Pointer<PyObject>> arg0,
   ) {
-    return (_PyUnicode_InternInPlace ??= _dylib.lookupFunction<
-        _c_PyUnicode_InternInPlace,
-        _dart_PyUnicode_InternInPlace>('PyUnicode_InternInPlace'))(
+    return _PyUnicode_InternInPlace(
       arg0,
     );
   }
 
-  _dart_PyUnicode_InternInPlace? _PyUnicode_InternInPlace;
+  late final _PyUnicode_InternInPlace_ptr =
+      _lookup<ffi.NativeFunction<_c_PyUnicode_InternInPlace>>(
+          'PyUnicode_InternInPlace');
+  late final _dart_PyUnicode_InternInPlace _PyUnicode_InternInPlace =
+      _PyUnicode_InternInPlace_ptr.asFunction<_dart_PyUnicode_InternInPlace>();
 
   void PyUnicode_InternImmortal(
     ffi.Pointer<ffi.Pointer<PyObject>> arg0,
   ) {
-    return (_PyUnicode_InternImmortal ??= _dylib.lookupFunction<
-        _c_PyUnicode_InternImmortal,
-        _dart_PyUnicode_InternImmortal>('PyUnicode_InternImmortal'))(
+    return _PyUnicode_InternImmortal(
       arg0,
     );
   }
 
-  _dart_PyUnicode_InternImmortal? _PyUnicode_InternImmortal;
+  late final _PyUnicode_InternImmortal_ptr =
+      _lookup<ffi.NativeFunction<_c_PyUnicode_InternImmortal>>(
+          'PyUnicode_InternImmortal');
+  late final _dart_PyUnicode_InternImmortal _PyUnicode_InternImmortal =
+      _PyUnicode_InternImmortal_ptr.asFunction<
+          _dart_PyUnicode_InternImmortal>();
 
   ffi.Pointer<PyObject> PyUnicode_InternFromString(
     ffi.Pointer<ffi.Int8> u,
   ) {
-    return (_PyUnicode_InternFromString ??= _dylib.lookupFunction<
-        _c_PyUnicode_InternFromString,
-        _dart_PyUnicode_InternFromString>('PyUnicode_InternFromString'))(
+    return _PyUnicode_InternFromString(
       u,
     );
   }
 
-  _dart_PyUnicode_InternFromString? _PyUnicode_InternFromString;
+  late final _PyUnicode_InternFromString_ptr =
+      _lookup<ffi.NativeFunction<_c_PyUnicode_InternFromString>>(
+          'PyUnicode_InternFromString');
+  late final _dart_PyUnicode_InternFromString _PyUnicode_InternFromString =
+      _PyUnicode_InternFromString_ptr.asFunction<
+          _dart_PyUnicode_InternFromString>();
 
   ffi.Pointer<PyObject> PyUnicode_FromWideChar(
     ffi.Pointer<ffi.Int32> w,
     int size,
   ) {
-    return (_PyUnicode_FromWideChar ??= _dylib.lookupFunction<
-        _c_PyUnicode_FromWideChar,
-        _dart_PyUnicode_FromWideChar>('PyUnicode_FromWideChar'))(
+    return _PyUnicode_FromWideChar(
       w,
       size,
     );
   }
 
-  _dart_PyUnicode_FromWideChar? _PyUnicode_FromWideChar;
+  late final _PyUnicode_FromWideChar_ptr =
+      _lookup<ffi.NativeFunction<_c_PyUnicode_FromWideChar>>(
+          'PyUnicode_FromWideChar');
+  late final _dart_PyUnicode_FromWideChar _PyUnicode_FromWideChar =
+      _PyUnicode_FromWideChar_ptr.asFunction<_dart_PyUnicode_FromWideChar>();
 
   int PyUnicode_AsWideChar(
     ffi.Pointer<PyObject> unicode,
     ffi.Pointer<ffi.Int32> w,
     int size,
   ) {
-    return (_PyUnicode_AsWideChar ??= _dylib.lookupFunction<
-        _c_PyUnicode_AsWideChar,
-        _dart_PyUnicode_AsWideChar>('PyUnicode_AsWideChar'))(
+    return _PyUnicode_AsWideChar(
       unicode,
       w,
       size,
     );
   }
 
-  _dart_PyUnicode_AsWideChar? _PyUnicode_AsWideChar;
+  late final _PyUnicode_AsWideChar_ptr =
+      _lookup<ffi.NativeFunction<_c_PyUnicode_AsWideChar>>(
+          'PyUnicode_AsWideChar');
+  late final _dart_PyUnicode_AsWideChar _PyUnicode_AsWideChar =
+      _PyUnicode_AsWideChar_ptr.asFunction<_dart_PyUnicode_AsWideChar>();
 
   ffi.Pointer<ffi.Int32> PyUnicode_AsWideCharString(
     ffi.Pointer<PyObject> unicode,
     ffi.Pointer<ffi.Int64> size,
   ) {
-    return (_PyUnicode_AsWideCharString ??= _dylib.lookupFunction<
-        _c_PyUnicode_AsWideCharString,
-        _dart_PyUnicode_AsWideCharString>('PyUnicode_AsWideCharString'))(
+    return _PyUnicode_AsWideCharString(
       unicode,
       size,
     );
   }
 
-  _dart_PyUnicode_AsWideCharString? _PyUnicode_AsWideCharString;
+  late final _PyUnicode_AsWideCharString_ptr =
+      _lookup<ffi.NativeFunction<_c_PyUnicode_AsWideCharString>>(
+          'PyUnicode_AsWideCharString');
+  late final _dart_PyUnicode_AsWideCharString _PyUnicode_AsWideCharString =
+      _PyUnicode_AsWideCharString_ptr.asFunction<
+          _dart_PyUnicode_AsWideCharString>();
 
   ffi.Pointer<PyObject> PyUnicode_FromOrdinal(
     int ordinal,
   ) {
-    return (_PyUnicode_FromOrdinal ??= _dylib.lookupFunction<
-        _c_PyUnicode_FromOrdinal,
-        _dart_PyUnicode_FromOrdinal>('PyUnicode_FromOrdinal'))(
+    return _PyUnicode_FromOrdinal(
       ordinal,
     );
   }
 
-  _dart_PyUnicode_FromOrdinal? _PyUnicode_FromOrdinal;
+  late final _PyUnicode_FromOrdinal_ptr =
+      _lookup<ffi.NativeFunction<_c_PyUnicode_FromOrdinal>>(
+          'PyUnicode_FromOrdinal');
+  late final _dart_PyUnicode_FromOrdinal _PyUnicode_FromOrdinal =
+      _PyUnicode_FromOrdinal_ptr.asFunction<_dart_PyUnicode_FromOrdinal>();
 
   int PyUnicode_ClearFreeList() {
-    return (_PyUnicode_ClearFreeList ??= _dylib.lookupFunction<
-        _c_PyUnicode_ClearFreeList,
-        _dart_PyUnicode_ClearFreeList>('PyUnicode_ClearFreeList'))();
+    return _PyUnicode_ClearFreeList();
   }
 
-  _dart_PyUnicode_ClearFreeList? _PyUnicode_ClearFreeList;
+  late final _PyUnicode_ClearFreeList_ptr =
+      _lookup<ffi.NativeFunction<_c_PyUnicode_ClearFreeList>>(
+          'PyUnicode_ClearFreeList');
+  late final _dart_PyUnicode_ClearFreeList _PyUnicode_ClearFreeList =
+      _PyUnicode_ClearFreeList_ptr.asFunction<_dart_PyUnicode_ClearFreeList>();
 
   ffi.Pointer<ffi.Int8> PyUnicode_GetDefaultEncoding() {
-    return (_PyUnicode_GetDefaultEncoding ??= _dylib.lookupFunction<
-        _c_PyUnicode_GetDefaultEncoding,
-        _dart_PyUnicode_GetDefaultEncoding>('PyUnicode_GetDefaultEncoding'))();
+    return _PyUnicode_GetDefaultEncoding();
   }
 
-  _dart_PyUnicode_GetDefaultEncoding? _PyUnicode_GetDefaultEncoding;
+  late final _PyUnicode_GetDefaultEncoding_ptr =
+      _lookup<ffi.NativeFunction<_c_PyUnicode_GetDefaultEncoding>>(
+          'PyUnicode_GetDefaultEncoding');
+  late final _dart_PyUnicode_GetDefaultEncoding _PyUnicode_GetDefaultEncoding =
+      _PyUnicode_GetDefaultEncoding_ptr.asFunction<
+          _dart_PyUnicode_GetDefaultEncoding>();
 
   ffi.Pointer<PyObject> PyUnicode_Decode(
     ffi.Pointer<ffi.Int8> s,
@@ -2175,9 +2462,7 @@ class DartPyC {
     ffi.Pointer<ffi.Int8> encoding,
     ffi.Pointer<ffi.Int8> errors,
   ) {
-    return (_PyUnicode_Decode ??=
-        _dylib.lookupFunction<_c_PyUnicode_Decode, _dart_PyUnicode_Decode>(
-            'PyUnicode_Decode'))(
+    return _PyUnicode_Decode(
       s,
       size,
       encoding,
@@ -2185,115 +2470,138 @@ class DartPyC {
     );
   }
 
-  _dart_PyUnicode_Decode? _PyUnicode_Decode;
+  late final _PyUnicode_Decode_ptr =
+      _lookup<ffi.NativeFunction<_c_PyUnicode_Decode>>('PyUnicode_Decode');
+  late final _dart_PyUnicode_Decode _PyUnicode_Decode =
+      _PyUnicode_Decode_ptr.asFunction<_dart_PyUnicode_Decode>();
 
   ffi.Pointer<PyObject> PyUnicode_AsDecodedObject(
     ffi.Pointer<PyObject> unicode,
     ffi.Pointer<ffi.Int8> encoding,
     ffi.Pointer<ffi.Int8> errors,
   ) {
-    return (_PyUnicode_AsDecodedObject ??= _dylib.lookupFunction<
-        _c_PyUnicode_AsDecodedObject,
-        _dart_PyUnicode_AsDecodedObject>('PyUnicode_AsDecodedObject'))(
+    return _PyUnicode_AsDecodedObject(
       unicode,
       encoding,
       errors,
     );
   }
 
-  _dart_PyUnicode_AsDecodedObject? _PyUnicode_AsDecodedObject;
+  late final _PyUnicode_AsDecodedObject_ptr =
+      _lookup<ffi.NativeFunction<_c_PyUnicode_AsDecodedObject>>(
+          'PyUnicode_AsDecodedObject');
+  late final _dart_PyUnicode_AsDecodedObject _PyUnicode_AsDecodedObject =
+      _PyUnicode_AsDecodedObject_ptr.asFunction<
+          _dart_PyUnicode_AsDecodedObject>();
 
   ffi.Pointer<PyObject> PyUnicode_AsDecodedUnicode(
     ffi.Pointer<PyObject> unicode,
     ffi.Pointer<ffi.Int8> encoding,
     ffi.Pointer<ffi.Int8> errors,
   ) {
-    return (_PyUnicode_AsDecodedUnicode ??= _dylib.lookupFunction<
-        _c_PyUnicode_AsDecodedUnicode,
-        _dart_PyUnicode_AsDecodedUnicode>('PyUnicode_AsDecodedUnicode'))(
+    return _PyUnicode_AsDecodedUnicode(
       unicode,
       encoding,
       errors,
     );
   }
 
-  _dart_PyUnicode_AsDecodedUnicode? _PyUnicode_AsDecodedUnicode;
+  late final _PyUnicode_AsDecodedUnicode_ptr =
+      _lookup<ffi.NativeFunction<_c_PyUnicode_AsDecodedUnicode>>(
+          'PyUnicode_AsDecodedUnicode');
+  late final _dart_PyUnicode_AsDecodedUnicode _PyUnicode_AsDecodedUnicode =
+      _PyUnicode_AsDecodedUnicode_ptr.asFunction<
+          _dart_PyUnicode_AsDecodedUnicode>();
 
   ffi.Pointer<PyObject> PyUnicode_AsEncodedObject(
     ffi.Pointer<PyObject> unicode,
     ffi.Pointer<ffi.Int8> encoding,
     ffi.Pointer<ffi.Int8> errors,
   ) {
-    return (_PyUnicode_AsEncodedObject ??= _dylib.lookupFunction<
-        _c_PyUnicode_AsEncodedObject,
-        _dart_PyUnicode_AsEncodedObject>('PyUnicode_AsEncodedObject'))(
+    return _PyUnicode_AsEncodedObject(
       unicode,
       encoding,
       errors,
     );
   }
 
-  _dart_PyUnicode_AsEncodedObject? _PyUnicode_AsEncodedObject;
+  late final _PyUnicode_AsEncodedObject_ptr =
+      _lookup<ffi.NativeFunction<_c_PyUnicode_AsEncodedObject>>(
+          'PyUnicode_AsEncodedObject');
+  late final _dart_PyUnicode_AsEncodedObject _PyUnicode_AsEncodedObject =
+      _PyUnicode_AsEncodedObject_ptr.asFunction<
+          _dart_PyUnicode_AsEncodedObject>();
 
   ffi.Pointer<PyObject> PyUnicode_AsEncodedString(
     ffi.Pointer<PyObject> unicode,
     ffi.Pointer<ffi.Int8> encoding,
     ffi.Pointer<ffi.Int8> errors,
   ) {
-    return (_PyUnicode_AsEncodedString ??= _dylib.lookupFunction<
-        _c_PyUnicode_AsEncodedString,
-        _dart_PyUnicode_AsEncodedString>('PyUnicode_AsEncodedString'))(
+    return _PyUnicode_AsEncodedString(
       unicode,
       encoding,
       errors,
     );
   }
 
-  _dart_PyUnicode_AsEncodedString? _PyUnicode_AsEncodedString;
+  late final _PyUnicode_AsEncodedString_ptr =
+      _lookup<ffi.NativeFunction<_c_PyUnicode_AsEncodedString>>(
+          'PyUnicode_AsEncodedString');
+  late final _dart_PyUnicode_AsEncodedString _PyUnicode_AsEncodedString =
+      _PyUnicode_AsEncodedString_ptr.asFunction<
+          _dart_PyUnicode_AsEncodedString>();
 
   ffi.Pointer<PyObject> PyUnicode_AsEncodedUnicode(
     ffi.Pointer<PyObject> unicode,
     ffi.Pointer<ffi.Int8> encoding,
     ffi.Pointer<ffi.Int8> errors,
   ) {
-    return (_PyUnicode_AsEncodedUnicode ??= _dylib.lookupFunction<
-        _c_PyUnicode_AsEncodedUnicode,
-        _dart_PyUnicode_AsEncodedUnicode>('PyUnicode_AsEncodedUnicode'))(
+    return _PyUnicode_AsEncodedUnicode(
       unicode,
       encoding,
       errors,
     );
   }
 
-  _dart_PyUnicode_AsEncodedUnicode? _PyUnicode_AsEncodedUnicode;
+  late final _PyUnicode_AsEncodedUnicode_ptr =
+      _lookup<ffi.NativeFunction<_c_PyUnicode_AsEncodedUnicode>>(
+          'PyUnicode_AsEncodedUnicode');
+  late final _dart_PyUnicode_AsEncodedUnicode _PyUnicode_AsEncodedUnicode =
+      _PyUnicode_AsEncodedUnicode_ptr.asFunction<
+          _dart_PyUnicode_AsEncodedUnicode>();
 
   ffi.Pointer<PyObject> PyUnicode_BuildEncodingMap(
     ffi.Pointer<PyObject> string,
   ) {
-    return (_PyUnicode_BuildEncodingMap ??= _dylib.lookupFunction<
-        _c_PyUnicode_BuildEncodingMap,
-        _dart_PyUnicode_BuildEncodingMap>('PyUnicode_BuildEncodingMap'))(
+    return _PyUnicode_BuildEncodingMap(
       string,
     );
   }
 
-  _dart_PyUnicode_BuildEncodingMap? _PyUnicode_BuildEncodingMap;
+  late final _PyUnicode_BuildEncodingMap_ptr =
+      _lookup<ffi.NativeFunction<_c_PyUnicode_BuildEncodingMap>>(
+          'PyUnicode_BuildEncodingMap');
+  late final _dart_PyUnicode_BuildEncodingMap _PyUnicode_BuildEncodingMap =
+      _PyUnicode_BuildEncodingMap_ptr.asFunction<
+          _dart_PyUnicode_BuildEncodingMap>();
 
   ffi.Pointer<PyObject> PyUnicode_DecodeUTF7(
     ffi.Pointer<ffi.Int8> string,
     int length,
     ffi.Pointer<ffi.Int8> errors,
   ) {
-    return (_PyUnicode_DecodeUTF7 ??= _dylib.lookupFunction<
-        _c_PyUnicode_DecodeUTF7,
-        _dart_PyUnicode_DecodeUTF7>('PyUnicode_DecodeUTF7'))(
+    return _PyUnicode_DecodeUTF7(
       string,
       length,
       errors,
     );
   }
 
-  _dart_PyUnicode_DecodeUTF7? _PyUnicode_DecodeUTF7;
+  late final _PyUnicode_DecodeUTF7_ptr =
+      _lookup<ffi.NativeFunction<_c_PyUnicode_DecodeUTF7>>(
+          'PyUnicode_DecodeUTF7');
+  late final _dart_PyUnicode_DecodeUTF7 _PyUnicode_DecodeUTF7 =
+      _PyUnicode_DecodeUTF7_ptr.asFunction<_dart_PyUnicode_DecodeUTF7>();
 
   ffi.Pointer<PyObject> PyUnicode_DecodeUTF7Stateful(
     ffi.Pointer<ffi.Int8> string,
@@ -2301,9 +2609,7 @@ class DartPyC {
     ffi.Pointer<ffi.Int8> errors,
     ffi.Pointer<ffi.Int64> consumed,
   ) {
-    return (_PyUnicode_DecodeUTF7Stateful ??= _dylib.lookupFunction<
-        _c_PyUnicode_DecodeUTF7Stateful,
-        _dart_PyUnicode_DecodeUTF7Stateful>('PyUnicode_DecodeUTF7Stateful'))(
+    return _PyUnicode_DecodeUTF7Stateful(
       string,
       length,
       errors,
@@ -2311,23 +2617,30 @@ class DartPyC {
     );
   }
 
-  _dart_PyUnicode_DecodeUTF7Stateful? _PyUnicode_DecodeUTF7Stateful;
+  late final _PyUnicode_DecodeUTF7Stateful_ptr =
+      _lookup<ffi.NativeFunction<_c_PyUnicode_DecodeUTF7Stateful>>(
+          'PyUnicode_DecodeUTF7Stateful');
+  late final _dart_PyUnicode_DecodeUTF7Stateful _PyUnicode_DecodeUTF7Stateful =
+      _PyUnicode_DecodeUTF7Stateful_ptr.asFunction<
+          _dart_PyUnicode_DecodeUTF7Stateful>();
 
   ffi.Pointer<PyObject> PyUnicode_DecodeUTF8(
     ffi.Pointer<ffi.Int8> string,
     int length,
     ffi.Pointer<ffi.Int8> errors,
   ) {
-    return (_PyUnicode_DecodeUTF8 ??= _dylib.lookupFunction<
-        _c_PyUnicode_DecodeUTF8,
-        _dart_PyUnicode_DecodeUTF8>('PyUnicode_DecodeUTF8'))(
+    return _PyUnicode_DecodeUTF8(
       string,
       length,
       errors,
     );
   }
 
-  _dart_PyUnicode_DecodeUTF8? _PyUnicode_DecodeUTF8;
+  late final _PyUnicode_DecodeUTF8_ptr =
+      _lookup<ffi.NativeFunction<_c_PyUnicode_DecodeUTF8>>(
+          'PyUnicode_DecodeUTF8');
+  late final _dart_PyUnicode_DecodeUTF8 _PyUnicode_DecodeUTF8 =
+      _PyUnicode_DecodeUTF8_ptr.asFunction<_dart_PyUnicode_DecodeUTF8>();
 
   ffi.Pointer<PyObject> PyUnicode_DecodeUTF8Stateful(
     ffi.Pointer<ffi.Int8> string,
@@ -2335,9 +2648,7 @@ class DartPyC {
     ffi.Pointer<ffi.Int8> errors,
     ffi.Pointer<ffi.Int64> consumed,
   ) {
-    return (_PyUnicode_DecodeUTF8Stateful ??= _dylib.lookupFunction<
-        _c_PyUnicode_DecodeUTF8Stateful,
-        _dart_PyUnicode_DecodeUTF8Stateful>('PyUnicode_DecodeUTF8Stateful'))(
+    return _PyUnicode_DecodeUTF8Stateful(
       string,
       length,
       errors,
@@ -2345,19 +2656,26 @@ class DartPyC {
     );
   }
 
-  _dart_PyUnicode_DecodeUTF8Stateful? _PyUnicode_DecodeUTF8Stateful;
+  late final _PyUnicode_DecodeUTF8Stateful_ptr =
+      _lookup<ffi.NativeFunction<_c_PyUnicode_DecodeUTF8Stateful>>(
+          'PyUnicode_DecodeUTF8Stateful');
+  late final _dart_PyUnicode_DecodeUTF8Stateful _PyUnicode_DecodeUTF8Stateful =
+      _PyUnicode_DecodeUTF8Stateful_ptr.asFunction<
+          _dart_PyUnicode_DecodeUTF8Stateful>();
 
   ffi.Pointer<PyObject> PyUnicode_AsUTF8String(
     ffi.Pointer<PyObject> unicode,
   ) {
-    return (_PyUnicode_AsUTF8String ??= _dylib.lookupFunction<
-        _c_PyUnicode_AsUTF8String,
-        _dart_PyUnicode_AsUTF8String>('PyUnicode_AsUTF8String'))(
+    return _PyUnicode_AsUTF8String(
       unicode,
     );
   }
 
-  _dart_PyUnicode_AsUTF8String? _PyUnicode_AsUTF8String;
+  late final _PyUnicode_AsUTF8String_ptr =
+      _lookup<ffi.NativeFunction<_c_PyUnicode_AsUTF8String>>(
+          'PyUnicode_AsUTF8String');
+  late final _dart_PyUnicode_AsUTF8String _PyUnicode_AsUTF8String =
+      _PyUnicode_AsUTF8String_ptr.asFunction<_dart_PyUnicode_AsUTF8String>();
 
   ffi.Pointer<PyObject> PyUnicode_DecodeUTF32(
     ffi.Pointer<ffi.Int8> string,
@@ -2365,9 +2683,7 @@ class DartPyC {
     ffi.Pointer<ffi.Int8> errors,
     ffi.Pointer<ffi.Int32> byteorder,
   ) {
-    return (_PyUnicode_DecodeUTF32 ??= _dylib.lookupFunction<
-        _c_PyUnicode_DecodeUTF32,
-        _dart_PyUnicode_DecodeUTF32>('PyUnicode_DecodeUTF32'))(
+    return _PyUnicode_DecodeUTF32(
       string,
       length,
       errors,
@@ -2375,7 +2691,11 @@ class DartPyC {
     );
   }
 
-  _dart_PyUnicode_DecodeUTF32? _PyUnicode_DecodeUTF32;
+  late final _PyUnicode_DecodeUTF32_ptr =
+      _lookup<ffi.NativeFunction<_c_PyUnicode_DecodeUTF32>>(
+          'PyUnicode_DecodeUTF32');
+  late final _dart_PyUnicode_DecodeUTF32 _PyUnicode_DecodeUTF32 =
+      _PyUnicode_DecodeUTF32_ptr.asFunction<_dart_PyUnicode_DecodeUTF32>();
 
   ffi.Pointer<PyObject> PyUnicode_DecodeUTF32Stateful(
     ffi.Pointer<ffi.Int8> string,
@@ -2384,9 +2704,7 @@ class DartPyC {
     ffi.Pointer<ffi.Int32> byteorder,
     ffi.Pointer<ffi.Int64> consumed,
   ) {
-    return (_PyUnicode_DecodeUTF32Stateful ??= _dylib.lookupFunction<
-        _c_PyUnicode_DecodeUTF32Stateful,
-        _dart_PyUnicode_DecodeUTF32Stateful>('PyUnicode_DecodeUTF32Stateful'))(
+    return _PyUnicode_DecodeUTF32Stateful(
       string,
       length,
       errors,
@@ -2395,19 +2713,26 @@ class DartPyC {
     );
   }
 
-  _dart_PyUnicode_DecodeUTF32Stateful? _PyUnicode_DecodeUTF32Stateful;
+  late final _PyUnicode_DecodeUTF32Stateful_ptr =
+      _lookup<ffi.NativeFunction<_c_PyUnicode_DecodeUTF32Stateful>>(
+          'PyUnicode_DecodeUTF32Stateful');
+  late final _dart_PyUnicode_DecodeUTF32Stateful
+      _PyUnicode_DecodeUTF32Stateful = _PyUnicode_DecodeUTF32Stateful_ptr
+          .asFunction<_dart_PyUnicode_DecodeUTF32Stateful>();
 
   ffi.Pointer<PyObject> PyUnicode_AsUTF32String(
     ffi.Pointer<PyObject> unicode,
   ) {
-    return (_PyUnicode_AsUTF32String ??= _dylib.lookupFunction<
-        _c_PyUnicode_AsUTF32String,
-        _dart_PyUnicode_AsUTF32String>('PyUnicode_AsUTF32String'))(
+    return _PyUnicode_AsUTF32String(
       unicode,
     );
   }
 
-  _dart_PyUnicode_AsUTF32String? _PyUnicode_AsUTF32String;
+  late final _PyUnicode_AsUTF32String_ptr =
+      _lookup<ffi.NativeFunction<_c_PyUnicode_AsUTF32String>>(
+          'PyUnicode_AsUTF32String');
+  late final _dart_PyUnicode_AsUTF32String _PyUnicode_AsUTF32String =
+      _PyUnicode_AsUTF32String_ptr.asFunction<_dart_PyUnicode_AsUTF32String>();
 
   ffi.Pointer<PyObject> PyUnicode_DecodeUTF16(
     ffi.Pointer<ffi.Int8> string,
@@ -2415,9 +2740,7 @@ class DartPyC {
     ffi.Pointer<ffi.Int8> errors,
     ffi.Pointer<ffi.Int32> byteorder,
   ) {
-    return (_PyUnicode_DecodeUTF16 ??= _dylib.lookupFunction<
-        _c_PyUnicode_DecodeUTF16,
-        _dart_PyUnicode_DecodeUTF16>('PyUnicode_DecodeUTF16'))(
+    return _PyUnicode_DecodeUTF16(
       string,
       length,
       errors,
@@ -2425,7 +2748,11 @@ class DartPyC {
     );
   }
 
-  _dart_PyUnicode_DecodeUTF16? _PyUnicode_DecodeUTF16;
+  late final _PyUnicode_DecodeUTF16_ptr =
+      _lookup<ffi.NativeFunction<_c_PyUnicode_DecodeUTF16>>(
+          'PyUnicode_DecodeUTF16');
+  late final _dart_PyUnicode_DecodeUTF16 _PyUnicode_DecodeUTF16 =
+      _PyUnicode_DecodeUTF16_ptr.asFunction<_dart_PyUnicode_DecodeUTF16>();
 
   ffi.Pointer<PyObject> PyUnicode_DecodeUTF16Stateful(
     ffi.Pointer<ffi.Int8> string,
@@ -2434,9 +2761,7 @@ class DartPyC {
     ffi.Pointer<ffi.Int32> byteorder,
     ffi.Pointer<ffi.Int64> consumed,
   ) {
-    return (_PyUnicode_DecodeUTF16Stateful ??= _dylib.lookupFunction<
-        _c_PyUnicode_DecodeUTF16Stateful,
-        _dart_PyUnicode_DecodeUTF16Stateful>('PyUnicode_DecodeUTF16Stateful'))(
+    return _PyUnicode_DecodeUTF16Stateful(
       string,
       length,
       errors,
@@ -2445,134 +2770,160 @@ class DartPyC {
     );
   }
 
-  _dart_PyUnicode_DecodeUTF16Stateful? _PyUnicode_DecodeUTF16Stateful;
+  late final _PyUnicode_DecodeUTF16Stateful_ptr =
+      _lookup<ffi.NativeFunction<_c_PyUnicode_DecodeUTF16Stateful>>(
+          'PyUnicode_DecodeUTF16Stateful');
+  late final _dart_PyUnicode_DecodeUTF16Stateful
+      _PyUnicode_DecodeUTF16Stateful = _PyUnicode_DecodeUTF16Stateful_ptr
+          .asFunction<_dart_PyUnicode_DecodeUTF16Stateful>();
 
   ffi.Pointer<PyObject> PyUnicode_AsUTF16String(
     ffi.Pointer<PyObject> unicode,
   ) {
-    return (_PyUnicode_AsUTF16String ??= _dylib.lookupFunction<
-        _c_PyUnicode_AsUTF16String,
-        _dart_PyUnicode_AsUTF16String>('PyUnicode_AsUTF16String'))(
+    return _PyUnicode_AsUTF16String(
       unicode,
     );
   }
 
-  _dart_PyUnicode_AsUTF16String? _PyUnicode_AsUTF16String;
+  late final _PyUnicode_AsUTF16String_ptr =
+      _lookup<ffi.NativeFunction<_c_PyUnicode_AsUTF16String>>(
+          'PyUnicode_AsUTF16String');
+  late final _dart_PyUnicode_AsUTF16String _PyUnicode_AsUTF16String =
+      _PyUnicode_AsUTF16String_ptr.asFunction<_dart_PyUnicode_AsUTF16String>();
 
   ffi.Pointer<PyObject> PyUnicode_DecodeUnicodeEscape(
     ffi.Pointer<ffi.Int8> string,
     int length,
     ffi.Pointer<ffi.Int8> errors,
   ) {
-    return (_PyUnicode_DecodeUnicodeEscape ??= _dylib.lookupFunction<
-        _c_PyUnicode_DecodeUnicodeEscape,
-        _dart_PyUnicode_DecodeUnicodeEscape>('PyUnicode_DecodeUnicodeEscape'))(
+    return _PyUnicode_DecodeUnicodeEscape(
       string,
       length,
       errors,
     );
   }
 
-  _dart_PyUnicode_DecodeUnicodeEscape? _PyUnicode_DecodeUnicodeEscape;
+  late final _PyUnicode_DecodeUnicodeEscape_ptr =
+      _lookup<ffi.NativeFunction<_c_PyUnicode_DecodeUnicodeEscape>>(
+          'PyUnicode_DecodeUnicodeEscape');
+  late final _dart_PyUnicode_DecodeUnicodeEscape
+      _PyUnicode_DecodeUnicodeEscape = _PyUnicode_DecodeUnicodeEscape_ptr
+          .asFunction<_dart_PyUnicode_DecodeUnicodeEscape>();
 
   ffi.Pointer<PyObject> PyUnicode_AsUnicodeEscapeString(
     ffi.Pointer<PyObject> unicode,
   ) {
-    return (_PyUnicode_AsUnicodeEscapeString ??= _dylib.lookupFunction<
-            _c_PyUnicode_AsUnicodeEscapeString,
-            _dart_PyUnicode_AsUnicodeEscapeString>(
-        'PyUnicode_AsUnicodeEscapeString'))(
+    return _PyUnicode_AsUnicodeEscapeString(
       unicode,
     );
   }
 
-  _dart_PyUnicode_AsUnicodeEscapeString? _PyUnicode_AsUnicodeEscapeString;
+  late final _PyUnicode_AsUnicodeEscapeString_ptr =
+      _lookup<ffi.NativeFunction<_c_PyUnicode_AsUnicodeEscapeString>>(
+          'PyUnicode_AsUnicodeEscapeString');
+  late final _dart_PyUnicode_AsUnicodeEscapeString
+      _PyUnicode_AsUnicodeEscapeString = _PyUnicode_AsUnicodeEscapeString_ptr
+          .asFunction<_dart_PyUnicode_AsUnicodeEscapeString>();
 
   ffi.Pointer<PyObject> PyUnicode_DecodeRawUnicodeEscape(
     ffi.Pointer<ffi.Int8> string,
     int length,
     ffi.Pointer<ffi.Int8> errors,
   ) {
-    return (_PyUnicode_DecodeRawUnicodeEscape ??= _dylib.lookupFunction<
-            _c_PyUnicode_DecodeRawUnicodeEscape,
-            _dart_PyUnicode_DecodeRawUnicodeEscape>(
-        'PyUnicode_DecodeRawUnicodeEscape'))(
+    return _PyUnicode_DecodeRawUnicodeEscape(
       string,
       length,
       errors,
     );
   }
 
-  _dart_PyUnicode_DecodeRawUnicodeEscape? _PyUnicode_DecodeRawUnicodeEscape;
+  late final _PyUnicode_DecodeRawUnicodeEscape_ptr =
+      _lookup<ffi.NativeFunction<_c_PyUnicode_DecodeRawUnicodeEscape>>(
+          'PyUnicode_DecodeRawUnicodeEscape');
+  late final _dart_PyUnicode_DecodeRawUnicodeEscape
+      _PyUnicode_DecodeRawUnicodeEscape = _PyUnicode_DecodeRawUnicodeEscape_ptr
+          .asFunction<_dart_PyUnicode_DecodeRawUnicodeEscape>();
 
   ffi.Pointer<PyObject> PyUnicode_AsRawUnicodeEscapeString(
     ffi.Pointer<PyObject> unicode,
   ) {
-    return (_PyUnicode_AsRawUnicodeEscapeString ??= _dylib.lookupFunction<
-            _c_PyUnicode_AsRawUnicodeEscapeString,
-            _dart_PyUnicode_AsRawUnicodeEscapeString>(
-        'PyUnicode_AsRawUnicodeEscapeString'))(
+    return _PyUnicode_AsRawUnicodeEscapeString(
       unicode,
     );
   }
 
-  _dart_PyUnicode_AsRawUnicodeEscapeString? _PyUnicode_AsRawUnicodeEscapeString;
+  late final _PyUnicode_AsRawUnicodeEscapeString_ptr =
+      _lookup<ffi.NativeFunction<_c_PyUnicode_AsRawUnicodeEscapeString>>(
+          'PyUnicode_AsRawUnicodeEscapeString');
+  late final _dart_PyUnicode_AsRawUnicodeEscapeString
+      _PyUnicode_AsRawUnicodeEscapeString =
+      _PyUnicode_AsRawUnicodeEscapeString_ptr.asFunction<
+          _dart_PyUnicode_AsRawUnicodeEscapeString>();
 
   ffi.Pointer<PyObject> PyUnicode_DecodeLatin1(
     ffi.Pointer<ffi.Int8> string,
     int length,
     ffi.Pointer<ffi.Int8> errors,
   ) {
-    return (_PyUnicode_DecodeLatin1 ??= _dylib.lookupFunction<
-        _c_PyUnicode_DecodeLatin1,
-        _dart_PyUnicode_DecodeLatin1>('PyUnicode_DecodeLatin1'))(
+    return _PyUnicode_DecodeLatin1(
       string,
       length,
       errors,
     );
   }
 
-  _dart_PyUnicode_DecodeLatin1? _PyUnicode_DecodeLatin1;
+  late final _PyUnicode_DecodeLatin1_ptr =
+      _lookup<ffi.NativeFunction<_c_PyUnicode_DecodeLatin1>>(
+          'PyUnicode_DecodeLatin1');
+  late final _dart_PyUnicode_DecodeLatin1 _PyUnicode_DecodeLatin1 =
+      _PyUnicode_DecodeLatin1_ptr.asFunction<_dart_PyUnicode_DecodeLatin1>();
 
   ffi.Pointer<PyObject> PyUnicode_AsLatin1String(
     ffi.Pointer<PyObject> unicode,
   ) {
-    return (_PyUnicode_AsLatin1String ??= _dylib.lookupFunction<
-        _c_PyUnicode_AsLatin1String,
-        _dart_PyUnicode_AsLatin1String>('PyUnicode_AsLatin1String'))(
+    return _PyUnicode_AsLatin1String(
       unicode,
     );
   }
 
-  _dart_PyUnicode_AsLatin1String? _PyUnicode_AsLatin1String;
+  late final _PyUnicode_AsLatin1String_ptr =
+      _lookup<ffi.NativeFunction<_c_PyUnicode_AsLatin1String>>(
+          'PyUnicode_AsLatin1String');
+  late final _dart_PyUnicode_AsLatin1String _PyUnicode_AsLatin1String =
+      _PyUnicode_AsLatin1String_ptr.asFunction<
+          _dart_PyUnicode_AsLatin1String>();
 
   ffi.Pointer<PyObject> PyUnicode_DecodeASCII(
     ffi.Pointer<ffi.Int8> string,
     int length,
     ffi.Pointer<ffi.Int8> errors,
   ) {
-    return (_PyUnicode_DecodeASCII ??= _dylib.lookupFunction<
-        _c_PyUnicode_DecodeASCII,
-        _dart_PyUnicode_DecodeASCII>('PyUnicode_DecodeASCII'))(
+    return _PyUnicode_DecodeASCII(
       string,
       length,
       errors,
     );
   }
 
-  _dart_PyUnicode_DecodeASCII? _PyUnicode_DecodeASCII;
+  late final _PyUnicode_DecodeASCII_ptr =
+      _lookup<ffi.NativeFunction<_c_PyUnicode_DecodeASCII>>(
+          'PyUnicode_DecodeASCII');
+  late final _dart_PyUnicode_DecodeASCII _PyUnicode_DecodeASCII =
+      _PyUnicode_DecodeASCII_ptr.asFunction<_dart_PyUnicode_DecodeASCII>();
 
   ffi.Pointer<PyObject> PyUnicode_AsASCIIString(
     ffi.Pointer<PyObject> unicode,
   ) {
-    return (_PyUnicode_AsASCIIString ??= _dylib.lookupFunction<
-        _c_PyUnicode_AsASCIIString,
-        _dart_PyUnicode_AsASCIIString>('PyUnicode_AsASCIIString'))(
+    return _PyUnicode_AsASCIIString(
       unicode,
     );
   }
 
-  _dart_PyUnicode_AsASCIIString? _PyUnicode_AsASCIIString;
+  late final _PyUnicode_AsASCIIString_ptr =
+      _lookup<ffi.NativeFunction<_c_PyUnicode_AsASCIIString>>(
+          'PyUnicode_AsASCIIString');
+  late final _dart_PyUnicode_AsASCIIString _PyUnicode_AsASCIIString =
+      _PyUnicode_AsASCIIString_ptr.asFunction<_dart_PyUnicode_AsASCIIString>();
 
   ffi.Pointer<PyObject> PyUnicode_DecodeCharmap(
     ffi.Pointer<ffi.Int8> string,
@@ -2580,9 +2931,7 @@ class DartPyC {
     ffi.Pointer<PyObject> mapping,
     ffi.Pointer<ffi.Int8> errors,
   ) {
-    return (_PyUnicode_DecodeCharmap ??= _dylib.lookupFunction<
-        _c_PyUnicode_DecodeCharmap,
-        _dart_PyUnicode_DecodeCharmap>('PyUnicode_DecodeCharmap'))(
+    return _PyUnicode_DecodeCharmap(
       string,
       length,
       mapping,
@@ -2590,278 +2939,319 @@ class DartPyC {
     );
   }
 
-  _dart_PyUnicode_DecodeCharmap? _PyUnicode_DecodeCharmap;
+  late final _PyUnicode_DecodeCharmap_ptr =
+      _lookup<ffi.NativeFunction<_c_PyUnicode_DecodeCharmap>>(
+          'PyUnicode_DecodeCharmap');
+  late final _dart_PyUnicode_DecodeCharmap _PyUnicode_DecodeCharmap =
+      _PyUnicode_DecodeCharmap_ptr.asFunction<_dart_PyUnicode_DecodeCharmap>();
 
   ffi.Pointer<PyObject> PyUnicode_AsCharmapString(
     ffi.Pointer<PyObject> unicode,
     ffi.Pointer<PyObject> mapping,
   ) {
-    return (_PyUnicode_AsCharmapString ??= _dylib.lookupFunction<
-        _c_PyUnicode_AsCharmapString,
-        _dart_PyUnicode_AsCharmapString>('PyUnicode_AsCharmapString'))(
+    return _PyUnicode_AsCharmapString(
       unicode,
       mapping,
     );
   }
 
-  _dart_PyUnicode_AsCharmapString? _PyUnicode_AsCharmapString;
+  late final _PyUnicode_AsCharmapString_ptr =
+      _lookup<ffi.NativeFunction<_c_PyUnicode_AsCharmapString>>(
+          'PyUnicode_AsCharmapString');
+  late final _dart_PyUnicode_AsCharmapString _PyUnicode_AsCharmapString =
+      _PyUnicode_AsCharmapString_ptr.asFunction<
+          _dart_PyUnicode_AsCharmapString>();
 
   ffi.Pointer<PyObject> PyUnicode_DecodeLocaleAndSize(
     ffi.Pointer<ffi.Int8> str,
     int len,
     ffi.Pointer<ffi.Int8> errors,
   ) {
-    return (_PyUnicode_DecodeLocaleAndSize ??= _dylib.lookupFunction<
-        _c_PyUnicode_DecodeLocaleAndSize,
-        _dart_PyUnicode_DecodeLocaleAndSize>('PyUnicode_DecodeLocaleAndSize'))(
+    return _PyUnicode_DecodeLocaleAndSize(
       str,
       len,
       errors,
     );
   }
 
-  _dart_PyUnicode_DecodeLocaleAndSize? _PyUnicode_DecodeLocaleAndSize;
+  late final _PyUnicode_DecodeLocaleAndSize_ptr =
+      _lookup<ffi.NativeFunction<_c_PyUnicode_DecodeLocaleAndSize>>(
+          'PyUnicode_DecodeLocaleAndSize');
+  late final _dart_PyUnicode_DecodeLocaleAndSize
+      _PyUnicode_DecodeLocaleAndSize = _PyUnicode_DecodeLocaleAndSize_ptr
+          .asFunction<_dart_PyUnicode_DecodeLocaleAndSize>();
 
   ffi.Pointer<PyObject> PyUnicode_DecodeLocale(
     ffi.Pointer<ffi.Int8> str,
     ffi.Pointer<ffi.Int8> errors,
   ) {
-    return (_PyUnicode_DecodeLocale ??= _dylib.lookupFunction<
-        _c_PyUnicode_DecodeLocale,
-        _dart_PyUnicode_DecodeLocale>('PyUnicode_DecodeLocale'))(
+    return _PyUnicode_DecodeLocale(
       str,
       errors,
     );
   }
 
-  _dart_PyUnicode_DecodeLocale? _PyUnicode_DecodeLocale;
+  late final _PyUnicode_DecodeLocale_ptr =
+      _lookup<ffi.NativeFunction<_c_PyUnicode_DecodeLocale>>(
+          'PyUnicode_DecodeLocale');
+  late final _dart_PyUnicode_DecodeLocale _PyUnicode_DecodeLocale =
+      _PyUnicode_DecodeLocale_ptr.asFunction<_dart_PyUnicode_DecodeLocale>();
 
   ffi.Pointer<PyObject> PyUnicode_EncodeLocale(
     ffi.Pointer<PyObject> unicode,
     ffi.Pointer<ffi.Int8> errors,
   ) {
-    return (_PyUnicode_EncodeLocale ??= _dylib.lookupFunction<
-        _c_PyUnicode_EncodeLocale,
-        _dart_PyUnicode_EncodeLocale>('PyUnicode_EncodeLocale'))(
+    return _PyUnicode_EncodeLocale(
       unicode,
       errors,
     );
   }
 
-  _dart_PyUnicode_EncodeLocale? _PyUnicode_EncodeLocale;
+  late final _PyUnicode_EncodeLocale_ptr =
+      _lookup<ffi.NativeFunction<_c_PyUnicode_EncodeLocale>>(
+          'PyUnicode_EncodeLocale');
+  late final _dart_PyUnicode_EncodeLocale _PyUnicode_EncodeLocale =
+      _PyUnicode_EncodeLocale_ptr.asFunction<_dart_PyUnicode_EncodeLocale>();
 
   int PyUnicode_FSConverter(
     ffi.Pointer<PyObject> arg0,
     ffi.Pointer<ffi.Void> arg1,
   ) {
-    return (_PyUnicode_FSConverter ??= _dylib.lookupFunction<
-        _c_PyUnicode_FSConverter,
-        _dart_PyUnicode_FSConverter>('PyUnicode_FSConverter'))(
+    return _PyUnicode_FSConverter(
       arg0,
       arg1,
     );
   }
 
-  _dart_PyUnicode_FSConverter? _PyUnicode_FSConverter;
+  late final _PyUnicode_FSConverter_ptr =
+      _lookup<ffi.NativeFunction<_c_PyUnicode_FSConverter>>(
+          'PyUnicode_FSConverter');
+  late final _dart_PyUnicode_FSConverter _PyUnicode_FSConverter =
+      _PyUnicode_FSConverter_ptr.asFunction<_dart_PyUnicode_FSConverter>();
 
   int PyUnicode_FSDecoder(
     ffi.Pointer<PyObject> arg0,
     ffi.Pointer<ffi.Void> arg1,
   ) {
-    return (_PyUnicode_FSDecoder ??= _dylib.lookupFunction<
-        _c_PyUnicode_FSDecoder,
-        _dart_PyUnicode_FSDecoder>('PyUnicode_FSDecoder'))(
+    return _PyUnicode_FSDecoder(
       arg0,
       arg1,
     );
   }
 
-  _dart_PyUnicode_FSDecoder? _PyUnicode_FSDecoder;
+  late final _PyUnicode_FSDecoder_ptr =
+      _lookup<ffi.NativeFunction<_c_PyUnicode_FSDecoder>>(
+          'PyUnicode_FSDecoder');
+  late final _dart_PyUnicode_FSDecoder _PyUnicode_FSDecoder =
+      _PyUnicode_FSDecoder_ptr.asFunction<_dart_PyUnicode_FSDecoder>();
 
   ffi.Pointer<PyObject> PyUnicode_DecodeFSDefault(
     ffi.Pointer<ffi.Int8> s,
   ) {
-    return (_PyUnicode_DecodeFSDefault ??= _dylib.lookupFunction<
-        _c_PyUnicode_DecodeFSDefault,
-        _dart_PyUnicode_DecodeFSDefault>('PyUnicode_DecodeFSDefault'))(
+    return _PyUnicode_DecodeFSDefault(
       s,
     );
   }
 
-  _dart_PyUnicode_DecodeFSDefault? _PyUnicode_DecodeFSDefault;
+  late final _PyUnicode_DecodeFSDefault_ptr =
+      _lookup<ffi.NativeFunction<_c_PyUnicode_DecodeFSDefault>>(
+          'PyUnicode_DecodeFSDefault');
+  late final _dart_PyUnicode_DecodeFSDefault _PyUnicode_DecodeFSDefault =
+      _PyUnicode_DecodeFSDefault_ptr.asFunction<
+          _dart_PyUnicode_DecodeFSDefault>();
 
   ffi.Pointer<PyObject> PyUnicode_DecodeFSDefaultAndSize(
     ffi.Pointer<ffi.Int8> s,
     int size,
   ) {
-    return (_PyUnicode_DecodeFSDefaultAndSize ??= _dylib.lookupFunction<
-            _c_PyUnicode_DecodeFSDefaultAndSize,
-            _dart_PyUnicode_DecodeFSDefaultAndSize>(
-        'PyUnicode_DecodeFSDefaultAndSize'))(
+    return _PyUnicode_DecodeFSDefaultAndSize(
       s,
       size,
     );
   }
 
-  _dart_PyUnicode_DecodeFSDefaultAndSize? _PyUnicode_DecodeFSDefaultAndSize;
+  late final _PyUnicode_DecodeFSDefaultAndSize_ptr =
+      _lookup<ffi.NativeFunction<_c_PyUnicode_DecodeFSDefaultAndSize>>(
+          'PyUnicode_DecodeFSDefaultAndSize');
+  late final _dart_PyUnicode_DecodeFSDefaultAndSize
+      _PyUnicode_DecodeFSDefaultAndSize = _PyUnicode_DecodeFSDefaultAndSize_ptr
+          .asFunction<_dart_PyUnicode_DecodeFSDefaultAndSize>();
 
   ffi.Pointer<PyObject> PyUnicode_EncodeFSDefault(
     ffi.Pointer<PyObject> unicode,
   ) {
-    return (_PyUnicode_EncodeFSDefault ??= _dylib.lookupFunction<
-        _c_PyUnicode_EncodeFSDefault,
-        _dart_PyUnicode_EncodeFSDefault>('PyUnicode_EncodeFSDefault'))(
+    return _PyUnicode_EncodeFSDefault(
       unicode,
     );
   }
 
-  _dart_PyUnicode_EncodeFSDefault? _PyUnicode_EncodeFSDefault;
+  late final _PyUnicode_EncodeFSDefault_ptr =
+      _lookup<ffi.NativeFunction<_c_PyUnicode_EncodeFSDefault>>(
+          'PyUnicode_EncodeFSDefault');
+  late final _dart_PyUnicode_EncodeFSDefault _PyUnicode_EncodeFSDefault =
+      _PyUnicode_EncodeFSDefault_ptr.asFunction<
+          _dart_PyUnicode_EncodeFSDefault>();
 
   ffi.Pointer<PyObject> PyUnicode_Concat(
     ffi.Pointer<PyObject> left,
     ffi.Pointer<PyObject> right,
   ) {
-    return (_PyUnicode_Concat ??=
-        _dylib.lookupFunction<_c_PyUnicode_Concat, _dart_PyUnicode_Concat>(
-            'PyUnicode_Concat'))(
+    return _PyUnicode_Concat(
       left,
       right,
     );
   }
 
-  _dart_PyUnicode_Concat? _PyUnicode_Concat;
+  late final _PyUnicode_Concat_ptr =
+      _lookup<ffi.NativeFunction<_c_PyUnicode_Concat>>('PyUnicode_Concat');
+  late final _dart_PyUnicode_Concat _PyUnicode_Concat =
+      _PyUnicode_Concat_ptr.asFunction<_dart_PyUnicode_Concat>();
 
   void PyUnicode_Append(
     ffi.Pointer<ffi.Pointer<PyObject>> pleft,
     ffi.Pointer<PyObject> right,
   ) {
-    return (_PyUnicode_Append ??=
-        _dylib.lookupFunction<_c_PyUnicode_Append, _dart_PyUnicode_Append>(
-            'PyUnicode_Append'))(
+    return _PyUnicode_Append(
       pleft,
       right,
     );
   }
 
-  _dart_PyUnicode_Append? _PyUnicode_Append;
+  late final _PyUnicode_Append_ptr =
+      _lookup<ffi.NativeFunction<_c_PyUnicode_Append>>('PyUnicode_Append');
+  late final _dart_PyUnicode_Append _PyUnicode_Append =
+      _PyUnicode_Append_ptr.asFunction<_dart_PyUnicode_Append>();
 
   void PyUnicode_AppendAndDel(
     ffi.Pointer<ffi.Pointer<PyObject>> pleft,
     ffi.Pointer<PyObject> right,
   ) {
-    return (_PyUnicode_AppendAndDel ??= _dylib.lookupFunction<
-        _c_PyUnicode_AppendAndDel,
-        _dart_PyUnicode_AppendAndDel>('PyUnicode_AppendAndDel'))(
+    return _PyUnicode_AppendAndDel(
       pleft,
       right,
     );
   }
 
-  _dart_PyUnicode_AppendAndDel? _PyUnicode_AppendAndDel;
+  late final _PyUnicode_AppendAndDel_ptr =
+      _lookup<ffi.NativeFunction<_c_PyUnicode_AppendAndDel>>(
+          'PyUnicode_AppendAndDel');
+  late final _dart_PyUnicode_AppendAndDel _PyUnicode_AppendAndDel =
+      _PyUnicode_AppendAndDel_ptr.asFunction<_dart_PyUnicode_AppendAndDel>();
 
   ffi.Pointer<PyObject> PyUnicode_Split(
     ffi.Pointer<PyObject> s,
     ffi.Pointer<PyObject> sep,
     int maxsplit,
   ) {
-    return (_PyUnicode_Split ??=
-        _dylib.lookupFunction<_c_PyUnicode_Split, _dart_PyUnicode_Split>(
-            'PyUnicode_Split'))(
+    return _PyUnicode_Split(
       s,
       sep,
       maxsplit,
     );
   }
 
-  _dart_PyUnicode_Split? _PyUnicode_Split;
+  late final _PyUnicode_Split_ptr =
+      _lookup<ffi.NativeFunction<_c_PyUnicode_Split>>('PyUnicode_Split');
+  late final _dart_PyUnicode_Split _PyUnicode_Split =
+      _PyUnicode_Split_ptr.asFunction<_dart_PyUnicode_Split>();
 
   ffi.Pointer<PyObject> PyUnicode_Splitlines(
     ffi.Pointer<PyObject> s,
     int keepends,
   ) {
-    return (_PyUnicode_Splitlines ??= _dylib.lookupFunction<
-        _c_PyUnicode_Splitlines,
-        _dart_PyUnicode_Splitlines>('PyUnicode_Splitlines'))(
+    return _PyUnicode_Splitlines(
       s,
       keepends,
     );
   }
 
-  _dart_PyUnicode_Splitlines? _PyUnicode_Splitlines;
+  late final _PyUnicode_Splitlines_ptr =
+      _lookup<ffi.NativeFunction<_c_PyUnicode_Splitlines>>(
+          'PyUnicode_Splitlines');
+  late final _dart_PyUnicode_Splitlines _PyUnicode_Splitlines =
+      _PyUnicode_Splitlines_ptr.asFunction<_dart_PyUnicode_Splitlines>();
 
   ffi.Pointer<PyObject> PyUnicode_Partition(
     ffi.Pointer<PyObject> s,
     ffi.Pointer<PyObject> sep,
   ) {
-    return (_PyUnicode_Partition ??= _dylib.lookupFunction<
-        _c_PyUnicode_Partition,
-        _dart_PyUnicode_Partition>('PyUnicode_Partition'))(
+    return _PyUnicode_Partition(
       s,
       sep,
     );
   }
 
-  _dart_PyUnicode_Partition? _PyUnicode_Partition;
+  late final _PyUnicode_Partition_ptr =
+      _lookup<ffi.NativeFunction<_c_PyUnicode_Partition>>(
+          'PyUnicode_Partition');
+  late final _dart_PyUnicode_Partition _PyUnicode_Partition =
+      _PyUnicode_Partition_ptr.asFunction<_dart_PyUnicode_Partition>();
 
   ffi.Pointer<PyObject> PyUnicode_RPartition(
     ffi.Pointer<PyObject> s,
     ffi.Pointer<PyObject> sep,
   ) {
-    return (_PyUnicode_RPartition ??= _dylib.lookupFunction<
-        _c_PyUnicode_RPartition,
-        _dart_PyUnicode_RPartition>('PyUnicode_RPartition'))(
+    return _PyUnicode_RPartition(
       s,
       sep,
     );
   }
 
-  _dart_PyUnicode_RPartition? _PyUnicode_RPartition;
+  late final _PyUnicode_RPartition_ptr =
+      _lookup<ffi.NativeFunction<_c_PyUnicode_RPartition>>(
+          'PyUnicode_RPartition');
+  late final _dart_PyUnicode_RPartition _PyUnicode_RPartition =
+      _PyUnicode_RPartition_ptr.asFunction<_dart_PyUnicode_RPartition>();
 
   ffi.Pointer<PyObject> PyUnicode_RSplit(
     ffi.Pointer<PyObject> s,
     ffi.Pointer<PyObject> sep,
     int maxsplit,
   ) {
-    return (_PyUnicode_RSplit ??=
-        _dylib.lookupFunction<_c_PyUnicode_RSplit, _dart_PyUnicode_RSplit>(
-            'PyUnicode_RSplit'))(
+    return _PyUnicode_RSplit(
       s,
       sep,
       maxsplit,
     );
   }
 
-  _dart_PyUnicode_RSplit? _PyUnicode_RSplit;
+  late final _PyUnicode_RSplit_ptr =
+      _lookup<ffi.NativeFunction<_c_PyUnicode_RSplit>>('PyUnicode_RSplit');
+  late final _dart_PyUnicode_RSplit _PyUnicode_RSplit =
+      _PyUnicode_RSplit_ptr.asFunction<_dart_PyUnicode_RSplit>();
 
   ffi.Pointer<PyObject> PyUnicode_Translate(
     ffi.Pointer<PyObject> str,
     ffi.Pointer<PyObject> table,
     ffi.Pointer<ffi.Int8> errors,
   ) {
-    return (_PyUnicode_Translate ??= _dylib.lookupFunction<
-        _c_PyUnicode_Translate,
-        _dart_PyUnicode_Translate>('PyUnicode_Translate'))(
+    return _PyUnicode_Translate(
       str,
       table,
       errors,
     );
   }
 
-  _dart_PyUnicode_Translate? _PyUnicode_Translate;
+  late final _PyUnicode_Translate_ptr =
+      _lookup<ffi.NativeFunction<_c_PyUnicode_Translate>>(
+          'PyUnicode_Translate');
+  late final _dart_PyUnicode_Translate _PyUnicode_Translate =
+      _PyUnicode_Translate_ptr.asFunction<_dart_PyUnicode_Translate>();
 
   ffi.Pointer<PyObject> PyUnicode_Join(
     ffi.Pointer<PyObject> separator,
     ffi.Pointer<PyObject> seq,
   ) {
-    return (_PyUnicode_Join ??=
-        _dylib.lookupFunction<_c_PyUnicode_Join, _dart_PyUnicode_Join>(
-            'PyUnicode_Join'))(
+    return _PyUnicode_Join(
       separator,
       seq,
     );
   }
 
-  _dart_PyUnicode_Join? _PyUnicode_Join;
+  late final _PyUnicode_Join_ptr =
+      _lookup<ffi.NativeFunction<_c_PyUnicode_Join>>('PyUnicode_Join');
+  late final _dart_PyUnicode_Join _PyUnicode_Join =
+      _PyUnicode_Join_ptr.asFunction<_dart_PyUnicode_Join>();
 
   int PyUnicode_Tailmatch(
     ffi.Pointer<PyObject> str,
@@ -2870,9 +3260,7 @@ class DartPyC {
     int end,
     int direction,
   ) {
-    return (_PyUnicode_Tailmatch ??= _dylib.lookupFunction<
-        _c_PyUnicode_Tailmatch,
-        _dart_PyUnicode_Tailmatch>('PyUnicode_Tailmatch'))(
+    return _PyUnicode_Tailmatch(
       str,
       substr,
       start,
@@ -2881,7 +3269,11 @@ class DartPyC {
     );
   }
 
-  _dart_PyUnicode_Tailmatch? _PyUnicode_Tailmatch;
+  late final _PyUnicode_Tailmatch_ptr =
+      _lookup<ffi.NativeFunction<_c_PyUnicode_Tailmatch>>(
+          'PyUnicode_Tailmatch');
+  late final _dart_PyUnicode_Tailmatch _PyUnicode_Tailmatch =
+      _PyUnicode_Tailmatch_ptr.asFunction<_dart_PyUnicode_Tailmatch>();
 
   int PyUnicode_Find(
     ffi.Pointer<PyObject> str,
@@ -2890,9 +3282,7 @@ class DartPyC {
     int end,
     int direction,
   ) {
-    return (_PyUnicode_Find ??=
-        _dylib.lookupFunction<_c_PyUnicode_Find, _dart_PyUnicode_Find>(
-            'PyUnicode_Find'))(
+    return _PyUnicode_Find(
       str,
       substr,
       start,
@@ -2901,7 +3291,10 @@ class DartPyC {
     );
   }
 
-  _dart_PyUnicode_Find? _PyUnicode_Find;
+  late final _PyUnicode_Find_ptr =
+      _lookup<ffi.NativeFunction<_c_PyUnicode_Find>>('PyUnicode_Find');
+  late final _dart_PyUnicode_Find _PyUnicode_Find =
+      _PyUnicode_Find_ptr.asFunction<_dart_PyUnicode_Find>();
 
   int PyUnicode_FindChar(
     ffi.Pointer<PyObject> str,
@@ -2910,9 +3303,7 @@ class DartPyC {
     int end,
     int direction,
   ) {
-    return (_PyUnicode_FindChar ??=
-        _dylib.lookupFunction<_c_PyUnicode_FindChar, _dart_PyUnicode_FindChar>(
-            'PyUnicode_FindChar'))(
+    return _PyUnicode_FindChar(
       str,
       ch,
       start,
@@ -2921,7 +3312,10 @@ class DartPyC {
     );
   }
 
-  _dart_PyUnicode_FindChar? _PyUnicode_FindChar;
+  late final _PyUnicode_FindChar_ptr =
+      _lookup<ffi.NativeFunction<_c_PyUnicode_FindChar>>('PyUnicode_FindChar');
+  late final _dart_PyUnicode_FindChar _PyUnicode_FindChar =
+      _PyUnicode_FindChar_ptr.asFunction<_dart_PyUnicode_FindChar>();
 
   int PyUnicode_Count(
     ffi.Pointer<PyObject> str,
@@ -2929,9 +3323,7 @@ class DartPyC {
     int start,
     int end,
   ) {
-    return (_PyUnicode_Count ??=
-        _dylib.lookupFunction<_c_PyUnicode_Count, _dart_PyUnicode_Count>(
-            'PyUnicode_Count'))(
+    return _PyUnicode_Count(
       str,
       substr,
       start,
@@ -2939,7 +3331,10 @@ class DartPyC {
     );
   }
 
-  _dart_PyUnicode_Count? _PyUnicode_Count;
+  late final _PyUnicode_Count_ptr =
+      _lookup<ffi.NativeFunction<_c_PyUnicode_Count>>('PyUnicode_Count');
+  late final _dart_PyUnicode_Count _PyUnicode_Count =
+      _PyUnicode_Count_ptr.asFunction<_dart_PyUnicode_Count>();
 
   ffi.Pointer<PyObject> PyUnicode_Replace(
     ffi.Pointer<PyObject> str,
@@ -2947,9 +3342,7 @@ class DartPyC {
     ffi.Pointer<PyObject> replstr,
     int maxcount,
   ) {
-    return (_PyUnicode_Replace ??=
-        _dylib.lookupFunction<_c_PyUnicode_Replace, _dart_PyUnicode_Replace>(
-            'PyUnicode_Replace'))(
+    return _PyUnicode_Replace(
       str,
       substr,
       replstr,
@@ -2957,545 +3350,627 @@ class DartPyC {
     );
   }
 
-  _dart_PyUnicode_Replace? _PyUnicode_Replace;
+  late final _PyUnicode_Replace_ptr =
+      _lookup<ffi.NativeFunction<_c_PyUnicode_Replace>>('PyUnicode_Replace');
+  late final _dart_PyUnicode_Replace _PyUnicode_Replace =
+      _PyUnicode_Replace_ptr.asFunction<_dart_PyUnicode_Replace>();
 
   int PyUnicode_Compare(
     ffi.Pointer<PyObject> left,
     ffi.Pointer<PyObject> right,
   ) {
-    return (_PyUnicode_Compare ??=
-        _dylib.lookupFunction<_c_PyUnicode_Compare, _dart_PyUnicode_Compare>(
-            'PyUnicode_Compare'))(
+    return _PyUnicode_Compare(
       left,
       right,
     );
   }
 
-  _dart_PyUnicode_Compare? _PyUnicode_Compare;
+  late final _PyUnicode_Compare_ptr =
+      _lookup<ffi.NativeFunction<_c_PyUnicode_Compare>>('PyUnicode_Compare');
+  late final _dart_PyUnicode_Compare _PyUnicode_Compare =
+      _PyUnicode_Compare_ptr.asFunction<_dart_PyUnicode_Compare>();
 
   int PyUnicode_CompareWithASCIIString(
     ffi.Pointer<PyObject> left,
     ffi.Pointer<ffi.Int8> right,
   ) {
-    return (_PyUnicode_CompareWithASCIIString ??= _dylib.lookupFunction<
-            _c_PyUnicode_CompareWithASCIIString,
-            _dart_PyUnicode_CompareWithASCIIString>(
-        'PyUnicode_CompareWithASCIIString'))(
+    return _PyUnicode_CompareWithASCIIString(
       left,
       right,
     );
   }
 
-  _dart_PyUnicode_CompareWithASCIIString? _PyUnicode_CompareWithASCIIString;
+  late final _PyUnicode_CompareWithASCIIString_ptr =
+      _lookup<ffi.NativeFunction<_c_PyUnicode_CompareWithASCIIString>>(
+          'PyUnicode_CompareWithASCIIString');
+  late final _dart_PyUnicode_CompareWithASCIIString
+      _PyUnicode_CompareWithASCIIString = _PyUnicode_CompareWithASCIIString_ptr
+          .asFunction<_dart_PyUnicode_CompareWithASCIIString>();
 
   ffi.Pointer<PyObject> PyUnicode_RichCompare(
     ffi.Pointer<PyObject> left,
     ffi.Pointer<PyObject> right,
     int op,
   ) {
-    return (_PyUnicode_RichCompare ??= _dylib.lookupFunction<
-        _c_PyUnicode_RichCompare,
-        _dart_PyUnicode_RichCompare>('PyUnicode_RichCompare'))(
+    return _PyUnicode_RichCompare(
       left,
       right,
       op,
     );
   }
 
-  _dart_PyUnicode_RichCompare? _PyUnicode_RichCompare;
+  late final _PyUnicode_RichCompare_ptr =
+      _lookup<ffi.NativeFunction<_c_PyUnicode_RichCompare>>(
+          'PyUnicode_RichCompare');
+  late final _dart_PyUnicode_RichCompare _PyUnicode_RichCompare =
+      _PyUnicode_RichCompare_ptr.asFunction<_dart_PyUnicode_RichCompare>();
 
   ffi.Pointer<PyObject> PyUnicode_Format(
     ffi.Pointer<PyObject> format,
     ffi.Pointer<PyObject> args,
   ) {
-    return (_PyUnicode_Format ??=
-        _dylib.lookupFunction<_c_PyUnicode_Format, _dart_PyUnicode_Format>(
-            'PyUnicode_Format'))(
+    return _PyUnicode_Format(
       format,
       args,
     );
   }
 
-  _dart_PyUnicode_Format? _PyUnicode_Format;
+  late final _PyUnicode_Format_ptr =
+      _lookup<ffi.NativeFunction<_c_PyUnicode_Format>>('PyUnicode_Format');
+  late final _dart_PyUnicode_Format _PyUnicode_Format =
+      _PyUnicode_Format_ptr.asFunction<_dart_PyUnicode_Format>();
 
   int PyUnicode_Contains(
     ffi.Pointer<PyObject> container,
     ffi.Pointer<PyObject> element,
   ) {
-    return (_PyUnicode_Contains ??=
-        _dylib.lookupFunction<_c_PyUnicode_Contains, _dart_PyUnicode_Contains>(
-            'PyUnicode_Contains'))(
+    return _PyUnicode_Contains(
       container,
       element,
     );
   }
 
-  _dart_PyUnicode_Contains? _PyUnicode_Contains;
+  late final _PyUnicode_Contains_ptr =
+      _lookup<ffi.NativeFunction<_c_PyUnicode_Contains>>('PyUnicode_Contains');
+  late final _dart_PyUnicode_Contains _PyUnicode_Contains =
+      _PyUnicode_Contains_ptr.asFunction<_dart_PyUnicode_Contains>();
 
   int PyUnicode_IsIdentifier(
     ffi.Pointer<PyObject> s,
   ) {
-    return (_PyUnicode_IsIdentifier ??= _dylib.lookupFunction<
-        _c_PyUnicode_IsIdentifier,
-        _dart_PyUnicode_IsIdentifier>('PyUnicode_IsIdentifier'))(
+    return _PyUnicode_IsIdentifier(
       s,
     );
   }
 
-  _dart_PyUnicode_IsIdentifier? _PyUnicode_IsIdentifier;
+  late final _PyUnicode_IsIdentifier_ptr =
+      _lookup<ffi.NativeFunction<_c_PyUnicode_IsIdentifier>>(
+          'PyUnicode_IsIdentifier');
+  late final _dart_PyUnicode_IsIdentifier _PyUnicode_IsIdentifier =
+      _PyUnicode_IsIdentifier_ptr.asFunction<_dart_PyUnicode_IsIdentifier>();
 
-  late final _typeobject PyLong_Type =
-      _dylib.lookup<_typeobject>('PyLong_Type').ref;
+  late final ffi.Pointer<_typeobject> _PyLong_Type =
+      _lookup<_typeobject>('PyLong_Type');
+
+  _typeobject get PyLong_Type => _PyLong_Type.ref;
 
   ffi.Pointer<PyObject> PyLong_FromLong(
     int arg0,
   ) {
-    return (_PyLong_FromLong ??=
-        _dylib.lookupFunction<_c_PyLong_FromLong, _dart_PyLong_FromLong>(
-            'PyLong_FromLong'))(
+    return _PyLong_FromLong(
       arg0,
     );
   }
 
-  _dart_PyLong_FromLong? _PyLong_FromLong;
+  late final _PyLong_FromLong_ptr =
+      _lookup<ffi.NativeFunction<_c_PyLong_FromLong>>('PyLong_FromLong');
+  late final _dart_PyLong_FromLong _PyLong_FromLong =
+      _PyLong_FromLong_ptr.asFunction<_dart_PyLong_FromLong>();
 
   ffi.Pointer<PyObject> PyLong_FromUnsignedLong(
     int arg0,
   ) {
-    return (_PyLong_FromUnsignedLong ??= _dylib.lookupFunction<
-        _c_PyLong_FromUnsignedLong,
-        _dart_PyLong_FromUnsignedLong>('PyLong_FromUnsignedLong'))(
+    return _PyLong_FromUnsignedLong(
       arg0,
     );
   }
 
-  _dart_PyLong_FromUnsignedLong? _PyLong_FromUnsignedLong;
+  late final _PyLong_FromUnsignedLong_ptr =
+      _lookup<ffi.NativeFunction<_c_PyLong_FromUnsignedLong>>(
+          'PyLong_FromUnsignedLong');
+  late final _dart_PyLong_FromUnsignedLong _PyLong_FromUnsignedLong =
+      _PyLong_FromUnsignedLong_ptr.asFunction<_dart_PyLong_FromUnsignedLong>();
 
   ffi.Pointer<PyObject> PyLong_FromSize_t(
     int arg0,
   ) {
-    return (_PyLong_FromSize_t ??=
-        _dylib.lookupFunction<_c_PyLong_FromSize_t, _dart_PyLong_FromSize_t>(
-            'PyLong_FromSize_t'))(
+    return _PyLong_FromSize_t(
       arg0,
     );
   }
 
-  _dart_PyLong_FromSize_t? _PyLong_FromSize_t;
+  late final _PyLong_FromSize_t_ptr =
+      _lookup<ffi.NativeFunction<_c_PyLong_FromSize_t>>('PyLong_FromSize_t');
+  late final _dart_PyLong_FromSize_t _PyLong_FromSize_t =
+      _PyLong_FromSize_t_ptr.asFunction<_dart_PyLong_FromSize_t>();
 
   ffi.Pointer<PyObject> PyLong_FromSsize_t(
     int arg0,
   ) {
-    return (_PyLong_FromSsize_t ??=
-        _dylib.lookupFunction<_c_PyLong_FromSsize_t, _dart_PyLong_FromSsize_t>(
-            'PyLong_FromSsize_t'))(
+    return _PyLong_FromSsize_t(
       arg0,
     );
   }
 
-  _dart_PyLong_FromSsize_t? _PyLong_FromSsize_t;
+  late final _PyLong_FromSsize_t_ptr =
+      _lookup<ffi.NativeFunction<_c_PyLong_FromSsize_t>>('PyLong_FromSsize_t');
+  late final _dart_PyLong_FromSsize_t _PyLong_FromSsize_t =
+      _PyLong_FromSsize_t_ptr.asFunction<_dart_PyLong_FromSsize_t>();
 
   ffi.Pointer<PyObject> PyLong_FromDouble(
     double arg0,
   ) {
-    return (_PyLong_FromDouble ??=
-        _dylib.lookupFunction<_c_PyLong_FromDouble, _dart_PyLong_FromDouble>(
-            'PyLong_FromDouble'))(
+    return _PyLong_FromDouble(
       arg0,
     );
   }
 
-  _dart_PyLong_FromDouble? _PyLong_FromDouble;
+  late final _PyLong_FromDouble_ptr =
+      _lookup<ffi.NativeFunction<_c_PyLong_FromDouble>>('PyLong_FromDouble');
+  late final _dart_PyLong_FromDouble _PyLong_FromDouble =
+      _PyLong_FromDouble_ptr.asFunction<_dart_PyLong_FromDouble>();
 
   int PyLong_AsLong(
     ffi.Pointer<PyObject> arg0,
   ) {
-    return (_PyLong_AsLong ??=
-        _dylib.lookupFunction<_c_PyLong_AsLong, _dart_PyLong_AsLong>(
-            'PyLong_AsLong'))(
+    return _PyLong_AsLong(
       arg0,
     );
   }
 
-  _dart_PyLong_AsLong? _PyLong_AsLong;
+  late final _PyLong_AsLong_ptr =
+      _lookup<ffi.NativeFunction<_c_PyLong_AsLong>>('PyLong_AsLong');
+  late final _dart_PyLong_AsLong _PyLong_AsLong =
+      _PyLong_AsLong_ptr.asFunction<_dart_PyLong_AsLong>();
 
   int PyLong_AsLongAndOverflow(
     ffi.Pointer<PyObject> arg0,
     ffi.Pointer<ffi.Int32> arg1,
   ) {
-    return (_PyLong_AsLongAndOverflow ??= _dylib.lookupFunction<
-        _c_PyLong_AsLongAndOverflow,
-        _dart_PyLong_AsLongAndOverflow>('PyLong_AsLongAndOverflow'))(
+    return _PyLong_AsLongAndOverflow(
       arg0,
       arg1,
     );
   }
 
-  _dart_PyLong_AsLongAndOverflow? _PyLong_AsLongAndOverflow;
+  late final _PyLong_AsLongAndOverflow_ptr =
+      _lookup<ffi.NativeFunction<_c_PyLong_AsLongAndOverflow>>(
+          'PyLong_AsLongAndOverflow');
+  late final _dart_PyLong_AsLongAndOverflow _PyLong_AsLongAndOverflow =
+      _PyLong_AsLongAndOverflow_ptr.asFunction<
+          _dart_PyLong_AsLongAndOverflow>();
 
   int PyLong_AsSsize_t(
     ffi.Pointer<PyObject> arg0,
   ) {
-    return (_PyLong_AsSsize_t ??=
-        _dylib.lookupFunction<_c_PyLong_AsSsize_t, _dart_PyLong_AsSsize_t>(
-            'PyLong_AsSsize_t'))(
+    return _PyLong_AsSsize_t(
       arg0,
     );
   }
 
-  _dart_PyLong_AsSsize_t? _PyLong_AsSsize_t;
+  late final _PyLong_AsSsize_t_ptr =
+      _lookup<ffi.NativeFunction<_c_PyLong_AsSsize_t>>('PyLong_AsSsize_t');
+  late final _dart_PyLong_AsSsize_t _PyLong_AsSsize_t =
+      _PyLong_AsSsize_t_ptr.asFunction<_dart_PyLong_AsSsize_t>();
 
   int PyLong_AsSize_t(
     ffi.Pointer<PyObject> arg0,
   ) {
-    return (_PyLong_AsSize_t ??=
-        _dylib.lookupFunction<_c_PyLong_AsSize_t, _dart_PyLong_AsSize_t>(
-            'PyLong_AsSize_t'))(
+    return _PyLong_AsSize_t(
       arg0,
     );
   }
 
-  _dart_PyLong_AsSize_t? _PyLong_AsSize_t;
+  late final _PyLong_AsSize_t_ptr =
+      _lookup<ffi.NativeFunction<_c_PyLong_AsSize_t>>('PyLong_AsSize_t');
+  late final _dart_PyLong_AsSize_t _PyLong_AsSize_t =
+      _PyLong_AsSize_t_ptr.asFunction<_dart_PyLong_AsSize_t>();
 
   int PyLong_AsUnsignedLong(
     ffi.Pointer<PyObject> arg0,
   ) {
-    return (_PyLong_AsUnsignedLong ??= _dylib.lookupFunction<
-        _c_PyLong_AsUnsignedLong,
-        _dart_PyLong_AsUnsignedLong>('PyLong_AsUnsignedLong'))(
+    return _PyLong_AsUnsignedLong(
       arg0,
     );
   }
 
-  _dart_PyLong_AsUnsignedLong? _PyLong_AsUnsignedLong;
+  late final _PyLong_AsUnsignedLong_ptr =
+      _lookup<ffi.NativeFunction<_c_PyLong_AsUnsignedLong>>(
+          'PyLong_AsUnsignedLong');
+  late final _dart_PyLong_AsUnsignedLong _PyLong_AsUnsignedLong =
+      _PyLong_AsUnsignedLong_ptr.asFunction<_dart_PyLong_AsUnsignedLong>();
 
   int PyLong_AsUnsignedLongMask(
     ffi.Pointer<PyObject> arg0,
   ) {
-    return (_PyLong_AsUnsignedLongMask ??= _dylib.lookupFunction<
-        _c_PyLong_AsUnsignedLongMask,
-        _dart_PyLong_AsUnsignedLongMask>('PyLong_AsUnsignedLongMask'))(
+    return _PyLong_AsUnsignedLongMask(
       arg0,
     );
   }
 
-  _dart_PyLong_AsUnsignedLongMask? _PyLong_AsUnsignedLongMask;
+  late final _PyLong_AsUnsignedLongMask_ptr =
+      _lookup<ffi.NativeFunction<_c_PyLong_AsUnsignedLongMask>>(
+          'PyLong_AsUnsignedLongMask');
+  late final _dart_PyLong_AsUnsignedLongMask _PyLong_AsUnsignedLongMask =
+      _PyLong_AsUnsignedLongMask_ptr.asFunction<
+          _dart_PyLong_AsUnsignedLongMask>();
 
   int PyLong_AsInt(
     ffi.Pointer<PyObject> arg0,
   ) {
-    return (_PyLong_AsInt ??= _dylib
-        .lookupFunction<_c_PyLong_AsInt, _dart_PyLong_AsInt>('_PyLong_AsInt'))(
+    return _PyLong_AsInt(
       arg0,
     );
   }
 
-  _dart_PyLong_AsInt? _PyLong_AsInt;
+  late final _PyLong_AsInt_ptr =
+      _lookup<ffi.NativeFunction<_c_PyLong_AsInt>>('_PyLong_AsInt');
+  late final _dart_PyLong_AsInt _PyLong_AsInt =
+      _PyLong_AsInt_ptr.asFunction<_dart_PyLong_AsInt>();
 
   ffi.Pointer<PyObject> PyLong_GetInfo() {
-    return (_PyLong_GetInfo ??=
-        _dylib.lookupFunction<_c_PyLong_GetInfo, _dart_PyLong_GetInfo>(
-            'PyLong_GetInfo'))();
+    return _PyLong_GetInfo();
   }
 
-  _dart_PyLong_GetInfo? _PyLong_GetInfo;
+  late final _PyLong_GetInfo_ptr =
+      _lookup<ffi.NativeFunction<_c_PyLong_GetInfo>>('PyLong_GetInfo');
+  late final _dart_PyLong_GetInfo _PyLong_GetInfo =
+      _PyLong_GetInfo_ptr.asFunction<_dart_PyLong_GetInfo>();
 
   int PyLong_UnsignedShort_Converter(
     ffi.Pointer<PyObject> arg0,
     ffi.Pointer<ffi.Void> arg1,
   ) {
-    return (_PyLong_UnsignedShort_Converter ??= _dylib.lookupFunction<
-            _c_PyLong_UnsignedShort_Converter,
-            _dart_PyLong_UnsignedShort_Converter>(
-        '_PyLong_UnsignedShort_Converter'))(
+    return _PyLong_UnsignedShort_Converter(
       arg0,
       arg1,
     );
   }
 
-  _dart_PyLong_UnsignedShort_Converter? _PyLong_UnsignedShort_Converter;
+  late final _PyLong_UnsignedShort_Converter_ptr =
+      _lookup<ffi.NativeFunction<_c_PyLong_UnsignedShort_Converter>>(
+          '_PyLong_UnsignedShort_Converter');
+  late final _dart_PyLong_UnsignedShort_Converter
+      _PyLong_UnsignedShort_Converter = _PyLong_UnsignedShort_Converter_ptr
+          .asFunction<_dart_PyLong_UnsignedShort_Converter>();
 
   int PyLong_UnsignedInt_Converter(
     ffi.Pointer<PyObject> arg0,
     ffi.Pointer<ffi.Void> arg1,
   ) {
-    return (_PyLong_UnsignedInt_Converter ??= _dylib.lookupFunction<
-        _c_PyLong_UnsignedInt_Converter,
-        _dart_PyLong_UnsignedInt_Converter>('_PyLong_UnsignedInt_Converter'))(
+    return _PyLong_UnsignedInt_Converter(
       arg0,
       arg1,
     );
   }
 
-  _dart_PyLong_UnsignedInt_Converter? _PyLong_UnsignedInt_Converter;
+  late final _PyLong_UnsignedInt_Converter_ptr =
+      _lookup<ffi.NativeFunction<_c_PyLong_UnsignedInt_Converter>>(
+          '_PyLong_UnsignedInt_Converter');
+  late final _dart_PyLong_UnsignedInt_Converter _PyLong_UnsignedInt_Converter =
+      _PyLong_UnsignedInt_Converter_ptr.asFunction<
+          _dart_PyLong_UnsignedInt_Converter>();
 
   int PyLong_UnsignedLong_Converter(
     ffi.Pointer<PyObject> arg0,
     ffi.Pointer<ffi.Void> arg1,
   ) {
-    return (_PyLong_UnsignedLong_Converter ??= _dylib.lookupFunction<
-        _c_PyLong_UnsignedLong_Converter,
-        _dart_PyLong_UnsignedLong_Converter>('_PyLong_UnsignedLong_Converter'))(
+    return _PyLong_UnsignedLong_Converter(
       arg0,
       arg1,
     );
   }
 
-  _dart_PyLong_UnsignedLong_Converter? _PyLong_UnsignedLong_Converter;
+  late final _PyLong_UnsignedLong_Converter_ptr =
+      _lookup<ffi.NativeFunction<_c_PyLong_UnsignedLong_Converter>>(
+          '_PyLong_UnsignedLong_Converter');
+  late final _dart_PyLong_UnsignedLong_Converter
+      _PyLong_UnsignedLong_Converter = _PyLong_UnsignedLong_Converter_ptr
+          .asFunction<_dart_PyLong_UnsignedLong_Converter>();
 
   int PyLong_UnsignedLongLong_Converter(
     ffi.Pointer<PyObject> arg0,
     ffi.Pointer<ffi.Void> arg1,
   ) {
-    return (_PyLong_UnsignedLongLong_Converter ??= _dylib.lookupFunction<
-            _c_PyLong_UnsignedLongLong_Converter,
-            _dart_PyLong_UnsignedLongLong_Converter>(
-        '_PyLong_UnsignedLongLong_Converter'))(
+    return _PyLong_UnsignedLongLong_Converter(
       arg0,
       arg1,
     );
   }
 
-  _dart_PyLong_UnsignedLongLong_Converter? _PyLong_UnsignedLongLong_Converter;
+  late final _PyLong_UnsignedLongLong_Converter_ptr =
+      _lookup<ffi.NativeFunction<_c_PyLong_UnsignedLongLong_Converter>>(
+          '_PyLong_UnsignedLongLong_Converter');
+  late final _dart_PyLong_UnsignedLongLong_Converter
+      _PyLong_UnsignedLongLong_Converter =
+      _PyLong_UnsignedLongLong_Converter_ptr.asFunction<
+          _dart_PyLong_UnsignedLongLong_Converter>();
 
   int PyLong_Size_t_Converter(
     ffi.Pointer<PyObject> arg0,
     ffi.Pointer<ffi.Void> arg1,
   ) {
-    return (_PyLong_Size_t_Converter ??= _dylib.lookupFunction<
-        _c_PyLong_Size_t_Converter,
-        _dart_PyLong_Size_t_Converter>('_PyLong_Size_t_Converter'))(
+    return _PyLong_Size_t_Converter(
       arg0,
       arg1,
     );
   }
 
-  _dart_PyLong_Size_t_Converter? _PyLong_Size_t_Converter;
+  late final _PyLong_Size_t_Converter_ptr =
+      _lookup<ffi.NativeFunction<_c_PyLong_Size_t_Converter>>(
+          '_PyLong_Size_t_Converter');
+  late final _dart_PyLong_Size_t_Converter _PyLong_Size_t_Converter =
+      _PyLong_Size_t_Converter_ptr.asFunction<_dart_PyLong_Size_t_Converter>();
 
-  late final ffi.Pointer<ffi.Uint8> PyLong_DigitValue =
-      _dylib.lookup<ffi.Pointer<ffi.Uint8>>('_PyLong_DigitValue').value;
+  late final ffi.Pointer<ffi.Pointer<ffi.Uint8>> _PyLong_DigitValue =
+      _lookup<ffi.Pointer<ffi.Uint8>>('_PyLong_DigitValue');
+
+  ffi.Pointer<ffi.Uint8> get PyLong_DigitValue => _PyLong_DigitValue.value;
+
+  set PyLong_DigitValue(ffi.Pointer<ffi.Uint8> value) =>
+      _PyLong_DigitValue.value = value;
 
   double PyLong_Frexp(
     ffi.Pointer<_longobject> a,
     ffi.Pointer<ffi.Int64> e,
   ) {
-    return (_PyLong_Frexp ??= _dylib
-        .lookupFunction<_c_PyLong_Frexp, _dart_PyLong_Frexp>('_PyLong_Frexp'))(
+    return _PyLong_Frexp(
       a,
       e,
     );
   }
 
-  _dart_PyLong_Frexp? _PyLong_Frexp;
+  late final _PyLong_Frexp_ptr =
+      _lookup<ffi.NativeFunction<_c_PyLong_Frexp>>('_PyLong_Frexp');
+  late final _dart_PyLong_Frexp _PyLong_Frexp =
+      _PyLong_Frexp_ptr.asFunction<_dart_PyLong_Frexp>();
 
   double PyLong_AsDouble(
     ffi.Pointer<PyObject> arg0,
   ) {
-    return (_PyLong_AsDouble ??=
-        _dylib.lookupFunction<_c_PyLong_AsDouble, _dart_PyLong_AsDouble>(
-            'PyLong_AsDouble'))(
+    return _PyLong_AsDouble(
       arg0,
     );
   }
 
-  _dart_PyLong_AsDouble? _PyLong_AsDouble;
+  late final _PyLong_AsDouble_ptr =
+      _lookup<ffi.NativeFunction<_c_PyLong_AsDouble>>('PyLong_AsDouble');
+  late final _dart_PyLong_AsDouble _PyLong_AsDouble =
+      _PyLong_AsDouble_ptr.asFunction<_dart_PyLong_AsDouble>();
 
   ffi.Pointer<PyObject> PyLong_FromVoidPtr(
     ffi.Pointer<ffi.Void> arg0,
   ) {
-    return (_PyLong_FromVoidPtr ??=
-        _dylib.lookupFunction<_c_PyLong_FromVoidPtr, _dart_PyLong_FromVoidPtr>(
-            'PyLong_FromVoidPtr'))(
+    return _PyLong_FromVoidPtr(
       arg0,
     );
   }
 
-  _dart_PyLong_FromVoidPtr? _PyLong_FromVoidPtr;
+  late final _PyLong_FromVoidPtr_ptr =
+      _lookup<ffi.NativeFunction<_c_PyLong_FromVoidPtr>>('PyLong_FromVoidPtr');
+  late final _dart_PyLong_FromVoidPtr _PyLong_FromVoidPtr =
+      _PyLong_FromVoidPtr_ptr.asFunction<_dart_PyLong_FromVoidPtr>();
 
   ffi.Pointer<ffi.Void> PyLong_AsVoidPtr(
     ffi.Pointer<PyObject> arg0,
   ) {
-    return (_PyLong_AsVoidPtr ??=
-        _dylib.lookupFunction<_c_PyLong_AsVoidPtr, _dart_PyLong_AsVoidPtr>(
-            'PyLong_AsVoidPtr'))(
+    return _PyLong_AsVoidPtr(
       arg0,
     );
   }
 
-  _dart_PyLong_AsVoidPtr? _PyLong_AsVoidPtr;
+  late final _PyLong_AsVoidPtr_ptr =
+      _lookup<ffi.NativeFunction<_c_PyLong_AsVoidPtr>>('PyLong_AsVoidPtr');
+  late final _dart_PyLong_AsVoidPtr _PyLong_AsVoidPtr =
+      _PyLong_AsVoidPtr_ptr.asFunction<_dart_PyLong_AsVoidPtr>();
 
   ffi.Pointer<PyObject> PyLong_FromLongLong(
     int arg0,
   ) {
-    return (_PyLong_FromLongLong ??= _dylib.lookupFunction<
-        _c_PyLong_FromLongLong,
-        _dart_PyLong_FromLongLong>('PyLong_FromLongLong'))(
+    return _PyLong_FromLongLong(
       arg0,
     );
   }
 
-  _dart_PyLong_FromLongLong? _PyLong_FromLongLong;
+  late final _PyLong_FromLongLong_ptr =
+      _lookup<ffi.NativeFunction<_c_PyLong_FromLongLong>>(
+          'PyLong_FromLongLong');
+  late final _dart_PyLong_FromLongLong _PyLong_FromLongLong =
+      _PyLong_FromLongLong_ptr.asFunction<_dart_PyLong_FromLongLong>();
 
   ffi.Pointer<PyObject> PyLong_FromUnsignedLongLong(
     int arg0,
   ) {
-    return (_PyLong_FromUnsignedLongLong ??= _dylib.lookupFunction<
-        _c_PyLong_FromUnsignedLongLong,
-        _dart_PyLong_FromUnsignedLongLong>('PyLong_FromUnsignedLongLong'))(
+    return _PyLong_FromUnsignedLongLong(
       arg0,
     );
   }
 
-  _dart_PyLong_FromUnsignedLongLong? _PyLong_FromUnsignedLongLong;
+  late final _PyLong_FromUnsignedLongLong_ptr =
+      _lookup<ffi.NativeFunction<_c_PyLong_FromUnsignedLongLong>>(
+          'PyLong_FromUnsignedLongLong');
+  late final _dart_PyLong_FromUnsignedLongLong _PyLong_FromUnsignedLongLong =
+      _PyLong_FromUnsignedLongLong_ptr.asFunction<
+          _dart_PyLong_FromUnsignedLongLong>();
 
   int PyLong_AsLongLong(
     ffi.Pointer<PyObject> arg0,
   ) {
-    return (_PyLong_AsLongLong ??=
-        _dylib.lookupFunction<_c_PyLong_AsLongLong, _dart_PyLong_AsLongLong>(
-            'PyLong_AsLongLong'))(
+    return _PyLong_AsLongLong(
       arg0,
     );
   }
 
-  _dart_PyLong_AsLongLong? _PyLong_AsLongLong;
+  late final _PyLong_AsLongLong_ptr =
+      _lookup<ffi.NativeFunction<_c_PyLong_AsLongLong>>('PyLong_AsLongLong');
+  late final _dart_PyLong_AsLongLong _PyLong_AsLongLong =
+      _PyLong_AsLongLong_ptr.asFunction<_dart_PyLong_AsLongLong>();
 
   int PyLong_AsUnsignedLongLong(
     ffi.Pointer<PyObject> arg0,
   ) {
-    return (_PyLong_AsUnsignedLongLong ??= _dylib.lookupFunction<
-        _c_PyLong_AsUnsignedLongLong,
-        _dart_PyLong_AsUnsignedLongLong>('PyLong_AsUnsignedLongLong'))(
+    return _PyLong_AsUnsignedLongLong(
       arg0,
     );
   }
 
-  _dart_PyLong_AsUnsignedLongLong? _PyLong_AsUnsignedLongLong;
+  late final _PyLong_AsUnsignedLongLong_ptr =
+      _lookup<ffi.NativeFunction<_c_PyLong_AsUnsignedLongLong>>(
+          'PyLong_AsUnsignedLongLong');
+  late final _dart_PyLong_AsUnsignedLongLong _PyLong_AsUnsignedLongLong =
+      _PyLong_AsUnsignedLongLong_ptr.asFunction<
+          _dart_PyLong_AsUnsignedLongLong>();
 
   int PyLong_AsUnsignedLongLongMask(
     ffi.Pointer<PyObject> arg0,
   ) {
-    return (_PyLong_AsUnsignedLongLongMask ??= _dylib.lookupFunction<
-        _c_PyLong_AsUnsignedLongLongMask,
-        _dart_PyLong_AsUnsignedLongLongMask>('PyLong_AsUnsignedLongLongMask'))(
+    return _PyLong_AsUnsignedLongLongMask(
       arg0,
     );
   }
 
-  _dart_PyLong_AsUnsignedLongLongMask? _PyLong_AsUnsignedLongLongMask;
+  late final _PyLong_AsUnsignedLongLongMask_ptr =
+      _lookup<ffi.NativeFunction<_c_PyLong_AsUnsignedLongLongMask>>(
+          'PyLong_AsUnsignedLongLongMask');
+  late final _dart_PyLong_AsUnsignedLongLongMask
+      _PyLong_AsUnsignedLongLongMask = _PyLong_AsUnsignedLongLongMask_ptr
+          .asFunction<_dart_PyLong_AsUnsignedLongLongMask>();
 
   int PyLong_AsLongLongAndOverflow(
     ffi.Pointer<PyObject> arg0,
     ffi.Pointer<ffi.Int32> arg1,
   ) {
-    return (_PyLong_AsLongLongAndOverflow ??= _dylib.lookupFunction<
-        _c_PyLong_AsLongLongAndOverflow,
-        _dart_PyLong_AsLongLongAndOverflow>('PyLong_AsLongLongAndOverflow'))(
+    return _PyLong_AsLongLongAndOverflow(
       arg0,
       arg1,
     );
   }
 
-  _dart_PyLong_AsLongLongAndOverflow? _PyLong_AsLongLongAndOverflow;
+  late final _PyLong_AsLongLongAndOverflow_ptr =
+      _lookup<ffi.NativeFunction<_c_PyLong_AsLongLongAndOverflow>>(
+          'PyLong_AsLongLongAndOverflow');
+  late final _dart_PyLong_AsLongLongAndOverflow _PyLong_AsLongLongAndOverflow =
+      _PyLong_AsLongLongAndOverflow_ptr.asFunction<
+          _dart_PyLong_AsLongLongAndOverflow>();
 
   ffi.Pointer<PyObject> PyLong_FromString(
     ffi.Pointer<ffi.Int8> arg0,
     ffi.Pointer<ffi.Pointer<ffi.Int8>> arg1,
     int arg2,
   ) {
-    return (_PyLong_FromString ??=
-        _dylib.lookupFunction<_c_PyLong_FromString, _dart_PyLong_FromString>(
-            'PyLong_FromString'))(
+    return _PyLong_FromString(
       arg0,
       arg1,
       arg2,
     );
   }
 
-  _dart_PyLong_FromString? _PyLong_FromString;
+  late final _PyLong_FromString_ptr =
+      _lookup<ffi.NativeFunction<_c_PyLong_FromString>>('PyLong_FromString');
+  late final _dart_PyLong_FromString _PyLong_FromString =
+      _PyLong_FromString_ptr.asFunction<_dart_PyLong_FromString>();
 
   ffi.Pointer<PyObject> PyLong_FromUnicode(
     ffi.Pointer<ffi.Int32> arg0,
     int arg1,
     int arg2,
   ) {
-    return (_PyLong_FromUnicode ??=
-        _dylib.lookupFunction<_c_PyLong_FromUnicode, _dart_PyLong_FromUnicode>(
-            'PyLong_FromUnicode'))(
+    return _PyLong_FromUnicode(
       arg0,
       arg1,
       arg2,
     );
   }
 
-  _dart_PyLong_FromUnicode? _PyLong_FromUnicode;
+  late final _PyLong_FromUnicode_ptr =
+      _lookup<ffi.NativeFunction<_c_PyLong_FromUnicode>>('PyLong_FromUnicode');
+  late final _dart_PyLong_FromUnicode _PyLong_FromUnicode =
+      _PyLong_FromUnicode_ptr.asFunction<_dart_PyLong_FromUnicode>();
 
   ffi.Pointer<PyObject> PyLong_FromUnicodeObject(
     ffi.Pointer<PyObject> u,
     int base,
   ) {
-    return (_PyLong_FromUnicodeObject ??= _dylib.lookupFunction<
-        _c_PyLong_FromUnicodeObject,
-        _dart_PyLong_FromUnicodeObject>('PyLong_FromUnicodeObject'))(
+    return _PyLong_FromUnicodeObject(
       u,
       base,
     );
   }
 
-  _dart_PyLong_FromUnicodeObject? _PyLong_FromUnicodeObject;
+  late final _PyLong_FromUnicodeObject_ptr =
+      _lookup<ffi.NativeFunction<_c_PyLong_FromUnicodeObject>>(
+          'PyLong_FromUnicodeObject');
+  late final _dart_PyLong_FromUnicodeObject _PyLong_FromUnicodeObject =
+      _PyLong_FromUnicodeObject_ptr.asFunction<
+          _dart_PyLong_FromUnicodeObject>();
 
   ffi.Pointer<PyObject> PyLong_FromBytes(
     ffi.Pointer<ffi.Int8> arg0,
     int arg1,
     int arg2,
   ) {
-    return (_PyLong_FromBytes ??=
-        _dylib.lookupFunction<_c_PyLong_FromBytes, _dart_PyLong_FromBytes>(
-            '_PyLong_FromBytes'))(
+    return _PyLong_FromBytes(
       arg0,
       arg1,
       arg2,
     );
   }
 
-  _dart_PyLong_FromBytes? _PyLong_FromBytes;
+  late final _PyLong_FromBytes_ptr =
+      _lookup<ffi.NativeFunction<_c_PyLong_FromBytes>>('_PyLong_FromBytes');
+  late final _dart_PyLong_FromBytes _PyLong_FromBytes =
+      _PyLong_FromBytes_ptr.asFunction<_dart_PyLong_FromBytes>();
 
   int PyLong_Sign(
     ffi.Pointer<PyObject> v,
   ) {
-    return (_PyLong_Sign ??= _dylib
-        .lookupFunction<_c_PyLong_Sign, _dart_PyLong_Sign>('_PyLong_Sign'))(
+    return _PyLong_Sign(
       v,
     );
   }
 
-  _dart_PyLong_Sign? _PyLong_Sign;
+  late final _PyLong_Sign_ptr =
+      _lookup<ffi.NativeFunction<_c_PyLong_Sign>>('_PyLong_Sign');
+  late final _dart_PyLong_Sign _PyLong_Sign =
+      _PyLong_Sign_ptr.asFunction<_dart_PyLong_Sign>();
 
   int PyLong_NumBits(
     ffi.Pointer<PyObject> v,
   ) {
-    return (_PyLong_NumBits ??=
-        _dylib.lookupFunction<_c_PyLong_NumBits, _dart_PyLong_NumBits>(
-            '_PyLong_NumBits'))(
+    return _PyLong_NumBits(
       v,
     );
   }
 
-  _dart_PyLong_NumBits? _PyLong_NumBits;
+  late final _PyLong_NumBits_ptr =
+      _lookup<ffi.NativeFunction<_c_PyLong_NumBits>>('_PyLong_NumBits');
+  late final _dart_PyLong_NumBits _PyLong_NumBits =
+      _PyLong_NumBits_ptr.asFunction<_dart_PyLong_NumBits>();
 
   ffi.Pointer<PyObject> PyLong_DivmodNear(
     ffi.Pointer<PyObject> arg0,
     ffi.Pointer<PyObject> arg1,
   ) {
-    return (_PyLong_DivmodNear ??=
-        _dylib.lookupFunction<_c_PyLong_DivmodNear, _dart_PyLong_DivmodNear>(
-            '_PyLong_DivmodNear'))(
+    return _PyLong_DivmodNear(
       arg0,
       arg1,
     );
   }
 
-  _dart_PyLong_DivmodNear? _PyLong_DivmodNear;
+  late final _PyLong_DivmodNear_ptr =
+      _lookup<ffi.NativeFunction<_c_PyLong_DivmodNear>>('_PyLong_DivmodNear');
+  late final _dart_PyLong_DivmodNear _PyLong_DivmodNear =
+      _PyLong_DivmodNear_ptr.asFunction<_dart_PyLong_DivmodNear>();
 
   ffi.Pointer<PyObject> PyLong_FromByteArray(
     ffi.Pointer<ffi.Uint8> bytes,
@@ -3503,9 +3978,7 @@ class DartPyC {
     int little_endian,
     int is_signed,
   ) {
-    return (_PyLong_FromByteArray ??= _dylib.lookupFunction<
-        _c_PyLong_FromByteArray,
-        _dart_PyLong_FromByteArray>('_PyLong_FromByteArray'))(
+    return _PyLong_FromByteArray(
       bytes,
       n,
       little_endian,
@@ -3513,7 +3986,11 @@ class DartPyC {
     );
   }
 
-  _dart_PyLong_FromByteArray? _PyLong_FromByteArray;
+  late final _PyLong_FromByteArray_ptr =
+      _lookup<ffi.NativeFunction<_c_PyLong_FromByteArray>>(
+          '_PyLong_FromByteArray');
+  late final _dart_PyLong_FromByteArray _PyLong_FromByteArray =
+      _PyLong_FromByteArray_ptr.asFunction<_dart_PyLong_FromByteArray>();
 
   int PyLong_AsByteArray(
     ffi.Pointer<_longobject> v,
@@ -3522,9 +3999,7 @@ class DartPyC {
     int little_endian,
     int is_signed,
   ) {
-    return (_PyLong_AsByteArray ??=
-        _dylib.lookupFunction<_c_PyLong_AsByteArray, _dart_PyLong_AsByteArray>(
-            '_PyLong_AsByteArray'))(
+    return _PyLong_AsByteArray(
       v,
       bytes,
       n,
@@ -3533,45 +4008,53 @@ class DartPyC {
     );
   }
 
-  _dart_PyLong_AsByteArray? _PyLong_AsByteArray;
+  late final _PyLong_AsByteArray_ptr =
+      _lookup<ffi.NativeFunction<_c_PyLong_AsByteArray>>('_PyLong_AsByteArray');
+  late final _dart_PyLong_AsByteArray _PyLong_AsByteArray =
+      _PyLong_AsByteArray_ptr.asFunction<_dart_PyLong_AsByteArray>();
 
   ffi.Pointer<PyObject> PyLong_FromNbInt(
     ffi.Pointer<PyObject> arg0,
   ) {
-    return (_PyLong_FromNbInt ??=
-        _dylib.lookupFunction<_c_PyLong_FromNbInt, _dart_PyLong_FromNbInt>(
-            '_PyLong_FromNbInt'))(
+    return _PyLong_FromNbInt(
       arg0,
     );
   }
 
-  _dart_PyLong_FromNbInt? _PyLong_FromNbInt;
+  late final _PyLong_FromNbInt_ptr =
+      _lookup<ffi.NativeFunction<_c_PyLong_FromNbInt>>('_PyLong_FromNbInt');
+  late final _dart_PyLong_FromNbInt _PyLong_FromNbInt =
+      _PyLong_FromNbInt_ptr.asFunction<_dart_PyLong_FromNbInt>();
 
   ffi.Pointer<PyObject> PyLong_FromNbIndexOrNbInt(
     ffi.Pointer<PyObject> arg0,
   ) {
-    return (_PyLong_FromNbIndexOrNbInt ??= _dylib.lookupFunction<
-        _c_PyLong_FromNbIndexOrNbInt,
-        _dart_PyLong_FromNbIndexOrNbInt>('_PyLong_FromNbIndexOrNbInt'))(
+    return _PyLong_FromNbIndexOrNbInt(
       arg0,
     );
   }
 
-  _dart_PyLong_FromNbIndexOrNbInt? _PyLong_FromNbIndexOrNbInt;
+  late final _PyLong_FromNbIndexOrNbInt_ptr =
+      _lookup<ffi.NativeFunction<_c_PyLong_FromNbIndexOrNbInt>>(
+          '_PyLong_FromNbIndexOrNbInt');
+  late final _dart_PyLong_FromNbIndexOrNbInt _PyLong_FromNbIndexOrNbInt =
+      _PyLong_FromNbIndexOrNbInt_ptr.asFunction<
+          _dart_PyLong_FromNbIndexOrNbInt>();
 
   ffi.Pointer<PyObject> PyLong_Format(
     ffi.Pointer<PyObject> obj,
     int base,
   ) {
-    return (_PyLong_Format ??=
-        _dylib.lookupFunction<_c_PyLong_Format, _dart_PyLong_Format>(
-            '_PyLong_Format'))(
+    return _PyLong_Format(
       obj,
       base,
     );
   }
 
-  _dart_PyLong_Format? _PyLong_Format;
+  late final _PyLong_Format_ptr =
+      _lookup<ffi.NativeFunction<_c_PyLong_Format>>('_PyLong_Format');
+  late final _dart_PyLong_Format _PyLong_Format =
+      _PyLong_Format_ptr.asFunction<_dart_PyLong_Format>();
 
   int PyLong_FormatWriter(
     ffi.Pointer<_PyUnicodeWriter> writer,
@@ -3579,9 +4062,7 @@ class DartPyC {
     int base,
     int alternate,
   ) {
-    return (_PyLong_FormatWriter ??= _dylib.lookupFunction<
-        _c_PyLong_FormatWriter,
-        _dart_PyLong_FormatWriter>('_PyLong_FormatWriter'))(
+    return _PyLong_FormatWriter(
       writer,
       obj,
       base,
@@ -3589,7 +4070,11 @@ class DartPyC {
     );
   }
 
-  _dart_PyLong_FormatWriter? _PyLong_FormatWriter;
+  late final _PyLong_FormatWriter_ptr =
+      _lookup<ffi.NativeFunction<_c_PyLong_FormatWriter>>(
+          '_PyLong_FormatWriter');
+  late final _dart_PyLong_FormatWriter _PyLong_FormatWriter =
+      _PyLong_FormatWriter_ptr.asFunction<_dart_PyLong_FormatWriter>();
 
   ffi.Pointer<ffi.Int8> PyLong_FormatBytesWriter(
     ffi.Pointer<_PyBytesWriter> writer,
@@ -3598,9 +4083,7 @@ class DartPyC {
     int base,
     int alternate,
   ) {
-    return (_PyLong_FormatBytesWriter ??= _dylib.lookupFunction<
-        _c_PyLong_FormatBytesWriter,
-        _dart_PyLong_FormatBytesWriter>('_PyLong_FormatBytesWriter'))(
+    return _PyLong_FormatBytesWriter(
       writer,
       str,
       obj,
@@ -3609,7 +4092,12 @@ class DartPyC {
     );
   }
 
-  _dart_PyLong_FormatBytesWriter? _PyLong_FormatBytesWriter;
+  late final _PyLong_FormatBytesWriter_ptr =
+      _lookup<ffi.NativeFunction<_c_PyLong_FormatBytesWriter>>(
+          '_PyLong_FormatBytesWriter');
+  late final _dart_PyLong_FormatBytesWriter _PyLong_FormatBytesWriter =
+      _PyLong_FormatBytesWriter_ptr.asFunction<
+          _dart_PyLong_FormatBytesWriter>();
 
   int PyLong_FormatAdvancedWriter(
     ffi.Pointer<_PyUnicodeWriter> writer,
@@ -3618,9 +4106,7 @@ class DartPyC {
     int start,
     int end,
   ) {
-    return (_PyLong_FormatAdvancedWriter ??= _dylib.lookupFunction<
-        _c_PyLong_FormatAdvancedWriter,
-        _dart_PyLong_FormatAdvancedWriter>('_PyLong_FormatAdvancedWriter'))(
+    return _PyLong_FormatAdvancedWriter(
       writer,
       obj,
       format_spec,
@@ -3629,339 +4115,394 @@ class DartPyC {
     );
   }
 
-  _dart_PyLong_FormatAdvancedWriter? _PyLong_FormatAdvancedWriter;
+  late final _PyLong_FormatAdvancedWriter_ptr =
+      _lookup<ffi.NativeFunction<_c_PyLong_FormatAdvancedWriter>>(
+          '_PyLong_FormatAdvancedWriter');
+  late final _dart_PyLong_FormatAdvancedWriter _PyLong_FormatAdvancedWriter =
+      _PyLong_FormatAdvancedWriter_ptr.asFunction<
+          _dart_PyLong_FormatAdvancedWriter>();
 
   int PyOS_strtoul(
     ffi.Pointer<ffi.Int8> arg0,
     ffi.Pointer<ffi.Pointer<ffi.Int8>> arg1,
     int arg2,
   ) {
-    return (_PyOS_strtoul ??= _dylib
-        .lookupFunction<_c_PyOS_strtoul, _dart_PyOS_strtoul>('PyOS_strtoul'))(
+    return _PyOS_strtoul(
       arg0,
       arg1,
       arg2,
     );
   }
 
-  _dart_PyOS_strtoul? _PyOS_strtoul;
+  late final _PyOS_strtoul_ptr =
+      _lookup<ffi.NativeFunction<_c_PyOS_strtoul>>('PyOS_strtoul');
+  late final _dart_PyOS_strtoul _PyOS_strtoul =
+      _PyOS_strtoul_ptr.asFunction<_dart_PyOS_strtoul>();
 
   int PyOS_strtol(
     ffi.Pointer<ffi.Int8> arg0,
     ffi.Pointer<ffi.Pointer<ffi.Int8>> arg1,
     int arg2,
   ) {
-    return (_PyOS_strtol ??= _dylib
-        .lookupFunction<_c_PyOS_strtol, _dart_PyOS_strtol>('PyOS_strtol'))(
+    return _PyOS_strtol(
       arg0,
       arg1,
       arg2,
     );
   }
 
-  _dart_PyOS_strtol? _PyOS_strtol;
+  late final _PyOS_strtol_ptr =
+      _lookup<ffi.NativeFunction<_c_PyOS_strtol>>('PyOS_strtol');
+  late final _dart_PyOS_strtol _PyOS_strtol =
+      _PyOS_strtol_ptr.asFunction<_dart_PyOS_strtol>();
 
   ffi.Pointer<PyObject> PyLong_GCD(
     ffi.Pointer<PyObject> arg0,
     ffi.Pointer<PyObject> arg1,
   ) {
-    return (_PyLong_GCD ??=
-        _dylib.lookupFunction<_c_PyLong_GCD, _dart_PyLong_GCD>('_PyLong_GCD'))(
+    return _PyLong_GCD(
       arg0,
       arg1,
     );
   }
 
-  _dart_PyLong_GCD? _PyLong_GCD;
+  late final _PyLong_GCD_ptr =
+      _lookup<ffi.NativeFunction<_c_PyLong_GCD>>('_PyLong_GCD');
+  late final _dart_PyLong_GCD _PyLong_GCD =
+      _PyLong_GCD_ptr.asFunction<_dart_PyLong_GCD>();
 
-  late final ffi.Pointer<PyObject> PyLong_Zero =
-      _dylib.lookup<ffi.Pointer<PyObject>>('_PyLong_Zero').value;
+  late final ffi.Pointer<ffi.Pointer<PyObject>> _PyLong_Zero =
+      _lookup<ffi.Pointer<PyObject>>('_PyLong_Zero');
 
-  late final ffi.Pointer<PyObject> PyLong_One =
-      _dylib.lookup<ffi.Pointer<PyObject>>('_PyLong_One').value;
+  ffi.Pointer<PyObject> get PyLong_Zero => _PyLong_Zero.value;
+
+  set PyLong_Zero(ffi.Pointer<PyObject> value) => _PyLong_Zero.value = value;
+
+  late final ffi.Pointer<ffi.Pointer<PyObject>> _PyLong_One =
+      _lookup<ffi.Pointer<PyObject>>('_PyLong_One');
+
+  ffi.Pointer<PyObject> get PyLong_One => _PyLong_One.value;
+
+  set PyLong_One(ffi.Pointer<PyObject> value) => _PyLong_One.value = value;
 
   ffi.Pointer<PyObject> PyLong_Rshift(
     ffi.Pointer<PyObject> arg0,
     int arg1,
   ) {
-    return (_PyLong_Rshift ??=
-        _dylib.lookupFunction<_c_PyLong_Rshift, _dart_PyLong_Rshift>(
-            '_PyLong_Rshift'))(
+    return _PyLong_Rshift(
       arg0,
       arg1,
     );
   }
 
-  _dart_PyLong_Rshift? _PyLong_Rshift;
+  late final _PyLong_Rshift_ptr =
+      _lookup<ffi.NativeFunction<_c_PyLong_Rshift>>('_PyLong_Rshift');
+  late final _dart_PyLong_Rshift _PyLong_Rshift =
+      _PyLong_Rshift_ptr.asFunction<_dart_PyLong_Rshift>();
 
   ffi.Pointer<PyObject> PyLong_Lshift(
     ffi.Pointer<PyObject> arg0,
     int arg1,
   ) {
-    return (_PyLong_Lshift ??=
-        _dylib.lookupFunction<_c_PyLong_Lshift, _dart_PyLong_Lshift>(
-            '_PyLong_Lshift'))(
+    return _PyLong_Lshift(
       arg0,
       arg1,
     );
   }
 
-  _dart_PyLong_Lshift? _PyLong_Lshift;
+  late final _PyLong_Lshift_ptr =
+      _lookup<ffi.NativeFunction<_c_PyLong_Lshift>>('_PyLong_Lshift');
+  late final _dart_PyLong_Lshift _PyLong_Lshift =
+      _PyLong_Lshift_ptr.asFunction<_dart_PyLong_Lshift>();
 
   ffi.Pointer<_longobject> PyLong_New(
     int arg0,
   ) {
-    return (_PyLong_New ??=
-        _dylib.lookupFunction<_c_PyLong_New, _dart_PyLong_New>('_PyLong_New'))(
+    return _PyLong_New(
       arg0,
     );
   }
 
-  _dart_PyLong_New? _PyLong_New;
+  late final _PyLong_New_ptr =
+      _lookup<ffi.NativeFunction<_c_PyLong_New>>('_PyLong_New');
+  late final _dart_PyLong_New _PyLong_New =
+      _PyLong_New_ptr.asFunction<_dart_PyLong_New>();
 
   ffi.Pointer<PyObject> PyLong_Copy(
     ffi.Pointer<_longobject> src,
   ) {
-    return (_PyLong_Copy ??= _dylib
-        .lookupFunction<_c_PyLong_Copy, _dart_PyLong_Copy>('_PyLong_Copy'))(
+    return _PyLong_Copy(
       src,
     );
   }
 
-  _dart_PyLong_Copy? _PyLong_Copy;
+  late final _PyLong_Copy_ptr =
+      _lookup<ffi.NativeFunction<_c_PyLong_Copy>>('_PyLong_Copy');
+  late final _dart_PyLong_Copy _PyLong_Copy =
+      _PyLong_Copy_ptr.asFunction<_dart_PyLong_Copy>();
 
-  late final _typeobject PyBool_Type =
-      _dylib.lookup<_typeobject>('PyBool_Type').ref;
+  late final ffi.Pointer<_typeobject> _PyBool_Type =
+      _lookup<_typeobject>('PyBool_Type');
 
-  late final _longobject Py_FalseStruct =
-      _dylib.lookup<_longobject>('_Py_FalseStruct').ref;
+  _typeobject get PyBool_Type => _PyBool_Type.ref;
 
-  late final _longobject Py_TrueStruct =
-      _dylib.lookup<_longobject>('_Py_TrueStruct').ref;
+  late final ffi.Pointer<_longobject> _Py_FalseStruct =
+      _lookup<_longobject>('_Py_FalseStruct');
+
+  _longobject get Py_FalseStruct => _Py_FalseStruct.ref;
+
+  late final ffi.Pointer<_longobject> _Py_TrueStruct =
+      _lookup<_longobject>('_Py_TrueStruct');
+
+  _longobject get Py_TrueStruct => _Py_TrueStruct.ref;
 
   ffi.Pointer<PyObject> PyBool_FromLong(
     int arg0,
   ) {
-    return (_PyBool_FromLong ??=
-        _dylib.lookupFunction<_c_PyBool_FromLong, _dart_PyBool_FromLong>(
-            'PyBool_FromLong'))(
+    return _PyBool_FromLong(
       arg0,
     );
   }
 
-  _dart_PyBool_FromLong? _PyBool_FromLong;
+  late final _PyBool_FromLong_ptr =
+      _lookup<ffi.NativeFunction<_c_PyBool_FromLong>>('PyBool_FromLong');
+  late final _dart_PyBool_FromLong _PyBool_FromLong =
+      _PyBool_FromLong_ptr.asFunction<_dart_PyBool_FromLong>();
 
-  late final _typeobject PyFloat_Type =
-      _dylib.lookup<_typeobject>('PyFloat_Type').ref;
+  late final ffi.Pointer<_typeobject> _PyFloat_Type =
+      _lookup<_typeobject>('PyFloat_Type');
+
+  _typeobject get PyFloat_Type => _PyFloat_Type.ref;
 
   double PyFloat_GetMax() {
-    return (_PyFloat_GetMax ??=
-        _dylib.lookupFunction<_c_PyFloat_GetMax, _dart_PyFloat_GetMax>(
-            'PyFloat_GetMax'))();
+    return _PyFloat_GetMax();
   }
 
-  _dart_PyFloat_GetMax? _PyFloat_GetMax;
+  late final _PyFloat_GetMax_ptr =
+      _lookup<ffi.NativeFunction<_c_PyFloat_GetMax>>('PyFloat_GetMax');
+  late final _dart_PyFloat_GetMax _PyFloat_GetMax =
+      _PyFloat_GetMax_ptr.asFunction<_dart_PyFloat_GetMax>();
 
   double PyFloat_GetMin() {
-    return (_PyFloat_GetMin ??=
-        _dylib.lookupFunction<_c_PyFloat_GetMin, _dart_PyFloat_GetMin>(
-            'PyFloat_GetMin'))();
+    return _PyFloat_GetMin();
   }
 
-  _dart_PyFloat_GetMin? _PyFloat_GetMin;
+  late final _PyFloat_GetMin_ptr =
+      _lookup<ffi.NativeFunction<_c_PyFloat_GetMin>>('PyFloat_GetMin');
+  late final _dart_PyFloat_GetMin _PyFloat_GetMin =
+      _PyFloat_GetMin_ptr.asFunction<_dart_PyFloat_GetMin>();
 
   ffi.Pointer<PyObject> PyFloat_GetInfo() {
-    return (_PyFloat_GetInfo ??=
-        _dylib.lookupFunction<_c_PyFloat_GetInfo, _dart_PyFloat_GetInfo>(
-            'PyFloat_GetInfo'))();
+    return _PyFloat_GetInfo();
   }
 
-  _dart_PyFloat_GetInfo? _PyFloat_GetInfo;
+  late final _PyFloat_GetInfo_ptr =
+      _lookup<ffi.NativeFunction<_c_PyFloat_GetInfo>>('PyFloat_GetInfo');
+  late final _dart_PyFloat_GetInfo _PyFloat_GetInfo =
+      _PyFloat_GetInfo_ptr.asFunction<_dart_PyFloat_GetInfo>();
 
   ffi.Pointer<PyObject> PyFloat_FromString(
     ffi.Pointer<PyObject> arg0,
   ) {
-    return (_PyFloat_FromString ??=
-        _dylib.lookupFunction<_c_PyFloat_FromString, _dart_PyFloat_FromString>(
-            'PyFloat_FromString'))(
+    return _PyFloat_FromString(
       arg0,
     );
   }
 
-  _dart_PyFloat_FromString? _PyFloat_FromString;
+  late final _PyFloat_FromString_ptr =
+      _lookup<ffi.NativeFunction<_c_PyFloat_FromString>>('PyFloat_FromString');
+  late final _dart_PyFloat_FromString _PyFloat_FromString =
+      _PyFloat_FromString_ptr.asFunction<_dart_PyFloat_FromString>();
 
   ffi.Pointer<PyObject> PyFloat_FromDouble(
     double arg0,
   ) {
-    return (_PyFloat_FromDouble ??=
-        _dylib.lookupFunction<_c_PyFloat_FromDouble, _dart_PyFloat_FromDouble>(
-            'PyFloat_FromDouble'))(
+    return _PyFloat_FromDouble(
       arg0,
     );
   }
 
-  _dart_PyFloat_FromDouble? _PyFloat_FromDouble;
+  late final _PyFloat_FromDouble_ptr =
+      _lookup<ffi.NativeFunction<_c_PyFloat_FromDouble>>('PyFloat_FromDouble');
+  late final _dart_PyFloat_FromDouble _PyFloat_FromDouble =
+      _PyFloat_FromDouble_ptr.asFunction<_dart_PyFloat_FromDouble>();
 
   double PyFloat_AsDouble(
     ffi.Pointer<PyObject> arg0,
   ) {
-    return (_PyFloat_AsDouble ??=
-        _dylib.lookupFunction<_c_PyFloat_AsDouble, _dart_PyFloat_AsDouble>(
-            'PyFloat_AsDouble'))(
+    return _PyFloat_AsDouble(
       arg0,
     );
   }
 
-  _dart_PyFloat_AsDouble? _PyFloat_AsDouble;
+  late final _PyFloat_AsDouble_ptr =
+      _lookup<ffi.NativeFunction<_c_PyFloat_AsDouble>>('PyFloat_AsDouble');
+  late final _dart_PyFloat_AsDouble _PyFloat_AsDouble =
+      _PyFloat_AsDouble_ptr.asFunction<_dart_PyFloat_AsDouble>();
 
   int PyFloat_Pack2(
     double x,
     ffi.Pointer<ffi.Uint8> p,
     int le,
   ) {
-    return (_PyFloat_Pack2 ??=
-        _dylib.lookupFunction<_c_PyFloat_Pack2, _dart_PyFloat_Pack2>(
-            '_PyFloat_Pack2'))(
+    return _PyFloat_Pack2(
       x,
       p,
       le,
     );
   }
 
-  _dart_PyFloat_Pack2? _PyFloat_Pack2;
+  late final _PyFloat_Pack2_ptr =
+      _lookup<ffi.NativeFunction<_c_PyFloat_Pack2>>('_PyFloat_Pack2');
+  late final _dart_PyFloat_Pack2 _PyFloat_Pack2 =
+      _PyFloat_Pack2_ptr.asFunction<_dart_PyFloat_Pack2>();
 
   int PyFloat_Pack4(
     double x,
     ffi.Pointer<ffi.Uint8> p,
     int le,
   ) {
-    return (_PyFloat_Pack4 ??=
-        _dylib.lookupFunction<_c_PyFloat_Pack4, _dart_PyFloat_Pack4>(
-            '_PyFloat_Pack4'))(
+    return _PyFloat_Pack4(
       x,
       p,
       le,
     );
   }
 
-  _dart_PyFloat_Pack4? _PyFloat_Pack4;
+  late final _PyFloat_Pack4_ptr =
+      _lookup<ffi.NativeFunction<_c_PyFloat_Pack4>>('_PyFloat_Pack4');
+  late final _dart_PyFloat_Pack4 _PyFloat_Pack4 =
+      _PyFloat_Pack4_ptr.asFunction<_dart_PyFloat_Pack4>();
 
   int PyFloat_Pack8(
     double x,
     ffi.Pointer<ffi.Uint8> p,
     int le,
   ) {
-    return (_PyFloat_Pack8 ??=
-        _dylib.lookupFunction<_c_PyFloat_Pack8, _dart_PyFloat_Pack8>(
-            '_PyFloat_Pack8'))(
+    return _PyFloat_Pack8(
       x,
       p,
       le,
     );
   }
 
-  _dart_PyFloat_Pack8? _PyFloat_Pack8;
+  late final _PyFloat_Pack8_ptr =
+      _lookup<ffi.NativeFunction<_c_PyFloat_Pack8>>('_PyFloat_Pack8');
+  late final _dart_PyFloat_Pack8 _PyFloat_Pack8 =
+      _PyFloat_Pack8_ptr.asFunction<_dart_PyFloat_Pack8>();
 
   int PyFloat_Repr(
     double x,
     ffi.Pointer<ffi.Int8> p,
     int len,
   ) {
-    return (_PyFloat_Repr ??= _dylib
-        .lookupFunction<_c_PyFloat_Repr, _dart_PyFloat_Repr>('_PyFloat_Repr'))(
+    return _PyFloat_Repr(
       x,
       p,
       len,
     );
   }
 
-  _dart_PyFloat_Repr? _PyFloat_Repr;
+  late final _PyFloat_Repr_ptr =
+      _lookup<ffi.NativeFunction<_c_PyFloat_Repr>>('_PyFloat_Repr');
+  late final _dart_PyFloat_Repr _PyFloat_Repr =
+      _PyFloat_Repr_ptr.asFunction<_dart_PyFloat_Repr>();
 
   int PyFloat_Digits(
     ffi.Pointer<ffi.Int8> buf,
     double v,
     ffi.Pointer<ffi.Int32> signum,
   ) {
-    return (_PyFloat_Digits ??=
-        _dylib.lookupFunction<_c_PyFloat_Digits, _dart_PyFloat_Digits>(
-            '_PyFloat_Digits'))(
+    return _PyFloat_Digits(
       buf,
       v,
       signum,
     );
   }
 
-  _dart_PyFloat_Digits? _PyFloat_Digits;
+  late final _PyFloat_Digits_ptr =
+      _lookup<ffi.NativeFunction<_c_PyFloat_Digits>>('_PyFloat_Digits');
+  late final _dart_PyFloat_Digits _PyFloat_Digits =
+      _PyFloat_Digits_ptr.asFunction<_dart_PyFloat_Digits>();
 
   void PyFloat_DigitsInit() {
-    return (_PyFloat_DigitsInit ??=
-        _dylib.lookupFunction<_c_PyFloat_DigitsInit, _dart_PyFloat_DigitsInit>(
-            '_PyFloat_DigitsInit'))();
+    return _PyFloat_DigitsInit();
   }
 
-  _dart_PyFloat_DigitsInit? _PyFloat_DigitsInit;
+  late final _PyFloat_DigitsInit_ptr =
+      _lookup<ffi.NativeFunction<_c_PyFloat_DigitsInit>>('_PyFloat_DigitsInit');
+  late final _dart_PyFloat_DigitsInit _PyFloat_DigitsInit =
+      _PyFloat_DigitsInit_ptr.asFunction<_dart_PyFloat_DigitsInit>();
 
   double PyFloat_Unpack2(
     ffi.Pointer<ffi.Uint8> p,
     int le,
   ) {
-    return (_PyFloat_Unpack2 ??=
-        _dylib.lookupFunction<_c_PyFloat_Unpack2, _dart_PyFloat_Unpack2>(
-            '_PyFloat_Unpack2'))(
+    return _PyFloat_Unpack2(
       p,
       le,
     );
   }
 
-  _dart_PyFloat_Unpack2? _PyFloat_Unpack2;
+  late final _PyFloat_Unpack2_ptr =
+      _lookup<ffi.NativeFunction<_c_PyFloat_Unpack2>>('_PyFloat_Unpack2');
+  late final _dart_PyFloat_Unpack2 _PyFloat_Unpack2 =
+      _PyFloat_Unpack2_ptr.asFunction<_dart_PyFloat_Unpack2>();
 
   double PyFloat_Unpack4(
     ffi.Pointer<ffi.Uint8> p,
     int le,
   ) {
-    return (_PyFloat_Unpack4 ??=
-        _dylib.lookupFunction<_c_PyFloat_Unpack4, _dart_PyFloat_Unpack4>(
-            '_PyFloat_Unpack4'))(
+    return _PyFloat_Unpack4(
       p,
       le,
     );
   }
 
-  _dart_PyFloat_Unpack4? _PyFloat_Unpack4;
+  late final _PyFloat_Unpack4_ptr =
+      _lookup<ffi.NativeFunction<_c_PyFloat_Unpack4>>('_PyFloat_Unpack4');
+  late final _dart_PyFloat_Unpack4 _PyFloat_Unpack4 =
+      _PyFloat_Unpack4_ptr.asFunction<_dart_PyFloat_Unpack4>();
 
   double PyFloat_Unpack8(
     ffi.Pointer<ffi.Uint8> p,
     int le,
   ) {
-    return (_PyFloat_Unpack8 ??=
-        _dylib.lookupFunction<_c_PyFloat_Unpack8, _dart_PyFloat_Unpack8>(
-            '_PyFloat_Unpack8'))(
+    return _PyFloat_Unpack8(
       p,
       le,
     );
   }
 
-  _dart_PyFloat_Unpack8? _PyFloat_Unpack8;
+  late final _PyFloat_Unpack8_ptr =
+      _lookup<ffi.NativeFunction<_c_PyFloat_Unpack8>>('_PyFloat_Unpack8');
+  late final _dart_PyFloat_Unpack8 _PyFloat_Unpack8 =
+      _PyFloat_Unpack8_ptr.asFunction<_dart_PyFloat_Unpack8>();
 
   int PyFloat_ClearFreeList() {
-    return (_PyFloat_ClearFreeList ??= _dylib.lookupFunction<
-        _c_PyFloat_ClearFreeList,
-        _dart_PyFloat_ClearFreeList>('PyFloat_ClearFreeList'))();
+    return _PyFloat_ClearFreeList();
   }
 
-  _dart_PyFloat_ClearFreeList? _PyFloat_ClearFreeList;
+  late final _PyFloat_ClearFreeList_ptr =
+      _lookup<ffi.NativeFunction<_c_PyFloat_ClearFreeList>>(
+          'PyFloat_ClearFreeList');
+  late final _dart_PyFloat_ClearFreeList _PyFloat_ClearFreeList =
+      _PyFloat_ClearFreeList_ptr.asFunction<_dart_PyFloat_ClearFreeList>();
 
   void PyFloat_DebugMallocStats(
     ffi.Pointer<FILE> out,
   ) {
-    return (_PyFloat_DebugMallocStats ??= _dylib.lookupFunction<
-        _c_PyFloat_DebugMallocStats,
-        _dart_PyFloat_DebugMallocStats>('_PyFloat_DebugMallocStats'))(
+    return _PyFloat_DebugMallocStats(
       out,
     );
   }
 
-  _dart_PyFloat_DebugMallocStats? _PyFloat_DebugMallocStats;
+  late final _PyFloat_DebugMallocStats_ptr =
+      _lookup<ffi.NativeFunction<_c_PyFloat_DebugMallocStats>>(
+          '_PyFloat_DebugMallocStats');
+  late final _dart_PyFloat_DebugMallocStats _PyFloat_DebugMallocStats =
+      _PyFloat_DebugMallocStats_ptr.asFunction<
+          _dart_PyFloat_DebugMallocStats>();
 
   int PyFloat_FormatAdvancedWriter(
     ffi.Pointer<_PyUnicodeWriter> writer,
@@ -3970,9 +4511,7 @@ class DartPyC {
     int start,
     int end,
   ) {
-    return (_PyFloat_FormatAdvancedWriter ??= _dylib.lookupFunction<
-        _c_PyFloat_FormatAdvancedWriter,
-        _dart_PyFloat_FormatAdvancedWriter>('_PyFloat_FormatAdvancedWriter'))(
+    return _PyFloat_FormatAdvancedWriter(
       writer,
       obj,
       format_spec,
@@ -3981,159 +4520,190 @@ class DartPyC {
     );
   }
 
-  _dart_PyFloat_FormatAdvancedWriter? _PyFloat_FormatAdvancedWriter;
+  late final _PyFloat_FormatAdvancedWriter_ptr =
+      _lookup<ffi.NativeFunction<_c_PyFloat_FormatAdvancedWriter>>(
+          '_PyFloat_FormatAdvancedWriter');
+  late final _dart_PyFloat_FormatAdvancedWriter _PyFloat_FormatAdvancedWriter =
+      _PyFloat_FormatAdvancedWriter_ptr.asFunction<
+          _dart_PyFloat_FormatAdvancedWriter>();
 
   Py_complex Py_c_sum(
     Py_complex arg0,
     Py_complex arg1,
   ) {
-    return (_Py_c_sum ??=
-        _dylib.lookupFunction<_c_Py_c_sum, _dart_Py_c_sum>('_Py_c_sum'))(
+    return _Py_c_sum(
       arg0,
       arg1,
     );
   }
 
-  _dart_Py_c_sum? _Py_c_sum;
+  late final _Py_c_sum_ptr =
+      _lookup<ffi.NativeFunction<_c_Py_c_sum>>('_Py_c_sum');
+  late final _dart_Py_c_sum _Py_c_sum =
+      _Py_c_sum_ptr.asFunction<_dart_Py_c_sum>();
 
   Py_complex Py_c_diff(
     Py_complex arg0,
     Py_complex arg1,
   ) {
-    return (_Py_c_diff ??=
-        _dylib.lookupFunction<_c_Py_c_diff, _dart_Py_c_diff>('_Py_c_diff'))(
+    return _Py_c_diff(
       arg0,
       arg1,
     );
   }
 
-  _dart_Py_c_diff? _Py_c_diff;
+  late final _Py_c_diff_ptr =
+      _lookup<ffi.NativeFunction<_c_Py_c_diff>>('_Py_c_diff');
+  late final _dart_Py_c_diff _Py_c_diff =
+      _Py_c_diff_ptr.asFunction<_dart_Py_c_diff>();
 
   Py_complex Py_c_neg(
     Py_complex arg0,
   ) {
-    return (_Py_c_neg ??=
-        _dylib.lookupFunction<_c_Py_c_neg, _dart_Py_c_neg>('_Py_c_neg'))(
+    return _Py_c_neg(
       arg0,
     );
   }
 
-  _dart_Py_c_neg? _Py_c_neg;
+  late final _Py_c_neg_ptr =
+      _lookup<ffi.NativeFunction<_c_Py_c_neg>>('_Py_c_neg');
+  late final _dart_Py_c_neg _Py_c_neg =
+      _Py_c_neg_ptr.asFunction<_dart_Py_c_neg>();
 
   Py_complex Py_c_prod(
     Py_complex arg0,
     Py_complex arg1,
   ) {
-    return (_Py_c_prod ??=
-        _dylib.lookupFunction<_c_Py_c_prod, _dart_Py_c_prod>('_Py_c_prod'))(
+    return _Py_c_prod(
       arg0,
       arg1,
     );
   }
 
-  _dart_Py_c_prod? _Py_c_prod;
+  late final _Py_c_prod_ptr =
+      _lookup<ffi.NativeFunction<_c_Py_c_prod>>('_Py_c_prod');
+  late final _dart_Py_c_prod _Py_c_prod =
+      _Py_c_prod_ptr.asFunction<_dart_Py_c_prod>();
 
   Py_complex Py_c_quot(
     Py_complex arg0,
     Py_complex arg1,
   ) {
-    return (_Py_c_quot ??=
-        _dylib.lookupFunction<_c_Py_c_quot, _dart_Py_c_quot>('_Py_c_quot'))(
+    return _Py_c_quot(
       arg0,
       arg1,
     );
   }
 
-  _dart_Py_c_quot? _Py_c_quot;
+  late final _Py_c_quot_ptr =
+      _lookup<ffi.NativeFunction<_c_Py_c_quot>>('_Py_c_quot');
+  late final _dart_Py_c_quot _Py_c_quot =
+      _Py_c_quot_ptr.asFunction<_dart_Py_c_quot>();
 
   Py_complex Py_c_pow(
     Py_complex arg0,
     Py_complex arg1,
   ) {
-    return (_Py_c_pow ??=
-        _dylib.lookupFunction<_c_Py_c_pow, _dart_Py_c_pow>('_Py_c_pow'))(
+    return _Py_c_pow(
       arg0,
       arg1,
     );
   }
 
-  _dart_Py_c_pow? _Py_c_pow;
+  late final _Py_c_pow_ptr =
+      _lookup<ffi.NativeFunction<_c_Py_c_pow>>('_Py_c_pow');
+  late final _dart_Py_c_pow _Py_c_pow =
+      _Py_c_pow_ptr.asFunction<_dart_Py_c_pow>();
 
   double Py_c_abs(
     Py_complex arg0,
   ) {
-    return (_Py_c_abs ??=
-        _dylib.lookupFunction<_c_Py_c_abs, _dart_Py_c_abs>('_Py_c_abs'))(
+    return _Py_c_abs(
       arg0,
     );
   }
 
-  _dart_Py_c_abs? _Py_c_abs;
+  late final _Py_c_abs_ptr =
+      _lookup<ffi.NativeFunction<_c_Py_c_abs>>('_Py_c_abs');
+  late final _dart_Py_c_abs _Py_c_abs =
+      _Py_c_abs_ptr.asFunction<_dart_Py_c_abs>();
 
-  late final _typeobject PyComplex_Type =
-      _dylib.lookup<_typeobject>('PyComplex_Type').ref;
+  late final ffi.Pointer<_typeobject> _PyComplex_Type =
+      _lookup<_typeobject>('PyComplex_Type');
+
+  _typeobject get PyComplex_Type => _PyComplex_Type.ref;
 
   ffi.Pointer<PyObject> PyComplex_FromCComplex(
     Py_complex arg0,
   ) {
-    return (_PyComplex_FromCComplex ??= _dylib.lookupFunction<
-        _c_PyComplex_FromCComplex,
-        _dart_PyComplex_FromCComplex>('PyComplex_FromCComplex'))(
+    return _PyComplex_FromCComplex(
       arg0,
     );
   }
 
-  _dart_PyComplex_FromCComplex? _PyComplex_FromCComplex;
+  late final _PyComplex_FromCComplex_ptr =
+      _lookup<ffi.NativeFunction<_c_PyComplex_FromCComplex>>(
+          'PyComplex_FromCComplex');
+  late final _dart_PyComplex_FromCComplex _PyComplex_FromCComplex =
+      _PyComplex_FromCComplex_ptr.asFunction<_dart_PyComplex_FromCComplex>();
 
   ffi.Pointer<PyObject> PyComplex_FromDoubles(
     double real,
     double imag,
   ) {
-    return (_PyComplex_FromDoubles ??= _dylib.lookupFunction<
-        _c_PyComplex_FromDoubles,
-        _dart_PyComplex_FromDoubles>('PyComplex_FromDoubles'))(
+    return _PyComplex_FromDoubles(
       real,
       imag,
     );
   }
 
-  _dart_PyComplex_FromDoubles? _PyComplex_FromDoubles;
+  late final _PyComplex_FromDoubles_ptr =
+      _lookup<ffi.NativeFunction<_c_PyComplex_FromDoubles>>(
+          'PyComplex_FromDoubles');
+  late final _dart_PyComplex_FromDoubles _PyComplex_FromDoubles =
+      _PyComplex_FromDoubles_ptr.asFunction<_dart_PyComplex_FromDoubles>();
 
   double PyComplex_RealAsDouble(
     ffi.Pointer<PyObject> op,
   ) {
-    return (_PyComplex_RealAsDouble ??= _dylib.lookupFunction<
-        _c_PyComplex_RealAsDouble,
-        _dart_PyComplex_RealAsDouble>('PyComplex_RealAsDouble'))(
+    return _PyComplex_RealAsDouble(
       op,
     );
   }
 
-  _dart_PyComplex_RealAsDouble? _PyComplex_RealAsDouble;
+  late final _PyComplex_RealAsDouble_ptr =
+      _lookup<ffi.NativeFunction<_c_PyComplex_RealAsDouble>>(
+          'PyComplex_RealAsDouble');
+  late final _dart_PyComplex_RealAsDouble _PyComplex_RealAsDouble =
+      _PyComplex_RealAsDouble_ptr.asFunction<_dart_PyComplex_RealAsDouble>();
 
   double PyComplex_ImagAsDouble(
     ffi.Pointer<PyObject> op,
   ) {
-    return (_PyComplex_ImagAsDouble ??= _dylib.lookupFunction<
-        _c_PyComplex_ImagAsDouble,
-        _dart_PyComplex_ImagAsDouble>('PyComplex_ImagAsDouble'))(
+    return _PyComplex_ImagAsDouble(
       op,
     );
   }
 
-  _dart_PyComplex_ImagAsDouble? _PyComplex_ImagAsDouble;
+  late final _PyComplex_ImagAsDouble_ptr =
+      _lookup<ffi.NativeFunction<_c_PyComplex_ImagAsDouble>>(
+          'PyComplex_ImagAsDouble');
+  late final _dart_PyComplex_ImagAsDouble _PyComplex_ImagAsDouble =
+      _PyComplex_ImagAsDouble_ptr.asFunction<_dart_PyComplex_ImagAsDouble>();
 
   Py_complex PyComplex_AsCComplex(
     ffi.Pointer<PyObject> op,
   ) {
-    return (_PyComplex_AsCComplex ??= _dylib.lookupFunction<
-        _c_PyComplex_AsCComplex,
-        _dart_PyComplex_AsCComplex>('PyComplex_AsCComplex'))(
+    return _PyComplex_AsCComplex(
       op,
     );
   }
 
-  _dart_PyComplex_AsCComplex? _PyComplex_AsCComplex;
+  late final _PyComplex_AsCComplex_ptr =
+      _lookup<ffi.NativeFunction<_c_PyComplex_AsCComplex>>(
+          'PyComplex_AsCComplex');
+  late final _dart_PyComplex_AsCComplex _PyComplex_AsCComplex =
+      _PyComplex_AsCComplex_ptr.asFunction<_dart_PyComplex_AsCComplex>();
 
   int PyComplex_FormatAdvancedWriter(
     ffi.Pointer<_PyUnicodeWriter> writer,
@@ -4142,10 +4712,7 @@ class DartPyC {
     int start,
     int end,
   ) {
-    return (_PyComplex_FormatAdvancedWriter ??= _dylib.lookupFunction<
-            _c_PyComplex_FormatAdvancedWriter,
-            _dart_PyComplex_FormatAdvancedWriter>(
-        '_PyComplex_FormatAdvancedWriter'))(
+    return _PyComplex_FormatAdvancedWriter(
       writer,
       obj,
       format_spec,
@@ -4154,281 +4721,337 @@ class DartPyC {
     );
   }
 
-  _dart_PyComplex_FormatAdvancedWriter? _PyComplex_FormatAdvancedWriter;
+  late final _PyComplex_FormatAdvancedWriter_ptr =
+      _lookup<ffi.NativeFunction<_c_PyComplex_FormatAdvancedWriter>>(
+          '_PyComplex_FormatAdvancedWriter');
+  late final _dart_PyComplex_FormatAdvancedWriter
+      _PyComplex_FormatAdvancedWriter = _PyComplex_FormatAdvancedWriter_ptr
+          .asFunction<_dart_PyComplex_FormatAdvancedWriter>();
 
-  late final _typeobject PyRange_Type =
-      _dylib.lookup<_typeobject>('PyRange_Type').ref;
+  late final ffi.Pointer<_typeobject> _PyRange_Type =
+      _lookup<_typeobject>('PyRange_Type');
 
-  late final _typeobject PyRangeIter_Type =
-      _dylib.lookup<_typeobject>('PyRangeIter_Type').ref;
+  _typeobject get PyRange_Type => _PyRange_Type.ref;
 
-  late final _typeobject PyLongRangeIter_Type =
-      _dylib.lookup<_typeobject>('PyLongRangeIter_Type').ref;
+  late final ffi.Pointer<_typeobject> _PyRangeIter_Type =
+      _lookup<_typeobject>('PyRangeIter_Type');
 
-  late final _typeobject PyManagedBuffer_Type =
-      _dylib.lookup<_typeobject>('_PyManagedBuffer_Type').ref;
+  _typeobject get PyRangeIter_Type => _PyRangeIter_Type.ref;
 
-  late final _typeobject PyMemoryView_Type =
-      _dylib.lookup<_typeobject>('PyMemoryView_Type').ref;
+  late final ffi.Pointer<_typeobject> _PyLongRangeIter_Type =
+      _lookup<_typeobject>('PyLongRangeIter_Type');
+
+  _typeobject get PyLongRangeIter_Type => _PyLongRangeIter_Type.ref;
+
+  late final ffi.Pointer<_typeobject> _PyManagedBuffer_Type =
+      _lookup<_typeobject>('_PyManagedBuffer_Type');
+
+  _typeobject get PyManagedBuffer_Type => _PyManagedBuffer_Type.ref;
+
+  late final ffi.Pointer<_typeobject> _PyMemoryView_Type =
+      _lookup<_typeobject>('PyMemoryView_Type');
+
+  _typeobject get PyMemoryView_Type => _PyMemoryView_Type.ref;
 
   ffi.Pointer<PyObject> PyMemoryView_FromObject(
     ffi.Pointer<PyObject> base,
   ) {
-    return (_PyMemoryView_FromObject ??= _dylib.lookupFunction<
-        _c_PyMemoryView_FromObject,
-        _dart_PyMemoryView_FromObject>('PyMemoryView_FromObject'))(
+    return _PyMemoryView_FromObject(
       base,
     );
   }
 
-  _dart_PyMemoryView_FromObject? _PyMemoryView_FromObject;
+  late final _PyMemoryView_FromObject_ptr =
+      _lookup<ffi.NativeFunction<_c_PyMemoryView_FromObject>>(
+          'PyMemoryView_FromObject');
+  late final _dart_PyMemoryView_FromObject _PyMemoryView_FromObject =
+      _PyMemoryView_FromObject_ptr.asFunction<_dart_PyMemoryView_FromObject>();
 
   ffi.Pointer<PyObject> PyMemoryView_FromMemory(
     ffi.Pointer<ffi.Int8> mem,
     int size,
     int flags,
   ) {
-    return (_PyMemoryView_FromMemory ??= _dylib.lookupFunction<
-        _c_PyMemoryView_FromMemory,
-        _dart_PyMemoryView_FromMemory>('PyMemoryView_FromMemory'))(
+    return _PyMemoryView_FromMemory(
       mem,
       size,
       flags,
     );
   }
 
-  _dart_PyMemoryView_FromMemory? _PyMemoryView_FromMemory;
+  late final _PyMemoryView_FromMemory_ptr =
+      _lookup<ffi.NativeFunction<_c_PyMemoryView_FromMemory>>(
+          'PyMemoryView_FromMemory');
+  late final _dart_PyMemoryView_FromMemory _PyMemoryView_FromMemory =
+      _PyMemoryView_FromMemory_ptr.asFunction<_dart_PyMemoryView_FromMemory>();
 
   ffi.Pointer<PyObject> PyMemoryView_FromBuffer(
     ffi.Pointer<Py_buffer> info,
   ) {
-    return (_PyMemoryView_FromBuffer ??= _dylib.lookupFunction<
-        _c_PyMemoryView_FromBuffer,
-        _dart_PyMemoryView_FromBuffer>('PyMemoryView_FromBuffer'))(
+    return _PyMemoryView_FromBuffer(
       info,
     );
   }
 
-  _dart_PyMemoryView_FromBuffer? _PyMemoryView_FromBuffer;
+  late final _PyMemoryView_FromBuffer_ptr =
+      _lookup<ffi.NativeFunction<_c_PyMemoryView_FromBuffer>>(
+          'PyMemoryView_FromBuffer');
+  late final _dart_PyMemoryView_FromBuffer _PyMemoryView_FromBuffer =
+      _PyMemoryView_FromBuffer_ptr.asFunction<_dart_PyMemoryView_FromBuffer>();
 
   ffi.Pointer<PyObject> PyMemoryView_GetContiguous(
     ffi.Pointer<PyObject> base,
     int buffertype,
     int order,
   ) {
-    return (_PyMemoryView_GetContiguous ??= _dylib.lookupFunction<
-        _c_PyMemoryView_GetContiguous,
-        _dart_PyMemoryView_GetContiguous>('PyMemoryView_GetContiguous'))(
+    return _PyMemoryView_GetContiguous(
       base,
       buffertype,
       order,
     );
   }
 
-  _dart_PyMemoryView_GetContiguous? _PyMemoryView_GetContiguous;
+  late final _PyMemoryView_GetContiguous_ptr =
+      _lookup<ffi.NativeFunction<_c_PyMemoryView_GetContiguous>>(
+          'PyMemoryView_GetContiguous');
+  late final _dart_PyMemoryView_GetContiguous _PyMemoryView_GetContiguous =
+      _PyMemoryView_GetContiguous_ptr.asFunction<
+          _dart_PyMemoryView_GetContiguous>();
 
-  late final _typeobject PyTuple_Type =
-      _dylib.lookup<_typeobject>('PyTuple_Type').ref;
+  late final ffi.Pointer<_typeobject> _PyTuple_Type =
+      _lookup<_typeobject>('PyTuple_Type');
 
-  late final _typeobject PyTupleIter_Type =
-      _dylib.lookup<_typeobject>('PyTupleIter_Type').ref;
+  _typeobject get PyTuple_Type => _PyTuple_Type.ref;
+
+  late final ffi.Pointer<_typeobject> _PyTupleIter_Type =
+      _lookup<_typeobject>('PyTupleIter_Type');
+
+  _typeobject get PyTupleIter_Type => _PyTupleIter_Type.ref;
 
   ffi.Pointer<PyObject> PyTuple_New(
     int size,
   ) {
-    return (_PyTuple_New ??= _dylib
-        .lookupFunction<_c_PyTuple_New, _dart_PyTuple_New>('PyTuple_New'))(
+    return _PyTuple_New(
       size,
     );
   }
 
-  _dart_PyTuple_New? _PyTuple_New;
+  late final _PyTuple_New_ptr =
+      _lookup<ffi.NativeFunction<_c_PyTuple_New>>('PyTuple_New');
+  late final _dart_PyTuple_New _PyTuple_New =
+      _PyTuple_New_ptr.asFunction<_dart_PyTuple_New>();
 
   int PyTuple_Size(
     ffi.Pointer<PyObject> arg0,
   ) {
-    return (_PyTuple_Size ??= _dylib
-        .lookupFunction<_c_PyTuple_Size, _dart_PyTuple_Size>('PyTuple_Size'))(
+    return _PyTuple_Size(
       arg0,
     );
   }
 
-  _dart_PyTuple_Size? _PyTuple_Size;
+  late final _PyTuple_Size_ptr =
+      _lookup<ffi.NativeFunction<_c_PyTuple_Size>>('PyTuple_Size');
+  late final _dart_PyTuple_Size _PyTuple_Size =
+      _PyTuple_Size_ptr.asFunction<_dart_PyTuple_Size>();
 
   ffi.Pointer<PyObject> PyTuple_GetItem(
     ffi.Pointer<PyObject> arg0,
     int arg1,
   ) {
-    return (_PyTuple_GetItem ??=
-        _dylib.lookupFunction<_c_PyTuple_GetItem, _dart_PyTuple_GetItem>(
-            'PyTuple_GetItem'))(
+    return _PyTuple_GetItem(
       arg0,
       arg1,
     );
   }
 
-  _dart_PyTuple_GetItem? _PyTuple_GetItem;
+  late final _PyTuple_GetItem_ptr =
+      _lookup<ffi.NativeFunction<_c_PyTuple_GetItem>>('PyTuple_GetItem');
+  late final _dart_PyTuple_GetItem _PyTuple_GetItem =
+      _PyTuple_GetItem_ptr.asFunction<_dart_PyTuple_GetItem>();
 
   int PyTuple_SetItem(
     ffi.Pointer<PyObject> arg0,
     int arg1,
     ffi.Pointer<PyObject> arg2,
   ) {
-    return (_PyTuple_SetItem ??=
-        _dylib.lookupFunction<_c_PyTuple_SetItem, _dart_PyTuple_SetItem>(
-            'PyTuple_SetItem'))(
+    return _PyTuple_SetItem(
       arg0,
       arg1,
       arg2,
     );
   }
 
-  _dart_PyTuple_SetItem? _PyTuple_SetItem;
+  late final _PyTuple_SetItem_ptr =
+      _lookup<ffi.NativeFunction<_c_PyTuple_SetItem>>('PyTuple_SetItem');
+  late final _dart_PyTuple_SetItem _PyTuple_SetItem =
+      _PyTuple_SetItem_ptr.asFunction<_dart_PyTuple_SetItem>();
 
   ffi.Pointer<PyObject> PyTuple_GetSlice(
     ffi.Pointer<PyObject> arg0,
     int arg1,
     int arg2,
   ) {
-    return (_PyTuple_GetSlice ??=
-        _dylib.lookupFunction<_c_PyTuple_GetSlice, _dart_PyTuple_GetSlice>(
-            'PyTuple_GetSlice'))(
+    return _PyTuple_GetSlice(
       arg0,
       arg1,
       arg2,
     );
   }
 
-  _dart_PyTuple_GetSlice? _PyTuple_GetSlice;
+  late final _PyTuple_GetSlice_ptr =
+      _lookup<ffi.NativeFunction<_c_PyTuple_GetSlice>>('PyTuple_GetSlice');
+  late final _dart_PyTuple_GetSlice _PyTuple_GetSlice =
+      _PyTuple_GetSlice_ptr.asFunction<_dart_PyTuple_GetSlice>();
 
   ffi.Pointer<PyObject> PyTuple_Pack(
     int arg0,
   ) {
-    return (_PyTuple_Pack ??= _dylib
-        .lookupFunction<_c_PyTuple_Pack, _dart_PyTuple_Pack>('PyTuple_Pack'))(
+    return _PyTuple_Pack(
       arg0,
     );
   }
 
-  _dart_PyTuple_Pack? _PyTuple_Pack;
+  late final _PyTuple_Pack_ptr =
+      _lookup<ffi.NativeFunction<_c_PyTuple_Pack>>('PyTuple_Pack');
+  late final _dart_PyTuple_Pack _PyTuple_Pack =
+      _PyTuple_Pack_ptr.asFunction<_dart_PyTuple_Pack>();
 
   int PyTuple_ClearFreeList() {
-    return (_PyTuple_ClearFreeList ??= _dylib.lookupFunction<
-        _c_PyTuple_ClearFreeList,
-        _dart_PyTuple_ClearFreeList>('PyTuple_ClearFreeList'))();
+    return _PyTuple_ClearFreeList();
   }
 
-  _dart_PyTuple_ClearFreeList? _PyTuple_ClearFreeList;
+  late final _PyTuple_ClearFreeList_ptr =
+      _lookup<ffi.NativeFunction<_c_PyTuple_ClearFreeList>>(
+          'PyTuple_ClearFreeList');
+  late final _dart_PyTuple_ClearFreeList _PyTuple_ClearFreeList =
+      _PyTuple_ClearFreeList_ptr.asFunction<_dart_PyTuple_ClearFreeList>();
 
-  late final _typeobject PyList_Type =
-      _dylib.lookup<_typeobject>('PyList_Type').ref;
+  late final ffi.Pointer<_typeobject> _PyList_Type =
+      _lookup<_typeobject>('PyList_Type');
 
-  late final _typeobject PyListIter_Type =
-      _dylib.lookup<_typeobject>('PyListIter_Type').ref;
+  _typeobject get PyList_Type => _PyList_Type.ref;
 
-  late final _typeobject PyListRevIter_Type =
-      _dylib.lookup<_typeobject>('PyListRevIter_Type').ref;
+  late final ffi.Pointer<_typeobject> _PyListIter_Type =
+      _lookup<_typeobject>('PyListIter_Type');
 
-  late final _typeobject PySortWrapper_Type =
-      _dylib.lookup<_typeobject>('PySortWrapper_Type').ref;
+  _typeobject get PyListIter_Type => _PyListIter_Type.ref;
+
+  late final ffi.Pointer<_typeobject> _PyListRevIter_Type =
+      _lookup<_typeobject>('PyListRevIter_Type');
+
+  _typeobject get PyListRevIter_Type => _PyListRevIter_Type.ref;
+
+  late final ffi.Pointer<_typeobject> _PySortWrapper_Type =
+      _lookup<_typeobject>('PySortWrapper_Type');
+
+  _typeobject get PySortWrapper_Type => _PySortWrapper_Type.ref;
 
   ffi.Pointer<PyObject> PyList_New(
     int size,
   ) {
-    return (_PyList_New ??=
-        _dylib.lookupFunction<_c_PyList_New, _dart_PyList_New>('PyList_New'))(
+    return _PyList_New(
       size,
     );
   }
 
-  _dart_PyList_New? _PyList_New;
+  late final _PyList_New_ptr =
+      _lookup<ffi.NativeFunction<_c_PyList_New>>('PyList_New');
+  late final _dart_PyList_New _PyList_New =
+      _PyList_New_ptr.asFunction<_dart_PyList_New>();
 
   int PyList_Size(
     ffi.Pointer<PyObject> arg0,
   ) {
-    return (_PyList_Size ??= _dylib
-        .lookupFunction<_c_PyList_Size, _dart_PyList_Size>('PyList_Size'))(
+    return _PyList_Size(
       arg0,
     );
   }
 
-  _dart_PyList_Size? _PyList_Size;
+  late final _PyList_Size_ptr =
+      _lookup<ffi.NativeFunction<_c_PyList_Size>>('PyList_Size');
+  late final _dart_PyList_Size _PyList_Size =
+      _PyList_Size_ptr.asFunction<_dart_PyList_Size>();
 
   ffi.Pointer<PyObject> PyList_GetItem(
     ffi.Pointer<PyObject> arg0,
     int arg1,
   ) {
-    return (_PyList_GetItem ??=
-        _dylib.lookupFunction<_c_PyList_GetItem, _dart_PyList_GetItem>(
-            'PyList_GetItem'))(
+    return _PyList_GetItem(
       arg0,
       arg1,
     );
   }
 
-  _dart_PyList_GetItem? _PyList_GetItem;
+  late final _PyList_GetItem_ptr =
+      _lookup<ffi.NativeFunction<_c_PyList_GetItem>>('PyList_GetItem');
+  late final _dart_PyList_GetItem _PyList_GetItem =
+      _PyList_GetItem_ptr.asFunction<_dart_PyList_GetItem>();
 
   int PyList_SetItem(
     ffi.Pointer<PyObject> arg0,
     int arg1,
     ffi.Pointer<PyObject> arg2,
   ) {
-    return (_PyList_SetItem ??=
-        _dylib.lookupFunction<_c_PyList_SetItem, _dart_PyList_SetItem>(
-            'PyList_SetItem'))(
+    return _PyList_SetItem(
       arg0,
       arg1,
       arg2,
     );
   }
 
-  _dart_PyList_SetItem? _PyList_SetItem;
+  late final _PyList_SetItem_ptr =
+      _lookup<ffi.NativeFunction<_c_PyList_SetItem>>('PyList_SetItem');
+  late final _dart_PyList_SetItem _PyList_SetItem =
+      _PyList_SetItem_ptr.asFunction<_dart_PyList_SetItem>();
 
   int PyList_Insert(
     ffi.Pointer<PyObject> arg0,
     int arg1,
     ffi.Pointer<PyObject> arg2,
   ) {
-    return (_PyList_Insert ??=
-        _dylib.lookupFunction<_c_PyList_Insert, _dart_PyList_Insert>(
-            'PyList_Insert'))(
+    return _PyList_Insert(
       arg0,
       arg1,
       arg2,
     );
   }
 
-  _dart_PyList_Insert? _PyList_Insert;
+  late final _PyList_Insert_ptr =
+      _lookup<ffi.NativeFunction<_c_PyList_Insert>>('PyList_Insert');
+  late final _dart_PyList_Insert _PyList_Insert =
+      _PyList_Insert_ptr.asFunction<_dart_PyList_Insert>();
 
   int PyList_Append(
     ffi.Pointer<PyObject> arg0,
     ffi.Pointer<PyObject> arg1,
   ) {
-    return (_PyList_Append ??=
-        _dylib.lookupFunction<_c_PyList_Append, _dart_PyList_Append>(
-            'PyList_Append'))(
+    return _PyList_Append(
       arg0,
       arg1,
     );
   }
 
-  _dart_PyList_Append? _PyList_Append;
+  late final _PyList_Append_ptr =
+      _lookup<ffi.NativeFunction<_c_PyList_Append>>('PyList_Append');
+  late final _dart_PyList_Append _PyList_Append =
+      _PyList_Append_ptr.asFunction<_dart_PyList_Append>();
 
   ffi.Pointer<PyObject> PyList_GetSlice(
     ffi.Pointer<PyObject> arg0,
     int arg1,
     int arg2,
   ) {
-    return (_PyList_GetSlice ??=
-        _dylib.lookupFunction<_c_PyList_GetSlice, _dart_PyList_GetSlice>(
-            'PyList_GetSlice'))(
+    return _PyList_GetSlice(
       arg0,
       arg1,
       arg2,
     );
   }
 
-  _dart_PyList_GetSlice? _PyList_GetSlice;
+  late final _PyList_GetSlice_ptr =
+      _lookup<ffi.NativeFunction<_c_PyList_GetSlice>>('PyList_GetSlice');
+  late final _dart_PyList_GetSlice _PyList_GetSlice =
+      _PyList_GetSlice_ptr.asFunction<_dart_PyList_GetSlice>();
 
   int PyList_SetSlice(
     ffi.Pointer<PyObject> arg0,
@@ -4436,9 +5059,7 @@ class DartPyC {
     int arg2,
     ffi.Pointer<PyObject> arg3,
   ) {
-    return (_PyList_SetSlice ??=
-        _dylib.lookupFunction<_c_PyList_SetSlice, _dart_PyList_SetSlice>(
-            'PyList_SetSlice'))(
+    return _PyList_SetSlice(
       arg0,
       arg1,
       arg2,
@@ -4446,155 +5067,178 @@ class DartPyC {
     );
   }
 
-  _dart_PyList_SetSlice? _PyList_SetSlice;
+  late final _PyList_SetSlice_ptr =
+      _lookup<ffi.NativeFunction<_c_PyList_SetSlice>>('PyList_SetSlice');
+  late final _dart_PyList_SetSlice _PyList_SetSlice =
+      _PyList_SetSlice_ptr.asFunction<_dart_PyList_SetSlice>();
 
   int PyList_Sort(
     ffi.Pointer<PyObject> arg0,
   ) {
-    return (_PyList_Sort ??= _dylib
-        .lookupFunction<_c_PyList_Sort, _dart_PyList_Sort>('PyList_Sort'))(
+    return _PyList_Sort(
       arg0,
     );
   }
 
-  _dart_PyList_Sort? _PyList_Sort;
+  late final _PyList_Sort_ptr =
+      _lookup<ffi.NativeFunction<_c_PyList_Sort>>('PyList_Sort');
+  late final _dart_PyList_Sort _PyList_Sort =
+      _PyList_Sort_ptr.asFunction<_dart_PyList_Sort>();
 
   int PyList_Reverse(
     ffi.Pointer<PyObject> arg0,
   ) {
-    return (_PyList_Reverse ??=
-        _dylib.lookupFunction<_c_PyList_Reverse, _dart_PyList_Reverse>(
-            'PyList_Reverse'))(
+    return _PyList_Reverse(
       arg0,
     );
   }
 
-  _dart_PyList_Reverse? _PyList_Reverse;
+  late final _PyList_Reverse_ptr =
+      _lookup<ffi.NativeFunction<_c_PyList_Reverse>>('PyList_Reverse');
+  late final _dart_PyList_Reverse _PyList_Reverse =
+      _PyList_Reverse_ptr.asFunction<_dart_PyList_Reverse>();
 
   ffi.Pointer<PyObject> PyList_AsTuple(
     ffi.Pointer<PyObject> arg0,
   ) {
-    return (_PyList_AsTuple ??=
-        _dylib.lookupFunction<_c_PyList_AsTuple, _dart_PyList_AsTuple>(
-            'PyList_AsTuple'))(
+    return _PyList_AsTuple(
       arg0,
     );
   }
 
-  _dart_PyList_AsTuple? _PyList_AsTuple;
+  late final _PyList_AsTuple_ptr =
+      _lookup<ffi.NativeFunction<_c_PyList_AsTuple>>('PyList_AsTuple');
+  late final _dart_PyList_AsTuple _PyList_AsTuple =
+      _PyList_AsTuple_ptr.asFunction<_dart_PyList_AsTuple>();
 
   ffi.Pointer<PyObject> PyList_Extend(
     ffi.Pointer<PyListObject> arg0,
     ffi.Pointer<PyObject> arg1,
   ) {
-    return (_PyList_Extend ??=
-        _dylib.lookupFunction<_c_PyList_Extend, _dart_PyList_Extend>(
-            '_PyList_Extend'))(
+    return _PyList_Extend(
       arg0,
       arg1,
     );
   }
 
-  _dart_PyList_Extend? _PyList_Extend;
+  late final _PyList_Extend_ptr =
+      _lookup<ffi.NativeFunction<_c_PyList_Extend>>('_PyList_Extend');
+  late final _dart_PyList_Extend _PyList_Extend =
+      _PyList_Extend_ptr.asFunction<_dart_PyList_Extend>();
 
   int PyList_ClearFreeList() {
-    return (_PyList_ClearFreeList ??= _dylib.lookupFunction<
-        _c_PyList_ClearFreeList,
-        _dart_PyList_ClearFreeList>('PyList_ClearFreeList'))();
+    return _PyList_ClearFreeList();
   }
 
-  _dart_PyList_ClearFreeList? _PyList_ClearFreeList;
+  late final _PyList_ClearFreeList_ptr =
+      _lookup<ffi.NativeFunction<_c_PyList_ClearFreeList>>(
+          'PyList_ClearFreeList');
+  late final _dart_PyList_ClearFreeList _PyList_ClearFreeList =
+      _PyList_ClearFreeList_ptr.asFunction<_dart_PyList_ClearFreeList>();
 
   void PyList_DebugMallocStats(
     ffi.Pointer<FILE> out,
   ) {
-    return (_PyList_DebugMallocStats ??= _dylib.lookupFunction<
-        _c_PyList_DebugMallocStats,
-        _dart_PyList_DebugMallocStats>('_PyList_DebugMallocStats'))(
+    return _PyList_DebugMallocStats(
       out,
     );
   }
 
-  _dart_PyList_DebugMallocStats? _PyList_DebugMallocStats;
+  late final _PyList_DebugMallocStats_ptr =
+      _lookup<ffi.NativeFunction<_c_PyList_DebugMallocStats>>(
+          '_PyList_DebugMallocStats');
+  late final _dart_PyList_DebugMallocStats _PyList_DebugMallocStats =
+      _PyList_DebugMallocStats_ptr.asFunction<_dart_PyList_DebugMallocStats>();
 
-  late final _typeobject PyDict_Type =
-      _dylib.lookup<_typeobject>('PyDict_Type').ref;
+  late final ffi.Pointer<_typeobject> _PyDict_Type =
+      _lookup<_typeobject>('PyDict_Type');
+
+  _typeobject get PyDict_Type => _PyDict_Type.ref;
 
   ffi.Pointer<PyObject> PyDict_New() {
-    return (_PyDict_New ??=
-        _dylib.lookupFunction<_c_PyDict_New, _dart_PyDict_New>('PyDict_New'))();
+    return _PyDict_New();
   }
 
-  _dart_PyDict_New? _PyDict_New;
+  late final _PyDict_New_ptr =
+      _lookup<ffi.NativeFunction<_c_PyDict_New>>('PyDict_New');
+  late final _dart_PyDict_New _PyDict_New =
+      _PyDict_New_ptr.asFunction<_dart_PyDict_New>();
 
   ffi.Pointer<PyObject> PyDict_GetItem(
     ffi.Pointer<PyObject> mp,
     ffi.Pointer<PyObject> key,
   ) {
-    return (_PyDict_GetItem ??=
-        _dylib.lookupFunction<_c_PyDict_GetItem, _dart_PyDict_GetItem>(
-            'PyDict_GetItem'))(
+    return _PyDict_GetItem(
       mp,
       key,
     );
   }
 
-  _dart_PyDict_GetItem? _PyDict_GetItem;
+  late final _PyDict_GetItem_ptr =
+      _lookup<ffi.NativeFunction<_c_PyDict_GetItem>>('PyDict_GetItem');
+  late final _dart_PyDict_GetItem _PyDict_GetItem =
+      _PyDict_GetItem_ptr.asFunction<_dart_PyDict_GetItem>();
 
   ffi.Pointer<PyObject> PyDict_GetItemWithError(
     ffi.Pointer<PyObject> mp,
     ffi.Pointer<PyObject> key,
   ) {
-    return (_PyDict_GetItemWithError ??= _dylib.lookupFunction<
-        _c_PyDict_GetItemWithError,
-        _dart_PyDict_GetItemWithError>('PyDict_GetItemWithError'))(
+    return _PyDict_GetItemWithError(
       mp,
       key,
     );
   }
 
-  _dart_PyDict_GetItemWithError? _PyDict_GetItemWithError;
+  late final _PyDict_GetItemWithError_ptr =
+      _lookup<ffi.NativeFunction<_c_PyDict_GetItemWithError>>(
+          'PyDict_GetItemWithError');
+  late final _dart_PyDict_GetItemWithError _PyDict_GetItemWithError =
+      _PyDict_GetItemWithError_ptr.asFunction<_dart_PyDict_GetItemWithError>();
 
   int PyDict_SetItem(
     ffi.Pointer<PyObject> mp,
     ffi.Pointer<PyObject> key,
     ffi.Pointer<PyObject> item,
   ) {
-    return (_PyDict_SetItem ??=
-        _dylib.lookupFunction<_c_PyDict_SetItem, _dart_PyDict_SetItem>(
-            'PyDict_SetItem'))(
+    return _PyDict_SetItem(
       mp,
       key,
       item,
     );
   }
 
-  _dart_PyDict_SetItem? _PyDict_SetItem;
+  late final _PyDict_SetItem_ptr =
+      _lookup<ffi.NativeFunction<_c_PyDict_SetItem>>('PyDict_SetItem');
+  late final _dart_PyDict_SetItem _PyDict_SetItem =
+      _PyDict_SetItem_ptr.asFunction<_dart_PyDict_SetItem>();
 
   int PyDict_DelItem(
     ffi.Pointer<PyObject> mp,
     ffi.Pointer<PyObject> key,
   ) {
-    return (_PyDict_DelItem ??=
-        _dylib.lookupFunction<_c_PyDict_DelItem, _dart_PyDict_DelItem>(
-            'PyDict_DelItem'))(
+    return _PyDict_DelItem(
       mp,
       key,
     );
   }
 
-  _dart_PyDict_DelItem? _PyDict_DelItem;
+  late final _PyDict_DelItem_ptr =
+      _lookup<ffi.NativeFunction<_c_PyDict_DelItem>>('PyDict_DelItem');
+  late final _dart_PyDict_DelItem _PyDict_DelItem =
+      _PyDict_DelItem_ptr.asFunction<_dart_PyDict_DelItem>();
 
   void PyDict_Clear(
     ffi.Pointer<PyObject> mp,
   ) {
-    return (_PyDict_Clear ??= _dylib
-        .lookupFunction<_c_PyDict_Clear, _dart_PyDict_Clear>('PyDict_Clear'))(
+    return _PyDict_Clear(
       mp,
     );
   }
 
-  _dart_PyDict_Clear? _PyDict_Clear;
+  late final _PyDict_Clear_ptr =
+      _lookup<ffi.NativeFunction<_c_PyDict_Clear>>('PyDict_Clear');
+  late final _dart_PyDict_Clear _PyDict_Clear =
+      _PyDict_Clear_ptr.asFunction<_dart_PyDict_Clear>();
 
   int PyDict_Next(
     ffi.Pointer<PyObject> mp,
@@ -4602,8 +5246,7 @@ class DartPyC {
     ffi.Pointer<ffi.Pointer<PyObject>> key,
     ffi.Pointer<ffi.Pointer<PyObject>> value,
   ) {
-    return (_PyDict_Next ??= _dylib
-        .lookupFunction<_c_PyDict_Next, _dart_PyDict_Next>('PyDict_Next'))(
+    return _PyDict_Next(
       mp,
       pos,
       key,
@@ -4611,254 +5254,318 @@ class DartPyC {
     );
   }
 
-  _dart_PyDict_Next? _PyDict_Next;
+  late final _PyDict_Next_ptr =
+      _lookup<ffi.NativeFunction<_c_PyDict_Next>>('PyDict_Next');
+  late final _dart_PyDict_Next _PyDict_Next =
+      _PyDict_Next_ptr.asFunction<_dart_PyDict_Next>();
 
   ffi.Pointer<PyObject> PyDict_Keys(
     ffi.Pointer<PyObject> mp,
   ) {
-    return (_PyDict_Keys ??= _dylib
-        .lookupFunction<_c_PyDict_Keys, _dart_PyDict_Keys>('PyDict_Keys'))(
+    return _PyDict_Keys(
       mp,
     );
   }
 
-  _dart_PyDict_Keys? _PyDict_Keys;
+  late final _PyDict_Keys_ptr =
+      _lookup<ffi.NativeFunction<_c_PyDict_Keys>>('PyDict_Keys');
+  late final _dart_PyDict_Keys _PyDict_Keys =
+      _PyDict_Keys_ptr.asFunction<_dart_PyDict_Keys>();
 
   ffi.Pointer<PyObject> PyDict_Values(
     ffi.Pointer<PyObject> mp,
   ) {
-    return (_PyDict_Values ??=
-        _dylib.lookupFunction<_c_PyDict_Values, _dart_PyDict_Values>(
-            'PyDict_Values'))(
+    return _PyDict_Values(
       mp,
     );
   }
 
-  _dart_PyDict_Values? _PyDict_Values;
+  late final _PyDict_Values_ptr =
+      _lookup<ffi.NativeFunction<_c_PyDict_Values>>('PyDict_Values');
+  late final _dart_PyDict_Values _PyDict_Values =
+      _PyDict_Values_ptr.asFunction<_dart_PyDict_Values>();
 
   ffi.Pointer<PyObject> PyDict_Items(
     ffi.Pointer<PyObject> mp,
   ) {
-    return (_PyDict_Items ??= _dylib
-        .lookupFunction<_c_PyDict_Items, _dart_PyDict_Items>('PyDict_Items'))(
+    return _PyDict_Items(
       mp,
     );
   }
 
-  _dart_PyDict_Items? _PyDict_Items;
+  late final _PyDict_Items_ptr =
+      _lookup<ffi.NativeFunction<_c_PyDict_Items>>('PyDict_Items');
+  late final _dart_PyDict_Items _PyDict_Items =
+      _PyDict_Items_ptr.asFunction<_dart_PyDict_Items>();
 
   int PyDict_Size(
     ffi.Pointer<PyObject> mp,
   ) {
-    return (_PyDict_Size ??= _dylib
-        .lookupFunction<_c_PyDict_Size, _dart_PyDict_Size>('PyDict_Size'))(
+    return _PyDict_Size(
       mp,
     );
   }
 
-  _dart_PyDict_Size? _PyDict_Size;
+  late final _PyDict_Size_ptr =
+      _lookup<ffi.NativeFunction<_c_PyDict_Size>>('PyDict_Size');
+  late final _dart_PyDict_Size _PyDict_Size =
+      _PyDict_Size_ptr.asFunction<_dart_PyDict_Size>();
 
   ffi.Pointer<PyObject> PyDict_Copy(
     ffi.Pointer<PyObject> mp,
   ) {
-    return (_PyDict_Copy ??= _dylib
-        .lookupFunction<_c_PyDict_Copy, _dart_PyDict_Copy>('PyDict_Copy'))(
+    return _PyDict_Copy(
       mp,
     );
   }
 
-  _dart_PyDict_Copy? _PyDict_Copy;
+  late final _PyDict_Copy_ptr =
+      _lookup<ffi.NativeFunction<_c_PyDict_Copy>>('PyDict_Copy');
+  late final _dart_PyDict_Copy _PyDict_Copy =
+      _PyDict_Copy_ptr.asFunction<_dart_PyDict_Copy>();
 
   int PyDict_Contains(
     ffi.Pointer<PyObject> mp,
     ffi.Pointer<PyObject> key,
   ) {
-    return (_PyDict_Contains ??=
-        _dylib.lookupFunction<_c_PyDict_Contains, _dart_PyDict_Contains>(
-            'PyDict_Contains'))(
+    return _PyDict_Contains(
       mp,
       key,
     );
   }
 
-  _dart_PyDict_Contains? _PyDict_Contains;
+  late final _PyDict_Contains_ptr =
+      _lookup<ffi.NativeFunction<_c_PyDict_Contains>>('PyDict_Contains');
+  late final _dart_PyDict_Contains _PyDict_Contains =
+      _PyDict_Contains_ptr.asFunction<_dart_PyDict_Contains>();
 
   int PyDict_Update(
     ffi.Pointer<PyObject> mp,
     ffi.Pointer<PyObject> other,
   ) {
-    return (_PyDict_Update ??=
-        _dylib.lookupFunction<_c_PyDict_Update, _dart_PyDict_Update>(
-            'PyDict_Update'))(
+    return _PyDict_Update(
       mp,
       other,
     );
   }
 
-  _dart_PyDict_Update? _PyDict_Update;
+  late final _PyDict_Update_ptr =
+      _lookup<ffi.NativeFunction<_c_PyDict_Update>>('PyDict_Update');
+  late final _dart_PyDict_Update _PyDict_Update =
+      _PyDict_Update_ptr.asFunction<_dart_PyDict_Update>();
 
   int PyDict_Merge(
     ffi.Pointer<PyObject> mp,
     ffi.Pointer<PyObject> other,
     int override,
   ) {
-    return (_PyDict_Merge ??= _dylib
-        .lookupFunction<_c_PyDict_Merge, _dart_PyDict_Merge>('PyDict_Merge'))(
+    return _PyDict_Merge(
       mp,
       other,
       override,
     );
   }
 
-  _dart_PyDict_Merge? _PyDict_Merge;
+  late final _PyDict_Merge_ptr =
+      _lookup<ffi.NativeFunction<_c_PyDict_Merge>>('PyDict_Merge');
+  late final _dart_PyDict_Merge _PyDict_Merge =
+      _PyDict_Merge_ptr.asFunction<_dart_PyDict_Merge>();
 
   int PyDict_MergeFromSeq2(
     ffi.Pointer<PyObject> d,
     ffi.Pointer<PyObject> seq2,
     int override,
   ) {
-    return (_PyDict_MergeFromSeq2 ??= _dylib.lookupFunction<
-        _c_PyDict_MergeFromSeq2,
-        _dart_PyDict_MergeFromSeq2>('PyDict_MergeFromSeq2'))(
+    return _PyDict_MergeFromSeq2(
       d,
       seq2,
       override,
     );
   }
 
-  _dart_PyDict_MergeFromSeq2? _PyDict_MergeFromSeq2;
+  late final _PyDict_MergeFromSeq2_ptr =
+      _lookup<ffi.NativeFunction<_c_PyDict_MergeFromSeq2>>(
+          'PyDict_MergeFromSeq2');
+  late final _dart_PyDict_MergeFromSeq2 _PyDict_MergeFromSeq2 =
+      _PyDict_MergeFromSeq2_ptr.asFunction<_dart_PyDict_MergeFromSeq2>();
 
   ffi.Pointer<PyObject> PyDict_GetItemString(
     ffi.Pointer<PyObject> dp,
     ffi.Pointer<ffi.Int8> key,
   ) {
-    return (_PyDict_GetItemString ??= _dylib.lookupFunction<
-        _c_PyDict_GetItemString,
-        _dart_PyDict_GetItemString>('PyDict_GetItemString'))(
+    return _PyDict_GetItemString(
       dp,
       key,
     );
   }
 
-  _dart_PyDict_GetItemString? _PyDict_GetItemString;
+  late final _PyDict_GetItemString_ptr =
+      _lookup<ffi.NativeFunction<_c_PyDict_GetItemString>>(
+          'PyDict_GetItemString');
+  late final _dart_PyDict_GetItemString _PyDict_GetItemString =
+      _PyDict_GetItemString_ptr.asFunction<_dart_PyDict_GetItemString>();
 
   int PyDict_SetItemString(
     ffi.Pointer<PyObject> dp,
     ffi.Pointer<ffi.Int8> key,
     ffi.Pointer<PyObject> item,
   ) {
-    return (_PyDict_SetItemString ??= _dylib.lookupFunction<
-        _c_PyDict_SetItemString,
-        _dart_PyDict_SetItemString>('PyDict_SetItemString'))(
+    return _PyDict_SetItemString(
       dp,
       key,
       item,
     );
   }
 
-  _dart_PyDict_SetItemString? _PyDict_SetItemString;
+  late final _PyDict_SetItemString_ptr =
+      _lookup<ffi.NativeFunction<_c_PyDict_SetItemString>>(
+          'PyDict_SetItemString');
+  late final _dart_PyDict_SetItemString _PyDict_SetItemString =
+      _PyDict_SetItemString_ptr.asFunction<_dart_PyDict_SetItemString>();
 
   int PyDict_DelItemString(
     ffi.Pointer<PyObject> dp,
     ffi.Pointer<ffi.Int8> key,
   ) {
-    return (_PyDict_DelItemString ??= _dylib.lookupFunction<
-        _c_PyDict_DelItemString,
-        _dart_PyDict_DelItemString>('PyDict_DelItemString'))(
+    return _PyDict_DelItemString(
       dp,
       key,
     );
   }
 
-  _dart_PyDict_DelItemString? _PyDict_DelItemString;
+  late final _PyDict_DelItemString_ptr =
+      _lookup<ffi.NativeFunction<_c_PyDict_DelItemString>>(
+          'PyDict_DelItemString');
+  late final _dart_PyDict_DelItemString _PyDict_DelItemString =
+      _PyDict_DelItemString_ptr.asFunction<_dart_PyDict_DelItemString>();
 
-  late final _typeobject PyDictKeys_Type =
-      _dylib.lookup<_typeobject>('PyDictKeys_Type').ref;
+  late final ffi.Pointer<_typeobject> _PyDictKeys_Type =
+      _lookup<_typeobject>('PyDictKeys_Type');
 
-  late final _typeobject PyDictValues_Type =
-      _dylib.lookup<_typeobject>('PyDictValues_Type').ref;
+  _typeobject get PyDictKeys_Type => _PyDictKeys_Type.ref;
 
-  late final _typeobject PyDictItems_Type =
-      _dylib.lookup<_typeobject>('PyDictItems_Type').ref;
+  late final ffi.Pointer<_typeobject> _PyDictValues_Type =
+      _lookup<_typeobject>('PyDictValues_Type');
 
-  late final _typeobject PyDictIterKey_Type =
-      _dylib.lookup<_typeobject>('PyDictIterKey_Type').ref;
+  _typeobject get PyDictValues_Type => _PyDictValues_Type.ref;
 
-  late final _typeobject PyDictIterValue_Type =
-      _dylib.lookup<_typeobject>('PyDictIterValue_Type').ref;
+  late final ffi.Pointer<_typeobject> _PyDictItems_Type =
+      _lookup<_typeobject>('PyDictItems_Type');
 
-  late final _typeobject PyDictIterItem_Type =
-      _dylib.lookup<_typeobject>('PyDictIterItem_Type').ref;
+  _typeobject get PyDictItems_Type => _PyDictItems_Type.ref;
 
-  late final _typeobject PyDictRevIterKey_Type =
-      _dylib.lookup<_typeobject>('PyDictRevIterKey_Type').ref;
+  late final ffi.Pointer<_typeobject> _PyDictIterKey_Type =
+      _lookup<_typeobject>('PyDictIterKey_Type');
 
-  late final _typeobject PyDictRevIterItem_Type =
-      _dylib.lookup<_typeobject>('PyDictRevIterItem_Type').ref;
+  _typeobject get PyDictIterKey_Type => _PyDictIterKey_Type.ref;
 
-  late final _typeobject PyDictRevIterValue_Type =
-      _dylib.lookup<_typeobject>('PyDictRevIterValue_Type').ref;
+  late final ffi.Pointer<_typeobject> _PyDictIterValue_Type =
+      _lookup<_typeobject>('PyDictIterValue_Type');
 
-  late final _typeobject PyODict_Type =
-      _dylib.lookup<_typeobject>('PyODict_Type').ref;
+  _typeobject get PyDictIterValue_Type => _PyDictIterValue_Type.ref;
 
-  late final _typeobject PyODictIter_Type =
-      _dylib.lookup<_typeobject>('PyODictIter_Type').ref;
+  late final ffi.Pointer<_typeobject> _PyDictIterItem_Type =
+      _lookup<_typeobject>('PyDictIterItem_Type');
 
-  late final _typeobject PyODictKeys_Type =
-      _dylib.lookup<_typeobject>('PyODictKeys_Type').ref;
+  _typeobject get PyDictIterItem_Type => _PyDictIterItem_Type.ref;
 
-  late final _typeobject PyODictItems_Type =
-      _dylib.lookup<_typeobject>('PyODictItems_Type').ref;
+  late final ffi.Pointer<_typeobject> _PyDictRevIterKey_Type =
+      _lookup<_typeobject>('PyDictRevIterKey_Type');
 
-  late final _typeobject PyODictValues_Type =
-      _dylib.lookup<_typeobject>('PyODictValues_Type').ref;
+  _typeobject get PyDictRevIterKey_Type => _PyDictRevIterKey_Type.ref;
+
+  late final ffi.Pointer<_typeobject> _PyDictRevIterItem_Type =
+      _lookup<_typeobject>('PyDictRevIterItem_Type');
+
+  _typeobject get PyDictRevIterItem_Type => _PyDictRevIterItem_Type.ref;
+
+  late final ffi.Pointer<_typeobject> _PyDictRevIterValue_Type =
+      _lookup<_typeobject>('PyDictRevIterValue_Type');
+
+  _typeobject get PyDictRevIterValue_Type => _PyDictRevIterValue_Type.ref;
+
+  late final ffi.Pointer<_typeobject> _PyODict_Type =
+      _lookup<_typeobject>('PyODict_Type');
+
+  _typeobject get PyODict_Type => _PyODict_Type.ref;
+
+  late final ffi.Pointer<_typeobject> _PyODictIter_Type =
+      _lookup<_typeobject>('PyODictIter_Type');
+
+  _typeobject get PyODictIter_Type => _PyODictIter_Type.ref;
+
+  late final ffi.Pointer<_typeobject> _PyODictKeys_Type =
+      _lookup<_typeobject>('PyODictKeys_Type');
+
+  _typeobject get PyODictKeys_Type => _PyODictKeys_Type.ref;
+
+  late final ffi.Pointer<_typeobject> _PyODictItems_Type =
+      _lookup<_typeobject>('PyODictItems_Type');
+
+  _typeobject get PyODictItems_Type => _PyODictItems_Type.ref;
+
+  late final ffi.Pointer<_typeobject> _PyODictValues_Type =
+      _lookup<_typeobject>('PyODictValues_Type');
+
+  _typeobject get PyODictValues_Type => _PyODictValues_Type.ref;
 
   ffi.Pointer<PyObject> PyODict_New() {
-    return (_PyODict_New ??= _dylib
-        .lookupFunction<_c_PyODict_New, _dart_PyODict_New>('PyODict_New'))();
+    return _PyODict_New();
   }
 
-  _dart_PyODict_New? _PyODict_New;
+  late final _PyODict_New_ptr =
+      _lookup<ffi.NativeFunction<_c_PyODict_New>>('PyODict_New');
+  late final _dart_PyODict_New _PyODict_New =
+      _PyODict_New_ptr.asFunction<_dart_PyODict_New>();
 
   int PyODict_SetItem(
     ffi.Pointer<PyObject> od,
     ffi.Pointer<PyObject> key,
     ffi.Pointer<PyObject> item,
   ) {
-    return (_PyODict_SetItem ??=
-        _dylib.lookupFunction<_c_PyODict_SetItem, _dart_PyODict_SetItem>(
-            'PyODict_SetItem'))(
+    return _PyODict_SetItem(
       od,
       key,
       item,
     );
   }
 
-  _dart_PyODict_SetItem? _PyODict_SetItem;
+  late final _PyODict_SetItem_ptr =
+      _lookup<ffi.NativeFunction<_c_PyODict_SetItem>>('PyODict_SetItem');
+  late final _dart_PyODict_SetItem _PyODict_SetItem =
+      _PyODict_SetItem_ptr.asFunction<_dart_PyODict_SetItem>();
 
   int PyODict_DelItem(
     ffi.Pointer<PyObject> od,
     ffi.Pointer<PyObject> key,
   ) {
-    return (_PyODict_DelItem ??=
-        _dylib.lookupFunction<_c_PyODict_DelItem, _dart_PyODict_DelItem>(
-            'PyODict_DelItem'))(
+    return _PyODict_DelItem(
       od,
       key,
     );
   }
 
-  _dart_PyODict_DelItem? _PyODict_DelItem;
+  late final _PyODict_DelItem_ptr =
+      _lookup<ffi.NativeFunction<_c_PyODict_DelItem>>('PyODict_DelItem');
+  late final _dart_PyODict_DelItem _PyODict_DelItem =
+      _PyODict_DelItem_ptr.asFunction<_dart_PyODict_DelItem>();
 
-  late final _typeobject PyEnum_Type =
-      _dylib.lookup<_typeobject>('PyEnum_Type').ref;
+  late final ffi.Pointer<_typeobject> _PyEnum_Type =
+      _lookup<_typeobject>('PyEnum_Type');
 
-  late final _typeobject PyReversed_Type =
-      _dylib.lookup<_typeobject>('PyReversed_Type').ref;
+  _typeobject get PyEnum_Type => _PyEnum_Type.ref;
 
-  late final ffi.Pointer<PyObject> PySet_Dummy =
-      _dylib.lookup<ffi.Pointer<PyObject>>('_PySet_Dummy').value;
+  late final ffi.Pointer<_typeobject> _PyReversed_Type =
+      _lookup<_typeobject>('PyReversed_Type');
+
+  _typeobject get PyReversed_Type => _PyReversed_Type.ref;
+
+  late final ffi.Pointer<ffi.Pointer<PyObject>> _PySet_Dummy =
+      _lookup<ffi.Pointer<PyObject>>('_PySet_Dummy');
+
+  ffi.Pointer<PyObject> get PySet_Dummy => _PySet_Dummy.value;
+
+  set PySet_Dummy(ffi.Pointer<PyObject> value) => _PySet_Dummy.value = value;
 
   int PySet_NextEntry(
     ffi.Pointer<PyObject> set_1,
@@ -4866,9 +5573,7 @@ class DartPyC {
     ffi.Pointer<ffi.Pointer<PyObject>> key,
     ffi.Pointer<ffi.Int64> hash,
   ) {
-    return (_PySet_NextEntry ??=
-        _dylib.lookupFunction<_c_PySet_NextEntry, _dart_PySet_NextEntry>(
-            '_PySet_NextEntry'))(
+    return _PySet_NextEntry(
       set_1,
       pos,
       key,
@@ -4876,189 +5581,224 @@ class DartPyC {
     );
   }
 
-  _dart_PySet_NextEntry? _PySet_NextEntry;
+  late final _PySet_NextEntry_ptr =
+      _lookup<ffi.NativeFunction<_c_PySet_NextEntry>>('_PySet_NextEntry');
+  late final _dart_PySet_NextEntry _PySet_NextEntry =
+      _PySet_NextEntry_ptr.asFunction<_dart_PySet_NextEntry>();
 
   int PySet_Update(
     ffi.Pointer<PyObject> set_1,
     ffi.Pointer<PyObject> iterable,
   ) {
-    return (_PySet_Update ??= _dylib
-        .lookupFunction<_c_PySet_Update, _dart_PySet_Update>('_PySet_Update'))(
+    return _PySet_Update(
       set_1,
       iterable,
     );
   }
 
-  _dart_PySet_Update? _PySet_Update;
+  late final _PySet_Update_ptr =
+      _lookup<ffi.NativeFunction<_c_PySet_Update>>('_PySet_Update');
+  late final _dart_PySet_Update _PySet_Update =
+      _PySet_Update_ptr.asFunction<_dart_PySet_Update>();
 
   int PySet_ClearFreeList() {
-    return (_PySet_ClearFreeList ??= _dylib.lookupFunction<
-        _c_PySet_ClearFreeList,
-        _dart_PySet_ClearFreeList>('PySet_ClearFreeList'))();
+    return _PySet_ClearFreeList();
   }
 
-  _dart_PySet_ClearFreeList? _PySet_ClearFreeList;
+  late final _PySet_ClearFreeList_ptr =
+      _lookup<ffi.NativeFunction<_c_PySet_ClearFreeList>>(
+          'PySet_ClearFreeList');
+  late final _dart_PySet_ClearFreeList _PySet_ClearFreeList =
+      _PySet_ClearFreeList_ptr.asFunction<_dart_PySet_ClearFreeList>();
 
-  late final _typeobject PySet_Type =
-      _dylib.lookup<_typeobject>('PySet_Type').ref;
+  late final ffi.Pointer<_typeobject> _PySet_Type =
+      _lookup<_typeobject>('PySet_Type');
 
-  late final _typeobject PyFrozenSet_Type =
-      _dylib.lookup<_typeobject>('PyFrozenSet_Type').ref;
+  _typeobject get PySet_Type => _PySet_Type.ref;
 
-  late final _typeobject PySetIter_Type =
-      _dylib.lookup<_typeobject>('PySetIter_Type').ref;
+  late final ffi.Pointer<_typeobject> _PyFrozenSet_Type =
+      _lookup<_typeobject>('PyFrozenSet_Type');
+
+  _typeobject get PyFrozenSet_Type => _PyFrozenSet_Type.ref;
+
+  late final ffi.Pointer<_typeobject> _PySetIter_Type =
+      _lookup<_typeobject>('PySetIter_Type');
+
+  _typeobject get PySetIter_Type => _PySetIter_Type.ref;
 
   ffi.Pointer<PyObject> PySet_New(
     ffi.Pointer<PyObject> arg0,
   ) {
-    return (_PySet_New ??=
-        _dylib.lookupFunction<_c_PySet_New, _dart_PySet_New>('PySet_New'))(
+    return _PySet_New(
       arg0,
     );
   }
 
-  _dart_PySet_New? _PySet_New;
+  late final _PySet_New_ptr =
+      _lookup<ffi.NativeFunction<_c_PySet_New>>('PySet_New');
+  late final _dart_PySet_New _PySet_New =
+      _PySet_New_ptr.asFunction<_dart_PySet_New>();
 
   ffi.Pointer<PyObject> PyFrozenSet_New(
     ffi.Pointer<PyObject> arg0,
   ) {
-    return (_PyFrozenSet_New ??=
-        _dylib.lookupFunction<_c_PyFrozenSet_New, _dart_PyFrozenSet_New>(
-            'PyFrozenSet_New'))(
+    return _PyFrozenSet_New(
       arg0,
     );
   }
 
-  _dart_PyFrozenSet_New? _PyFrozenSet_New;
+  late final _PyFrozenSet_New_ptr =
+      _lookup<ffi.NativeFunction<_c_PyFrozenSet_New>>('PyFrozenSet_New');
+  late final _dart_PyFrozenSet_New _PyFrozenSet_New =
+      _PyFrozenSet_New_ptr.asFunction<_dart_PyFrozenSet_New>();
 
   int PySet_Add(
     ffi.Pointer<PyObject> set_1,
     ffi.Pointer<PyObject> key,
   ) {
-    return (_PySet_Add ??=
-        _dylib.lookupFunction<_c_PySet_Add, _dart_PySet_Add>('PySet_Add'))(
+    return _PySet_Add(
       set_1,
       key,
     );
   }
 
-  _dart_PySet_Add? _PySet_Add;
+  late final _PySet_Add_ptr =
+      _lookup<ffi.NativeFunction<_c_PySet_Add>>('PySet_Add');
+  late final _dart_PySet_Add _PySet_Add =
+      _PySet_Add_ptr.asFunction<_dart_PySet_Add>();
 
   int PySet_Clear(
     ffi.Pointer<PyObject> set_1,
   ) {
-    return (_PySet_Clear ??= _dylib
-        .lookupFunction<_c_PySet_Clear, _dart_PySet_Clear>('PySet_Clear'))(
+    return _PySet_Clear(
       set_1,
     );
   }
 
-  _dart_PySet_Clear? _PySet_Clear;
+  late final _PySet_Clear_ptr =
+      _lookup<ffi.NativeFunction<_c_PySet_Clear>>('PySet_Clear');
+  late final _dart_PySet_Clear _PySet_Clear =
+      _PySet_Clear_ptr.asFunction<_dart_PySet_Clear>();
 
   int PySet_Contains(
     ffi.Pointer<PyObject> anyset,
     ffi.Pointer<PyObject> key,
   ) {
-    return (_PySet_Contains ??=
-        _dylib.lookupFunction<_c_PySet_Contains, _dart_PySet_Contains>(
-            'PySet_Contains'))(
+    return _PySet_Contains(
       anyset,
       key,
     );
   }
 
-  _dart_PySet_Contains? _PySet_Contains;
+  late final _PySet_Contains_ptr =
+      _lookup<ffi.NativeFunction<_c_PySet_Contains>>('PySet_Contains');
+  late final _dart_PySet_Contains _PySet_Contains =
+      _PySet_Contains_ptr.asFunction<_dart_PySet_Contains>();
 
   int PySet_Discard(
     ffi.Pointer<PyObject> set_1,
     ffi.Pointer<PyObject> key,
   ) {
-    return (_PySet_Discard ??=
-        _dylib.lookupFunction<_c_PySet_Discard, _dart_PySet_Discard>(
-            'PySet_Discard'))(
+    return _PySet_Discard(
       set_1,
       key,
     );
   }
 
-  _dart_PySet_Discard? _PySet_Discard;
+  late final _PySet_Discard_ptr =
+      _lookup<ffi.NativeFunction<_c_PySet_Discard>>('PySet_Discard');
+  late final _dart_PySet_Discard _PySet_Discard =
+      _PySet_Discard_ptr.asFunction<_dart_PySet_Discard>();
 
   ffi.Pointer<PyObject> PySet_Pop(
     ffi.Pointer<PyObject> set_1,
   ) {
-    return (_PySet_Pop ??=
-        _dylib.lookupFunction<_c_PySet_Pop, _dart_PySet_Pop>('PySet_Pop'))(
+    return _PySet_Pop(
       set_1,
     );
   }
 
-  _dart_PySet_Pop? _PySet_Pop;
+  late final _PySet_Pop_ptr =
+      _lookup<ffi.NativeFunction<_c_PySet_Pop>>('PySet_Pop');
+  late final _dart_PySet_Pop _PySet_Pop =
+      _PySet_Pop_ptr.asFunction<_dart_PySet_Pop>();
 
   int PySet_Size(
     ffi.Pointer<PyObject> anyset,
   ) {
-    return (_PySet_Size ??=
-        _dylib.lookupFunction<_c_PySet_Size, _dart_PySet_Size>('PySet_Size'))(
+    return _PySet_Size(
       anyset,
     );
   }
 
-  _dart_PySet_Size? _PySet_Size;
+  late final _PySet_Size_ptr =
+      _lookup<ffi.NativeFunction<_c_PySet_Size>>('PySet_Size');
+  late final _dart_PySet_Size _PySet_Size =
+      _PySet_Size_ptr.asFunction<_dart_PySet_Size>();
 
-  late final _typeobject PyCFunction_Type =
-      _dylib.lookup<_typeobject>('PyCFunction_Type').ref;
+  late final ffi.Pointer<_typeobject> _PyCFunction_Type =
+      _lookup<_typeobject>('PyCFunction_Type');
+
+  _typeobject get PyCFunction_Type => _PyCFunction_Type.ref;
 
   ffi.Pointer<ffi.NativeFunction<PyCFunction>> PyCFunction_GetFunction(
     ffi.Pointer<PyObject> arg0,
   ) {
-    return (_PyCFunction_GetFunction ??= _dylib.lookupFunction<
-        _c_PyCFunction_GetFunction,
-        _dart_PyCFunction_GetFunction>('PyCFunction_GetFunction'))(
+    return _PyCFunction_GetFunction(
       arg0,
     );
   }
 
-  _dart_PyCFunction_GetFunction? _PyCFunction_GetFunction;
+  late final _PyCFunction_GetFunction_ptr =
+      _lookup<ffi.NativeFunction<_c_PyCFunction_GetFunction>>(
+          'PyCFunction_GetFunction');
+  late final _dart_PyCFunction_GetFunction _PyCFunction_GetFunction =
+      _PyCFunction_GetFunction_ptr.asFunction<_dart_PyCFunction_GetFunction>();
 
   ffi.Pointer<PyObject> PyCFunction_GetSelf(
     ffi.Pointer<PyObject> arg0,
   ) {
-    return (_PyCFunction_GetSelf ??= _dylib.lookupFunction<
-        _c_PyCFunction_GetSelf,
-        _dart_PyCFunction_GetSelf>('PyCFunction_GetSelf'))(
+    return _PyCFunction_GetSelf(
       arg0,
     );
   }
 
-  _dart_PyCFunction_GetSelf? _PyCFunction_GetSelf;
+  late final _PyCFunction_GetSelf_ptr =
+      _lookup<ffi.NativeFunction<_c_PyCFunction_GetSelf>>(
+          'PyCFunction_GetSelf');
+  late final _dart_PyCFunction_GetSelf _PyCFunction_GetSelf =
+      _PyCFunction_GetSelf_ptr.asFunction<_dart_PyCFunction_GetSelf>();
 
   int PyCFunction_GetFlags(
     ffi.Pointer<PyObject> arg0,
   ) {
-    return (_PyCFunction_GetFlags ??= _dylib.lookupFunction<
-        _c_PyCFunction_GetFlags,
-        _dart_PyCFunction_GetFlags>('PyCFunction_GetFlags'))(
+    return _PyCFunction_GetFlags(
       arg0,
     );
   }
 
-  _dart_PyCFunction_GetFlags? _PyCFunction_GetFlags;
+  late final _PyCFunction_GetFlags_ptr =
+      _lookup<ffi.NativeFunction<_c_PyCFunction_GetFlags>>(
+          'PyCFunction_GetFlags');
+  late final _dart_PyCFunction_GetFlags _PyCFunction_GetFlags =
+      _PyCFunction_GetFlags_ptr.asFunction<_dart_PyCFunction_GetFlags>();
 
   ffi.Pointer<PyObject> PyCFunction_Call(
     ffi.Pointer<PyObject> arg0,
     ffi.Pointer<PyObject> arg1,
     ffi.Pointer<PyObject> arg2,
   ) {
-    return (_PyCFunction_Call ??=
-        _dylib.lookupFunction<_c_PyCFunction_Call, _dart_PyCFunction_Call>(
-            'PyCFunction_Call'))(
+    return _PyCFunction_Call(
       arg0,
       arg1,
       arg2,
     );
   }
 
-  _dart_PyCFunction_Call? _PyCFunction_Call;
+  late final _PyCFunction_Call_ptr =
+      _lookup<ffi.NativeFunction<_c_PyCFunction_Call>>('PyCFunction_Call');
+  late final _dart_PyCFunction_Call _PyCFunction_Call =
+      _PyCFunction_Call_ptr.asFunction<_dart_PyCFunction_Call>();
 
   ffi.Pointer<PyObject> PyCFunction_FastCallDict(
     ffi.Pointer<PyObject> func,
@@ -5066,9 +5806,7 @@ class DartPyC {
     int nargs,
     ffi.Pointer<PyObject> kwargs,
   ) {
-    return (_PyCFunction_FastCallDict ??= _dylib.lookupFunction<
-        _c_PyCFunction_FastCallDict,
-        _dart_PyCFunction_FastCallDict>('_PyCFunction_FastCallDict'))(
+    return _PyCFunction_FastCallDict(
       func,
       args,
       nargs,
@@ -5076,23 +5814,29 @@ class DartPyC {
     );
   }
 
-  _dart_PyCFunction_FastCallDict? _PyCFunction_FastCallDict;
+  late final _PyCFunction_FastCallDict_ptr =
+      _lookup<ffi.NativeFunction<_c_PyCFunction_FastCallDict>>(
+          '_PyCFunction_FastCallDict');
+  late final _dart_PyCFunction_FastCallDict _PyCFunction_FastCallDict =
+      _PyCFunction_FastCallDict_ptr.asFunction<
+          _dart_PyCFunction_FastCallDict>();
 
   ffi.Pointer<PyObject> PyCFunction_NewEx(
     ffi.Pointer<PyMethodDef> arg0,
     ffi.Pointer<PyObject> arg1,
     ffi.Pointer<PyObject> arg2,
   ) {
-    return (_PyCFunction_NewEx ??=
-        _dylib.lookupFunction<_c_PyCFunction_NewEx, _dart_PyCFunction_NewEx>(
-            'PyCFunction_NewEx'))(
+    return _PyCFunction_NewEx(
       arg0,
       arg1,
       arg2,
     );
   }
 
-  _dart_PyCFunction_NewEx? _PyCFunction_NewEx;
+  late final _PyCFunction_NewEx_ptr =
+      _lookup<ffi.NativeFunction<_c_PyCFunction_NewEx>>('PyCFunction_NewEx');
+  late final _dart_PyCFunction_NewEx _PyCFunction_NewEx =
+      _PyCFunction_NewEx_ptr.asFunction<_dart_PyCFunction_NewEx>();
 
   ffi.Pointer<PyObject> PyMethodDef_RawFastCallDict(
     ffi.Pointer<PyMethodDef> method,
@@ -5101,9 +5845,7 @@ class DartPyC {
     int nargs,
     ffi.Pointer<PyObject> kwargs,
   ) {
-    return (_PyMethodDef_RawFastCallDict ??= _dylib.lookupFunction<
-        _c_PyMethodDef_RawFastCallDict,
-        _dart_PyMethodDef_RawFastCallDict>('_PyMethodDef_RawFastCallDict'))(
+    return _PyMethodDef_RawFastCallDict(
       method,
       self,
       args,
@@ -5112,7 +5854,12 @@ class DartPyC {
     );
   }
 
-  _dart_PyMethodDef_RawFastCallDict? _PyMethodDef_RawFastCallDict;
+  late final _PyMethodDef_RawFastCallDict_ptr =
+      _lookup<ffi.NativeFunction<_c_PyMethodDef_RawFastCallDict>>(
+          '_PyMethodDef_RawFastCallDict');
+  late final _dart_PyMethodDef_RawFastCallDict _PyMethodDef_RawFastCallDict =
+      _PyMethodDef_RawFastCallDict_ptr.asFunction<
+          _dart_PyMethodDef_RawFastCallDict>();
 
   ffi.Pointer<PyObject> PyMethodDef_RawFastCallKeywords(
     ffi.Pointer<PyMethodDef> method,
@@ -5121,10 +5868,7 @@ class DartPyC {
     int nargs,
     ffi.Pointer<PyObject> kwnames,
   ) {
-    return (_PyMethodDef_RawFastCallKeywords ??= _dylib.lookupFunction<
-            _c_PyMethodDef_RawFastCallKeywords,
-            _dart_PyMethodDef_RawFastCallKeywords>(
-        '_PyMethodDef_RawFastCallKeywords'))(
+    return _PyMethodDef_RawFastCallKeywords(
       method,
       self,
       args,
@@ -5133,373 +5877,442 @@ class DartPyC {
     );
   }
 
-  _dart_PyMethodDef_RawFastCallKeywords? _PyMethodDef_RawFastCallKeywords;
+  late final _PyMethodDef_RawFastCallKeywords_ptr =
+      _lookup<ffi.NativeFunction<_c_PyMethodDef_RawFastCallKeywords>>(
+          '_PyMethodDef_RawFastCallKeywords');
+  late final _dart_PyMethodDef_RawFastCallKeywords
+      _PyMethodDef_RawFastCallKeywords = _PyMethodDef_RawFastCallKeywords_ptr
+          .asFunction<_dart_PyMethodDef_RawFastCallKeywords>();
 
   int PyCFunction_ClearFreeList() {
-    return (_PyCFunction_ClearFreeList ??= _dylib.lookupFunction<
-        _c_PyCFunction_ClearFreeList,
-        _dart_PyCFunction_ClearFreeList>('PyCFunction_ClearFreeList'))();
+    return _PyCFunction_ClearFreeList();
   }
 
-  _dart_PyCFunction_ClearFreeList? _PyCFunction_ClearFreeList;
+  late final _PyCFunction_ClearFreeList_ptr =
+      _lookup<ffi.NativeFunction<_c_PyCFunction_ClearFreeList>>(
+          'PyCFunction_ClearFreeList');
+  late final _dart_PyCFunction_ClearFreeList _PyCFunction_ClearFreeList =
+      _PyCFunction_ClearFreeList_ptr.asFunction<
+          _dart_PyCFunction_ClearFreeList>();
 
   void PyCFunction_DebugMallocStats(
     ffi.Pointer<FILE> out,
   ) {
-    return (_PyCFunction_DebugMallocStats ??= _dylib.lookupFunction<
-        _c_PyCFunction_DebugMallocStats,
-        _dart_PyCFunction_DebugMallocStats>('_PyCFunction_DebugMallocStats'))(
+    return _PyCFunction_DebugMallocStats(
       out,
     );
   }
 
-  _dart_PyCFunction_DebugMallocStats? _PyCFunction_DebugMallocStats;
+  late final _PyCFunction_DebugMallocStats_ptr =
+      _lookup<ffi.NativeFunction<_c_PyCFunction_DebugMallocStats>>(
+          '_PyCFunction_DebugMallocStats');
+  late final _dart_PyCFunction_DebugMallocStats _PyCFunction_DebugMallocStats =
+      _PyCFunction_DebugMallocStats_ptr.asFunction<
+          _dart_PyCFunction_DebugMallocStats>();
 
   void PyMethod_DebugMallocStats(
     ffi.Pointer<FILE> out,
   ) {
-    return (_PyMethod_DebugMallocStats ??= _dylib.lookupFunction<
-        _c_PyMethod_DebugMallocStats,
-        _dart_PyMethod_DebugMallocStats>('_PyMethod_DebugMallocStats'))(
+    return _PyMethod_DebugMallocStats(
       out,
     );
   }
 
-  _dart_PyMethod_DebugMallocStats? _PyMethod_DebugMallocStats;
+  late final _PyMethod_DebugMallocStats_ptr =
+      _lookup<ffi.NativeFunction<_c_PyMethod_DebugMallocStats>>(
+          '_PyMethod_DebugMallocStats');
+  late final _dart_PyMethod_DebugMallocStats _PyMethod_DebugMallocStats =
+      _PyMethod_DebugMallocStats_ptr.asFunction<
+          _dart_PyMethod_DebugMallocStats>();
 
-  late final _typeobject PyModule_Type =
-      _dylib.lookup<_typeobject>('PyModule_Type').ref;
+  late final ffi.Pointer<_typeobject> _PyModule_Type =
+      _lookup<_typeobject>('PyModule_Type');
+
+  _typeobject get PyModule_Type => _PyModule_Type.ref;
 
   ffi.Pointer<PyObject> PyModule_NewObject(
     ffi.Pointer<PyObject> name,
   ) {
-    return (_PyModule_NewObject ??=
-        _dylib.lookupFunction<_c_PyModule_NewObject, _dart_PyModule_NewObject>(
-            'PyModule_NewObject'))(
+    return _PyModule_NewObject(
       name,
     );
   }
 
-  _dart_PyModule_NewObject? _PyModule_NewObject;
+  late final _PyModule_NewObject_ptr =
+      _lookup<ffi.NativeFunction<_c_PyModule_NewObject>>('PyModule_NewObject');
+  late final _dart_PyModule_NewObject _PyModule_NewObject =
+      _PyModule_NewObject_ptr.asFunction<_dart_PyModule_NewObject>();
 
   ffi.Pointer<PyObject> PyModule_New(
     ffi.Pointer<ffi.Int8> name,
   ) {
-    return (_PyModule_New ??= _dylib
-        .lookupFunction<_c_PyModule_New, _dart_PyModule_New>('PyModule_New'))(
+    return _PyModule_New(
       name,
     );
   }
 
-  _dart_PyModule_New? _PyModule_New;
+  late final _PyModule_New_ptr =
+      _lookup<ffi.NativeFunction<_c_PyModule_New>>('PyModule_New');
+  late final _dart_PyModule_New _PyModule_New =
+      _PyModule_New_ptr.asFunction<_dart_PyModule_New>();
 
   ffi.Pointer<PyObject> PyModule_GetDict(
     ffi.Pointer<PyObject> arg0,
   ) {
-    return (_PyModule_GetDict ??=
-        _dylib.lookupFunction<_c_PyModule_GetDict, _dart_PyModule_GetDict>(
-            'PyModule_GetDict'))(
+    return _PyModule_GetDict(
       arg0,
     );
   }
 
-  _dart_PyModule_GetDict? _PyModule_GetDict;
+  late final _PyModule_GetDict_ptr =
+      _lookup<ffi.NativeFunction<_c_PyModule_GetDict>>('PyModule_GetDict');
+  late final _dart_PyModule_GetDict _PyModule_GetDict =
+      _PyModule_GetDict_ptr.asFunction<_dart_PyModule_GetDict>();
 
   ffi.Pointer<PyObject> PyModule_GetNameObject(
     ffi.Pointer<PyObject> arg0,
   ) {
-    return (_PyModule_GetNameObject ??= _dylib.lookupFunction<
-        _c_PyModule_GetNameObject,
-        _dart_PyModule_GetNameObject>('PyModule_GetNameObject'))(
+    return _PyModule_GetNameObject(
       arg0,
     );
   }
 
-  _dart_PyModule_GetNameObject? _PyModule_GetNameObject;
+  late final _PyModule_GetNameObject_ptr =
+      _lookup<ffi.NativeFunction<_c_PyModule_GetNameObject>>(
+          'PyModule_GetNameObject');
+  late final _dart_PyModule_GetNameObject _PyModule_GetNameObject =
+      _PyModule_GetNameObject_ptr.asFunction<_dart_PyModule_GetNameObject>();
 
   ffi.Pointer<ffi.Int8> PyModule_GetName(
     ffi.Pointer<PyObject> arg0,
   ) {
-    return (_PyModule_GetName ??=
-        _dylib.lookupFunction<_c_PyModule_GetName, _dart_PyModule_GetName>(
-            'PyModule_GetName'))(
+    return _PyModule_GetName(
       arg0,
     );
   }
 
-  _dart_PyModule_GetName? _PyModule_GetName;
+  late final _PyModule_GetName_ptr =
+      _lookup<ffi.NativeFunction<_c_PyModule_GetName>>('PyModule_GetName');
+  late final _dart_PyModule_GetName _PyModule_GetName =
+      _PyModule_GetName_ptr.asFunction<_dart_PyModule_GetName>();
 
   ffi.Pointer<ffi.Int8> PyModule_GetFilename(
     ffi.Pointer<PyObject> arg0,
   ) {
-    return (_PyModule_GetFilename ??= _dylib.lookupFunction<
-        _c_PyModule_GetFilename,
-        _dart_PyModule_GetFilename>('PyModule_GetFilename'))(
+    return _PyModule_GetFilename(
       arg0,
     );
   }
 
-  _dart_PyModule_GetFilename? _PyModule_GetFilename;
+  late final _PyModule_GetFilename_ptr =
+      _lookup<ffi.NativeFunction<_c_PyModule_GetFilename>>(
+          'PyModule_GetFilename');
+  late final _dart_PyModule_GetFilename _PyModule_GetFilename =
+      _PyModule_GetFilename_ptr.asFunction<_dart_PyModule_GetFilename>();
 
   ffi.Pointer<PyObject> PyModule_GetFilenameObject(
     ffi.Pointer<PyObject> arg0,
   ) {
-    return (_PyModule_GetFilenameObject ??= _dylib.lookupFunction<
-        _c_PyModule_GetFilenameObject,
-        _dart_PyModule_GetFilenameObject>('PyModule_GetFilenameObject'))(
+    return _PyModule_GetFilenameObject(
       arg0,
     );
   }
 
-  _dart_PyModule_GetFilenameObject? _PyModule_GetFilenameObject;
+  late final _PyModule_GetFilenameObject_ptr =
+      _lookup<ffi.NativeFunction<_c_PyModule_GetFilenameObject>>(
+          'PyModule_GetFilenameObject');
+  late final _dart_PyModule_GetFilenameObject _PyModule_GetFilenameObject =
+      _PyModule_GetFilenameObject_ptr.asFunction<
+          _dart_PyModule_GetFilenameObject>();
 
   void PyModule_Clear(
     ffi.Pointer<PyObject> arg0,
   ) {
-    return (_PyModule_Clear ??=
-        _dylib.lookupFunction<_c_PyModule_Clear, _dart_PyModule_Clear>(
-            '_PyModule_Clear'))(
+    return _PyModule_Clear(
       arg0,
     );
   }
 
-  _dart_PyModule_Clear? _PyModule_Clear;
+  late final _PyModule_Clear_ptr =
+      _lookup<ffi.NativeFunction<_c_PyModule_Clear>>('_PyModule_Clear');
+  late final _dart_PyModule_Clear _PyModule_Clear =
+      _PyModule_Clear_ptr.asFunction<_dart_PyModule_Clear>();
 
   void PyModule_ClearDict(
     ffi.Pointer<PyObject> arg0,
   ) {
-    return (_PyModule_ClearDict ??=
-        _dylib.lookupFunction<_c_PyModule_ClearDict, _dart_PyModule_ClearDict>(
-            '_PyModule_ClearDict'))(
+    return _PyModule_ClearDict(
       arg0,
     );
   }
 
-  _dart_PyModule_ClearDict? _PyModule_ClearDict;
+  late final _PyModule_ClearDict_ptr =
+      _lookup<ffi.NativeFunction<_c_PyModule_ClearDict>>('_PyModule_ClearDict');
+  late final _dart_PyModule_ClearDict _PyModule_ClearDict =
+      _PyModule_ClearDict_ptr.asFunction<_dart_PyModule_ClearDict>();
 
   int PyModuleSpec_IsInitializing(
     ffi.Pointer<PyObject> arg0,
   ) {
-    return (_PyModuleSpec_IsInitializing ??= _dylib.lookupFunction<
-        _c_PyModuleSpec_IsInitializing,
-        _dart_PyModuleSpec_IsInitializing>('_PyModuleSpec_IsInitializing'))(
+    return _PyModuleSpec_IsInitializing(
       arg0,
     );
   }
 
-  _dart_PyModuleSpec_IsInitializing? _PyModuleSpec_IsInitializing;
+  late final _PyModuleSpec_IsInitializing_ptr =
+      _lookup<ffi.NativeFunction<_c_PyModuleSpec_IsInitializing>>(
+          '_PyModuleSpec_IsInitializing');
+  late final _dart_PyModuleSpec_IsInitializing _PyModuleSpec_IsInitializing =
+      _PyModuleSpec_IsInitializing_ptr.asFunction<
+          _dart_PyModuleSpec_IsInitializing>();
 
   ffi.Pointer<PyModuleDef> PyModule_GetDef(
     ffi.Pointer<PyObject> arg0,
   ) {
-    return (_PyModule_GetDef ??=
-        _dylib.lookupFunction<_c_PyModule_GetDef, _dart_PyModule_GetDef>(
-            'PyModule_GetDef'))(
+    return _PyModule_GetDef(
       arg0,
     );
   }
 
-  _dart_PyModule_GetDef? _PyModule_GetDef;
+  late final _PyModule_GetDef_ptr =
+      _lookup<ffi.NativeFunction<_c_PyModule_GetDef>>('PyModule_GetDef');
+  late final _dart_PyModule_GetDef _PyModule_GetDef =
+      _PyModule_GetDef_ptr.asFunction<_dart_PyModule_GetDef>();
 
   ffi.Pointer<ffi.Void> PyModule_GetState(
     ffi.Pointer<PyObject> arg0,
   ) {
-    return (_PyModule_GetState ??=
-        _dylib.lookupFunction<_c_PyModule_GetState, _dart_PyModule_GetState>(
-            'PyModule_GetState'))(
+    return _PyModule_GetState(
       arg0,
     );
   }
 
-  _dart_PyModule_GetState? _PyModule_GetState;
+  late final _PyModule_GetState_ptr =
+      _lookup<ffi.NativeFunction<_c_PyModule_GetState>>('PyModule_GetState');
+  late final _dart_PyModule_GetState _PyModule_GetState =
+      _PyModule_GetState_ptr.asFunction<_dart_PyModule_GetState>();
 
   ffi.Pointer<PyObject> PyModuleDef_Init(
     ffi.Pointer<PyModuleDef> arg0,
   ) {
-    return (_PyModuleDef_Init ??=
-        _dylib.lookupFunction<_c_PyModuleDef_Init, _dart_PyModuleDef_Init>(
-            'PyModuleDef_Init'))(
+    return _PyModuleDef_Init(
       arg0,
     );
   }
 
-  _dart_PyModuleDef_Init? _PyModuleDef_Init;
+  late final _PyModuleDef_Init_ptr =
+      _lookup<ffi.NativeFunction<_c_PyModuleDef_Init>>('PyModuleDef_Init');
+  late final _dart_PyModuleDef_Init _PyModuleDef_Init =
+      _PyModuleDef_Init_ptr.asFunction<_dart_PyModuleDef_Init>();
 
-  late final _typeobject PyModuleDef_Type =
-      _dylib.lookup<_typeobject>('PyModuleDef_Type').ref;
+  late final ffi.Pointer<_typeobject> _PyModuleDef_Type =
+      _lookup<_typeobject>('PyModuleDef_Type');
 
-  late final _typeobject PyFunction_Type =
-      _dylib.lookup<_typeobject>('PyFunction_Type').ref;
+  _typeobject get PyModuleDef_Type => _PyModuleDef_Type.ref;
+
+  late final ffi.Pointer<_typeobject> _PyFunction_Type =
+      _lookup<_typeobject>('PyFunction_Type');
+
+  _typeobject get PyFunction_Type => _PyFunction_Type.ref;
 
   ffi.Pointer<PyObject> PyFunction_New(
     ffi.Pointer<PyObject> arg0,
     ffi.Pointer<PyObject> arg1,
   ) {
-    return (_PyFunction_New ??=
-        _dylib.lookupFunction<_c_PyFunction_New, _dart_PyFunction_New>(
-            'PyFunction_New'))(
+    return _PyFunction_New(
       arg0,
       arg1,
     );
   }
 
-  _dart_PyFunction_New? _PyFunction_New;
+  late final _PyFunction_New_ptr =
+      _lookup<ffi.NativeFunction<_c_PyFunction_New>>('PyFunction_New');
+  late final _dart_PyFunction_New _PyFunction_New =
+      _PyFunction_New_ptr.asFunction<_dart_PyFunction_New>();
 
   ffi.Pointer<PyObject> PyFunction_NewWithQualName(
     ffi.Pointer<PyObject> arg0,
     ffi.Pointer<PyObject> arg1,
     ffi.Pointer<PyObject> arg2,
   ) {
-    return (_PyFunction_NewWithQualName ??= _dylib.lookupFunction<
-        _c_PyFunction_NewWithQualName,
-        _dart_PyFunction_NewWithQualName>('PyFunction_NewWithQualName'))(
+    return _PyFunction_NewWithQualName(
       arg0,
       arg1,
       arg2,
     );
   }
 
-  _dart_PyFunction_NewWithQualName? _PyFunction_NewWithQualName;
+  late final _PyFunction_NewWithQualName_ptr =
+      _lookup<ffi.NativeFunction<_c_PyFunction_NewWithQualName>>(
+          'PyFunction_NewWithQualName');
+  late final _dart_PyFunction_NewWithQualName _PyFunction_NewWithQualName =
+      _PyFunction_NewWithQualName_ptr.asFunction<
+          _dart_PyFunction_NewWithQualName>();
 
   ffi.Pointer<PyObject> PyFunction_GetCode(
     ffi.Pointer<PyObject> arg0,
   ) {
-    return (_PyFunction_GetCode ??=
-        _dylib.lookupFunction<_c_PyFunction_GetCode, _dart_PyFunction_GetCode>(
-            'PyFunction_GetCode'))(
+    return _PyFunction_GetCode(
       arg0,
     );
   }
 
-  _dart_PyFunction_GetCode? _PyFunction_GetCode;
+  late final _PyFunction_GetCode_ptr =
+      _lookup<ffi.NativeFunction<_c_PyFunction_GetCode>>('PyFunction_GetCode');
+  late final _dart_PyFunction_GetCode _PyFunction_GetCode =
+      _PyFunction_GetCode_ptr.asFunction<_dart_PyFunction_GetCode>();
 
   ffi.Pointer<PyObject> PyFunction_GetGlobals(
     ffi.Pointer<PyObject> arg0,
   ) {
-    return (_PyFunction_GetGlobals ??= _dylib.lookupFunction<
-        _c_PyFunction_GetGlobals,
-        _dart_PyFunction_GetGlobals>('PyFunction_GetGlobals'))(
+    return _PyFunction_GetGlobals(
       arg0,
     );
   }
 
-  _dart_PyFunction_GetGlobals? _PyFunction_GetGlobals;
+  late final _PyFunction_GetGlobals_ptr =
+      _lookup<ffi.NativeFunction<_c_PyFunction_GetGlobals>>(
+          'PyFunction_GetGlobals');
+  late final _dart_PyFunction_GetGlobals _PyFunction_GetGlobals =
+      _PyFunction_GetGlobals_ptr.asFunction<_dart_PyFunction_GetGlobals>();
 
   ffi.Pointer<PyObject> PyFunction_GetModule(
     ffi.Pointer<PyObject> arg0,
   ) {
-    return (_PyFunction_GetModule ??= _dylib.lookupFunction<
-        _c_PyFunction_GetModule,
-        _dart_PyFunction_GetModule>('PyFunction_GetModule'))(
+    return _PyFunction_GetModule(
       arg0,
     );
   }
 
-  _dart_PyFunction_GetModule? _PyFunction_GetModule;
+  late final _PyFunction_GetModule_ptr =
+      _lookup<ffi.NativeFunction<_c_PyFunction_GetModule>>(
+          'PyFunction_GetModule');
+  late final _dart_PyFunction_GetModule _PyFunction_GetModule =
+      _PyFunction_GetModule_ptr.asFunction<_dart_PyFunction_GetModule>();
 
   ffi.Pointer<PyObject> PyFunction_GetDefaults(
     ffi.Pointer<PyObject> arg0,
   ) {
-    return (_PyFunction_GetDefaults ??= _dylib.lookupFunction<
-        _c_PyFunction_GetDefaults,
-        _dart_PyFunction_GetDefaults>('PyFunction_GetDefaults'))(
+    return _PyFunction_GetDefaults(
       arg0,
     );
   }
 
-  _dart_PyFunction_GetDefaults? _PyFunction_GetDefaults;
+  late final _PyFunction_GetDefaults_ptr =
+      _lookup<ffi.NativeFunction<_c_PyFunction_GetDefaults>>(
+          'PyFunction_GetDefaults');
+  late final _dart_PyFunction_GetDefaults _PyFunction_GetDefaults =
+      _PyFunction_GetDefaults_ptr.asFunction<_dart_PyFunction_GetDefaults>();
 
   int PyFunction_SetDefaults(
     ffi.Pointer<PyObject> arg0,
     ffi.Pointer<PyObject> arg1,
   ) {
-    return (_PyFunction_SetDefaults ??= _dylib.lookupFunction<
-        _c_PyFunction_SetDefaults,
-        _dart_PyFunction_SetDefaults>('PyFunction_SetDefaults'))(
+    return _PyFunction_SetDefaults(
       arg0,
       arg1,
     );
   }
 
-  _dart_PyFunction_SetDefaults? _PyFunction_SetDefaults;
+  late final _PyFunction_SetDefaults_ptr =
+      _lookup<ffi.NativeFunction<_c_PyFunction_SetDefaults>>(
+          'PyFunction_SetDefaults');
+  late final _dart_PyFunction_SetDefaults _PyFunction_SetDefaults =
+      _PyFunction_SetDefaults_ptr.asFunction<_dart_PyFunction_SetDefaults>();
 
   ffi.Pointer<PyObject> PyFunction_GetKwDefaults(
     ffi.Pointer<PyObject> arg0,
   ) {
-    return (_PyFunction_GetKwDefaults ??= _dylib.lookupFunction<
-        _c_PyFunction_GetKwDefaults,
-        _dart_PyFunction_GetKwDefaults>('PyFunction_GetKwDefaults'))(
+    return _PyFunction_GetKwDefaults(
       arg0,
     );
   }
 
-  _dart_PyFunction_GetKwDefaults? _PyFunction_GetKwDefaults;
+  late final _PyFunction_GetKwDefaults_ptr =
+      _lookup<ffi.NativeFunction<_c_PyFunction_GetKwDefaults>>(
+          'PyFunction_GetKwDefaults');
+  late final _dart_PyFunction_GetKwDefaults _PyFunction_GetKwDefaults =
+      _PyFunction_GetKwDefaults_ptr.asFunction<
+          _dart_PyFunction_GetKwDefaults>();
 
   int PyFunction_SetKwDefaults(
     ffi.Pointer<PyObject> arg0,
     ffi.Pointer<PyObject> arg1,
   ) {
-    return (_PyFunction_SetKwDefaults ??= _dylib.lookupFunction<
-        _c_PyFunction_SetKwDefaults,
-        _dart_PyFunction_SetKwDefaults>('PyFunction_SetKwDefaults'))(
+    return _PyFunction_SetKwDefaults(
       arg0,
       arg1,
     );
   }
 
-  _dart_PyFunction_SetKwDefaults? _PyFunction_SetKwDefaults;
+  late final _PyFunction_SetKwDefaults_ptr =
+      _lookup<ffi.NativeFunction<_c_PyFunction_SetKwDefaults>>(
+          'PyFunction_SetKwDefaults');
+  late final _dart_PyFunction_SetKwDefaults _PyFunction_SetKwDefaults =
+      _PyFunction_SetKwDefaults_ptr.asFunction<
+          _dart_PyFunction_SetKwDefaults>();
 
   ffi.Pointer<PyObject> PyFunction_GetClosure(
     ffi.Pointer<PyObject> arg0,
   ) {
-    return (_PyFunction_GetClosure ??= _dylib.lookupFunction<
-        _c_PyFunction_GetClosure,
-        _dart_PyFunction_GetClosure>('PyFunction_GetClosure'))(
+    return _PyFunction_GetClosure(
       arg0,
     );
   }
 
-  _dart_PyFunction_GetClosure? _PyFunction_GetClosure;
+  late final _PyFunction_GetClosure_ptr =
+      _lookup<ffi.NativeFunction<_c_PyFunction_GetClosure>>(
+          'PyFunction_GetClosure');
+  late final _dart_PyFunction_GetClosure _PyFunction_GetClosure =
+      _PyFunction_GetClosure_ptr.asFunction<_dart_PyFunction_GetClosure>();
 
   int PyFunction_SetClosure(
     ffi.Pointer<PyObject> arg0,
     ffi.Pointer<PyObject> arg1,
   ) {
-    return (_PyFunction_SetClosure ??= _dylib.lookupFunction<
-        _c_PyFunction_SetClosure,
-        _dart_PyFunction_SetClosure>('PyFunction_SetClosure'))(
+    return _PyFunction_SetClosure(
       arg0,
       arg1,
     );
   }
 
-  _dart_PyFunction_SetClosure? _PyFunction_SetClosure;
+  late final _PyFunction_SetClosure_ptr =
+      _lookup<ffi.NativeFunction<_c_PyFunction_SetClosure>>(
+          'PyFunction_SetClosure');
+  late final _dart_PyFunction_SetClosure _PyFunction_SetClosure =
+      _PyFunction_SetClosure_ptr.asFunction<_dart_PyFunction_SetClosure>();
 
   ffi.Pointer<PyObject> PyFunction_GetAnnotations(
     ffi.Pointer<PyObject> arg0,
   ) {
-    return (_PyFunction_GetAnnotations ??= _dylib.lookupFunction<
-        _c_PyFunction_GetAnnotations,
-        _dart_PyFunction_GetAnnotations>('PyFunction_GetAnnotations'))(
+    return _PyFunction_GetAnnotations(
       arg0,
     );
   }
 
-  _dart_PyFunction_GetAnnotations? _PyFunction_GetAnnotations;
+  late final _PyFunction_GetAnnotations_ptr =
+      _lookup<ffi.NativeFunction<_c_PyFunction_GetAnnotations>>(
+          'PyFunction_GetAnnotations');
+  late final _dart_PyFunction_GetAnnotations _PyFunction_GetAnnotations =
+      _PyFunction_GetAnnotations_ptr.asFunction<
+          _dart_PyFunction_GetAnnotations>();
 
   int PyFunction_SetAnnotations(
     ffi.Pointer<PyObject> arg0,
     ffi.Pointer<PyObject> arg1,
   ) {
-    return (_PyFunction_SetAnnotations ??= _dylib.lookupFunction<
-        _c_PyFunction_SetAnnotations,
-        _dart_PyFunction_SetAnnotations>('PyFunction_SetAnnotations'))(
+    return _PyFunction_SetAnnotations(
       arg0,
       arg1,
     );
   }
 
-  _dart_PyFunction_SetAnnotations? _PyFunction_SetAnnotations;
+  late final _PyFunction_SetAnnotations_ptr =
+      _lookup<ffi.NativeFunction<_c_PyFunction_SetAnnotations>>(
+          'PyFunction_SetAnnotations');
+  late final _dart_PyFunction_SetAnnotations _PyFunction_SetAnnotations =
+      _PyFunction_SetAnnotations_ptr.asFunction<
+          _dart_PyFunction_SetAnnotations>();
 
   ffi.Pointer<PyObject> PyFunction_FastCallDict(
     ffi.Pointer<PyObject> func,
@@ -5507,9 +6320,7 @@ class DartPyC {
     int nargs,
     ffi.Pointer<PyObject> kwargs,
   ) {
-    return (_PyFunction_FastCallDict ??= _dylib.lookupFunction<
-        _c_PyFunction_FastCallDict,
-        _dart_PyFunction_FastCallDict>('_PyFunction_FastCallDict'))(
+    return _PyFunction_FastCallDict(
       func,
       args,
       nargs,
@@ -5517,7 +6328,11 @@ class DartPyC {
     );
   }
 
-  _dart_PyFunction_FastCallDict? _PyFunction_FastCallDict;
+  late final _PyFunction_FastCallDict_ptr =
+      _lookup<ffi.NativeFunction<_c_PyFunction_FastCallDict>>(
+          '_PyFunction_FastCallDict');
+  late final _dart_PyFunction_FastCallDict _PyFunction_FastCallDict =
+      _PyFunction_FastCallDict_ptr.asFunction<_dart_PyFunction_FastCallDict>();
 
   ffi.Pointer<PyObject> PyFunction_Vectorcall(
     ffi.Pointer<PyObject> func,
@@ -5525,9 +6340,7 @@ class DartPyC {
     int nargsf,
     ffi.Pointer<PyObject> kwnames,
   ) {
-    return (_PyFunction_Vectorcall ??= _dylib.lookupFunction<
-        _c_PyFunction_Vectorcall,
-        _dart_PyFunction_Vectorcall>('_PyFunction_Vectorcall'))(
+    return _PyFunction_Vectorcall(
       func,
       stack,
       nargsf,
@@ -5535,112 +6348,137 @@ class DartPyC {
     );
   }
 
-  _dart_PyFunction_Vectorcall? _PyFunction_Vectorcall;
+  late final _PyFunction_Vectorcall_ptr =
+      _lookup<ffi.NativeFunction<_c_PyFunction_Vectorcall>>(
+          '_PyFunction_Vectorcall');
+  late final _dart_PyFunction_Vectorcall _PyFunction_Vectorcall =
+      _PyFunction_Vectorcall_ptr.asFunction<_dart_PyFunction_Vectorcall>();
 
-  late final _typeobject PyClassMethod_Type =
-      _dylib.lookup<_typeobject>('PyClassMethod_Type').ref;
+  late final ffi.Pointer<_typeobject> _PyClassMethod_Type =
+      _lookup<_typeobject>('PyClassMethod_Type');
 
-  late final _typeobject PyStaticMethod_Type =
-      _dylib.lookup<_typeobject>('PyStaticMethod_Type').ref;
+  _typeobject get PyClassMethod_Type => _PyClassMethod_Type.ref;
+
+  late final ffi.Pointer<_typeobject> _PyStaticMethod_Type =
+      _lookup<_typeobject>('PyStaticMethod_Type');
+
+  _typeobject get PyStaticMethod_Type => _PyStaticMethod_Type.ref;
 
   ffi.Pointer<PyObject> PyClassMethod_New(
     ffi.Pointer<PyObject> arg0,
   ) {
-    return (_PyClassMethod_New ??=
-        _dylib.lookupFunction<_c_PyClassMethod_New, _dart_PyClassMethod_New>(
-            'PyClassMethod_New'))(
+    return _PyClassMethod_New(
       arg0,
     );
   }
 
-  _dart_PyClassMethod_New? _PyClassMethod_New;
+  late final _PyClassMethod_New_ptr =
+      _lookup<ffi.NativeFunction<_c_PyClassMethod_New>>('PyClassMethod_New');
+  late final _dart_PyClassMethod_New _PyClassMethod_New =
+      _PyClassMethod_New_ptr.asFunction<_dart_PyClassMethod_New>();
 
   ffi.Pointer<PyObject> PyStaticMethod_New(
     ffi.Pointer<PyObject> arg0,
   ) {
-    return (_PyStaticMethod_New ??=
-        _dylib.lookupFunction<_c_PyStaticMethod_New, _dart_PyStaticMethod_New>(
-            'PyStaticMethod_New'))(
+    return _PyStaticMethod_New(
       arg0,
     );
   }
 
-  _dart_PyStaticMethod_New? _PyStaticMethod_New;
+  late final _PyStaticMethod_New_ptr =
+      _lookup<ffi.NativeFunction<_c_PyStaticMethod_New>>('PyStaticMethod_New');
+  late final _dart_PyStaticMethod_New _PyStaticMethod_New =
+      _PyStaticMethod_New_ptr.asFunction<_dart_PyStaticMethod_New>();
 
-  late final _typeobject PyMethod_Type =
-      _dylib.lookup<_typeobject>('PyMethod_Type').ref;
+  late final ffi.Pointer<_typeobject> _PyMethod_Type =
+      _lookup<_typeobject>('PyMethod_Type');
+
+  _typeobject get PyMethod_Type => _PyMethod_Type.ref;
 
   ffi.Pointer<PyObject> PyMethod_New(
     ffi.Pointer<PyObject> arg0,
     ffi.Pointer<PyObject> arg1,
   ) {
-    return (_PyMethod_New ??= _dylib
-        .lookupFunction<_c_PyMethod_New, _dart_PyMethod_New>('PyMethod_New'))(
+    return _PyMethod_New(
       arg0,
       arg1,
     );
   }
 
-  _dart_PyMethod_New? _PyMethod_New;
+  late final _PyMethod_New_ptr =
+      _lookup<ffi.NativeFunction<_c_PyMethod_New>>('PyMethod_New');
+  late final _dart_PyMethod_New _PyMethod_New =
+      _PyMethod_New_ptr.asFunction<_dart_PyMethod_New>();
 
   ffi.Pointer<PyObject> PyMethod_Function(
     ffi.Pointer<PyObject> arg0,
   ) {
-    return (_PyMethod_Function ??=
-        _dylib.lookupFunction<_c_PyMethod_Function, _dart_PyMethod_Function>(
-            'PyMethod_Function'))(
+    return _PyMethod_Function(
       arg0,
     );
   }
 
-  _dart_PyMethod_Function? _PyMethod_Function;
+  late final _PyMethod_Function_ptr =
+      _lookup<ffi.NativeFunction<_c_PyMethod_Function>>('PyMethod_Function');
+  late final _dart_PyMethod_Function _PyMethod_Function =
+      _PyMethod_Function_ptr.asFunction<_dart_PyMethod_Function>();
 
   ffi.Pointer<PyObject> PyMethod_Self(
     ffi.Pointer<PyObject> arg0,
   ) {
-    return (_PyMethod_Self ??=
-        _dylib.lookupFunction<_c_PyMethod_Self, _dart_PyMethod_Self>(
-            'PyMethod_Self'))(
+    return _PyMethod_Self(
       arg0,
     );
   }
 
-  _dart_PyMethod_Self? _PyMethod_Self;
+  late final _PyMethod_Self_ptr =
+      _lookup<ffi.NativeFunction<_c_PyMethod_Self>>('PyMethod_Self');
+  late final _dart_PyMethod_Self _PyMethod_Self =
+      _PyMethod_Self_ptr.asFunction<_dart_PyMethod_Self>();
 
   int PyMethod_ClearFreeList() {
-    return (_PyMethod_ClearFreeList ??= _dylib.lookupFunction<
-        _c_PyMethod_ClearFreeList,
-        _dart_PyMethod_ClearFreeList>('PyMethod_ClearFreeList'))();
+    return _PyMethod_ClearFreeList();
   }
 
-  _dart_PyMethod_ClearFreeList? _PyMethod_ClearFreeList;
+  late final _PyMethod_ClearFreeList_ptr =
+      _lookup<ffi.NativeFunction<_c_PyMethod_ClearFreeList>>(
+          'PyMethod_ClearFreeList');
+  late final _dart_PyMethod_ClearFreeList _PyMethod_ClearFreeList =
+      _PyMethod_ClearFreeList_ptr.asFunction<_dart_PyMethod_ClearFreeList>();
 
-  late final _typeobject PyInstanceMethod_Type =
-      _dylib.lookup<_typeobject>('PyInstanceMethod_Type').ref;
+  late final ffi.Pointer<_typeobject> _PyInstanceMethod_Type =
+      _lookup<_typeobject>('PyInstanceMethod_Type');
+
+  _typeobject get PyInstanceMethod_Type => _PyInstanceMethod_Type.ref;
 
   ffi.Pointer<PyObject> PyInstanceMethod_New(
     ffi.Pointer<PyObject> arg0,
   ) {
-    return (_PyInstanceMethod_New ??= _dylib.lookupFunction<
-        _c_PyInstanceMethod_New,
-        _dart_PyInstanceMethod_New>('PyInstanceMethod_New'))(
+    return _PyInstanceMethod_New(
       arg0,
     );
   }
 
-  _dart_PyInstanceMethod_New? _PyInstanceMethod_New;
+  late final _PyInstanceMethod_New_ptr =
+      _lookup<ffi.NativeFunction<_c_PyInstanceMethod_New>>(
+          'PyInstanceMethod_New');
+  late final _dart_PyInstanceMethod_New _PyInstanceMethod_New =
+      _PyInstanceMethod_New_ptr.asFunction<_dart_PyInstanceMethod_New>();
 
   ffi.Pointer<PyObject> PyInstanceMethod_Function(
     ffi.Pointer<PyObject> arg0,
   ) {
-    return (_PyInstanceMethod_Function ??= _dylib.lookupFunction<
-        _c_PyInstanceMethod_Function,
-        _dart_PyInstanceMethod_Function>('PyInstanceMethod_Function'))(
+    return _PyInstanceMethod_Function(
       arg0,
     );
   }
 
-  _dart_PyInstanceMethod_Function? _PyInstanceMethod_Function;
+  late final _PyInstanceMethod_Function_ptr =
+      _lookup<ffi.NativeFunction<_c_PyInstanceMethod_Function>>(
+          'PyInstanceMethod_Function');
+  late final _dart_PyInstanceMethod_Function _PyInstanceMethod_Function =
+      _PyInstanceMethod_Function_ptr.asFunction<
+          _dart_PyInstanceMethod_Function>();
 
   ffi.Pointer<PyObject> PyFile_FromFd(
     int arg0,
@@ -5652,9 +6490,7 @@ class DartPyC {
     ffi.Pointer<ffi.Int8> arg6,
     int arg7,
   ) {
-    return (_PyFile_FromFd ??=
-        _dylib.lookupFunction<_c_PyFile_FromFd, _dart_PyFile_FromFd>(
-            'PyFile_FromFd'))(
+    return _PyFile_FromFd(
       arg0,
       arg1,
       arg2,
@@ -5666,290 +6502,343 @@ class DartPyC {
     );
   }
 
-  _dart_PyFile_FromFd? _PyFile_FromFd;
+  late final _PyFile_FromFd_ptr =
+      _lookup<ffi.NativeFunction<_c_PyFile_FromFd>>('PyFile_FromFd');
+  late final _dart_PyFile_FromFd _PyFile_FromFd =
+      _PyFile_FromFd_ptr.asFunction<_dart_PyFile_FromFd>();
 
   ffi.Pointer<PyObject> PyFile_GetLine(
     ffi.Pointer<PyObject> arg0,
     int arg1,
   ) {
-    return (_PyFile_GetLine ??=
-        _dylib.lookupFunction<_c_PyFile_GetLine, _dart_PyFile_GetLine>(
-            'PyFile_GetLine'))(
+    return _PyFile_GetLine(
       arg0,
       arg1,
     );
   }
 
-  _dart_PyFile_GetLine? _PyFile_GetLine;
+  late final _PyFile_GetLine_ptr =
+      _lookup<ffi.NativeFunction<_c_PyFile_GetLine>>('PyFile_GetLine');
+  late final _dart_PyFile_GetLine _PyFile_GetLine =
+      _PyFile_GetLine_ptr.asFunction<_dart_PyFile_GetLine>();
 
   int PyFile_WriteObject(
     ffi.Pointer<PyObject> arg0,
     ffi.Pointer<PyObject> arg1,
     int arg2,
   ) {
-    return (_PyFile_WriteObject ??=
-        _dylib.lookupFunction<_c_PyFile_WriteObject, _dart_PyFile_WriteObject>(
-            'PyFile_WriteObject'))(
+    return _PyFile_WriteObject(
       arg0,
       arg1,
       arg2,
     );
   }
 
-  _dart_PyFile_WriteObject? _PyFile_WriteObject;
+  late final _PyFile_WriteObject_ptr =
+      _lookup<ffi.NativeFunction<_c_PyFile_WriteObject>>('PyFile_WriteObject');
+  late final _dart_PyFile_WriteObject _PyFile_WriteObject =
+      _PyFile_WriteObject_ptr.asFunction<_dart_PyFile_WriteObject>();
 
   int PyFile_WriteString(
     ffi.Pointer<ffi.Int8> arg0,
     ffi.Pointer<PyObject> arg1,
   ) {
-    return (_PyFile_WriteString ??=
-        _dylib.lookupFunction<_c_PyFile_WriteString, _dart_PyFile_WriteString>(
-            'PyFile_WriteString'))(
+    return _PyFile_WriteString(
       arg0,
       arg1,
     );
   }
 
-  _dart_PyFile_WriteString? _PyFile_WriteString;
+  late final _PyFile_WriteString_ptr =
+      _lookup<ffi.NativeFunction<_c_PyFile_WriteString>>('PyFile_WriteString');
+  late final _dart_PyFile_WriteString _PyFile_WriteString =
+      _PyFile_WriteString_ptr.asFunction<_dart_PyFile_WriteString>();
 
   int PyObject_AsFileDescriptor(
     ffi.Pointer<PyObject> arg0,
   ) {
-    return (_PyObject_AsFileDescriptor ??= _dylib.lookupFunction<
-        _c_PyObject_AsFileDescriptor,
-        _dart_PyObject_AsFileDescriptor>('PyObject_AsFileDescriptor'))(
+    return _PyObject_AsFileDescriptor(
       arg0,
     );
   }
 
-  _dart_PyObject_AsFileDescriptor? _PyObject_AsFileDescriptor;
+  late final _PyObject_AsFileDescriptor_ptr =
+      _lookup<ffi.NativeFunction<_c_PyObject_AsFileDescriptor>>(
+          'PyObject_AsFileDescriptor');
+  late final _dart_PyObject_AsFileDescriptor _PyObject_AsFileDescriptor =
+      _PyObject_AsFileDescriptor_ptr.asFunction<
+          _dart_PyObject_AsFileDescriptor>();
 
-  late final ffi.Pointer<ffi.Int8> Py_FileSystemDefaultEncoding = _dylib
-      .lookup<ffi.Pointer<ffi.Int8>>('Py_FileSystemDefaultEncoding')
-      .value;
+  late final ffi.Pointer<ffi.Pointer<ffi.Int8>> _Py_FileSystemDefaultEncoding =
+      _lookup<ffi.Pointer<ffi.Int8>>('Py_FileSystemDefaultEncoding');
 
-  late final int Py_HasFileSystemDefaultEncoding =
-      _dylib.lookup<ffi.Int32>('Py_HasFileSystemDefaultEncoding').value;
+  ffi.Pointer<ffi.Int8> get Py_FileSystemDefaultEncoding =>
+      _Py_FileSystemDefaultEncoding.value;
 
-  late final _typeobject PyCapsule_Type =
-      _dylib.lookup<_typeobject>('PyCapsule_Type').ref;
+  set Py_FileSystemDefaultEncoding(ffi.Pointer<ffi.Int8> value) =>
+      _Py_FileSystemDefaultEncoding.value = value;
+
+  late final ffi.Pointer<ffi.Int32> _Py_HasFileSystemDefaultEncoding =
+      _lookup<ffi.Int32>('Py_HasFileSystemDefaultEncoding');
+
+  int get Py_HasFileSystemDefaultEncoding =>
+      _Py_HasFileSystemDefaultEncoding.value;
+
+  set Py_HasFileSystemDefaultEncoding(int value) =>
+      _Py_HasFileSystemDefaultEncoding.value = value;
+
+  late final ffi.Pointer<_typeobject> _PyCapsule_Type =
+      _lookup<_typeobject>('PyCapsule_Type');
+
+  _typeobject get PyCapsule_Type => _PyCapsule_Type.ref;
 
   ffi.Pointer<PyObject> PyCapsule_New(
     ffi.Pointer<ffi.Void> pointer,
     ffi.Pointer<ffi.Int8> name,
     ffi.Pointer<ffi.NativeFunction<PyCapsule_Destructor>> destructor,
   ) {
-    return (_PyCapsule_New ??=
-        _dylib.lookupFunction<_c_PyCapsule_New, _dart_PyCapsule_New>(
-            'PyCapsule_New'))(
+    return _PyCapsule_New(
       pointer,
       name,
       destructor,
     );
   }
 
-  _dart_PyCapsule_New? _PyCapsule_New;
+  late final _PyCapsule_New_ptr =
+      _lookup<ffi.NativeFunction<_c_PyCapsule_New>>('PyCapsule_New');
+  late final _dart_PyCapsule_New _PyCapsule_New =
+      _PyCapsule_New_ptr.asFunction<_dart_PyCapsule_New>();
 
   ffi.Pointer<ffi.Void> PyCapsule_GetPointer(
     ffi.Pointer<PyObject> capsule,
     ffi.Pointer<ffi.Int8> name,
   ) {
-    return (_PyCapsule_GetPointer ??= _dylib.lookupFunction<
-        _c_PyCapsule_GetPointer,
-        _dart_PyCapsule_GetPointer>('PyCapsule_GetPointer'))(
+    return _PyCapsule_GetPointer(
       capsule,
       name,
     );
   }
 
-  _dart_PyCapsule_GetPointer? _PyCapsule_GetPointer;
+  late final _PyCapsule_GetPointer_ptr =
+      _lookup<ffi.NativeFunction<_c_PyCapsule_GetPointer>>(
+          'PyCapsule_GetPointer');
+  late final _dart_PyCapsule_GetPointer _PyCapsule_GetPointer =
+      _PyCapsule_GetPointer_ptr.asFunction<_dart_PyCapsule_GetPointer>();
 
   ffi.Pointer<ffi.NativeFunction<PyCapsule_Destructor>> PyCapsule_GetDestructor(
     ffi.Pointer<PyObject> capsule,
   ) {
-    return (_PyCapsule_GetDestructor ??= _dylib.lookupFunction<
-        _c_PyCapsule_GetDestructor,
-        _dart_PyCapsule_GetDestructor>('PyCapsule_GetDestructor'))(
+    return _PyCapsule_GetDestructor(
       capsule,
     );
   }
 
-  _dart_PyCapsule_GetDestructor? _PyCapsule_GetDestructor;
+  late final _PyCapsule_GetDestructor_ptr =
+      _lookup<ffi.NativeFunction<_c_PyCapsule_GetDestructor>>(
+          'PyCapsule_GetDestructor');
+  late final _dart_PyCapsule_GetDestructor _PyCapsule_GetDestructor =
+      _PyCapsule_GetDestructor_ptr.asFunction<_dart_PyCapsule_GetDestructor>();
 
   ffi.Pointer<ffi.Int8> PyCapsule_GetName(
     ffi.Pointer<PyObject> capsule,
   ) {
-    return (_PyCapsule_GetName ??=
-        _dylib.lookupFunction<_c_PyCapsule_GetName, _dart_PyCapsule_GetName>(
-            'PyCapsule_GetName'))(
+    return _PyCapsule_GetName(
       capsule,
     );
   }
 
-  _dart_PyCapsule_GetName? _PyCapsule_GetName;
+  late final _PyCapsule_GetName_ptr =
+      _lookup<ffi.NativeFunction<_c_PyCapsule_GetName>>('PyCapsule_GetName');
+  late final _dart_PyCapsule_GetName _PyCapsule_GetName =
+      _PyCapsule_GetName_ptr.asFunction<_dart_PyCapsule_GetName>();
 
   ffi.Pointer<ffi.Void> PyCapsule_GetContext(
     ffi.Pointer<PyObject> capsule,
   ) {
-    return (_PyCapsule_GetContext ??= _dylib.lookupFunction<
-        _c_PyCapsule_GetContext,
-        _dart_PyCapsule_GetContext>('PyCapsule_GetContext'))(
+    return _PyCapsule_GetContext(
       capsule,
     );
   }
 
-  _dart_PyCapsule_GetContext? _PyCapsule_GetContext;
+  late final _PyCapsule_GetContext_ptr =
+      _lookup<ffi.NativeFunction<_c_PyCapsule_GetContext>>(
+          'PyCapsule_GetContext');
+  late final _dart_PyCapsule_GetContext _PyCapsule_GetContext =
+      _PyCapsule_GetContext_ptr.asFunction<_dart_PyCapsule_GetContext>();
 
   int PyCapsule_IsValid(
     ffi.Pointer<PyObject> capsule,
     ffi.Pointer<ffi.Int8> name,
   ) {
-    return (_PyCapsule_IsValid ??=
-        _dylib.lookupFunction<_c_PyCapsule_IsValid, _dart_PyCapsule_IsValid>(
-            'PyCapsule_IsValid'))(
+    return _PyCapsule_IsValid(
       capsule,
       name,
     );
   }
 
-  _dart_PyCapsule_IsValid? _PyCapsule_IsValid;
+  late final _PyCapsule_IsValid_ptr =
+      _lookup<ffi.NativeFunction<_c_PyCapsule_IsValid>>('PyCapsule_IsValid');
+  late final _dart_PyCapsule_IsValid _PyCapsule_IsValid =
+      _PyCapsule_IsValid_ptr.asFunction<_dart_PyCapsule_IsValid>();
 
   int PyCapsule_SetPointer(
     ffi.Pointer<PyObject> capsule,
     ffi.Pointer<ffi.Void> pointer,
   ) {
-    return (_PyCapsule_SetPointer ??= _dylib.lookupFunction<
-        _c_PyCapsule_SetPointer,
-        _dart_PyCapsule_SetPointer>('PyCapsule_SetPointer'))(
+    return _PyCapsule_SetPointer(
       capsule,
       pointer,
     );
   }
 
-  _dart_PyCapsule_SetPointer? _PyCapsule_SetPointer;
+  late final _PyCapsule_SetPointer_ptr =
+      _lookup<ffi.NativeFunction<_c_PyCapsule_SetPointer>>(
+          'PyCapsule_SetPointer');
+  late final _dart_PyCapsule_SetPointer _PyCapsule_SetPointer =
+      _PyCapsule_SetPointer_ptr.asFunction<_dart_PyCapsule_SetPointer>();
 
   int PyCapsule_SetDestructor(
     ffi.Pointer<PyObject> capsule,
     ffi.Pointer<ffi.NativeFunction<PyCapsule_Destructor>> destructor,
   ) {
-    return (_PyCapsule_SetDestructor ??= _dylib.lookupFunction<
-        _c_PyCapsule_SetDestructor,
-        _dart_PyCapsule_SetDestructor>('PyCapsule_SetDestructor'))(
+    return _PyCapsule_SetDestructor(
       capsule,
       destructor,
     );
   }
 
-  _dart_PyCapsule_SetDestructor? _PyCapsule_SetDestructor;
+  late final _PyCapsule_SetDestructor_ptr =
+      _lookup<ffi.NativeFunction<_c_PyCapsule_SetDestructor>>(
+          'PyCapsule_SetDestructor');
+  late final _dart_PyCapsule_SetDestructor _PyCapsule_SetDestructor =
+      _PyCapsule_SetDestructor_ptr.asFunction<_dart_PyCapsule_SetDestructor>();
 
   int PyCapsule_SetName(
     ffi.Pointer<PyObject> capsule,
     ffi.Pointer<ffi.Int8> name,
   ) {
-    return (_PyCapsule_SetName ??=
-        _dylib.lookupFunction<_c_PyCapsule_SetName, _dart_PyCapsule_SetName>(
-            'PyCapsule_SetName'))(
+    return _PyCapsule_SetName(
       capsule,
       name,
     );
   }
 
-  _dart_PyCapsule_SetName? _PyCapsule_SetName;
+  late final _PyCapsule_SetName_ptr =
+      _lookup<ffi.NativeFunction<_c_PyCapsule_SetName>>('PyCapsule_SetName');
+  late final _dart_PyCapsule_SetName _PyCapsule_SetName =
+      _PyCapsule_SetName_ptr.asFunction<_dart_PyCapsule_SetName>();
 
   int PyCapsule_SetContext(
     ffi.Pointer<PyObject> capsule,
     ffi.Pointer<ffi.Void> context,
   ) {
-    return (_PyCapsule_SetContext ??= _dylib.lookupFunction<
-        _c_PyCapsule_SetContext,
-        _dart_PyCapsule_SetContext>('PyCapsule_SetContext'))(
+    return _PyCapsule_SetContext(
       capsule,
       context,
     );
   }
 
-  _dart_PyCapsule_SetContext? _PyCapsule_SetContext;
+  late final _PyCapsule_SetContext_ptr =
+      _lookup<ffi.NativeFunction<_c_PyCapsule_SetContext>>(
+          'PyCapsule_SetContext');
+  late final _dart_PyCapsule_SetContext _PyCapsule_SetContext =
+      _PyCapsule_SetContext_ptr.asFunction<_dart_PyCapsule_SetContext>();
 
   ffi.Pointer<ffi.Void> PyCapsule_Import(
     ffi.Pointer<ffi.Int8> name,
     int no_block,
   ) {
-    return (_PyCapsule_Import ??=
-        _dylib.lookupFunction<_c_PyCapsule_Import, _dart_PyCapsule_Import>(
-            'PyCapsule_Import'))(
+    return _PyCapsule_Import(
       name,
       no_block,
     );
   }
 
-  _dart_PyCapsule_Import? _PyCapsule_Import;
+  late final _PyCapsule_Import_ptr =
+      _lookup<ffi.NativeFunction<_c_PyCapsule_Import>>('PyCapsule_Import');
+  late final _dart_PyCapsule_Import _PyCapsule_Import =
+      _PyCapsule_Import_ptr.asFunction<_dart_PyCapsule_Import>();
 
   int PyTraceBack_Here(
     ffi.Pointer<_frame> arg0,
   ) {
-    return (_PyTraceBack_Here ??=
-        _dylib.lookupFunction<_c_PyTraceBack_Here, _dart_PyTraceBack_Here>(
-            'PyTraceBack_Here'))(
+    return _PyTraceBack_Here(
       arg0,
     );
   }
 
-  _dart_PyTraceBack_Here? _PyTraceBack_Here;
+  late final _PyTraceBack_Here_ptr =
+      _lookup<ffi.NativeFunction<_c_PyTraceBack_Here>>('PyTraceBack_Here');
+  late final _dart_PyTraceBack_Here _PyTraceBack_Here =
+      _PyTraceBack_Here_ptr.asFunction<_dart_PyTraceBack_Here>();
 
   int PyTraceBack_Print(
     ffi.Pointer<PyObject> arg0,
     ffi.Pointer<PyObject> arg1,
   ) {
-    return (_PyTraceBack_Print ??=
-        _dylib.lookupFunction<_c_PyTraceBack_Print, _dart_PyTraceBack_Print>(
-            'PyTraceBack_Print'))(
+    return _PyTraceBack_Print(
       arg0,
       arg1,
     );
   }
 
-  _dart_PyTraceBack_Print? _PyTraceBack_Print;
+  late final _PyTraceBack_Print_ptr =
+      _lookup<ffi.NativeFunction<_c_PyTraceBack_Print>>('PyTraceBack_Print');
+  late final _dart_PyTraceBack_Print _PyTraceBack_Print =
+      _PyTraceBack_Print_ptr.asFunction<_dart_PyTraceBack_Print>();
 
-  late final _typeobject PyTraceBack_Type =
-      _dylib.lookup<_typeobject>('PyTraceBack_Type').ref;
+  late final ffi.Pointer<_typeobject> _PyTraceBack_Type =
+      _lookup<_typeobject>('PyTraceBack_Type');
 
-  late final PyObject Py_EllipsisObject =
-      _dylib.lookup<PyObject>('_Py_EllipsisObject').ref;
+  _typeobject get PyTraceBack_Type => _PyTraceBack_Type.ref;
 
-  late final _typeobject PySlice_Type =
-      _dylib.lookup<_typeobject>('PySlice_Type').ref;
+  late final ffi.Pointer<PyObject> _Py_EllipsisObject =
+      _lookup<PyObject>('_Py_EllipsisObject');
 
-  late final _typeobject PyEllipsis_Type =
-      _dylib.lookup<_typeobject>('PyEllipsis_Type').ref;
+  PyObject get Py_EllipsisObject => _Py_EllipsisObject.ref;
+
+  late final ffi.Pointer<_typeobject> _PySlice_Type =
+      _lookup<_typeobject>('PySlice_Type');
+
+  _typeobject get PySlice_Type => _PySlice_Type.ref;
+
+  late final ffi.Pointer<_typeobject> _PyEllipsis_Type =
+      _lookup<_typeobject>('PyEllipsis_Type');
+
+  _typeobject get PyEllipsis_Type => _PyEllipsis_Type.ref;
 
   ffi.Pointer<PyObject> PySlice_New(
     ffi.Pointer<PyObject> start,
     ffi.Pointer<PyObject> stop,
     ffi.Pointer<PyObject> step,
   ) {
-    return (_PySlice_New ??= _dylib
-        .lookupFunction<_c_PySlice_New, _dart_PySlice_New>('PySlice_New'))(
+    return _PySlice_New(
       start,
       stop,
       step,
     );
   }
 
-  _dart_PySlice_New? _PySlice_New;
+  late final _PySlice_New_ptr =
+      _lookup<ffi.NativeFunction<_c_PySlice_New>>('PySlice_New');
+  late final _dart_PySlice_New _PySlice_New =
+      _PySlice_New_ptr.asFunction<_dart_PySlice_New>();
 
   ffi.Pointer<PyObject> PySlice_FromIndices(
     int start,
     int stop,
   ) {
-    return (_PySlice_FromIndices ??= _dylib.lookupFunction<
-        _c_PySlice_FromIndices,
-        _dart_PySlice_FromIndices>('_PySlice_FromIndices'))(
+    return _PySlice_FromIndices(
       start,
       stop,
     );
   }
 
-  _dart_PySlice_FromIndices? _PySlice_FromIndices;
+  late final _PySlice_FromIndices_ptr =
+      _lookup<ffi.NativeFunction<_c_PySlice_FromIndices>>(
+          '_PySlice_FromIndices');
+  late final _dart_PySlice_FromIndices _PySlice_FromIndices =
+      _PySlice_FromIndices_ptr.asFunction<_dart_PySlice_FromIndices>();
 
   int PySlice_GetLongIndices(
     ffi.Pointer<PySliceObject> self,
@@ -5958,9 +6847,7 @@ class DartPyC {
     ffi.Pointer<ffi.Pointer<PyObject>> stop_ptr,
     ffi.Pointer<ffi.Pointer<PyObject>> step_ptr,
   ) {
-    return (_PySlice_GetLongIndices ??= _dylib.lookupFunction<
-        _c_PySlice_GetLongIndices,
-        _dart_PySlice_GetLongIndices>('_PySlice_GetLongIndices'))(
+    return _PySlice_GetLongIndices(
       self,
       length,
       start_ptr,
@@ -5969,7 +6856,11 @@ class DartPyC {
     );
   }
 
-  _dart_PySlice_GetLongIndices? _PySlice_GetLongIndices;
+  late final _PySlice_GetLongIndices_ptr =
+      _lookup<ffi.NativeFunction<_c_PySlice_GetLongIndices>>(
+          '_PySlice_GetLongIndices');
+  late final _dart_PySlice_GetLongIndices _PySlice_GetLongIndices =
+      _PySlice_GetLongIndices_ptr.asFunction<_dart_PySlice_GetLongIndices>();
 
   int PySlice_GetIndices(
     ffi.Pointer<PyObject> r,
@@ -5978,9 +6869,7 @@ class DartPyC {
     ffi.Pointer<ffi.Int64> stop,
     ffi.Pointer<ffi.Int64> step,
   ) {
-    return (_PySlice_GetIndices ??=
-        _dylib.lookupFunction<_c_PySlice_GetIndices, _dart_PySlice_GetIndices>(
-            'PySlice_GetIndices'))(
+    return _PySlice_GetIndices(
       r,
       length,
       start,
@@ -5989,7 +6878,10 @@ class DartPyC {
     );
   }
 
-  _dart_PySlice_GetIndices? _PySlice_GetIndices;
+  late final _PySlice_GetIndices_ptr =
+      _lookup<ffi.NativeFunction<_c_PySlice_GetIndices>>('PySlice_GetIndices');
+  late final _dart_PySlice_GetIndices _PySlice_GetIndices =
+      _PySlice_GetIndices_ptr.asFunction<_dart_PySlice_GetIndices>();
 
   int PySlice_GetIndicesEx(
     ffi.Pointer<PyObject> r,
@@ -5999,9 +6891,7 @@ class DartPyC {
     ffi.Pointer<ffi.Int64> step,
     ffi.Pointer<ffi.Int64> slicelength,
   ) {
-    return (_PySlice_GetIndicesEx ??= _dylib.lookupFunction<
-        _c_PySlice_GetIndicesEx,
-        _dart_PySlice_GetIndicesEx>('PySlice_GetIndicesEx'))(
+    return _PySlice_GetIndicesEx(
       r,
       length,
       start,
@@ -6011,7 +6901,11 @@ class DartPyC {
     );
   }
 
-  _dart_PySlice_GetIndicesEx? _PySlice_GetIndicesEx;
+  late final _PySlice_GetIndicesEx_ptr =
+      _lookup<ffi.NativeFunction<_c_PySlice_GetIndicesEx>>(
+          'PySlice_GetIndicesEx');
+  late final _dart_PySlice_GetIndicesEx _PySlice_GetIndicesEx =
+      _PySlice_GetIndicesEx_ptr.asFunction<_dart_PySlice_GetIndicesEx>();
 
   int PySlice_Unpack(
     ffi.Pointer<PyObject> slice,
@@ -6019,9 +6913,7 @@ class DartPyC {
     ffi.Pointer<ffi.Int64> stop,
     ffi.Pointer<ffi.Int64> step,
   ) {
-    return (_PySlice_Unpack ??=
-        _dylib.lookupFunction<_c_PySlice_Unpack, _dart_PySlice_Unpack>(
-            'PySlice_Unpack'))(
+    return _PySlice_Unpack(
       slice,
       start,
       stop,
@@ -6029,7 +6921,10 @@ class DartPyC {
     );
   }
 
-  _dart_PySlice_Unpack? _PySlice_Unpack;
+  late final _PySlice_Unpack_ptr =
+      _lookup<ffi.NativeFunction<_c_PySlice_Unpack>>('PySlice_Unpack');
+  late final _dart_PySlice_Unpack _PySlice_Unpack =
+      _PySlice_Unpack_ptr.asFunction<_dart_PySlice_Unpack>();
 
   int PySlice_AdjustIndices(
     int length,
@@ -6037,9 +6932,7 @@ class DartPyC {
     ffi.Pointer<ffi.Int64> stop,
     int step,
   ) {
-    return (_PySlice_AdjustIndices ??= _dylib.lookupFunction<
-        _c_PySlice_AdjustIndices,
-        _dart_PySlice_AdjustIndices>('PySlice_AdjustIndices'))(
+    return _PySlice_AdjustIndices(
       length,
       start,
       stop,
@@ -6047,937 +6940,1118 @@ class DartPyC {
     );
   }
 
-  _dart_PySlice_AdjustIndices? _PySlice_AdjustIndices;
+  late final _PySlice_AdjustIndices_ptr =
+      _lookup<ffi.NativeFunction<_c_PySlice_AdjustIndices>>(
+          'PySlice_AdjustIndices');
+  late final _dart_PySlice_AdjustIndices _PySlice_AdjustIndices =
+      _PySlice_AdjustIndices_ptr.asFunction<_dart_PySlice_AdjustIndices>();
 
-  late final _typeobject PyCell_Type =
-      _dylib.lookup<_typeobject>('PyCell_Type').ref;
+  late final ffi.Pointer<_typeobject> _PyCell_Type =
+      _lookup<_typeobject>('PyCell_Type');
+
+  _typeobject get PyCell_Type => _PyCell_Type.ref;
 
   ffi.Pointer<PyObject> PyCell_New(
     ffi.Pointer<PyObject> arg0,
   ) {
-    return (_PyCell_New ??=
-        _dylib.lookupFunction<_c_PyCell_New, _dart_PyCell_New>('PyCell_New'))(
+    return _PyCell_New(
       arg0,
     );
   }
 
-  _dart_PyCell_New? _PyCell_New;
+  late final _PyCell_New_ptr =
+      _lookup<ffi.NativeFunction<_c_PyCell_New>>('PyCell_New');
+  late final _dart_PyCell_New _PyCell_New =
+      _PyCell_New_ptr.asFunction<_dart_PyCell_New>();
 
   ffi.Pointer<PyObject> PyCell_Get(
     ffi.Pointer<PyObject> arg0,
   ) {
-    return (_PyCell_Get ??=
-        _dylib.lookupFunction<_c_PyCell_Get, _dart_PyCell_Get>('PyCell_Get'))(
+    return _PyCell_Get(
       arg0,
     );
   }
 
-  _dart_PyCell_Get? _PyCell_Get;
+  late final _PyCell_Get_ptr =
+      _lookup<ffi.NativeFunction<_c_PyCell_Get>>('PyCell_Get');
+  late final _dart_PyCell_Get _PyCell_Get =
+      _PyCell_Get_ptr.asFunction<_dart_PyCell_Get>();
 
   int PyCell_Set(
     ffi.Pointer<PyObject> arg0,
     ffi.Pointer<PyObject> arg1,
   ) {
-    return (_PyCell_Set ??=
-        _dylib.lookupFunction<_c_PyCell_Set, _dart_PyCell_Set>('PyCell_Set'))(
+    return _PyCell_Set(
       arg0,
       arg1,
     );
   }
 
-  _dart_PyCell_Set? _PyCell_Set;
+  late final _PyCell_Set_ptr =
+      _lookup<ffi.NativeFunction<_c_PyCell_Set>>('PyCell_Set');
+  late final _dart_PyCell_Set _PyCell_Set =
+      _PyCell_Set_ptr.asFunction<_dart_PyCell_Set>();
 
-  late final _typeobject PySeqIter_Type =
-      _dylib.lookup<_typeobject>('PySeqIter_Type').ref;
+  late final ffi.Pointer<_typeobject> _PySeqIter_Type =
+      _lookup<_typeobject>('PySeqIter_Type');
 
-  late final _typeobject PyCallIter_Type =
-      _dylib.lookup<_typeobject>('PyCallIter_Type').ref;
+  _typeobject get PySeqIter_Type => _PySeqIter_Type.ref;
 
-  late final _typeobject PyCmpWrapper_Type =
-      _dylib.lookup<_typeobject>('PyCmpWrapper_Type').ref;
+  late final ffi.Pointer<_typeobject> _PyCallIter_Type =
+      _lookup<_typeobject>('PyCallIter_Type');
+
+  _typeobject get PyCallIter_Type => _PyCallIter_Type.ref;
+
+  late final ffi.Pointer<_typeobject> _PyCmpWrapper_Type =
+      _lookup<_typeobject>('PyCmpWrapper_Type');
+
+  _typeobject get PyCmpWrapper_Type => _PyCmpWrapper_Type.ref;
 
   ffi.Pointer<PyObject> PySeqIter_New(
     ffi.Pointer<PyObject> arg0,
   ) {
-    return (_PySeqIter_New ??=
-        _dylib.lookupFunction<_c_PySeqIter_New, _dart_PySeqIter_New>(
-            'PySeqIter_New'))(
+    return _PySeqIter_New(
       arg0,
     );
   }
 
-  _dart_PySeqIter_New? _PySeqIter_New;
+  late final _PySeqIter_New_ptr =
+      _lookup<ffi.NativeFunction<_c_PySeqIter_New>>('PySeqIter_New');
+  late final _dart_PySeqIter_New _PySeqIter_New =
+      _PySeqIter_New_ptr.asFunction<_dart_PySeqIter_New>();
 
   ffi.Pointer<PyObject> PyCallIter_New(
     ffi.Pointer<PyObject> arg0,
     ffi.Pointer<PyObject> arg1,
   ) {
-    return (_PyCallIter_New ??=
-        _dylib.lookupFunction<_c_PyCallIter_New, _dart_PyCallIter_New>(
-            'PyCallIter_New'))(
+    return _PyCallIter_New(
       arg0,
       arg1,
     );
   }
 
-  _dart_PyCallIter_New? _PyCallIter_New;
+  late final _PyCallIter_New_ptr =
+      _lookup<ffi.NativeFunction<_c_PyCallIter_New>>('PyCallIter_New');
+  late final _dart_PyCallIter_New _PyCallIter_New =
+      _PyCallIter_New_ptr.asFunction<_dart_PyCallIter_New>();
 
   void PyThread_init_thread() {
-    return (_PyThread_init_thread ??= _dylib.lookupFunction<
-        _c_PyThread_init_thread,
-        _dart_PyThread_init_thread>('PyThread_init_thread'))();
+    return _PyThread_init_thread();
   }
 
-  _dart_PyThread_init_thread? _PyThread_init_thread;
+  late final _PyThread_init_thread_ptr =
+      _lookup<ffi.NativeFunction<_c_PyThread_init_thread>>(
+          'PyThread_init_thread');
+  late final _dart_PyThread_init_thread _PyThread_init_thread =
+      _PyThread_init_thread_ptr.asFunction<_dart_PyThread_init_thread>();
 
   int PyThread_start_new_thread(
-    ffi.Pointer<ffi.NativeFunction<_typedefC_8>> arg0,
+    ffi.Pointer<ffi.NativeFunction<_typedefC_4>> arg0,
     ffi.Pointer<ffi.Void> arg1,
   ) {
-    return (_PyThread_start_new_thread ??= _dylib.lookupFunction<
-        _c_PyThread_start_new_thread,
-        _dart_PyThread_start_new_thread>('PyThread_start_new_thread'))(
+    return _PyThread_start_new_thread(
       arg0,
       arg1,
     );
   }
 
-  _dart_PyThread_start_new_thread? _PyThread_start_new_thread;
+  late final _PyThread_start_new_thread_ptr =
+      _lookup<ffi.NativeFunction<_c_PyThread_start_new_thread>>(
+          'PyThread_start_new_thread');
+  late final _dart_PyThread_start_new_thread _PyThread_start_new_thread =
+      _PyThread_start_new_thread_ptr.asFunction<
+          _dart_PyThread_start_new_thread>();
 
   void PyThread_exit_thread() {
-    return (_PyThread_exit_thread ??= _dylib.lookupFunction<
-        _c_PyThread_exit_thread,
-        _dart_PyThread_exit_thread>('PyThread_exit_thread'))();
+    return _PyThread_exit_thread();
   }
 
-  _dart_PyThread_exit_thread? _PyThread_exit_thread;
+  late final _PyThread_exit_thread_ptr =
+      _lookup<ffi.NativeFunction<_c_PyThread_exit_thread>>(
+          'PyThread_exit_thread');
+  late final _dart_PyThread_exit_thread _PyThread_exit_thread =
+      _PyThread_exit_thread_ptr.asFunction<_dart_PyThread_exit_thread>();
 
   int PyThread_get_thread_ident() {
-    return (_PyThread_get_thread_ident ??= _dylib.lookupFunction<
-        _c_PyThread_get_thread_ident,
-        _dart_PyThread_get_thread_ident>('PyThread_get_thread_ident'))();
+    return _PyThread_get_thread_ident();
   }
 
-  _dart_PyThread_get_thread_ident? _PyThread_get_thread_ident;
+  late final _PyThread_get_thread_ident_ptr =
+      _lookup<ffi.NativeFunction<_c_PyThread_get_thread_ident>>(
+          'PyThread_get_thread_ident');
+  late final _dart_PyThread_get_thread_ident _PyThread_get_thread_ident =
+      _PyThread_get_thread_ident_ptr.asFunction<
+          _dart_PyThread_get_thread_ident>();
 
   int PyThread_get_thread_native_id() {
-    return (_PyThread_get_thread_native_id ??= _dylib.lookupFunction<
-            _c_PyThread_get_thread_native_id,
-            _dart_PyThread_get_thread_native_id>(
-        'PyThread_get_thread_native_id'))();
+    return _PyThread_get_thread_native_id();
   }
 
-  _dart_PyThread_get_thread_native_id? _PyThread_get_thread_native_id;
+  late final _PyThread_get_thread_native_id_ptr =
+      _lookup<ffi.NativeFunction<_c_PyThread_get_thread_native_id>>(
+          'PyThread_get_thread_native_id');
+  late final _dart_PyThread_get_thread_native_id
+      _PyThread_get_thread_native_id = _PyThread_get_thread_native_id_ptr
+          .asFunction<_dart_PyThread_get_thread_native_id>();
 
   ffi.Pointer<ffi.Void> PyThread_allocate_lock() {
-    return (_PyThread_allocate_lock ??= _dylib.lookupFunction<
-        _c_PyThread_allocate_lock,
-        _dart_PyThread_allocate_lock>('PyThread_allocate_lock'))();
+    return _PyThread_allocate_lock();
   }
 
-  _dart_PyThread_allocate_lock? _PyThread_allocate_lock;
+  late final _PyThread_allocate_lock_ptr =
+      _lookup<ffi.NativeFunction<_c_PyThread_allocate_lock>>(
+          'PyThread_allocate_lock');
+  late final _dart_PyThread_allocate_lock _PyThread_allocate_lock =
+      _PyThread_allocate_lock_ptr.asFunction<_dart_PyThread_allocate_lock>();
 
   void PyThread_free_lock(
     ffi.Pointer<ffi.Void> arg0,
   ) {
-    return (_PyThread_free_lock ??=
-        _dylib.lookupFunction<_c_PyThread_free_lock, _dart_PyThread_free_lock>(
-            'PyThread_free_lock'))(
+    return _PyThread_free_lock(
       arg0,
     );
   }
 
-  _dart_PyThread_free_lock? _PyThread_free_lock;
+  late final _PyThread_free_lock_ptr =
+      _lookup<ffi.NativeFunction<_c_PyThread_free_lock>>('PyThread_free_lock');
+  late final _dart_PyThread_free_lock _PyThread_free_lock =
+      _PyThread_free_lock_ptr.asFunction<_dart_PyThread_free_lock>();
 
   int PyThread_acquire_lock(
     ffi.Pointer<ffi.Void> arg0,
     int arg1,
   ) {
-    return (_PyThread_acquire_lock ??= _dylib.lookupFunction<
-        _c_PyThread_acquire_lock,
-        _dart_PyThread_acquire_lock>('PyThread_acquire_lock'))(
+    return _PyThread_acquire_lock(
       arg0,
       arg1,
     );
   }
 
-  _dart_PyThread_acquire_lock? _PyThread_acquire_lock;
+  late final _PyThread_acquire_lock_ptr =
+      _lookup<ffi.NativeFunction<_c_PyThread_acquire_lock>>(
+          'PyThread_acquire_lock');
+  late final _dart_PyThread_acquire_lock _PyThread_acquire_lock =
+      _PyThread_acquire_lock_ptr.asFunction<_dart_PyThread_acquire_lock>();
 
   int PyThread_acquire_lock_timed(
     ffi.Pointer<ffi.Void> arg0,
     int microseconds,
     int intr_flag,
   ) {
-    return (_PyThread_acquire_lock_timed ??= _dylib.lookupFunction<
-        _c_PyThread_acquire_lock_timed,
-        _dart_PyThread_acquire_lock_timed>('PyThread_acquire_lock_timed'))(
+    return _PyThread_acquire_lock_timed(
       arg0,
       microseconds,
       intr_flag,
     );
   }
 
-  _dart_PyThread_acquire_lock_timed? _PyThread_acquire_lock_timed;
+  late final _PyThread_acquire_lock_timed_ptr =
+      _lookup<ffi.NativeFunction<_c_PyThread_acquire_lock_timed>>(
+          'PyThread_acquire_lock_timed');
+  late final _dart_PyThread_acquire_lock_timed _PyThread_acquire_lock_timed =
+      _PyThread_acquire_lock_timed_ptr.asFunction<
+          _dart_PyThread_acquire_lock_timed>();
 
   void PyThread_release_lock(
     ffi.Pointer<ffi.Void> arg0,
   ) {
-    return (_PyThread_release_lock ??= _dylib.lookupFunction<
-        _c_PyThread_release_lock,
-        _dart_PyThread_release_lock>('PyThread_release_lock'))(
+    return _PyThread_release_lock(
       arg0,
     );
   }
 
-  _dart_PyThread_release_lock? _PyThread_release_lock;
+  late final _PyThread_release_lock_ptr =
+      _lookup<ffi.NativeFunction<_c_PyThread_release_lock>>(
+          'PyThread_release_lock');
+  late final _dart_PyThread_release_lock _PyThread_release_lock =
+      _PyThread_release_lock_ptr.asFunction<_dart_PyThread_release_lock>();
 
   int PyThread_get_stacksize() {
-    return (_PyThread_get_stacksize ??= _dylib.lookupFunction<
-        _c_PyThread_get_stacksize,
-        _dart_PyThread_get_stacksize>('PyThread_get_stacksize'))();
+    return _PyThread_get_stacksize();
   }
 
-  _dart_PyThread_get_stacksize? _PyThread_get_stacksize;
+  late final _PyThread_get_stacksize_ptr =
+      _lookup<ffi.NativeFunction<_c_PyThread_get_stacksize>>(
+          'PyThread_get_stacksize');
+  late final _dart_PyThread_get_stacksize _PyThread_get_stacksize =
+      _PyThread_get_stacksize_ptr.asFunction<_dart_PyThread_get_stacksize>();
 
   int PyThread_set_stacksize(
     int arg0,
   ) {
-    return (_PyThread_set_stacksize ??= _dylib.lookupFunction<
-        _c_PyThread_set_stacksize,
-        _dart_PyThread_set_stacksize>('PyThread_set_stacksize'))(
+    return _PyThread_set_stacksize(
       arg0,
     );
   }
 
-  _dart_PyThread_set_stacksize? _PyThread_set_stacksize;
+  late final _PyThread_set_stacksize_ptr =
+      _lookup<ffi.NativeFunction<_c_PyThread_set_stacksize>>(
+          'PyThread_set_stacksize');
+  late final _dart_PyThread_set_stacksize _PyThread_set_stacksize =
+      _PyThread_set_stacksize_ptr.asFunction<_dart_PyThread_set_stacksize>();
 
   ffi.Pointer<PyObject> PyThread_GetInfo() {
-    return (_PyThread_GetInfo ??=
-        _dylib.lookupFunction<_c_PyThread_GetInfo, _dart_PyThread_GetInfo>(
-            'PyThread_GetInfo'))();
+    return _PyThread_GetInfo();
   }
 
-  _dart_PyThread_GetInfo? _PyThread_GetInfo;
+  late final _PyThread_GetInfo_ptr =
+      _lookup<ffi.NativeFunction<_c_PyThread_GetInfo>>('PyThread_GetInfo');
+  late final _dart_PyThread_GetInfo _PyThread_GetInfo =
+      _PyThread_GetInfo_ptr.asFunction<_dart_PyThread_GetInfo>();
 
   int PyThread_create_key() {
-    return (_PyThread_create_key ??= _dylib.lookupFunction<
-        _c_PyThread_create_key,
-        _dart_PyThread_create_key>('PyThread_create_key'))();
+    return _PyThread_create_key();
   }
 
-  _dart_PyThread_create_key? _PyThread_create_key;
+  late final _PyThread_create_key_ptr =
+      _lookup<ffi.NativeFunction<_c_PyThread_create_key>>(
+          'PyThread_create_key');
+  late final _dart_PyThread_create_key _PyThread_create_key =
+      _PyThread_create_key_ptr.asFunction<_dart_PyThread_create_key>();
 
   void PyThread_delete_key(
     int key,
   ) {
-    return (_PyThread_delete_key ??= _dylib.lookupFunction<
-        _c_PyThread_delete_key,
-        _dart_PyThread_delete_key>('PyThread_delete_key'))(
+    return _PyThread_delete_key(
       key,
     );
   }
 
-  _dart_PyThread_delete_key? _PyThread_delete_key;
+  late final _PyThread_delete_key_ptr =
+      _lookup<ffi.NativeFunction<_c_PyThread_delete_key>>(
+          'PyThread_delete_key');
+  late final _dart_PyThread_delete_key _PyThread_delete_key =
+      _PyThread_delete_key_ptr.asFunction<_dart_PyThread_delete_key>();
 
   int PyThread_set_key_value(
     int key,
     ffi.Pointer<ffi.Void> value,
   ) {
-    return (_PyThread_set_key_value ??= _dylib.lookupFunction<
-        _c_PyThread_set_key_value,
-        _dart_PyThread_set_key_value>('PyThread_set_key_value'))(
+    return _PyThread_set_key_value(
       key,
       value,
     );
   }
 
-  _dart_PyThread_set_key_value? _PyThread_set_key_value;
+  late final _PyThread_set_key_value_ptr =
+      _lookup<ffi.NativeFunction<_c_PyThread_set_key_value>>(
+          'PyThread_set_key_value');
+  late final _dart_PyThread_set_key_value _PyThread_set_key_value =
+      _PyThread_set_key_value_ptr.asFunction<_dart_PyThread_set_key_value>();
 
   ffi.Pointer<ffi.Void> PyThread_get_key_value(
     int key,
   ) {
-    return (_PyThread_get_key_value ??= _dylib.lookupFunction<
-        _c_PyThread_get_key_value,
-        _dart_PyThread_get_key_value>('PyThread_get_key_value'))(
+    return _PyThread_get_key_value(
       key,
     );
   }
 
-  _dart_PyThread_get_key_value? _PyThread_get_key_value;
+  late final _PyThread_get_key_value_ptr =
+      _lookup<ffi.NativeFunction<_c_PyThread_get_key_value>>(
+          'PyThread_get_key_value');
+  late final _dart_PyThread_get_key_value _PyThread_get_key_value =
+      _PyThread_get_key_value_ptr.asFunction<_dart_PyThread_get_key_value>();
 
   void PyThread_delete_key_value(
     int key,
   ) {
-    return (_PyThread_delete_key_value ??= _dylib.lookupFunction<
-        _c_PyThread_delete_key_value,
-        _dart_PyThread_delete_key_value>('PyThread_delete_key_value'))(
+    return _PyThread_delete_key_value(
       key,
     );
   }
 
-  _dart_PyThread_delete_key_value? _PyThread_delete_key_value;
+  late final _PyThread_delete_key_value_ptr =
+      _lookup<ffi.NativeFunction<_c_PyThread_delete_key_value>>(
+          'PyThread_delete_key_value');
+  late final _dart_PyThread_delete_key_value _PyThread_delete_key_value =
+      _PyThread_delete_key_value_ptr.asFunction<
+          _dart_PyThread_delete_key_value>();
 
   void PyThread_ReInitTLS() {
-    return (_PyThread_ReInitTLS ??=
-        _dylib.lookupFunction<_c_PyThread_ReInitTLS, _dart_PyThread_ReInitTLS>(
-            'PyThread_ReInitTLS'))();
+    return _PyThread_ReInitTLS();
   }
 
-  _dart_PyThread_ReInitTLS? _PyThread_ReInitTLS;
+  late final _PyThread_ReInitTLS_ptr =
+      _lookup<ffi.NativeFunction<_c_PyThread_ReInitTLS>>('PyThread_ReInitTLS');
+  late final _dart_PyThread_ReInitTLS _PyThread_ReInitTLS =
+      _PyThread_ReInitTLS_ptr.asFunction<_dart_PyThread_ReInitTLS>();
 
   ffi.Pointer<_Py_tss_t> PyThread_tss_alloc() {
-    return (_PyThread_tss_alloc ??=
-        _dylib.lookupFunction<_c_PyThread_tss_alloc, _dart_PyThread_tss_alloc>(
-            'PyThread_tss_alloc'))();
+    return _PyThread_tss_alloc();
   }
 
-  _dart_PyThread_tss_alloc? _PyThread_tss_alloc;
+  late final _PyThread_tss_alloc_ptr =
+      _lookup<ffi.NativeFunction<_c_PyThread_tss_alloc>>('PyThread_tss_alloc');
+  late final _dart_PyThread_tss_alloc _PyThread_tss_alloc =
+      _PyThread_tss_alloc_ptr.asFunction<_dart_PyThread_tss_alloc>();
 
   void PyThread_tss_free(
     ffi.Pointer<_Py_tss_t> key,
   ) {
-    return (_PyThread_tss_free ??=
-        _dylib.lookupFunction<_c_PyThread_tss_free, _dart_PyThread_tss_free>(
-            'PyThread_tss_free'))(
+    return _PyThread_tss_free(
       key,
     );
   }
 
-  _dart_PyThread_tss_free? _PyThread_tss_free;
+  late final _PyThread_tss_free_ptr =
+      _lookup<ffi.NativeFunction<_c_PyThread_tss_free>>('PyThread_tss_free');
+  late final _dart_PyThread_tss_free _PyThread_tss_free =
+      _PyThread_tss_free_ptr.asFunction<_dart_PyThread_tss_free>();
 
   int PyThread_tss_is_created(
     ffi.Pointer<_Py_tss_t> key,
   ) {
-    return (_PyThread_tss_is_created ??= _dylib.lookupFunction<
-        _c_PyThread_tss_is_created,
-        _dart_PyThread_tss_is_created>('PyThread_tss_is_created'))(
+    return _PyThread_tss_is_created(
       key,
     );
   }
 
-  _dart_PyThread_tss_is_created? _PyThread_tss_is_created;
+  late final _PyThread_tss_is_created_ptr =
+      _lookup<ffi.NativeFunction<_c_PyThread_tss_is_created>>(
+          'PyThread_tss_is_created');
+  late final _dart_PyThread_tss_is_created _PyThread_tss_is_created =
+      _PyThread_tss_is_created_ptr.asFunction<_dart_PyThread_tss_is_created>();
 
   int PyThread_tss_create(
     ffi.Pointer<_Py_tss_t> key,
   ) {
-    return (_PyThread_tss_create ??= _dylib.lookupFunction<
-        _c_PyThread_tss_create,
-        _dart_PyThread_tss_create>('PyThread_tss_create'))(
+    return _PyThread_tss_create(
       key,
     );
   }
 
-  _dart_PyThread_tss_create? _PyThread_tss_create;
+  late final _PyThread_tss_create_ptr =
+      _lookup<ffi.NativeFunction<_c_PyThread_tss_create>>(
+          'PyThread_tss_create');
+  late final _dart_PyThread_tss_create _PyThread_tss_create =
+      _PyThread_tss_create_ptr.asFunction<_dart_PyThread_tss_create>();
 
   void PyThread_tss_delete(
     ffi.Pointer<_Py_tss_t> key,
   ) {
-    return (_PyThread_tss_delete ??= _dylib.lookupFunction<
-        _c_PyThread_tss_delete,
-        _dart_PyThread_tss_delete>('PyThread_tss_delete'))(
+    return _PyThread_tss_delete(
       key,
     );
   }
 
-  _dart_PyThread_tss_delete? _PyThread_tss_delete;
+  late final _PyThread_tss_delete_ptr =
+      _lookup<ffi.NativeFunction<_c_PyThread_tss_delete>>(
+          'PyThread_tss_delete');
+  late final _dart_PyThread_tss_delete _PyThread_tss_delete =
+      _PyThread_tss_delete_ptr.asFunction<_dart_PyThread_tss_delete>();
 
   int PyThread_tss_set(
     ffi.Pointer<_Py_tss_t> key,
     ffi.Pointer<ffi.Void> value,
   ) {
-    return (_PyThread_tss_set ??=
-        _dylib.lookupFunction<_c_PyThread_tss_set, _dart_PyThread_tss_set>(
-            'PyThread_tss_set'))(
+    return _PyThread_tss_set(
       key,
       value,
     );
   }
 
-  _dart_PyThread_tss_set? _PyThread_tss_set;
+  late final _PyThread_tss_set_ptr =
+      _lookup<ffi.NativeFunction<_c_PyThread_tss_set>>('PyThread_tss_set');
+  late final _dart_PyThread_tss_set _PyThread_tss_set =
+      _PyThread_tss_set_ptr.asFunction<_dart_PyThread_tss_set>();
 
   ffi.Pointer<ffi.Void> PyThread_tss_get(
     ffi.Pointer<_Py_tss_t> key,
   ) {
-    return (_PyThread_tss_get ??=
-        _dylib.lookupFunction<_c_PyThread_tss_get, _dart_PyThread_tss_get>(
-            'PyThread_tss_get'))(
+    return _PyThread_tss_get(
       key,
     );
   }
 
-  _dart_PyThread_tss_get? _PyThread_tss_get;
+  late final _PyThread_tss_get_ptr =
+      _lookup<ffi.NativeFunction<_c_PyThread_tss_get>>('PyThread_tss_get');
+  late final _dart_PyThread_tss_get _PyThread_tss_get =
+      _PyThread_tss_get_ptr.asFunction<_dart_PyThread_tss_get>();
 
   ffi.Pointer<_is> PyInterpreterState_New() {
-    return (_PyInterpreterState_New ??= _dylib.lookupFunction<
-        _c_PyInterpreterState_New,
-        _dart_PyInterpreterState_New>('PyInterpreterState_New'))();
+    return _PyInterpreterState_New();
   }
 
-  _dart_PyInterpreterState_New? _PyInterpreterState_New;
+  late final _PyInterpreterState_New_ptr =
+      _lookup<ffi.NativeFunction<_c_PyInterpreterState_New>>(
+          'PyInterpreterState_New');
+  late final _dart_PyInterpreterState_New _PyInterpreterState_New =
+      _PyInterpreterState_New_ptr.asFunction<_dart_PyInterpreterState_New>();
 
   void PyInterpreterState_Clear(
     ffi.Pointer<_is> arg0,
   ) {
-    return (_PyInterpreterState_Clear ??= _dylib.lookupFunction<
-        _c_PyInterpreterState_Clear,
-        _dart_PyInterpreterState_Clear>('PyInterpreterState_Clear'))(
+    return _PyInterpreterState_Clear(
       arg0,
     );
   }
 
-  _dart_PyInterpreterState_Clear? _PyInterpreterState_Clear;
+  late final _PyInterpreterState_Clear_ptr =
+      _lookup<ffi.NativeFunction<_c_PyInterpreterState_Clear>>(
+          'PyInterpreterState_Clear');
+  late final _dart_PyInterpreterState_Clear _PyInterpreterState_Clear =
+      _PyInterpreterState_Clear_ptr.asFunction<
+          _dart_PyInterpreterState_Clear>();
 
   void PyInterpreterState_Delete(
     ffi.Pointer<_is> arg0,
   ) {
-    return (_PyInterpreterState_Delete ??= _dylib.lookupFunction<
-        _c_PyInterpreterState_Delete,
-        _dart_PyInterpreterState_Delete>('PyInterpreterState_Delete'))(
+    return _PyInterpreterState_Delete(
       arg0,
     );
   }
 
-  _dart_PyInterpreterState_Delete? _PyInterpreterState_Delete;
+  late final _PyInterpreterState_Delete_ptr =
+      _lookup<ffi.NativeFunction<_c_PyInterpreterState_Delete>>(
+          'PyInterpreterState_Delete');
+  late final _dart_PyInterpreterState_Delete _PyInterpreterState_Delete =
+      _PyInterpreterState_Delete_ptr.asFunction<
+          _dart_PyInterpreterState_Delete>();
 
   ffi.Pointer<PyObject> PyInterpreterState_GetDict(
     ffi.Pointer<_is> arg0,
   ) {
-    return (_PyInterpreterState_GetDict ??= _dylib.lookupFunction<
-        _c_PyInterpreterState_GetDict,
-        _dart_PyInterpreterState_GetDict>('PyInterpreterState_GetDict'))(
+    return _PyInterpreterState_GetDict(
       arg0,
     );
   }
 
-  _dart_PyInterpreterState_GetDict? _PyInterpreterState_GetDict;
+  late final _PyInterpreterState_GetDict_ptr =
+      _lookup<ffi.NativeFunction<_c_PyInterpreterState_GetDict>>(
+          'PyInterpreterState_GetDict');
+  late final _dart_PyInterpreterState_GetDict _PyInterpreterState_GetDict =
+      _PyInterpreterState_GetDict_ptr.asFunction<
+          _dart_PyInterpreterState_GetDict>();
 
   int PyInterpreterState_GetID(
     ffi.Pointer<_is> arg0,
   ) {
-    return (_PyInterpreterState_GetID ??= _dylib.lookupFunction<
-        _c_PyInterpreterState_GetID,
-        _dart_PyInterpreterState_GetID>('PyInterpreterState_GetID'))(
+    return _PyInterpreterState_GetID(
       arg0,
     );
   }
 
-  _dart_PyInterpreterState_GetID? _PyInterpreterState_GetID;
+  late final _PyInterpreterState_GetID_ptr =
+      _lookup<ffi.NativeFunction<_c_PyInterpreterState_GetID>>(
+          'PyInterpreterState_GetID');
+  late final _dart_PyInterpreterState_GetID _PyInterpreterState_GetID =
+      _PyInterpreterState_GetID_ptr.asFunction<
+          _dart_PyInterpreterState_GetID>();
 
   int PyState_AddModule(
     ffi.Pointer<PyObject> arg0,
     ffi.Pointer<PyModuleDef> arg1,
   ) {
-    return (_PyState_AddModule ??=
-        _dylib.lookupFunction<_c_PyState_AddModule, _dart_PyState_AddModule>(
-            'PyState_AddModule'))(
+    return _PyState_AddModule(
       arg0,
       arg1,
     );
   }
 
-  _dart_PyState_AddModule? _PyState_AddModule;
+  late final _PyState_AddModule_ptr =
+      _lookup<ffi.NativeFunction<_c_PyState_AddModule>>('PyState_AddModule');
+  late final _dart_PyState_AddModule _PyState_AddModule =
+      _PyState_AddModule_ptr.asFunction<_dart_PyState_AddModule>();
 
   int PyState_RemoveModule(
     ffi.Pointer<PyModuleDef> arg0,
   ) {
-    return (_PyState_RemoveModule ??= _dylib.lookupFunction<
-        _c_PyState_RemoveModule,
-        _dart_PyState_RemoveModule>('PyState_RemoveModule'))(
+    return _PyState_RemoveModule(
       arg0,
     );
   }
 
-  _dart_PyState_RemoveModule? _PyState_RemoveModule;
+  late final _PyState_RemoveModule_ptr =
+      _lookup<ffi.NativeFunction<_c_PyState_RemoveModule>>(
+          'PyState_RemoveModule');
+  late final _dart_PyState_RemoveModule _PyState_RemoveModule =
+      _PyState_RemoveModule_ptr.asFunction<_dart_PyState_RemoveModule>();
 
   ffi.Pointer<PyObject> PyState_FindModule(
     ffi.Pointer<PyModuleDef> arg0,
   ) {
-    return (_PyState_FindModule ??=
-        _dylib.lookupFunction<_c_PyState_FindModule, _dart_PyState_FindModule>(
-            'PyState_FindModule'))(
+    return _PyState_FindModule(
       arg0,
     );
   }
 
-  _dart_PyState_FindModule? _PyState_FindModule;
+  late final _PyState_FindModule_ptr =
+      _lookup<ffi.NativeFunction<_c_PyState_FindModule>>('PyState_FindModule');
+  late final _dart_PyState_FindModule _PyState_FindModule =
+      _PyState_FindModule_ptr.asFunction<_dart_PyState_FindModule>();
 
   ffi.Pointer<_ts> PyThreadState_New(
     ffi.Pointer<_is> arg0,
   ) {
-    return (_PyThreadState_New ??=
-        _dylib.lookupFunction<_c_PyThreadState_New, _dart_PyThreadState_New>(
-            'PyThreadState_New'))(
+    return _PyThreadState_New(
       arg0,
     );
   }
 
-  _dart_PyThreadState_New? _PyThreadState_New;
+  late final _PyThreadState_New_ptr =
+      _lookup<ffi.NativeFunction<_c_PyThreadState_New>>('PyThreadState_New');
+  late final _dart_PyThreadState_New _PyThreadState_New =
+      _PyThreadState_New_ptr.asFunction<_dart_PyThreadState_New>();
 
   void PyThreadState_Clear(
     ffi.Pointer<_ts> arg0,
   ) {
-    return (_PyThreadState_Clear ??= _dylib.lookupFunction<
-        _c_PyThreadState_Clear,
-        _dart_PyThreadState_Clear>('PyThreadState_Clear'))(
+    return _PyThreadState_Clear(
       arg0,
     );
   }
 
-  _dart_PyThreadState_Clear? _PyThreadState_Clear;
+  late final _PyThreadState_Clear_ptr =
+      _lookup<ffi.NativeFunction<_c_PyThreadState_Clear>>(
+          'PyThreadState_Clear');
+  late final _dart_PyThreadState_Clear _PyThreadState_Clear =
+      _PyThreadState_Clear_ptr.asFunction<_dart_PyThreadState_Clear>();
 
   void PyThreadState_Delete(
     ffi.Pointer<_ts> arg0,
   ) {
-    return (_PyThreadState_Delete ??= _dylib.lookupFunction<
-        _c_PyThreadState_Delete,
-        _dart_PyThreadState_Delete>('PyThreadState_Delete'))(
+    return _PyThreadState_Delete(
       arg0,
     );
   }
 
-  _dart_PyThreadState_Delete? _PyThreadState_Delete;
+  late final _PyThreadState_Delete_ptr =
+      _lookup<ffi.NativeFunction<_c_PyThreadState_Delete>>(
+          'PyThreadState_Delete');
+  late final _dart_PyThreadState_Delete _PyThreadState_Delete =
+      _PyThreadState_Delete_ptr.asFunction<_dart_PyThreadState_Delete>();
 
   void PyThreadState_DeleteCurrent() {
-    return (_PyThreadState_DeleteCurrent ??= _dylib.lookupFunction<
-        _c_PyThreadState_DeleteCurrent,
-        _dart_PyThreadState_DeleteCurrent>('PyThreadState_DeleteCurrent'))();
+    return _PyThreadState_DeleteCurrent();
   }
 
-  _dart_PyThreadState_DeleteCurrent? _PyThreadState_DeleteCurrent;
+  late final _PyThreadState_DeleteCurrent_ptr =
+      _lookup<ffi.NativeFunction<_c_PyThreadState_DeleteCurrent>>(
+          'PyThreadState_DeleteCurrent');
+  late final _dart_PyThreadState_DeleteCurrent _PyThreadState_DeleteCurrent =
+      _PyThreadState_DeleteCurrent_ptr.asFunction<
+          _dart_PyThreadState_DeleteCurrent>();
 
   ffi.Pointer<_ts> PyThreadState_Get() {
-    return (_PyThreadState_Get ??=
-        _dylib.lookupFunction<_c_PyThreadState_Get, _dart_PyThreadState_Get>(
-            'PyThreadState_Get'))();
+    return _PyThreadState_Get();
   }
 
-  _dart_PyThreadState_Get? _PyThreadState_Get;
+  late final _PyThreadState_Get_ptr =
+      _lookup<ffi.NativeFunction<_c_PyThreadState_Get>>('PyThreadState_Get');
+  late final _dart_PyThreadState_Get _PyThreadState_Get =
+      _PyThreadState_Get_ptr.asFunction<_dart_PyThreadState_Get>();
 
   ffi.Pointer<_ts> PyThreadState_Swap(
     ffi.Pointer<_ts> arg0,
   ) {
-    return (_PyThreadState_Swap ??=
-        _dylib.lookupFunction<_c_PyThreadState_Swap, _dart_PyThreadState_Swap>(
-            'PyThreadState_Swap'))(
+    return _PyThreadState_Swap(
       arg0,
     );
   }
 
-  _dart_PyThreadState_Swap? _PyThreadState_Swap;
+  late final _PyThreadState_Swap_ptr =
+      _lookup<ffi.NativeFunction<_c_PyThreadState_Swap>>('PyThreadState_Swap');
+  late final _dart_PyThreadState_Swap _PyThreadState_Swap =
+      _PyThreadState_Swap_ptr.asFunction<_dart_PyThreadState_Swap>();
 
   ffi.Pointer<PyObject> PyThreadState_GetDict() {
-    return (_PyThreadState_GetDict ??= _dylib.lookupFunction<
-        _c_PyThreadState_GetDict,
-        _dart_PyThreadState_GetDict>('PyThreadState_GetDict'))();
+    return _PyThreadState_GetDict();
   }
 
-  _dart_PyThreadState_GetDict? _PyThreadState_GetDict;
+  late final _PyThreadState_GetDict_ptr =
+      _lookup<ffi.NativeFunction<_c_PyThreadState_GetDict>>(
+          'PyThreadState_GetDict');
+  late final _dart_PyThreadState_GetDict _PyThreadState_GetDict =
+      _PyThreadState_GetDict_ptr.asFunction<_dart_PyThreadState_GetDict>();
 
   int PyThreadState_SetAsyncExc(
     int arg0,
     ffi.Pointer<PyObject> arg1,
   ) {
-    return (_PyThreadState_SetAsyncExc ??= _dylib.lookupFunction<
-        _c_PyThreadState_SetAsyncExc,
-        _dart_PyThreadState_SetAsyncExc>('PyThreadState_SetAsyncExc'))(
+    return _PyThreadState_SetAsyncExc(
       arg0,
       arg1,
     );
   }
 
-  _dart_PyThreadState_SetAsyncExc? _PyThreadState_SetAsyncExc;
+  late final _PyThreadState_SetAsyncExc_ptr =
+      _lookup<ffi.NativeFunction<_c_PyThreadState_SetAsyncExc>>(
+          'PyThreadState_SetAsyncExc');
+  late final _dart_PyThreadState_SetAsyncExc _PyThreadState_SetAsyncExc =
+      _PyThreadState_SetAsyncExc_ptr.asFunction<
+          _dart_PyThreadState_SetAsyncExc>();
 
   int PyGILState_Ensure() {
-    return (_PyGILState_Ensure ??=
-        _dylib.lookupFunction<_c_PyGILState_Ensure, _dart_PyGILState_Ensure>(
-            'PyGILState_Ensure'))();
+    return _PyGILState_Ensure();
   }
 
-  _dart_PyGILState_Ensure? _PyGILState_Ensure;
+  late final _PyGILState_Ensure_ptr =
+      _lookup<ffi.NativeFunction<_c_PyGILState_Ensure>>('PyGILState_Ensure');
+  late final _dart_PyGILState_Ensure _PyGILState_Ensure =
+      _PyGILState_Ensure_ptr.asFunction<_dart_PyGILState_Ensure>();
 
   void PyGILState_Release(
     int arg0,
   ) {
-    return (_PyGILState_Release ??=
-        _dylib.lookupFunction<_c_PyGILState_Release, _dart_PyGILState_Release>(
-            'PyGILState_Release'))(
+    return _PyGILState_Release(
       arg0,
     );
   }
 
-  _dart_PyGILState_Release? _PyGILState_Release;
+  late final _PyGILState_Release_ptr =
+      _lookup<ffi.NativeFunction<_c_PyGILState_Release>>('PyGILState_Release');
+  late final _dart_PyGILState_Release _PyGILState_Release =
+      _PyGILState_Release_ptr.asFunction<_dart_PyGILState_Release>();
 
   ffi.Pointer<_ts> PyGILState_GetThisThreadState() {
-    return (_PyGILState_GetThisThreadState ??= _dylib.lookupFunction<
-            _c_PyGILState_GetThisThreadState,
-            _dart_PyGILState_GetThisThreadState>(
-        'PyGILState_GetThisThreadState'))();
+    return _PyGILState_GetThisThreadState();
   }
 
-  _dart_PyGILState_GetThisThreadState? _PyGILState_GetThisThreadState;
+  late final _PyGILState_GetThisThreadState_ptr =
+      _lookup<ffi.NativeFunction<_c_PyGILState_GetThisThreadState>>(
+          'PyGILState_GetThisThreadState');
+  late final _dart_PyGILState_GetThisThreadState
+      _PyGILState_GetThisThreadState = _PyGILState_GetThisThreadState_ptr
+          .asFunction<_dart_PyGILState_GetThisThreadState>();
 
-  late final _typeobject PyGen_Type =
-      _dylib.lookup<_typeobject>('PyGen_Type').ref;
+  late final ffi.Pointer<_typeobject> _PyGen_Type =
+      _lookup<_typeobject>('PyGen_Type');
+
+  _typeobject get PyGen_Type => _PyGen_Type.ref;
 
   ffi.Pointer<PyObject> PyGen_New(
     ffi.Pointer<_frame> arg0,
   ) {
-    return (_PyGen_New ??=
-        _dylib.lookupFunction<_c_PyGen_New, _dart_PyGen_New>('PyGen_New'))(
+    return _PyGen_New(
       arg0,
     );
   }
 
-  _dart_PyGen_New? _PyGen_New;
+  late final _PyGen_New_ptr =
+      _lookup<ffi.NativeFunction<_c_PyGen_New>>('PyGen_New');
+  late final _dart_PyGen_New _PyGen_New =
+      _PyGen_New_ptr.asFunction<_dart_PyGen_New>();
 
   ffi.Pointer<PyObject> PyGen_NewWithQualName(
     ffi.Pointer<_frame> arg0,
     ffi.Pointer<PyObject> name,
     ffi.Pointer<PyObject> qualname,
   ) {
-    return (_PyGen_NewWithQualName ??= _dylib.lookupFunction<
-        _c_PyGen_NewWithQualName,
-        _dart_PyGen_NewWithQualName>('PyGen_NewWithQualName'))(
+    return _PyGen_NewWithQualName(
       arg0,
       name,
       qualname,
     );
   }
 
-  _dart_PyGen_NewWithQualName? _PyGen_NewWithQualName;
+  late final _PyGen_NewWithQualName_ptr =
+      _lookup<ffi.NativeFunction<_c_PyGen_NewWithQualName>>(
+          'PyGen_NewWithQualName');
+  late final _dart_PyGen_NewWithQualName _PyGen_NewWithQualName =
+      _PyGen_NewWithQualName_ptr.asFunction<_dart_PyGen_NewWithQualName>();
 
   int PyGen_NeedsFinalizing(
     ffi.Pointer<PyGenObject> arg0,
   ) {
-    return (_PyGen_NeedsFinalizing ??= _dylib.lookupFunction<
-        _c_PyGen_NeedsFinalizing,
-        _dart_PyGen_NeedsFinalizing>('PyGen_NeedsFinalizing'))(
+    return _PyGen_NeedsFinalizing(
       arg0,
     );
   }
 
-  _dart_PyGen_NeedsFinalizing? _PyGen_NeedsFinalizing;
+  late final _PyGen_NeedsFinalizing_ptr =
+      _lookup<ffi.NativeFunction<_c_PyGen_NeedsFinalizing>>(
+          'PyGen_NeedsFinalizing');
+  late final _dart_PyGen_NeedsFinalizing _PyGen_NeedsFinalizing =
+      _PyGen_NeedsFinalizing_ptr.asFunction<_dart_PyGen_NeedsFinalizing>();
 
   int PyGen_SetStopIterationValue(
     ffi.Pointer<PyObject> arg0,
   ) {
-    return (_PyGen_SetStopIterationValue ??= _dylib.lookupFunction<
-        _c_PyGen_SetStopIterationValue,
-        _dart_PyGen_SetStopIterationValue>('_PyGen_SetStopIterationValue'))(
+    return _PyGen_SetStopIterationValue(
       arg0,
     );
   }
 
-  _dart_PyGen_SetStopIterationValue? _PyGen_SetStopIterationValue;
+  late final _PyGen_SetStopIterationValue_ptr =
+      _lookup<ffi.NativeFunction<_c_PyGen_SetStopIterationValue>>(
+          '_PyGen_SetStopIterationValue');
+  late final _dart_PyGen_SetStopIterationValue _PyGen_SetStopIterationValue =
+      _PyGen_SetStopIterationValue_ptr.asFunction<
+          _dart_PyGen_SetStopIterationValue>();
 
   int PyGen_FetchStopIterationValue(
     ffi.Pointer<ffi.Pointer<PyObject>> arg0,
   ) {
-    return (_PyGen_FetchStopIterationValue ??= _dylib.lookupFunction<
-        _c_PyGen_FetchStopIterationValue,
-        _dart_PyGen_FetchStopIterationValue>('_PyGen_FetchStopIterationValue'))(
+    return _PyGen_FetchStopIterationValue(
       arg0,
     );
   }
 
-  _dart_PyGen_FetchStopIterationValue? _PyGen_FetchStopIterationValue;
+  late final _PyGen_FetchStopIterationValue_ptr =
+      _lookup<ffi.NativeFunction<_c_PyGen_FetchStopIterationValue>>(
+          '_PyGen_FetchStopIterationValue');
+  late final _dart_PyGen_FetchStopIterationValue
+      _PyGen_FetchStopIterationValue = _PyGen_FetchStopIterationValue_ptr
+          .asFunction<_dart_PyGen_FetchStopIterationValue>();
 
   ffi.Pointer<PyObject> PyGen_Send(
     ffi.Pointer<PyGenObject> arg0,
     ffi.Pointer<PyObject> arg1,
   ) {
-    return (_PyGen_Send ??=
-        _dylib.lookupFunction<_c_PyGen_Send, _dart_PyGen_Send>('_PyGen_Send'))(
+    return _PyGen_Send(
       arg0,
       arg1,
     );
   }
 
-  _dart_PyGen_Send? _PyGen_Send;
+  late final _PyGen_Send_ptr =
+      _lookup<ffi.NativeFunction<_c_PyGen_Send>>('_PyGen_Send');
+  late final _dart_PyGen_Send _PyGen_Send =
+      _PyGen_Send_ptr.asFunction<_dart_PyGen_Send>();
 
   ffi.Pointer<PyObject> PyGen_yf(
     ffi.Pointer<PyGenObject> arg0,
   ) {
-    return (_PyGen_yf ??=
-        _dylib.lookupFunction<_c_PyGen_yf, _dart_PyGen_yf>('_PyGen_yf'))(
+    return _PyGen_yf(
       arg0,
     );
   }
 
-  _dart_PyGen_yf? _PyGen_yf;
+  late final _PyGen_yf_ptr =
+      _lookup<ffi.NativeFunction<_c_PyGen_yf>>('_PyGen_yf');
+  late final _dart_PyGen_yf _PyGen_yf =
+      _PyGen_yf_ptr.asFunction<_dart_PyGen_yf>();
 
   void PyGen_Finalize(
     ffi.Pointer<PyObject> self,
   ) {
-    return (_PyGen_Finalize ??=
-        _dylib.lookupFunction<_c_PyGen_Finalize, _dart_PyGen_Finalize>(
-            '_PyGen_Finalize'))(
+    return _PyGen_Finalize(
       self,
     );
   }
 
-  _dart_PyGen_Finalize? _PyGen_Finalize;
+  late final _PyGen_Finalize_ptr =
+      _lookup<ffi.NativeFunction<_c_PyGen_Finalize>>('_PyGen_Finalize');
+  late final _dart_PyGen_Finalize _PyGen_Finalize =
+      _PyGen_Finalize_ptr.asFunction<_dart_PyGen_Finalize>();
 
-  late final _typeobject PyCoro_Type =
-      _dylib.lookup<_typeobject>('PyCoro_Type').ref;
+  late final ffi.Pointer<_typeobject> _PyCoro_Type =
+      _lookup<_typeobject>('PyCoro_Type');
 
-  late final _typeobject PyCoroWrapper_Type =
-      _dylib.lookup<_typeobject>('_PyCoroWrapper_Type').ref;
+  _typeobject get PyCoro_Type => _PyCoro_Type.ref;
 
-  late final _typeobject PyAIterWrapper_Type =
-      _dylib.lookup<_typeobject>('_PyAIterWrapper_Type').ref;
+  late final ffi.Pointer<_typeobject> _PyCoroWrapper_Type =
+      _lookup<_typeobject>('_PyCoroWrapper_Type');
+
+  _typeobject get PyCoroWrapper_Type => _PyCoroWrapper_Type.ref;
+
+  late final ffi.Pointer<_typeobject> _PyAIterWrapper_Type =
+      _lookup<_typeobject>('_PyAIterWrapper_Type');
+
+  _typeobject get PyAIterWrapper_Type => _PyAIterWrapper_Type.ref;
 
   ffi.Pointer<PyObject> PyCoro_GetAwaitableIter(
     ffi.Pointer<PyObject> o,
   ) {
-    return (_PyCoro_GetAwaitableIter ??= _dylib.lookupFunction<
-        _c_PyCoro_GetAwaitableIter,
-        _dart_PyCoro_GetAwaitableIter>('_PyCoro_GetAwaitableIter'))(
+    return _PyCoro_GetAwaitableIter(
       o,
     );
   }
 
-  _dart_PyCoro_GetAwaitableIter? _PyCoro_GetAwaitableIter;
+  late final _PyCoro_GetAwaitableIter_ptr =
+      _lookup<ffi.NativeFunction<_c_PyCoro_GetAwaitableIter>>(
+          '_PyCoro_GetAwaitableIter');
+  late final _dart_PyCoro_GetAwaitableIter _PyCoro_GetAwaitableIter =
+      _PyCoro_GetAwaitableIter_ptr.asFunction<_dart_PyCoro_GetAwaitableIter>();
 
   ffi.Pointer<PyObject> PyCoro_New(
     ffi.Pointer<_frame> arg0,
     ffi.Pointer<PyObject> name,
     ffi.Pointer<PyObject> qualname,
   ) {
-    return (_PyCoro_New ??=
-        _dylib.lookupFunction<_c_PyCoro_New, _dart_PyCoro_New>('PyCoro_New'))(
+    return _PyCoro_New(
       arg0,
       name,
       qualname,
     );
   }
 
-  _dart_PyCoro_New? _PyCoro_New;
+  late final _PyCoro_New_ptr =
+      _lookup<ffi.NativeFunction<_c_PyCoro_New>>('PyCoro_New');
+  late final _dart_PyCoro_New _PyCoro_New =
+      _PyCoro_New_ptr.asFunction<_dart_PyCoro_New>();
 
-  late final _typeobject PyAsyncGen_Type =
-      _dylib.lookup<_typeobject>('PyAsyncGen_Type').ref;
+  late final ffi.Pointer<_typeobject> _PyAsyncGen_Type =
+      _lookup<_typeobject>('PyAsyncGen_Type');
 
-  late final _typeobject PyAsyncGenASend_Type =
-      _dylib.lookup<_typeobject>('_PyAsyncGenASend_Type').ref;
+  _typeobject get PyAsyncGen_Type => _PyAsyncGen_Type.ref;
 
-  late final _typeobject PyAsyncGenWrappedValue_Type =
-      _dylib.lookup<_typeobject>('_PyAsyncGenWrappedValue_Type').ref;
+  late final ffi.Pointer<_typeobject> _PyAsyncGenASend_Type =
+      _lookup<_typeobject>('_PyAsyncGenASend_Type');
 
-  late final _typeobject PyAsyncGenAThrow_Type =
-      _dylib.lookup<_typeobject>('_PyAsyncGenAThrow_Type').ref;
+  _typeobject get PyAsyncGenASend_Type => _PyAsyncGenASend_Type.ref;
+
+  late final ffi.Pointer<_typeobject> _PyAsyncGenWrappedValue_Type =
+      _lookup<_typeobject>('_PyAsyncGenWrappedValue_Type');
+
+  _typeobject get PyAsyncGenWrappedValue_Type =>
+      _PyAsyncGenWrappedValue_Type.ref;
+
+  late final ffi.Pointer<_typeobject> _PyAsyncGenAThrow_Type =
+      _lookup<_typeobject>('_PyAsyncGenAThrow_Type');
+
+  _typeobject get PyAsyncGenAThrow_Type => _PyAsyncGenAThrow_Type.ref;
 
   ffi.Pointer<PyObject> PyAsyncGen_New(
     ffi.Pointer<_frame> arg0,
     ffi.Pointer<PyObject> name,
     ffi.Pointer<PyObject> qualname,
   ) {
-    return (_PyAsyncGen_New ??=
-        _dylib.lookupFunction<_c_PyAsyncGen_New, _dart_PyAsyncGen_New>(
-            'PyAsyncGen_New'))(
+    return _PyAsyncGen_New(
       arg0,
       name,
       qualname,
     );
   }
 
-  _dart_PyAsyncGen_New? _PyAsyncGen_New;
+  late final _PyAsyncGen_New_ptr =
+      _lookup<ffi.NativeFunction<_c_PyAsyncGen_New>>('PyAsyncGen_New');
+  late final _dart_PyAsyncGen_New _PyAsyncGen_New =
+      _PyAsyncGen_New_ptr.asFunction<_dart_PyAsyncGen_New>();
 
   ffi.Pointer<PyObject> PyAsyncGenValueWrapperNew(
     ffi.Pointer<PyObject> arg0,
   ) {
-    return (_PyAsyncGenValueWrapperNew ??= _dylib.lookupFunction<
-        _c_PyAsyncGenValueWrapperNew,
-        _dart_PyAsyncGenValueWrapperNew>('_PyAsyncGenValueWrapperNew'))(
+    return _PyAsyncGenValueWrapperNew(
       arg0,
     );
   }
 
-  _dart_PyAsyncGenValueWrapperNew? _PyAsyncGenValueWrapperNew;
+  late final _PyAsyncGenValueWrapperNew_ptr =
+      _lookup<ffi.NativeFunction<_c_PyAsyncGenValueWrapperNew>>(
+          '_PyAsyncGenValueWrapperNew');
+  late final _dart_PyAsyncGenValueWrapperNew _PyAsyncGenValueWrapperNew =
+      _PyAsyncGenValueWrapperNew_ptr.asFunction<
+          _dart_PyAsyncGenValueWrapperNew>();
 
   int PyAsyncGen_ClearFreeLists() {
-    return (_PyAsyncGen_ClearFreeLists ??= _dylib.lookupFunction<
-        _c_PyAsyncGen_ClearFreeLists,
-        _dart_PyAsyncGen_ClearFreeLists>('PyAsyncGen_ClearFreeLists'))();
+    return _PyAsyncGen_ClearFreeLists();
   }
 
-  _dart_PyAsyncGen_ClearFreeLists? _PyAsyncGen_ClearFreeLists;
+  late final _PyAsyncGen_ClearFreeLists_ptr =
+      _lookup<ffi.NativeFunction<_c_PyAsyncGen_ClearFreeLists>>(
+          'PyAsyncGen_ClearFreeLists');
+  late final _dart_PyAsyncGen_ClearFreeLists _PyAsyncGen_ClearFreeLists =
+      _PyAsyncGen_ClearFreeLists_ptr.asFunction<
+          _dart_PyAsyncGen_ClearFreeLists>();
 
-  late final _typeobject PyClassMethodDescr_Type =
-      _dylib.lookup<_typeobject>('PyClassMethodDescr_Type').ref;
+  late final ffi.Pointer<_typeobject> _PyClassMethodDescr_Type =
+      _lookup<_typeobject>('PyClassMethodDescr_Type');
 
-  late final _typeobject PyGetSetDescr_Type =
-      _dylib.lookup<_typeobject>('PyGetSetDescr_Type').ref;
+  _typeobject get PyClassMethodDescr_Type => _PyClassMethodDescr_Type.ref;
 
-  late final _typeobject PyMemberDescr_Type =
-      _dylib.lookup<_typeobject>('PyMemberDescr_Type').ref;
+  late final ffi.Pointer<_typeobject> _PyGetSetDescr_Type =
+      _lookup<_typeobject>('PyGetSetDescr_Type');
 
-  late final _typeobject PyMethodDescr_Type =
-      _dylib.lookup<_typeobject>('PyMethodDescr_Type').ref;
+  _typeobject get PyGetSetDescr_Type => _PyGetSetDescr_Type.ref;
 
-  late final _typeobject PyWrapperDescr_Type =
-      _dylib.lookup<_typeobject>('PyWrapperDescr_Type').ref;
+  late final ffi.Pointer<_typeobject> _PyMemberDescr_Type =
+      _lookup<_typeobject>('PyMemberDescr_Type');
 
-  late final _typeobject PyDictProxy_Type =
-      _dylib.lookup<_typeobject>('PyDictProxy_Type').ref;
+  _typeobject get PyMemberDescr_Type => _PyMemberDescr_Type.ref;
 
-  late final _typeobject PyMethodWrapper_Type =
-      _dylib.lookup<_typeobject>('_PyMethodWrapper_Type').ref;
+  late final ffi.Pointer<_typeobject> _PyMethodDescr_Type =
+      _lookup<_typeobject>('PyMethodDescr_Type');
+
+  _typeobject get PyMethodDescr_Type => _PyMethodDescr_Type.ref;
+
+  late final ffi.Pointer<_typeobject> _PyWrapperDescr_Type =
+      _lookup<_typeobject>('PyWrapperDescr_Type');
+
+  _typeobject get PyWrapperDescr_Type => _PyWrapperDescr_Type.ref;
+
+  late final ffi.Pointer<_typeobject> _PyDictProxy_Type =
+      _lookup<_typeobject>('PyDictProxy_Type');
+
+  _typeobject get PyDictProxy_Type => _PyDictProxy_Type.ref;
+
+  late final ffi.Pointer<_typeobject> _PyMethodWrapper_Type =
+      _lookup<_typeobject>('_PyMethodWrapper_Type');
+
+  _typeobject get PyMethodWrapper_Type => _PyMethodWrapper_Type.ref;
 
   ffi.Pointer<PyObject> PyDescr_NewMethod(
     ffi.Pointer<_typeobject> arg0,
     ffi.Pointer<PyMethodDef> arg1,
   ) {
-    return (_PyDescr_NewMethod ??=
-        _dylib.lookupFunction<_c_PyDescr_NewMethod, _dart_PyDescr_NewMethod>(
-            'PyDescr_NewMethod'))(
+    return _PyDescr_NewMethod(
       arg0,
       arg1,
     );
   }
 
-  _dart_PyDescr_NewMethod? _PyDescr_NewMethod;
+  late final _PyDescr_NewMethod_ptr =
+      _lookup<ffi.NativeFunction<_c_PyDescr_NewMethod>>('PyDescr_NewMethod');
+  late final _dart_PyDescr_NewMethod _PyDescr_NewMethod =
+      _PyDescr_NewMethod_ptr.asFunction<_dart_PyDescr_NewMethod>();
 
   ffi.Pointer<PyObject> PyDescr_NewClassMethod(
     ffi.Pointer<_typeobject> arg0,
     ffi.Pointer<PyMethodDef> arg1,
   ) {
-    return (_PyDescr_NewClassMethod ??= _dylib.lookupFunction<
-        _c_PyDescr_NewClassMethod,
-        _dart_PyDescr_NewClassMethod>('PyDescr_NewClassMethod'))(
+    return _PyDescr_NewClassMethod(
       arg0,
       arg1,
     );
   }
 
-  _dart_PyDescr_NewClassMethod? _PyDescr_NewClassMethod;
+  late final _PyDescr_NewClassMethod_ptr =
+      _lookup<ffi.NativeFunction<_c_PyDescr_NewClassMethod>>(
+          'PyDescr_NewClassMethod');
+  late final _dart_PyDescr_NewClassMethod _PyDescr_NewClassMethod =
+      _PyDescr_NewClassMethod_ptr.asFunction<_dart_PyDescr_NewClassMethod>();
 
   ffi.Pointer<PyObject> PyDescr_NewMember(
     ffi.Pointer<_typeobject> arg0,
     ffi.Pointer<PyMemberDef> arg1,
   ) {
-    return (_PyDescr_NewMember ??=
-        _dylib.lookupFunction<_c_PyDescr_NewMember, _dart_PyDescr_NewMember>(
-            'PyDescr_NewMember'))(
+    return _PyDescr_NewMember(
       arg0,
       arg1,
     );
   }
 
-  _dart_PyDescr_NewMember? _PyDescr_NewMember;
+  late final _PyDescr_NewMember_ptr =
+      _lookup<ffi.NativeFunction<_c_PyDescr_NewMember>>('PyDescr_NewMember');
+  late final _dart_PyDescr_NewMember _PyDescr_NewMember =
+      _PyDescr_NewMember_ptr.asFunction<_dart_PyDescr_NewMember>();
 
   ffi.Pointer<PyObject> PyDescr_NewGetSet(
     ffi.Pointer<_typeobject> arg0,
     ffi.Pointer<PyGetSetDef> arg1,
   ) {
-    return (_PyDescr_NewGetSet ??=
-        _dylib.lookupFunction<_c_PyDescr_NewGetSet, _dart_PyDescr_NewGetSet>(
-            'PyDescr_NewGetSet'))(
+    return _PyDescr_NewGetSet(
       arg0,
       arg1,
     );
   }
 
-  _dart_PyDescr_NewGetSet? _PyDescr_NewGetSet;
+  late final _PyDescr_NewGetSet_ptr =
+      _lookup<ffi.NativeFunction<_c_PyDescr_NewGetSet>>('PyDescr_NewGetSet');
+  late final _dart_PyDescr_NewGetSet _PyDescr_NewGetSet =
+      _PyDescr_NewGetSet_ptr.asFunction<_dart_PyDescr_NewGetSet>();
 
   ffi.Pointer<PyObject> PyDescr_NewWrapper(
     ffi.Pointer<_typeobject> arg0,
     ffi.Pointer<wrapperbase> arg1,
     ffi.Pointer<ffi.Void> arg2,
   ) {
-    return (_PyDescr_NewWrapper ??=
-        _dylib.lookupFunction<_c_PyDescr_NewWrapper, _dart_PyDescr_NewWrapper>(
-            'PyDescr_NewWrapper'))(
+    return _PyDescr_NewWrapper(
       arg0,
       arg1,
       arg2,
     );
   }
 
-  _dart_PyDescr_NewWrapper? _PyDescr_NewWrapper;
+  late final _PyDescr_NewWrapper_ptr =
+      _lookup<ffi.NativeFunction<_c_PyDescr_NewWrapper>>('PyDescr_NewWrapper');
+  late final _dart_PyDescr_NewWrapper _PyDescr_NewWrapper =
+      _PyDescr_NewWrapper_ptr.asFunction<_dart_PyDescr_NewWrapper>();
 
   ffi.Pointer<PyObject> PyDictProxy_New(
     ffi.Pointer<PyObject> arg0,
   ) {
-    return (_PyDictProxy_New ??=
-        _dylib.lookupFunction<_c_PyDictProxy_New, _dart_PyDictProxy_New>(
-            'PyDictProxy_New'))(
+    return _PyDictProxy_New(
       arg0,
     );
   }
 
-  _dart_PyDictProxy_New? _PyDictProxy_New;
+  late final _PyDictProxy_New_ptr =
+      _lookup<ffi.NativeFunction<_c_PyDictProxy_New>>('PyDictProxy_New');
+  late final _dart_PyDictProxy_New _PyDictProxy_New =
+      _PyDictProxy_New_ptr.asFunction<_dart_PyDictProxy_New>();
 
   ffi.Pointer<PyObject> PyWrapper_New(
     ffi.Pointer<PyObject> arg0,
     ffi.Pointer<PyObject> arg1,
   ) {
-    return (_PyWrapper_New ??=
-        _dylib.lookupFunction<_c_PyWrapper_New, _dart_PyWrapper_New>(
-            'PyWrapper_New'))(
+    return _PyWrapper_New(
       arg0,
       arg1,
     );
   }
 
-  _dart_PyWrapper_New? _PyWrapper_New;
+  late final _PyWrapper_New_ptr =
+      _lookup<ffi.NativeFunction<_c_PyWrapper_New>>('PyWrapper_New');
+  late final _dart_PyWrapper_New _PyWrapper_New =
+      _PyWrapper_New_ptr.asFunction<_dart_PyWrapper_New>();
 
-  late final _typeobject PyProperty_Type =
-      _dylib.lookup<_typeobject>('PyProperty_Type').ref;
+  late final ffi.Pointer<_typeobject> _PyProperty_Type =
+      _lookup<_typeobject>('PyProperty_Type');
+
+  _typeobject get PyProperty_Type => _PyProperty_Type.ref;
 
   ffi.Pointer<PyObject> PyWarnings_Init() {
-    return (_PyWarnings_Init ??=
-        _dylib.lookupFunction<_c_PyWarnings_Init, _dart_PyWarnings_Init>(
-            '_PyWarnings_Init'))();
+    return _PyWarnings_Init();
   }
 
-  _dart_PyWarnings_Init? _PyWarnings_Init;
+  late final _PyWarnings_Init_ptr =
+      _lookup<ffi.NativeFunction<_c_PyWarnings_Init>>('_PyWarnings_Init');
+  late final _dart_PyWarnings_Init _PyWarnings_Init =
+      _PyWarnings_Init_ptr.asFunction<_dart_PyWarnings_Init>();
 
   int PyErr_WarnEx(
     ffi.Pointer<PyObject> category,
     ffi.Pointer<ffi.Int8> message,
     int stack_level,
   ) {
-    return (_PyErr_WarnEx ??= _dylib
-        .lookupFunction<_c_PyErr_WarnEx, _dart_PyErr_WarnEx>('PyErr_WarnEx'))(
+    return _PyErr_WarnEx(
       category,
       message,
       stack_level,
     );
   }
 
-  _dart_PyErr_WarnEx? _PyErr_WarnEx;
+  late final _PyErr_WarnEx_ptr =
+      _lookup<ffi.NativeFunction<_c_PyErr_WarnEx>>('PyErr_WarnEx');
+  late final _dart_PyErr_WarnEx _PyErr_WarnEx =
+      _PyErr_WarnEx_ptr.asFunction<_dart_PyErr_WarnEx>();
 
   int PyErr_WarnFormat(
     ffi.Pointer<PyObject> category,
     int stack_level,
     ffi.Pointer<ffi.Int8> format,
   ) {
-    return (_PyErr_WarnFormat ??=
-        _dylib.lookupFunction<_c_PyErr_WarnFormat, _dart_PyErr_WarnFormat>(
-            'PyErr_WarnFormat'))(
+    return _PyErr_WarnFormat(
       category,
       stack_level,
       format,
     );
   }
 
-  _dart_PyErr_WarnFormat? _PyErr_WarnFormat;
+  late final _PyErr_WarnFormat_ptr =
+      _lookup<ffi.NativeFunction<_c_PyErr_WarnFormat>>('PyErr_WarnFormat');
+  late final _dart_PyErr_WarnFormat _PyErr_WarnFormat =
+      _PyErr_WarnFormat_ptr.asFunction<_dart_PyErr_WarnFormat>();
 
   int PyErr_ResourceWarning(
     ffi.Pointer<PyObject> source,
     int stack_level,
     ffi.Pointer<ffi.Int8> format,
   ) {
-    return (_PyErr_ResourceWarning ??= _dylib.lookupFunction<
-        _c_PyErr_ResourceWarning,
-        _dart_PyErr_ResourceWarning>('PyErr_ResourceWarning'))(
+    return _PyErr_ResourceWarning(
       source,
       stack_level,
       format,
     );
   }
 
-  _dart_PyErr_ResourceWarning? _PyErr_ResourceWarning;
+  late final _PyErr_ResourceWarning_ptr =
+      _lookup<ffi.NativeFunction<_c_PyErr_ResourceWarning>>(
+          'PyErr_ResourceWarning');
+  late final _dart_PyErr_ResourceWarning _PyErr_ResourceWarning =
+      _PyErr_ResourceWarning_ptr.asFunction<_dart_PyErr_ResourceWarning>();
 
   int PyErr_WarnExplicitObject(
     ffi.Pointer<PyObject> category,
@@ -6987,9 +8061,7 @@ class DartPyC {
     ffi.Pointer<PyObject> module,
     ffi.Pointer<PyObject> registry,
   ) {
-    return (_PyErr_WarnExplicitObject ??= _dylib.lookupFunction<
-        _c_PyErr_WarnExplicitObject,
-        _dart_PyErr_WarnExplicitObject>('PyErr_WarnExplicitObject'))(
+    return _PyErr_WarnExplicitObject(
       category,
       message,
       filename,
@@ -6999,7 +8071,12 @@ class DartPyC {
     );
   }
 
-  _dart_PyErr_WarnExplicitObject? _PyErr_WarnExplicitObject;
+  late final _PyErr_WarnExplicitObject_ptr =
+      _lookup<ffi.NativeFunction<_c_PyErr_WarnExplicitObject>>(
+          'PyErr_WarnExplicitObject');
+  late final _dart_PyErr_WarnExplicitObject _PyErr_WarnExplicitObject =
+      _PyErr_WarnExplicitObject_ptr.asFunction<
+          _dart_PyErr_WarnExplicitObject>();
 
   int PyErr_WarnExplicit(
     ffi.Pointer<PyObject> category,
@@ -7009,9 +8086,7 @@ class DartPyC {
     ffi.Pointer<ffi.Int8> module,
     ffi.Pointer<PyObject> registry,
   ) {
-    return (_PyErr_WarnExplicit ??=
-        _dylib.lookupFunction<_c_PyErr_WarnExplicit, _dart_PyErr_WarnExplicit>(
-            'PyErr_WarnExplicit'))(
+    return _PyErr_WarnExplicit(
       category,
       message,
       filename,
@@ -7021,7 +8096,10 @@ class DartPyC {
     );
   }
 
-  _dart_PyErr_WarnExplicit? _PyErr_WarnExplicit;
+  late final _PyErr_WarnExplicit_ptr =
+      _lookup<ffi.NativeFunction<_c_PyErr_WarnExplicit>>('PyErr_WarnExplicit');
+  late final _dart_PyErr_WarnExplicit _PyErr_WarnExplicit =
+      _PyErr_WarnExplicit_ptr.asFunction<_dart_PyErr_WarnExplicit>();
 
   int PyErr_WarnExplicitFormat(
     ffi.Pointer<PyObject> category,
@@ -7031,9 +8109,7 @@ class DartPyC {
     ffi.Pointer<PyObject> registry,
     ffi.Pointer<ffi.Int8> format,
   ) {
-    return (_PyErr_WarnExplicitFormat ??= _dylib.lookupFunction<
-        _c_PyErr_WarnExplicitFormat,
-        _dart_PyErr_WarnExplicitFormat>('PyErr_WarnExplicitFormat'))(
+    return _PyErr_WarnExplicitFormat(
       category,
       filename,
       lineno,
@@ -7043,1144 +8119,1659 @@ class DartPyC {
     );
   }
 
-  _dart_PyErr_WarnExplicitFormat? _PyErr_WarnExplicitFormat;
+  late final _PyErr_WarnExplicitFormat_ptr =
+      _lookup<ffi.NativeFunction<_c_PyErr_WarnExplicitFormat>>(
+          'PyErr_WarnExplicitFormat');
+  late final _dart_PyErr_WarnExplicitFormat _PyErr_WarnExplicitFormat =
+      _PyErr_WarnExplicitFormat_ptr.asFunction<
+          _dart_PyErr_WarnExplicitFormat>();
 
   void PyErr_WarnUnawaitedCoroutine(
     ffi.Pointer<PyObject> coro,
   ) {
-    return (_PyErr_WarnUnawaitedCoroutine ??= _dylib.lookupFunction<
-        _c_PyErr_WarnUnawaitedCoroutine,
-        _dart_PyErr_WarnUnawaitedCoroutine>('_PyErr_WarnUnawaitedCoroutine'))(
+    return _PyErr_WarnUnawaitedCoroutine(
       coro,
     );
   }
 
-  _dart_PyErr_WarnUnawaitedCoroutine? _PyErr_WarnUnawaitedCoroutine;
+  late final _PyErr_WarnUnawaitedCoroutine_ptr =
+      _lookup<ffi.NativeFunction<_c_PyErr_WarnUnawaitedCoroutine>>(
+          '_PyErr_WarnUnawaitedCoroutine');
+  late final _dart_PyErr_WarnUnawaitedCoroutine _PyErr_WarnUnawaitedCoroutine =
+      _PyErr_WarnUnawaitedCoroutine_ptr.asFunction<
+          _dart_PyErr_WarnUnawaitedCoroutine>();
 
-  late final _typeobject PyWeakref_RefType =
-      _dylib.lookup<_typeobject>('_PyWeakref_RefType').ref;
+  late final ffi.Pointer<_typeobject> _PyWeakref_RefType =
+      _lookup<_typeobject>('_PyWeakref_RefType');
 
-  late final _typeobject PyWeakref_ProxyType =
-      _dylib.lookup<_typeobject>('_PyWeakref_ProxyType').ref;
+  _typeobject get PyWeakref_RefType => _PyWeakref_RefType.ref;
 
-  late final _typeobject PyWeakref_CallableProxyType =
-      _dylib.lookup<_typeobject>('_PyWeakref_CallableProxyType').ref;
+  late final ffi.Pointer<_typeobject> _PyWeakref_ProxyType =
+      _lookup<_typeobject>('_PyWeakref_ProxyType');
+
+  _typeobject get PyWeakref_ProxyType => _PyWeakref_ProxyType.ref;
+
+  late final ffi.Pointer<_typeobject> _PyWeakref_CallableProxyType =
+      _lookup<_typeobject>('_PyWeakref_CallableProxyType');
+
+  _typeobject get PyWeakref_CallableProxyType =>
+      _PyWeakref_CallableProxyType.ref;
 
   ffi.Pointer<PyObject> PyWeakref_NewRef(
     ffi.Pointer<PyObject> ob,
     ffi.Pointer<PyObject> callback,
   ) {
-    return (_PyWeakref_NewRef ??=
-        _dylib.lookupFunction<_c_PyWeakref_NewRef, _dart_PyWeakref_NewRef>(
-            'PyWeakref_NewRef'))(
+    return _PyWeakref_NewRef(
       ob,
       callback,
     );
   }
 
-  _dart_PyWeakref_NewRef? _PyWeakref_NewRef;
+  late final _PyWeakref_NewRef_ptr =
+      _lookup<ffi.NativeFunction<_c_PyWeakref_NewRef>>('PyWeakref_NewRef');
+  late final _dart_PyWeakref_NewRef _PyWeakref_NewRef =
+      _PyWeakref_NewRef_ptr.asFunction<_dart_PyWeakref_NewRef>();
 
   ffi.Pointer<PyObject> PyWeakref_NewProxy(
     ffi.Pointer<PyObject> ob,
     ffi.Pointer<PyObject> callback,
   ) {
-    return (_PyWeakref_NewProxy ??=
-        _dylib.lookupFunction<_c_PyWeakref_NewProxy, _dart_PyWeakref_NewProxy>(
-            'PyWeakref_NewProxy'))(
+    return _PyWeakref_NewProxy(
       ob,
       callback,
     );
   }
 
-  _dart_PyWeakref_NewProxy? _PyWeakref_NewProxy;
+  late final _PyWeakref_NewProxy_ptr =
+      _lookup<ffi.NativeFunction<_c_PyWeakref_NewProxy>>('PyWeakref_NewProxy');
+  late final _dart_PyWeakref_NewProxy _PyWeakref_NewProxy =
+      _PyWeakref_NewProxy_ptr.asFunction<_dart_PyWeakref_NewProxy>();
 
   ffi.Pointer<PyObject> PyWeakref_GetObject(
     ffi.Pointer<PyObject> ref,
   ) {
-    return (_PyWeakref_GetObject ??= _dylib.lookupFunction<
-        _c_PyWeakref_GetObject,
-        _dart_PyWeakref_GetObject>('PyWeakref_GetObject'))(
+    return _PyWeakref_GetObject(
       ref,
     );
   }
 
-  _dart_PyWeakref_GetObject? _PyWeakref_GetObject;
+  late final _PyWeakref_GetObject_ptr =
+      _lookup<ffi.NativeFunction<_c_PyWeakref_GetObject>>(
+          'PyWeakref_GetObject');
+  late final _dart_PyWeakref_GetObject _PyWeakref_GetObject =
+      _PyWeakref_GetObject_ptr.asFunction<_dart_PyWeakref_GetObject>();
 
   int PyWeakref_GetWeakrefCount(
     ffi.Pointer<_PyWeakReference> head,
   ) {
-    return (_PyWeakref_GetWeakrefCount ??= _dylib.lookupFunction<
-        _c_PyWeakref_GetWeakrefCount,
-        _dart_PyWeakref_GetWeakrefCount>('_PyWeakref_GetWeakrefCount'))(
+    return _PyWeakref_GetWeakrefCount(
       head,
     );
   }
 
-  _dart_PyWeakref_GetWeakrefCount? _PyWeakref_GetWeakrefCount;
+  late final _PyWeakref_GetWeakrefCount_ptr =
+      _lookup<ffi.NativeFunction<_c_PyWeakref_GetWeakrefCount>>(
+          '_PyWeakref_GetWeakrefCount');
+  late final _dart_PyWeakref_GetWeakrefCount _PyWeakref_GetWeakrefCount =
+      _PyWeakref_GetWeakrefCount_ptr.asFunction<
+          _dart_PyWeakref_GetWeakrefCount>();
 
   void PyWeakref_ClearRef(
     ffi.Pointer<_PyWeakReference> self,
   ) {
-    return (_PyWeakref_ClearRef ??=
-        _dylib.lookupFunction<_c_PyWeakref_ClearRef, _dart_PyWeakref_ClearRef>(
-            '_PyWeakref_ClearRef'))(
+    return _PyWeakref_ClearRef(
       self,
     );
   }
 
-  _dart_PyWeakref_ClearRef? _PyWeakref_ClearRef;
+  late final _PyWeakref_ClearRef_ptr =
+      _lookup<ffi.NativeFunction<_c_PyWeakref_ClearRef>>('_PyWeakref_ClearRef');
+  late final _dart_PyWeakref_ClearRef _PyWeakref_ClearRef =
+      _PyWeakref_ClearRef_ptr.asFunction<_dart_PyWeakref_ClearRef>();
 
-  late final ffi.Pointer<ffi.Int8> PyStructSequence_UnnamedField = _dylib
-      .lookup<ffi.Pointer<ffi.Int8>>('PyStructSequence_UnnamedField')
-      .value;
+  late final ffi.Pointer<ffi.Pointer<ffi.Int8>> _PyStructSequence_UnnamedField =
+      _lookup<ffi.Pointer<ffi.Int8>>('PyStructSequence_UnnamedField');
+
+  ffi.Pointer<ffi.Int8> get PyStructSequence_UnnamedField =>
+      _PyStructSequence_UnnamedField.value;
+
+  set PyStructSequence_UnnamedField(ffi.Pointer<ffi.Int8> value) =>
+      _PyStructSequence_UnnamedField.value = value;
 
   void PyStructSequence_InitType(
     ffi.Pointer<_typeobject> type,
     ffi.Pointer<PyStructSequence_Desc> desc,
   ) {
-    return (_PyStructSequence_InitType ??= _dylib.lookupFunction<
-        _c_PyStructSequence_InitType,
-        _dart_PyStructSequence_InitType>('PyStructSequence_InitType'))(
+    return _PyStructSequence_InitType(
       type,
       desc,
     );
   }
 
-  _dart_PyStructSequence_InitType? _PyStructSequence_InitType;
+  late final _PyStructSequence_InitType_ptr =
+      _lookup<ffi.NativeFunction<_c_PyStructSequence_InitType>>(
+          'PyStructSequence_InitType');
+  late final _dart_PyStructSequence_InitType _PyStructSequence_InitType =
+      _PyStructSequence_InitType_ptr.asFunction<
+          _dart_PyStructSequence_InitType>();
 
   int PyStructSequence_InitType2(
     ffi.Pointer<_typeobject> type,
     ffi.Pointer<PyStructSequence_Desc> desc,
   ) {
-    return (_PyStructSequence_InitType2 ??= _dylib.lookupFunction<
-        _c_PyStructSequence_InitType2,
-        _dart_PyStructSequence_InitType2>('PyStructSequence_InitType2'))(
+    return _PyStructSequence_InitType2(
       type,
       desc,
     );
   }
 
-  _dart_PyStructSequence_InitType2? _PyStructSequence_InitType2;
+  late final _PyStructSequence_InitType2_ptr =
+      _lookup<ffi.NativeFunction<_c_PyStructSequence_InitType2>>(
+          'PyStructSequence_InitType2');
+  late final _dart_PyStructSequence_InitType2 _PyStructSequence_InitType2 =
+      _PyStructSequence_InitType2_ptr.asFunction<
+          _dart_PyStructSequence_InitType2>();
 
   ffi.Pointer<_typeobject> PyStructSequence_NewType(
     ffi.Pointer<PyStructSequence_Desc> desc,
   ) {
-    return (_PyStructSequence_NewType ??= _dylib.lookupFunction<
-        _c_PyStructSequence_NewType,
-        _dart_PyStructSequence_NewType>('PyStructSequence_NewType'))(
+    return _PyStructSequence_NewType(
       desc,
     );
   }
 
-  _dart_PyStructSequence_NewType? _PyStructSequence_NewType;
+  late final _PyStructSequence_NewType_ptr =
+      _lookup<ffi.NativeFunction<_c_PyStructSequence_NewType>>(
+          'PyStructSequence_NewType');
+  late final _dart_PyStructSequence_NewType _PyStructSequence_NewType =
+      _PyStructSequence_NewType_ptr.asFunction<
+          _dart_PyStructSequence_NewType>();
 
   ffi.Pointer<PyObject> PyStructSequence_New(
     ffi.Pointer<_typeobject> type,
   ) {
-    return (_PyStructSequence_New ??= _dylib.lookupFunction<
-        _c_PyStructSequence_New,
-        _dart_PyStructSequence_New>('PyStructSequence_New'))(
+    return _PyStructSequence_New(
       type,
     );
   }
 
-  _dart_PyStructSequence_New? _PyStructSequence_New;
+  late final _PyStructSequence_New_ptr =
+      _lookup<ffi.NativeFunction<_c_PyStructSequence_New>>(
+          'PyStructSequence_New');
+  late final _dart_PyStructSequence_New _PyStructSequence_New =
+      _PyStructSequence_New_ptr.asFunction<_dart_PyStructSequence_New>();
 
   void PyStructSequence_SetItem(
     ffi.Pointer<PyObject> arg0,
     int arg1,
     ffi.Pointer<PyObject> arg2,
   ) {
-    return (_PyStructSequence_SetItem ??= _dylib.lookupFunction<
-        _c_PyStructSequence_SetItem,
-        _dart_PyStructSequence_SetItem>('PyStructSequence_SetItem'))(
+    return _PyStructSequence_SetItem(
       arg0,
       arg1,
       arg2,
     );
   }
 
-  _dart_PyStructSequence_SetItem? _PyStructSequence_SetItem;
+  late final _PyStructSequence_SetItem_ptr =
+      _lookup<ffi.NativeFunction<_c_PyStructSequence_SetItem>>(
+          'PyStructSequence_SetItem');
+  late final _dart_PyStructSequence_SetItem _PyStructSequence_SetItem =
+      _PyStructSequence_SetItem_ptr.asFunction<
+          _dart_PyStructSequence_SetItem>();
 
   ffi.Pointer<PyObject> PyStructSequence_GetItem(
     ffi.Pointer<PyObject> arg0,
     int arg1,
   ) {
-    return (_PyStructSequence_GetItem ??= _dylib.lookupFunction<
-        _c_PyStructSequence_GetItem,
-        _dart_PyStructSequence_GetItem>('PyStructSequence_GetItem'))(
+    return _PyStructSequence_GetItem(
       arg0,
       arg1,
     );
   }
 
-  _dart_PyStructSequence_GetItem? _PyStructSequence_GetItem;
+  late final _PyStructSequence_GetItem_ptr =
+      _lookup<ffi.NativeFunction<_c_PyStructSequence_GetItem>>(
+          'PyStructSequence_GetItem');
+  late final _dart_PyStructSequence_GetItem _PyStructSequence_GetItem =
+      _PyStructSequence_GetItem_ptr.asFunction<
+          _dart_PyStructSequence_GetItem>();
 
-  late final _typeobject PyNamespace_Type =
-      _dylib.lookup<_typeobject>('_PyNamespace_Type').ref;
+  late final ffi.Pointer<_typeobject> _PyNamespace_Type =
+      _lookup<_typeobject>('_PyNamespace_Type');
+
+  _typeobject get PyNamespace_Type => _PyNamespace_Type.ref;
 
   ffi.Pointer<PyObject> PyNamespace_New(
     ffi.Pointer<PyObject> kwds,
   ) {
-    return (_PyNamespace_New ??=
-        _dylib.lookupFunction<_c_PyNamespace_New, _dart_PyNamespace_New>(
-            '_PyNamespace_New'))(
+    return _PyNamespace_New(
       kwds,
     );
   }
 
-  _dart_PyNamespace_New? _PyNamespace_New;
+  late final _PyNamespace_New_ptr =
+      _lookup<ffi.NativeFunction<_c_PyNamespace_New>>('_PyNamespace_New');
+  late final _dart_PyNamespace_New _PyNamespace_New =
+      _PyNamespace_New_ptr.asFunction<_dart_PyNamespace_New>();
 
-  late final _typeobject PyPickleBuffer_Type =
-      _dylib.lookup<_typeobject>('PyPickleBuffer_Type').ref;
+  late final ffi.Pointer<_typeobject> _PyPickleBuffer_Type =
+      _lookup<_typeobject>('PyPickleBuffer_Type');
+
+  _typeobject get PyPickleBuffer_Type => _PyPickleBuffer_Type.ref;
 
   ffi.Pointer<PyObject> PyPickleBuffer_FromObject(
     ffi.Pointer<PyObject> arg0,
   ) {
-    return (_PyPickleBuffer_FromObject ??= _dylib.lookupFunction<
-        _c_PyPickleBuffer_FromObject,
-        _dart_PyPickleBuffer_FromObject>('PyPickleBuffer_FromObject'))(
+    return _PyPickleBuffer_FromObject(
       arg0,
     );
   }
 
-  _dart_PyPickleBuffer_FromObject? _PyPickleBuffer_FromObject;
+  late final _PyPickleBuffer_FromObject_ptr =
+      _lookup<ffi.NativeFunction<_c_PyPickleBuffer_FromObject>>(
+          'PyPickleBuffer_FromObject');
+  late final _dart_PyPickleBuffer_FromObject _PyPickleBuffer_FromObject =
+      _PyPickleBuffer_FromObject_ptr.asFunction<
+          _dart_PyPickleBuffer_FromObject>();
 
   ffi.Pointer<Py_buffer> PyPickleBuffer_GetBuffer(
     ffi.Pointer<PyObject> arg0,
   ) {
-    return (_PyPickleBuffer_GetBuffer ??= _dylib.lookupFunction<
-        _c_PyPickleBuffer_GetBuffer,
-        _dart_PyPickleBuffer_GetBuffer>('PyPickleBuffer_GetBuffer'))(
+    return _PyPickleBuffer_GetBuffer(
       arg0,
     );
   }
 
-  _dart_PyPickleBuffer_GetBuffer? _PyPickleBuffer_GetBuffer;
+  late final _PyPickleBuffer_GetBuffer_ptr =
+      _lookup<ffi.NativeFunction<_c_PyPickleBuffer_GetBuffer>>(
+          'PyPickleBuffer_GetBuffer');
+  late final _dart_PyPickleBuffer_GetBuffer _PyPickleBuffer_GetBuffer =
+      _PyPickleBuffer_GetBuffer_ptr.asFunction<
+          _dart_PyPickleBuffer_GetBuffer>();
 
   int PyPickleBuffer_Release(
     ffi.Pointer<PyObject> arg0,
   ) {
-    return (_PyPickleBuffer_Release ??= _dylib.lookupFunction<
-        _c_PyPickleBuffer_Release,
-        _dart_PyPickleBuffer_Release>('PyPickleBuffer_Release'))(
+    return _PyPickleBuffer_Release(
       arg0,
     );
   }
 
-  _dart_PyPickleBuffer_Release? _PyPickleBuffer_Release;
+  late final _PyPickleBuffer_Release_ptr =
+      _lookup<ffi.NativeFunction<_c_PyPickleBuffer_Release>>(
+          'PyPickleBuffer_Release');
+  late final _dart_PyPickleBuffer_Release _PyPickleBuffer_Release =
+      _PyPickleBuffer_Release_ptr.asFunction<_dart_PyPickleBuffer_Release>();
 
   int PyCodec_Register(
     ffi.Pointer<PyObject> search_function,
   ) {
-    return (_PyCodec_Register ??=
-        _dylib.lookupFunction<_c_PyCodec_Register, _dart_PyCodec_Register>(
-            'PyCodec_Register'))(
+    return _PyCodec_Register(
       search_function,
     );
   }
 
-  _dart_PyCodec_Register? _PyCodec_Register;
+  late final _PyCodec_Register_ptr =
+      _lookup<ffi.NativeFunction<_c_PyCodec_Register>>('PyCodec_Register');
+  late final _dart_PyCodec_Register _PyCodec_Register =
+      _PyCodec_Register_ptr.asFunction<_dart_PyCodec_Register>();
 
   ffi.Pointer<PyObject> PyCodec_Lookup(
     ffi.Pointer<ffi.Int8> encoding,
   ) {
-    return (_PyCodec_Lookup ??=
-        _dylib.lookupFunction<_c_PyCodec_Lookup, _dart_PyCodec_Lookup>(
-            '_PyCodec_Lookup'))(
+    return _PyCodec_Lookup(
       encoding,
     );
   }
 
-  _dart_PyCodec_Lookup? _PyCodec_Lookup;
+  late final _PyCodec_Lookup_ptr =
+      _lookup<ffi.NativeFunction<_c_PyCodec_Lookup>>('_PyCodec_Lookup');
+  late final _dart_PyCodec_Lookup _PyCodec_Lookup =
+      _PyCodec_Lookup_ptr.asFunction<_dart_PyCodec_Lookup>();
 
   int PyCodec_Forget(
     ffi.Pointer<ffi.Int8> encoding,
   ) {
-    return (_PyCodec_Forget ??=
-        _dylib.lookupFunction<_c_PyCodec_Forget, _dart_PyCodec_Forget>(
-            '_PyCodec_Forget'))(
+    return _PyCodec_Forget(
       encoding,
     );
   }
 
-  _dart_PyCodec_Forget? _PyCodec_Forget;
+  late final _PyCodec_Forget_ptr =
+      _lookup<ffi.NativeFunction<_c_PyCodec_Forget>>('_PyCodec_Forget');
+  late final _dart_PyCodec_Forget _PyCodec_Forget =
+      _PyCodec_Forget_ptr.asFunction<_dart_PyCodec_Forget>();
 
   int PyCodec_KnownEncoding(
     ffi.Pointer<ffi.Int8> encoding,
   ) {
-    return (_PyCodec_KnownEncoding ??= _dylib.lookupFunction<
-        _c_PyCodec_KnownEncoding,
-        _dart_PyCodec_KnownEncoding>('PyCodec_KnownEncoding'))(
+    return _PyCodec_KnownEncoding(
       encoding,
     );
   }
 
-  _dart_PyCodec_KnownEncoding? _PyCodec_KnownEncoding;
+  late final _PyCodec_KnownEncoding_ptr =
+      _lookup<ffi.NativeFunction<_c_PyCodec_KnownEncoding>>(
+          'PyCodec_KnownEncoding');
+  late final _dart_PyCodec_KnownEncoding _PyCodec_KnownEncoding =
+      _PyCodec_KnownEncoding_ptr.asFunction<_dart_PyCodec_KnownEncoding>();
 
   ffi.Pointer<PyObject> PyCodec_Encode(
     ffi.Pointer<PyObject> object,
     ffi.Pointer<ffi.Int8> encoding,
     ffi.Pointer<ffi.Int8> errors,
   ) {
-    return (_PyCodec_Encode ??=
-        _dylib.lookupFunction<_c_PyCodec_Encode, _dart_PyCodec_Encode>(
-            'PyCodec_Encode'))(
+    return _PyCodec_Encode(
       object,
       encoding,
       errors,
     );
   }
 
-  _dart_PyCodec_Encode? _PyCodec_Encode;
+  late final _PyCodec_Encode_ptr =
+      _lookup<ffi.NativeFunction<_c_PyCodec_Encode>>('PyCodec_Encode');
+  late final _dart_PyCodec_Encode _PyCodec_Encode =
+      _PyCodec_Encode_ptr.asFunction<_dart_PyCodec_Encode>();
 
   ffi.Pointer<PyObject> PyCodec_Decode(
     ffi.Pointer<PyObject> object,
     ffi.Pointer<ffi.Int8> encoding,
     ffi.Pointer<ffi.Int8> errors,
   ) {
-    return (_PyCodec_Decode ??=
-        _dylib.lookupFunction<_c_PyCodec_Decode, _dart_PyCodec_Decode>(
-            'PyCodec_Decode'))(
+    return _PyCodec_Decode(
       object,
       encoding,
       errors,
     );
   }
 
-  _dart_PyCodec_Decode? _PyCodec_Decode;
+  late final _PyCodec_Decode_ptr =
+      _lookup<ffi.NativeFunction<_c_PyCodec_Decode>>('PyCodec_Decode');
+  late final _dart_PyCodec_Decode _PyCodec_Decode =
+      _PyCodec_Decode_ptr.asFunction<_dart_PyCodec_Decode>();
 
   ffi.Pointer<PyObject> PyCodec_LookupTextEncoding(
     ffi.Pointer<ffi.Int8> encoding,
     ffi.Pointer<ffi.Int8> alternate_command,
   ) {
-    return (_PyCodec_LookupTextEncoding ??= _dylib.lookupFunction<
-        _c_PyCodec_LookupTextEncoding,
-        _dart_PyCodec_LookupTextEncoding>('_PyCodec_LookupTextEncoding'))(
+    return _PyCodec_LookupTextEncoding(
       encoding,
       alternate_command,
     );
   }
 
-  _dart_PyCodec_LookupTextEncoding? _PyCodec_LookupTextEncoding;
+  late final _PyCodec_LookupTextEncoding_ptr =
+      _lookup<ffi.NativeFunction<_c_PyCodec_LookupTextEncoding>>(
+          '_PyCodec_LookupTextEncoding');
+  late final _dart_PyCodec_LookupTextEncoding _PyCodec_LookupTextEncoding =
+      _PyCodec_LookupTextEncoding_ptr.asFunction<
+          _dart_PyCodec_LookupTextEncoding>();
 
   ffi.Pointer<PyObject> PyCodec_EncodeText(
     ffi.Pointer<PyObject> object,
     ffi.Pointer<ffi.Int8> encoding,
     ffi.Pointer<ffi.Int8> errors,
   ) {
-    return (_PyCodec_EncodeText ??=
-        _dylib.lookupFunction<_c_PyCodec_EncodeText, _dart_PyCodec_EncodeText>(
-            '_PyCodec_EncodeText'))(
+    return _PyCodec_EncodeText(
       object,
       encoding,
       errors,
     );
   }
 
-  _dart_PyCodec_EncodeText? _PyCodec_EncodeText;
+  late final _PyCodec_EncodeText_ptr =
+      _lookup<ffi.NativeFunction<_c_PyCodec_EncodeText>>('_PyCodec_EncodeText');
+  late final _dart_PyCodec_EncodeText _PyCodec_EncodeText =
+      _PyCodec_EncodeText_ptr.asFunction<_dart_PyCodec_EncodeText>();
 
   ffi.Pointer<PyObject> PyCodec_DecodeText(
     ffi.Pointer<PyObject> object,
     ffi.Pointer<ffi.Int8> encoding,
     ffi.Pointer<ffi.Int8> errors,
   ) {
-    return (_PyCodec_DecodeText ??=
-        _dylib.lookupFunction<_c_PyCodec_DecodeText, _dart_PyCodec_DecodeText>(
-            '_PyCodec_DecodeText'))(
+    return _PyCodec_DecodeText(
       object,
       encoding,
       errors,
     );
   }
 
-  _dart_PyCodec_DecodeText? _PyCodec_DecodeText;
+  late final _PyCodec_DecodeText_ptr =
+      _lookup<ffi.NativeFunction<_c_PyCodec_DecodeText>>('_PyCodec_DecodeText');
+  late final _dart_PyCodec_DecodeText _PyCodec_DecodeText =
+      _PyCodec_DecodeText_ptr.asFunction<_dart_PyCodec_DecodeText>();
 
   ffi.Pointer<PyObject> PyCodecInfo_GetIncrementalDecoder(
     ffi.Pointer<PyObject> codec_info,
     ffi.Pointer<ffi.Int8> errors,
   ) {
-    return (_PyCodecInfo_GetIncrementalDecoder ??= _dylib.lookupFunction<
-            _c_PyCodecInfo_GetIncrementalDecoder,
-            _dart_PyCodecInfo_GetIncrementalDecoder>(
-        '_PyCodecInfo_GetIncrementalDecoder'))(
+    return _PyCodecInfo_GetIncrementalDecoder(
       codec_info,
       errors,
     );
   }
 
-  _dart_PyCodecInfo_GetIncrementalDecoder? _PyCodecInfo_GetIncrementalDecoder;
+  late final _PyCodecInfo_GetIncrementalDecoder_ptr =
+      _lookup<ffi.NativeFunction<_c_PyCodecInfo_GetIncrementalDecoder>>(
+          '_PyCodecInfo_GetIncrementalDecoder');
+  late final _dart_PyCodecInfo_GetIncrementalDecoder
+      _PyCodecInfo_GetIncrementalDecoder =
+      _PyCodecInfo_GetIncrementalDecoder_ptr.asFunction<
+          _dart_PyCodecInfo_GetIncrementalDecoder>();
 
   ffi.Pointer<PyObject> PyCodecInfo_GetIncrementalEncoder(
     ffi.Pointer<PyObject> codec_info,
     ffi.Pointer<ffi.Int8> errors,
   ) {
-    return (_PyCodecInfo_GetIncrementalEncoder ??= _dylib.lookupFunction<
-            _c_PyCodecInfo_GetIncrementalEncoder,
-            _dart_PyCodecInfo_GetIncrementalEncoder>(
-        '_PyCodecInfo_GetIncrementalEncoder'))(
+    return _PyCodecInfo_GetIncrementalEncoder(
       codec_info,
       errors,
     );
   }
 
-  _dart_PyCodecInfo_GetIncrementalEncoder? _PyCodecInfo_GetIncrementalEncoder;
+  late final _PyCodecInfo_GetIncrementalEncoder_ptr =
+      _lookup<ffi.NativeFunction<_c_PyCodecInfo_GetIncrementalEncoder>>(
+          '_PyCodecInfo_GetIncrementalEncoder');
+  late final _dart_PyCodecInfo_GetIncrementalEncoder
+      _PyCodecInfo_GetIncrementalEncoder =
+      _PyCodecInfo_GetIncrementalEncoder_ptr.asFunction<
+          _dart_PyCodecInfo_GetIncrementalEncoder>();
 
   ffi.Pointer<PyObject> PyCodec_Encoder(
     ffi.Pointer<ffi.Int8> encoding,
   ) {
-    return (_PyCodec_Encoder ??=
-        _dylib.lookupFunction<_c_PyCodec_Encoder, _dart_PyCodec_Encoder>(
-            'PyCodec_Encoder'))(
+    return _PyCodec_Encoder(
       encoding,
     );
   }
 
-  _dart_PyCodec_Encoder? _PyCodec_Encoder;
+  late final _PyCodec_Encoder_ptr =
+      _lookup<ffi.NativeFunction<_c_PyCodec_Encoder>>('PyCodec_Encoder');
+  late final _dart_PyCodec_Encoder _PyCodec_Encoder =
+      _PyCodec_Encoder_ptr.asFunction<_dart_PyCodec_Encoder>();
 
   ffi.Pointer<PyObject> PyCodec_Decoder(
     ffi.Pointer<ffi.Int8> encoding,
   ) {
-    return (_PyCodec_Decoder ??=
-        _dylib.lookupFunction<_c_PyCodec_Decoder, _dart_PyCodec_Decoder>(
-            'PyCodec_Decoder'))(
+    return _PyCodec_Decoder(
       encoding,
     );
   }
 
-  _dart_PyCodec_Decoder? _PyCodec_Decoder;
+  late final _PyCodec_Decoder_ptr =
+      _lookup<ffi.NativeFunction<_c_PyCodec_Decoder>>('PyCodec_Decoder');
+  late final _dart_PyCodec_Decoder _PyCodec_Decoder =
+      _PyCodec_Decoder_ptr.asFunction<_dart_PyCodec_Decoder>();
 
   ffi.Pointer<PyObject> PyCodec_IncrementalEncoder(
     ffi.Pointer<ffi.Int8> encoding,
     ffi.Pointer<ffi.Int8> errors,
   ) {
-    return (_PyCodec_IncrementalEncoder ??= _dylib.lookupFunction<
-        _c_PyCodec_IncrementalEncoder,
-        _dart_PyCodec_IncrementalEncoder>('PyCodec_IncrementalEncoder'))(
+    return _PyCodec_IncrementalEncoder(
       encoding,
       errors,
     );
   }
 
-  _dart_PyCodec_IncrementalEncoder? _PyCodec_IncrementalEncoder;
+  late final _PyCodec_IncrementalEncoder_ptr =
+      _lookup<ffi.NativeFunction<_c_PyCodec_IncrementalEncoder>>(
+          'PyCodec_IncrementalEncoder');
+  late final _dart_PyCodec_IncrementalEncoder _PyCodec_IncrementalEncoder =
+      _PyCodec_IncrementalEncoder_ptr.asFunction<
+          _dart_PyCodec_IncrementalEncoder>();
 
   ffi.Pointer<PyObject> PyCodec_IncrementalDecoder(
     ffi.Pointer<ffi.Int8> encoding,
     ffi.Pointer<ffi.Int8> errors,
   ) {
-    return (_PyCodec_IncrementalDecoder ??= _dylib.lookupFunction<
-        _c_PyCodec_IncrementalDecoder,
-        _dart_PyCodec_IncrementalDecoder>('PyCodec_IncrementalDecoder'))(
+    return _PyCodec_IncrementalDecoder(
       encoding,
       errors,
     );
   }
 
-  _dart_PyCodec_IncrementalDecoder? _PyCodec_IncrementalDecoder;
+  late final _PyCodec_IncrementalDecoder_ptr =
+      _lookup<ffi.NativeFunction<_c_PyCodec_IncrementalDecoder>>(
+          'PyCodec_IncrementalDecoder');
+  late final _dart_PyCodec_IncrementalDecoder _PyCodec_IncrementalDecoder =
+      _PyCodec_IncrementalDecoder_ptr.asFunction<
+          _dart_PyCodec_IncrementalDecoder>();
 
   ffi.Pointer<PyObject> PyCodec_StreamReader(
     ffi.Pointer<ffi.Int8> encoding,
     ffi.Pointer<PyObject> stream,
     ffi.Pointer<ffi.Int8> errors,
   ) {
-    return (_PyCodec_StreamReader ??= _dylib.lookupFunction<
-        _c_PyCodec_StreamReader,
-        _dart_PyCodec_StreamReader>('PyCodec_StreamReader'))(
+    return _PyCodec_StreamReader(
       encoding,
       stream,
       errors,
     );
   }
 
-  _dart_PyCodec_StreamReader? _PyCodec_StreamReader;
+  late final _PyCodec_StreamReader_ptr =
+      _lookup<ffi.NativeFunction<_c_PyCodec_StreamReader>>(
+          'PyCodec_StreamReader');
+  late final _dart_PyCodec_StreamReader _PyCodec_StreamReader =
+      _PyCodec_StreamReader_ptr.asFunction<_dart_PyCodec_StreamReader>();
 
   ffi.Pointer<PyObject> PyCodec_StreamWriter(
     ffi.Pointer<ffi.Int8> encoding,
     ffi.Pointer<PyObject> stream,
     ffi.Pointer<ffi.Int8> errors,
   ) {
-    return (_PyCodec_StreamWriter ??= _dylib.lookupFunction<
-        _c_PyCodec_StreamWriter,
-        _dart_PyCodec_StreamWriter>('PyCodec_StreamWriter'))(
+    return _PyCodec_StreamWriter(
       encoding,
       stream,
       errors,
     );
   }
 
-  _dart_PyCodec_StreamWriter? _PyCodec_StreamWriter;
+  late final _PyCodec_StreamWriter_ptr =
+      _lookup<ffi.NativeFunction<_c_PyCodec_StreamWriter>>(
+          'PyCodec_StreamWriter');
+  late final _dart_PyCodec_StreamWriter _PyCodec_StreamWriter =
+      _PyCodec_StreamWriter_ptr.asFunction<_dart_PyCodec_StreamWriter>();
 
   int PyCodec_RegisterError(
     ffi.Pointer<ffi.Int8> name,
     ffi.Pointer<PyObject> error,
   ) {
-    return (_PyCodec_RegisterError ??= _dylib.lookupFunction<
-        _c_PyCodec_RegisterError,
-        _dart_PyCodec_RegisterError>('PyCodec_RegisterError'))(
+    return _PyCodec_RegisterError(
       name,
       error,
     );
   }
 
-  _dart_PyCodec_RegisterError? _PyCodec_RegisterError;
+  late final _PyCodec_RegisterError_ptr =
+      _lookup<ffi.NativeFunction<_c_PyCodec_RegisterError>>(
+          'PyCodec_RegisterError');
+  late final _dart_PyCodec_RegisterError _PyCodec_RegisterError =
+      _PyCodec_RegisterError_ptr.asFunction<_dart_PyCodec_RegisterError>();
 
   ffi.Pointer<PyObject> PyCodec_LookupError(
     ffi.Pointer<ffi.Int8> name,
   ) {
-    return (_PyCodec_LookupError ??= _dylib.lookupFunction<
-        _c_PyCodec_LookupError,
-        _dart_PyCodec_LookupError>('PyCodec_LookupError'))(
+    return _PyCodec_LookupError(
       name,
     );
   }
 
-  _dart_PyCodec_LookupError? _PyCodec_LookupError;
+  late final _PyCodec_LookupError_ptr =
+      _lookup<ffi.NativeFunction<_c_PyCodec_LookupError>>(
+          'PyCodec_LookupError');
+  late final _dart_PyCodec_LookupError _PyCodec_LookupError =
+      _PyCodec_LookupError_ptr.asFunction<_dart_PyCodec_LookupError>();
 
   ffi.Pointer<PyObject> PyCodec_StrictErrors(
     ffi.Pointer<PyObject> exc,
   ) {
-    return (_PyCodec_StrictErrors ??= _dylib.lookupFunction<
-        _c_PyCodec_StrictErrors,
-        _dart_PyCodec_StrictErrors>('PyCodec_StrictErrors'))(
+    return _PyCodec_StrictErrors(
       exc,
     );
   }
 
-  _dart_PyCodec_StrictErrors? _PyCodec_StrictErrors;
+  late final _PyCodec_StrictErrors_ptr =
+      _lookup<ffi.NativeFunction<_c_PyCodec_StrictErrors>>(
+          'PyCodec_StrictErrors');
+  late final _dart_PyCodec_StrictErrors _PyCodec_StrictErrors =
+      _PyCodec_StrictErrors_ptr.asFunction<_dart_PyCodec_StrictErrors>();
 
   ffi.Pointer<PyObject> PyCodec_IgnoreErrors(
     ffi.Pointer<PyObject> exc,
   ) {
-    return (_PyCodec_IgnoreErrors ??= _dylib.lookupFunction<
-        _c_PyCodec_IgnoreErrors,
-        _dart_PyCodec_IgnoreErrors>('PyCodec_IgnoreErrors'))(
+    return _PyCodec_IgnoreErrors(
       exc,
     );
   }
 
-  _dart_PyCodec_IgnoreErrors? _PyCodec_IgnoreErrors;
+  late final _PyCodec_IgnoreErrors_ptr =
+      _lookup<ffi.NativeFunction<_c_PyCodec_IgnoreErrors>>(
+          'PyCodec_IgnoreErrors');
+  late final _dart_PyCodec_IgnoreErrors _PyCodec_IgnoreErrors =
+      _PyCodec_IgnoreErrors_ptr.asFunction<_dart_PyCodec_IgnoreErrors>();
 
   ffi.Pointer<PyObject> PyCodec_ReplaceErrors(
     ffi.Pointer<PyObject> exc,
   ) {
-    return (_PyCodec_ReplaceErrors ??= _dylib.lookupFunction<
-        _c_PyCodec_ReplaceErrors,
-        _dart_PyCodec_ReplaceErrors>('PyCodec_ReplaceErrors'))(
+    return _PyCodec_ReplaceErrors(
       exc,
     );
   }
 
-  _dart_PyCodec_ReplaceErrors? _PyCodec_ReplaceErrors;
+  late final _PyCodec_ReplaceErrors_ptr =
+      _lookup<ffi.NativeFunction<_c_PyCodec_ReplaceErrors>>(
+          'PyCodec_ReplaceErrors');
+  late final _dart_PyCodec_ReplaceErrors _PyCodec_ReplaceErrors =
+      _PyCodec_ReplaceErrors_ptr.asFunction<_dart_PyCodec_ReplaceErrors>();
 
   ffi.Pointer<PyObject> PyCodec_XMLCharRefReplaceErrors(
     ffi.Pointer<PyObject> exc,
   ) {
-    return (_PyCodec_XMLCharRefReplaceErrors ??= _dylib.lookupFunction<
-            _c_PyCodec_XMLCharRefReplaceErrors,
-            _dart_PyCodec_XMLCharRefReplaceErrors>(
-        'PyCodec_XMLCharRefReplaceErrors'))(
+    return _PyCodec_XMLCharRefReplaceErrors(
       exc,
     );
   }
 
-  _dart_PyCodec_XMLCharRefReplaceErrors? _PyCodec_XMLCharRefReplaceErrors;
+  late final _PyCodec_XMLCharRefReplaceErrors_ptr =
+      _lookup<ffi.NativeFunction<_c_PyCodec_XMLCharRefReplaceErrors>>(
+          'PyCodec_XMLCharRefReplaceErrors');
+  late final _dart_PyCodec_XMLCharRefReplaceErrors
+      _PyCodec_XMLCharRefReplaceErrors = _PyCodec_XMLCharRefReplaceErrors_ptr
+          .asFunction<_dart_PyCodec_XMLCharRefReplaceErrors>();
 
   ffi.Pointer<PyObject> PyCodec_BackslashReplaceErrors(
     ffi.Pointer<PyObject> exc,
   ) {
-    return (_PyCodec_BackslashReplaceErrors ??= _dylib.lookupFunction<
-            _c_PyCodec_BackslashReplaceErrors,
-            _dart_PyCodec_BackslashReplaceErrors>(
-        'PyCodec_BackslashReplaceErrors'))(
+    return _PyCodec_BackslashReplaceErrors(
       exc,
     );
   }
 
-  _dart_PyCodec_BackslashReplaceErrors? _PyCodec_BackslashReplaceErrors;
+  late final _PyCodec_BackslashReplaceErrors_ptr =
+      _lookup<ffi.NativeFunction<_c_PyCodec_BackslashReplaceErrors>>(
+          'PyCodec_BackslashReplaceErrors');
+  late final _dart_PyCodec_BackslashReplaceErrors
+      _PyCodec_BackslashReplaceErrors = _PyCodec_BackslashReplaceErrors_ptr
+          .asFunction<_dart_PyCodec_BackslashReplaceErrors>();
 
   ffi.Pointer<PyObject> PyCodec_NameReplaceErrors(
     ffi.Pointer<PyObject> exc,
   ) {
-    return (_PyCodec_NameReplaceErrors ??= _dylib.lookupFunction<
-        _c_PyCodec_NameReplaceErrors,
-        _dart_PyCodec_NameReplaceErrors>('PyCodec_NameReplaceErrors'))(
+    return _PyCodec_NameReplaceErrors(
       exc,
     );
   }
 
-  _dart_PyCodec_NameReplaceErrors? _PyCodec_NameReplaceErrors;
+  late final _PyCodec_NameReplaceErrors_ptr =
+      _lookup<ffi.NativeFunction<_c_PyCodec_NameReplaceErrors>>(
+          'PyCodec_NameReplaceErrors');
+  late final _dart_PyCodec_NameReplaceErrors _PyCodec_NameReplaceErrors =
+      _PyCodec_NameReplaceErrors_ptr.asFunction<
+          _dart_PyCodec_NameReplaceErrors>();
 
-  late final ffi.Pointer<ffi.Int8> Py_hexdigits =
-      _dylib.lookup<ffi.Pointer<ffi.Int8>>('Py_hexdigits').value;
+  late final ffi.Pointer<ffi.Pointer<ffi.Int8>> _Py_hexdigits =
+      _lookup<ffi.Pointer<ffi.Int8>>('Py_hexdigits');
+
+  ffi.Pointer<ffi.Int8> get Py_hexdigits => _Py_hexdigits.value;
+
+  set Py_hexdigits(ffi.Pointer<ffi.Int8> value) => _Py_hexdigits.value = value;
 
   void PyErr_SetNone(
     ffi.Pointer<PyObject> arg0,
   ) {
-    return (_PyErr_SetNone ??=
-        _dylib.lookupFunction<_c_PyErr_SetNone, _dart_PyErr_SetNone>(
-            'PyErr_SetNone'))(
+    return _PyErr_SetNone(
       arg0,
     );
   }
 
-  _dart_PyErr_SetNone? _PyErr_SetNone;
+  late final _PyErr_SetNone_ptr =
+      _lookup<ffi.NativeFunction<_c_PyErr_SetNone>>('PyErr_SetNone');
+  late final _dart_PyErr_SetNone _PyErr_SetNone =
+      _PyErr_SetNone_ptr.asFunction<_dart_PyErr_SetNone>();
 
   void PyErr_SetObject(
     ffi.Pointer<PyObject> arg0,
     ffi.Pointer<PyObject> arg1,
   ) {
-    return (_PyErr_SetObject ??=
-        _dylib.lookupFunction<_c_PyErr_SetObject, _dart_PyErr_SetObject>(
-            'PyErr_SetObject'))(
+    return _PyErr_SetObject(
       arg0,
       arg1,
     );
   }
 
-  _dart_PyErr_SetObject? _PyErr_SetObject;
+  late final _PyErr_SetObject_ptr =
+      _lookup<ffi.NativeFunction<_c_PyErr_SetObject>>('PyErr_SetObject');
+  late final _dart_PyErr_SetObject _PyErr_SetObject =
+      _PyErr_SetObject_ptr.asFunction<_dart_PyErr_SetObject>();
 
   void PyErr_SetString(
     ffi.Pointer<PyObject> exception,
     ffi.Pointer<ffi.Int8> string,
   ) {
-    return (_PyErr_SetString ??=
-        _dylib.lookupFunction<_c_PyErr_SetString, _dart_PyErr_SetString>(
-            'PyErr_SetString'))(
+    return _PyErr_SetString(
       exception,
       string,
     );
   }
 
-  _dart_PyErr_SetString? _PyErr_SetString;
+  late final _PyErr_SetString_ptr =
+      _lookup<ffi.NativeFunction<_c_PyErr_SetString>>('PyErr_SetString');
+  late final _dart_PyErr_SetString _PyErr_SetString =
+      _PyErr_SetString_ptr.asFunction<_dart_PyErr_SetString>();
 
   ffi.Pointer<PyObject> PyErr_Occurred() {
-    return (_PyErr_Occurred ??=
-        _dylib.lookupFunction<_c_PyErr_Occurred, _dart_PyErr_Occurred>(
-            'PyErr_Occurred'))();
+    return _PyErr_Occurred();
   }
 
-  _dart_PyErr_Occurred? _PyErr_Occurred;
+  late final _PyErr_Occurred_ptr =
+      _lookup<ffi.NativeFunction<_c_PyErr_Occurred>>('PyErr_Occurred');
+  late final _dart_PyErr_Occurred _PyErr_Occurred =
+      _PyErr_Occurred_ptr.asFunction<_dart_PyErr_Occurred>();
 
   void PyErr_Clear() {
-    return (_PyErr_Clear ??= _dylib
-        .lookupFunction<_c_PyErr_Clear, _dart_PyErr_Clear>('PyErr_Clear'))();
+    return _PyErr_Clear();
   }
 
-  _dart_PyErr_Clear? _PyErr_Clear;
+  late final _PyErr_Clear_ptr =
+      _lookup<ffi.NativeFunction<_c_PyErr_Clear>>('PyErr_Clear');
+  late final _dart_PyErr_Clear _PyErr_Clear =
+      _PyErr_Clear_ptr.asFunction<_dart_PyErr_Clear>();
 
   void PyErr_Fetch(
     ffi.Pointer<ffi.Pointer<PyObject>> arg0,
     ffi.Pointer<ffi.Pointer<PyObject>> arg1,
     ffi.Pointer<ffi.Pointer<PyObject>> arg2,
   ) {
-    return (_PyErr_Fetch ??= _dylib
-        .lookupFunction<_c_PyErr_Fetch, _dart_PyErr_Fetch>('PyErr_Fetch'))(
+    return _PyErr_Fetch(
       arg0,
       arg1,
       arg2,
     );
   }
 
-  _dart_PyErr_Fetch? _PyErr_Fetch;
+  late final _PyErr_Fetch_ptr =
+      _lookup<ffi.NativeFunction<_c_PyErr_Fetch>>('PyErr_Fetch');
+  late final _dart_PyErr_Fetch _PyErr_Fetch =
+      _PyErr_Fetch_ptr.asFunction<_dart_PyErr_Fetch>();
 
   void PyErr_Restore(
     ffi.Pointer<PyObject> arg0,
     ffi.Pointer<PyObject> arg1,
     ffi.Pointer<PyObject> arg2,
   ) {
-    return (_PyErr_Restore ??=
-        _dylib.lookupFunction<_c_PyErr_Restore, _dart_PyErr_Restore>(
-            'PyErr_Restore'))(
+    return _PyErr_Restore(
       arg0,
       arg1,
       arg2,
     );
   }
 
-  _dart_PyErr_Restore? _PyErr_Restore;
+  late final _PyErr_Restore_ptr =
+      _lookup<ffi.NativeFunction<_c_PyErr_Restore>>('PyErr_Restore');
+  late final _dart_PyErr_Restore _PyErr_Restore =
+      _PyErr_Restore_ptr.asFunction<_dart_PyErr_Restore>();
 
   void PyErr_GetExcInfo(
     ffi.Pointer<ffi.Pointer<PyObject>> arg0,
     ffi.Pointer<ffi.Pointer<PyObject>> arg1,
     ffi.Pointer<ffi.Pointer<PyObject>> arg2,
   ) {
-    return (_PyErr_GetExcInfo ??=
-        _dylib.lookupFunction<_c_PyErr_GetExcInfo, _dart_PyErr_GetExcInfo>(
-            'PyErr_GetExcInfo'))(
+    return _PyErr_GetExcInfo(
       arg0,
       arg1,
       arg2,
     );
   }
 
-  _dart_PyErr_GetExcInfo? _PyErr_GetExcInfo;
+  late final _PyErr_GetExcInfo_ptr =
+      _lookup<ffi.NativeFunction<_c_PyErr_GetExcInfo>>('PyErr_GetExcInfo');
+  late final _dart_PyErr_GetExcInfo _PyErr_GetExcInfo =
+      _PyErr_GetExcInfo_ptr.asFunction<_dart_PyErr_GetExcInfo>();
 
   void PyErr_SetExcInfo(
     ffi.Pointer<PyObject> arg0,
     ffi.Pointer<PyObject> arg1,
     ffi.Pointer<PyObject> arg2,
   ) {
-    return (_PyErr_SetExcInfo ??=
-        _dylib.lookupFunction<_c_PyErr_SetExcInfo, _dart_PyErr_SetExcInfo>(
-            'PyErr_SetExcInfo'))(
+    return _PyErr_SetExcInfo(
       arg0,
       arg1,
       arg2,
     );
   }
 
-  _dart_PyErr_SetExcInfo? _PyErr_SetExcInfo;
+  late final _PyErr_SetExcInfo_ptr =
+      _lookup<ffi.NativeFunction<_c_PyErr_SetExcInfo>>('PyErr_SetExcInfo');
+  late final _dart_PyErr_SetExcInfo _PyErr_SetExcInfo =
+      _PyErr_SetExcInfo_ptr.asFunction<_dart_PyErr_SetExcInfo>();
 
   void Py_FatalError(
     ffi.Pointer<ffi.Int8> message,
   ) {
-    return (_Py_FatalError ??=
-        _dylib.lookupFunction<_c_Py_FatalError, _dart_Py_FatalError>(
-            'Py_FatalError'))(
+    return _Py_FatalError(
       message,
     );
   }
 
-  _dart_Py_FatalError? _Py_FatalError;
+  late final _Py_FatalError_ptr =
+      _lookup<ffi.NativeFunction<_c_Py_FatalError>>('Py_FatalError');
+  late final _dart_Py_FatalError _Py_FatalError =
+      _Py_FatalError_ptr.asFunction<_dart_Py_FatalError>();
 
   int PyErr_GivenExceptionMatches(
     ffi.Pointer<PyObject> arg0,
     ffi.Pointer<PyObject> arg1,
   ) {
-    return (_PyErr_GivenExceptionMatches ??= _dylib.lookupFunction<
-        _c_PyErr_GivenExceptionMatches,
-        _dart_PyErr_GivenExceptionMatches>('PyErr_GivenExceptionMatches'))(
+    return _PyErr_GivenExceptionMatches(
       arg0,
       arg1,
     );
   }
 
-  _dart_PyErr_GivenExceptionMatches? _PyErr_GivenExceptionMatches;
+  late final _PyErr_GivenExceptionMatches_ptr =
+      _lookup<ffi.NativeFunction<_c_PyErr_GivenExceptionMatches>>(
+          'PyErr_GivenExceptionMatches');
+  late final _dart_PyErr_GivenExceptionMatches _PyErr_GivenExceptionMatches =
+      _PyErr_GivenExceptionMatches_ptr.asFunction<
+          _dart_PyErr_GivenExceptionMatches>();
 
   int PyErr_ExceptionMatches(
     ffi.Pointer<PyObject> arg0,
   ) {
-    return (_PyErr_ExceptionMatches ??= _dylib.lookupFunction<
-        _c_PyErr_ExceptionMatches,
-        _dart_PyErr_ExceptionMatches>('PyErr_ExceptionMatches'))(
+    return _PyErr_ExceptionMatches(
       arg0,
     );
   }
 
-  _dart_PyErr_ExceptionMatches? _PyErr_ExceptionMatches;
+  late final _PyErr_ExceptionMatches_ptr =
+      _lookup<ffi.NativeFunction<_c_PyErr_ExceptionMatches>>(
+          'PyErr_ExceptionMatches');
+  late final _dart_PyErr_ExceptionMatches _PyErr_ExceptionMatches =
+      _PyErr_ExceptionMatches_ptr.asFunction<_dart_PyErr_ExceptionMatches>();
 
   void PyErr_NormalizeException(
     ffi.Pointer<ffi.Pointer<PyObject>> arg0,
     ffi.Pointer<ffi.Pointer<PyObject>> arg1,
     ffi.Pointer<ffi.Pointer<PyObject>> arg2,
   ) {
-    return (_PyErr_NormalizeException ??= _dylib.lookupFunction<
-        _c_PyErr_NormalizeException,
-        _dart_PyErr_NormalizeException>('PyErr_NormalizeException'))(
+    return _PyErr_NormalizeException(
       arg0,
       arg1,
       arg2,
     );
   }
 
-  _dart_PyErr_NormalizeException? _PyErr_NormalizeException;
+  late final _PyErr_NormalizeException_ptr =
+      _lookup<ffi.NativeFunction<_c_PyErr_NormalizeException>>(
+          'PyErr_NormalizeException');
+  late final _dart_PyErr_NormalizeException _PyErr_NormalizeException =
+      _PyErr_NormalizeException_ptr.asFunction<
+          _dart_PyErr_NormalizeException>();
 
   int PyException_SetTraceback(
     ffi.Pointer<PyObject> arg0,
     ffi.Pointer<PyObject> arg1,
   ) {
-    return (_PyException_SetTraceback ??= _dylib.lookupFunction<
-        _c_PyException_SetTraceback,
-        _dart_PyException_SetTraceback>('PyException_SetTraceback'))(
+    return _PyException_SetTraceback(
       arg0,
       arg1,
     );
   }
 
-  _dart_PyException_SetTraceback? _PyException_SetTraceback;
+  late final _PyException_SetTraceback_ptr =
+      _lookup<ffi.NativeFunction<_c_PyException_SetTraceback>>(
+          'PyException_SetTraceback');
+  late final _dart_PyException_SetTraceback _PyException_SetTraceback =
+      _PyException_SetTraceback_ptr.asFunction<
+          _dart_PyException_SetTraceback>();
 
   ffi.Pointer<PyObject> PyException_GetTraceback(
     ffi.Pointer<PyObject> arg0,
   ) {
-    return (_PyException_GetTraceback ??= _dylib.lookupFunction<
-        _c_PyException_GetTraceback,
-        _dart_PyException_GetTraceback>('PyException_GetTraceback'))(
+    return _PyException_GetTraceback(
       arg0,
     );
   }
 
-  _dart_PyException_GetTraceback? _PyException_GetTraceback;
+  late final _PyException_GetTraceback_ptr =
+      _lookup<ffi.NativeFunction<_c_PyException_GetTraceback>>(
+          'PyException_GetTraceback');
+  late final _dart_PyException_GetTraceback _PyException_GetTraceback =
+      _PyException_GetTraceback_ptr.asFunction<
+          _dart_PyException_GetTraceback>();
 
   ffi.Pointer<PyObject> PyException_GetCause(
     ffi.Pointer<PyObject> arg0,
   ) {
-    return (_PyException_GetCause ??= _dylib.lookupFunction<
-        _c_PyException_GetCause,
-        _dart_PyException_GetCause>('PyException_GetCause'))(
+    return _PyException_GetCause(
       arg0,
     );
   }
 
-  _dart_PyException_GetCause? _PyException_GetCause;
+  late final _PyException_GetCause_ptr =
+      _lookup<ffi.NativeFunction<_c_PyException_GetCause>>(
+          'PyException_GetCause');
+  late final _dart_PyException_GetCause _PyException_GetCause =
+      _PyException_GetCause_ptr.asFunction<_dart_PyException_GetCause>();
 
   void PyException_SetCause(
     ffi.Pointer<PyObject> arg0,
     ffi.Pointer<PyObject> arg1,
   ) {
-    return (_PyException_SetCause ??= _dylib.lookupFunction<
-        _c_PyException_SetCause,
-        _dart_PyException_SetCause>('PyException_SetCause'))(
+    return _PyException_SetCause(
       arg0,
       arg1,
     );
   }
 
-  _dart_PyException_SetCause? _PyException_SetCause;
+  late final _PyException_SetCause_ptr =
+      _lookup<ffi.NativeFunction<_c_PyException_SetCause>>(
+          'PyException_SetCause');
+  late final _dart_PyException_SetCause _PyException_SetCause =
+      _PyException_SetCause_ptr.asFunction<_dart_PyException_SetCause>();
 
   ffi.Pointer<PyObject> PyException_GetContext(
     ffi.Pointer<PyObject> arg0,
   ) {
-    return (_PyException_GetContext ??= _dylib.lookupFunction<
-        _c_PyException_GetContext,
-        _dart_PyException_GetContext>('PyException_GetContext'))(
+    return _PyException_GetContext(
       arg0,
     );
   }
 
-  _dart_PyException_GetContext? _PyException_GetContext;
+  late final _PyException_GetContext_ptr =
+      _lookup<ffi.NativeFunction<_c_PyException_GetContext>>(
+          'PyException_GetContext');
+  late final _dart_PyException_GetContext _PyException_GetContext =
+      _PyException_GetContext_ptr.asFunction<_dart_PyException_GetContext>();
 
   void PyException_SetContext(
     ffi.Pointer<PyObject> arg0,
     ffi.Pointer<PyObject> arg1,
   ) {
-    return (_PyException_SetContext ??= _dylib.lookupFunction<
-        _c_PyException_SetContext,
-        _dart_PyException_SetContext>('PyException_SetContext'))(
+    return _PyException_SetContext(
       arg0,
       arg1,
     );
   }
 
-  _dart_PyException_SetContext? _PyException_SetContext;
+  late final _PyException_SetContext_ptr =
+      _lookup<ffi.NativeFunction<_c_PyException_SetContext>>(
+          'PyException_SetContext');
+  late final _dart_PyException_SetContext _PyException_SetContext =
+      _PyException_SetContext_ptr.asFunction<_dart_PyException_SetContext>();
 
   ffi.Pointer<ffi.Int8> PyExceptionClass_Name(
     ffi.Pointer<PyObject> arg0,
   ) {
-    return (_PyExceptionClass_Name ??= _dylib.lookupFunction<
-        _c_PyExceptionClass_Name,
-        _dart_PyExceptionClass_Name>('PyExceptionClass_Name'))(
+    return _PyExceptionClass_Name(
       arg0,
     );
   }
 
-  _dart_PyExceptionClass_Name? _PyExceptionClass_Name;
+  late final _PyExceptionClass_Name_ptr =
+      _lookup<ffi.NativeFunction<_c_PyExceptionClass_Name>>(
+          'PyExceptionClass_Name');
+  late final _dart_PyExceptionClass_Name _PyExceptionClass_Name =
+      _PyExceptionClass_Name_ptr.asFunction<_dart_PyExceptionClass_Name>();
 
-  late final ffi.Pointer<PyObject> PyExc_BaseException =
-      _dylib.lookup<ffi.Pointer<PyObject>>('PyExc_BaseException').value;
+  late final ffi.Pointer<ffi.Pointer<PyObject>> _PyExc_BaseException =
+      _lookup<ffi.Pointer<PyObject>>('PyExc_BaseException');
 
-  late final ffi.Pointer<PyObject> PyExc_Exception =
-      _dylib.lookup<ffi.Pointer<PyObject>>('PyExc_Exception').value;
+  ffi.Pointer<PyObject> get PyExc_BaseException => _PyExc_BaseException.value;
 
-  late final ffi.Pointer<PyObject> PyExc_StopAsyncIteration =
-      _dylib.lookup<ffi.Pointer<PyObject>>('PyExc_StopAsyncIteration').value;
+  set PyExc_BaseException(ffi.Pointer<PyObject> value) =>
+      _PyExc_BaseException.value = value;
 
-  late final ffi.Pointer<PyObject> PyExc_StopIteration =
-      _dylib.lookup<ffi.Pointer<PyObject>>('PyExc_StopIteration').value;
+  late final ffi.Pointer<ffi.Pointer<PyObject>> _PyExc_Exception =
+      _lookup<ffi.Pointer<PyObject>>('PyExc_Exception');
 
-  late final ffi.Pointer<PyObject> PyExc_GeneratorExit =
-      _dylib.lookup<ffi.Pointer<PyObject>>('PyExc_GeneratorExit').value;
+  ffi.Pointer<PyObject> get PyExc_Exception => _PyExc_Exception.value;
 
-  late final ffi.Pointer<PyObject> PyExc_ArithmeticError =
-      _dylib.lookup<ffi.Pointer<PyObject>>('PyExc_ArithmeticError').value;
+  set PyExc_Exception(ffi.Pointer<PyObject> value) =>
+      _PyExc_Exception.value = value;
 
-  late final ffi.Pointer<PyObject> PyExc_LookupError =
-      _dylib.lookup<ffi.Pointer<PyObject>>('PyExc_LookupError').value;
+  late final ffi.Pointer<ffi.Pointer<PyObject>> _PyExc_StopAsyncIteration =
+      _lookup<ffi.Pointer<PyObject>>('PyExc_StopAsyncIteration');
 
-  late final ffi.Pointer<PyObject> PyExc_AssertionError =
-      _dylib.lookup<ffi.Pointer<PyObject>>('PyExc_AssertionError').value;
+  ffi.Pointer<PyObject> get PyExc_StopAsyncIteration =>
+      _PyExc_StopAsyncIteration.value;
 
-  late final ffi.Pointer<PyObject> PyExc_AttributeError =
-      _dylib.lookup<ffi.Pointer<PyObject>>('PyExc_AttributeError').value;
+  set PyExc_StopAsyncIteration(ffi.Pointer<PyObject> value) =>
+      _PyExc_StopAsyncIteration.value = value;
 
-  late final ffi.Pointer<PyObject> PyExc_BufferError =
-      _dylib.lookup<ffi.Pointer<PyObject>>('PyExc_BufferError').value;
+  late final ffi.Pointer<ffi.Pointer<PyObject>> _PyExc_StopIteration =
+      _lookup<ffi.Pointer<PyObject>>('PyExc_StopIteration');
 
-  late final ffi.Pointer<PyObject> PyExc_EOFError =
-      _dylib.lookup<ffi.Pointer<PyObject>>('PyExc_EOFError').value;
+  ffi.Pointer<PyObject> get PyExc_StopIteration => _PyExc_StopIteration.value;
 
-  late final ffi.Pointer<PyObject> PyExc_FloatingPointError =
-      _dylib.lookup<ffi.Pointer<PyObject>>('PyExc_FloatingPointError').value;
+  set PyExc_StopIteration(ffi.Pointer<PyObject> value) =>
+      _PyExc_StopIteration.value = value;
 
-  late final ffi.Pointer<PyObject> PyExc_OSError =
-      _dylib.lookup<ffi.Pointer<PyObject>>('PyExc_OSError').value;
+  late final ffi.Pointer<ffi.Pointer<PyObject>> _PyExc_GeneratorExit =
+      _lookup<ffi.Pointer<PyObject>>('PyExc_GeneratorExit');
 
-  late final ffi.Pointer<PyObject> PyExc_ImportError =
-      _dylib.lookup<ffi.Pointer<PyObject>>('PyExc_ImportError').value;
+  ffi.Pointer<PyObject> get PyExc_GeneratorExit => _PyExc_GeneratorExit.value;
 
-  late final ffi.Pointer<PyObject> PyExc_ModuleNotFoundError =
-      _dylib.lookup<ffi.Pointer<PyObject>>('PyExc_ModuleNotFoundError').value;
+  set PyExc_GeneratorExit(ffi.Pointer<PyObject> value) =>
+      _PyExc_GeneratorExit.value = value;
 
-  late final ffi.Pointer<PyObject> PyExc_IndexError =
-      _dylib.lookup<ffi.Pointer<PyObject>>('PyExc_IndexError').value;
+  late final ffi.Pointer<ffi.Pointer<PyObject>> _PyExc_ArithmeticError =
+      _lookup<ffi.Pointer<PyObject>>('PyExc_ArithmeticError');
 
-  late final ffi.Pointer<PyObject> PyExc_KeyError =
-      _dylib.lookup<ffi.Pointer<PyObject>>('PyExc_KeyError').value;
+  ffi.Pointer<PyObject> get PyExc_ArithmeticError =>
+      _PyExc_ArithmeticError.value;
 
-  late final ffi.Pointer<PyObject> PyExc_KeyboardInterrupt =
-      _dylib.lookup<ffi.Pointer<PyObject>>('PyExc_KeyboardInterrupt').value;
+  set PyExc_ArithmeticError(ffi.Pointer<PyObject> value) =>
+      _PyExc_ArithmeticError.value = value;
 
-  late final ffi.Pointer<PyObject> PyExc_MemoryError =
-      _dylib.lookup<ffi.Pointer<PyObject>>('PyExc_MemoryError').value;
+  late final ffi.Pointer<ffi.Pointer<PyObject>> _PyExc_LookupError =
+      _lookup<ffi.Pointer<PyObject>>('PyExc_LookupError');
 
-  late final ffi.Pointer<PyObject> PyExc_NameError =
-      _dylib.lookup<ffi.Pointer<PyObject>>('PyExc_NameError').value;
+  ffi.Pointer<PyObject> get PyExc_LookupError => _PyExc_LookupError.value;
 
-  late final ffi.Pointer<PyObject> PyExc_OverflowError =
-      _dylib.lookup<ffi.Pointer<PyObject>>('PyExc_OverflowError').value;
+  set PyExc_LookupError(ffi.Pointer<PyObject> value) =>
+      _PyExc_LookupError.value = value;
 
-  late final ffi.Pointer<PyObject> PyExc_RuntimeError =
-      _dylib.lookup<ffi.Pointer<PyObject>>('PyExc_RuntimeError').value;
+  late final ffi.Pointer<ffi.Pointer<PyObject>> _PyExc_AssertionError =
+      _lookup<ffi.Pointer<PyObject>>('PyExc_AssertionError');
 
-  late final ffi.Pointer<PyObject> PyExc_RecursionError =
-      _dylib.lookup<ffi.Pointer<PyObject>>('PyExc_RecursionError').value;
+  ffi.Pointer<PyObject> get PyExc_AssertionError => _PyExc_AssertionError.value;
 
-  late final ffi.Pointer<PyObject> PyExc_NotImplementedError =
-      _dylib.lookup<ffi.Pointer<PyObject>>('PyExc_NotImplementedError').value;
+  set PyExc_AssertionError(ffi.Pointer<PyObject> value) =>
+      _PyExc_AssertionError.value = value;
 
-  late final ffi.Pointer<PyObject> PyExc_SyntaxError =
-      _dylib.lookup<ffi.Pointer<PyObject>>('PyExc_SyntaxError').value;
+  late final ffi.Pointer<ffi.Pointer<PyObject>> _PyExc_AttributeError =
+      _lookup<ffi.Pointer<PyObject>>('PyExc_AttributeError');
 
-  late final ffi.Pointer<PyObject> PyExc_IndentationError =
-      _dylib.lookup<ffi.Pointer<PyObject>>('PyExc_IndentationError').value;
+  ffi.Pointer<PyObject> get PyExc_AttributeError => _PyExc_AttributeError.value;
 
-  late final ffi.Pointer<PyObject> PyExc_TabError =
-      _dylib.lookup<ffi.Pointer<PyObject>>('PyExc_TabError').value;
+  set PyExc_AttributeError(ffi.Pointer<PyObject> value) =>
+      _PyExc_AttributeError.value = value;
 
-  late final ffi.Pointer<PyObject> PyExc_ReferenceError =
-      _dylib.lookup<ffi.Pointer<PyObject>>('PyExc_ReferenceError').value;
+  late final ffi.Pointer<ffi.Pointer<PyObject>> _PyExc_BufferError =
+      _lookup<ffi.Pointer<PyObject>>('PyExc_BufferError');
 
-  late final ffi.Pointer<PyObject> PyExc_SystemError =
-      _dylib.lookup<ffi.Pointer<PyObject>>('PyExc_SystemError').value;
+  ffi.Pointer<PyObject> get PyExc_BufferError => _PyExc_BufferError.value;
 
-  late final ffi.Pointer<PyObject> PyExc_SystemExit =
-      _dylib.lookup<ffi.Pointer<PyObject>>('PyExc_SystemExit').value;
+  set PyExc_BufferError(ffi.Pointer<PyObject> value) =>
+      _PyExc_BufferError.value = value;
 
-  late final ffi.Pointer<PyObject> PyExc_TypeError =
-      _dylib.lookup<ffi.Pointer<PyObject>>('PyExc_TypeError').value;
+  late final ffi.Pointer<ffi.Pointer<PyObject>> _PyExc_EOFError =
+      _lookup<ffi.Pointer<PyObject>>('PyExc_EOFError');
 
-  late final ffi.Pointer<PyObject> PyExc_UnboundLocalError =
-      _dylib.lookup<ffi.Pointer<PyObject>>('PyExc_UnboundLocalError').value;
+  ffi.Pointer<PyObject> get PyExc_EOFError => _PyExc_EOFError.value;
 
-  late final ffi.Pointer<PyObject> PyExc_UnicodeError =
-      _dylib.lookup<ffi.Pointer<PyObject>>('PyExc_UnicodeError').value;
+  set PyExc_EOFError(ffi.Pointer<PyObject> value) =>
+      _PyExc_EOFError.value = value;
 
-  late final ffi.Pointer<PyObject> PyExc_UnicodeEncodeError =
-      _dylib.lookup<ffi.Pointer<PyObject>>('PyExc_UnicodeEncodeError').value;
+  late final ffi.Pointer<ffi.Pointer<PyObject>> _PyExc_FloatingPointError =
+      _lookup<ffi.Pointer<PyObject>>('PyExc_FloatingPointError');
 
-  late final ffi.Pointer<PyObject> PyExc_UnicodeDecodeError =
-      _dylib.lookup<ffi.Pointer<PyObject>>('PyExc_UnicodeDecodeError').value;
+  ffi.Pointer<PyObject> get PyExc_FloatingPointError =>
+      _PyExc_FloatingPointError.value;
 
-  late final ffi.Pointer<PyObject> PyExc_UnicodeTranslateError =
-      _dylib.lookup<ffi.Pointer<PyObject>>('PyExc_UnicodeTranslateError').value;
+  set PyExc_FloatingPointError(ffi.Pointer<PyObject> value) =>
+      _PyExc_FloatingPointError.value = value;
 
-  late final ffi.Pointer<PyObject> PyExc_ValueError =
-      _dylib.lookup<ffi.Pointer<PyObject>>('PyExc_ValueError').value;
+  late final ffi.Pointer<ffi.Pointer<PyObject>> _PyExc_OSError =
+      _lookup<ffi.Pointer<PyObject>>('PyExc_OSError');
 
-  late final ffi.Pointer<PyObject> PyExc_ZeroDivisionError =
-      _dylib.lookup<ffi.Pointer<PyObject>>('PyExc_ZeroDivisionError').value;
+  ffi.Pointer<PyObject> get PyExc_OSError => _PyExc_OSError.value;
 
-  late final ffi.Pointer<PyObject> PyExc_BlockingIOError =
-      _dylib.lookup<ffi.Pointer<PyObject>>('PyExc_BlockingIOError').value;
+  set PyExc_OSError(ffi.Pointer<PyObject> value) =>
+      _PyExc_OSError.value = value;
 
-  late final ffi.Pointer<PyObject> PyExc_BrokenPipeError =
-      _dylib.lookup<ffi.Pointer<PyObject>>('PyExc_BrokenPipeError').value;
+  late final ffi.Pointer<ffi.Pointer<PyObject>> _PyExc_ImportError =
+      _lookup<ffi.Pointer<PyObject>>('PyExc_ImportError');
 
-  late final ffi.Pointer<PyObject> PyExc_ChildProcessError =
-      _dylib.lookup<ffi.Pointer<PyObject>>('PyExc_ChildProcessError').value;
+  ffi.Pointer<PyObject> get PyExc_ImportError => _PyExc_ImportError.value;
 
-  late final ffi.Pointer<PyObject> PyExc_ConnectionError =
-      _dylib.lookup<ffi.Pointer<PyObject>>('PyExc_ConnectionError').value;
+  set PyExc_ImportError(ffi.Pointer<PyObject> value) =>
+      _PyExc_ImportError.value = value;
 
-  late final ffi.Pointer<PyObject> PyExc_ConnectionAbortedError = _dylib
-      .lookup<ffi.Pointer<PyObject>>('PyExc_ConnectionAbortedError')
-      .value;
+  late final ffi.Pointer<ffi.Pointer<PyObject>> _PyExc_ModuleNotFoundError =
+      _lookup<ffi.Pointer<PyObject>>('PyExc_ModuleNotFoundError');
 
-  late final ffi.Pointer<PyObject> PyExc_ConnectionRefusedError = _dylib
-      .lookup<ffi.Pointer<PyObject>>('PyExc_ConnectionRefusedError')
-      .value;
+  ffi.Pointer<PyObject> get PyExc_ModuleNotFoundError =>
+      _PyExc_ModuleNotFoundError.value;
 
-  late final ffi.Pointer<PyObject> PyExc_ConnectionResetError =
-      _dylib.lookup<ffi.Pointer<PyObject>>('PyExc_ConnectionResetError').value;
+  set PyExc_ModuleNotFoundError(ffi.Pointer<PyObject> value) =>
+      _PyExc_ModuleNotFoundError.value = value;
 
-  late final ffi.Pointer<PyObject> PyExc_FileExistsError =
-      _dylib.lookup<ffi.Pointer<PyObject>>('PyExc_FileExistsError').value;
+  late final ffi.Pointer<ffi.Pointer<PyObject>> _PyExc_IndexError =
+      _lookup<ffi.Pointer<PyObject>>('PyExc_IndexError');
 
-  late final ffi.Pointer<PyObject> PyExc_FileNotFoundError =
-      _dylib.lookup<ffi.Pointer<PyObject>>('PyExc_FileNotFoundError').value;
+  ffi.Pointer<PyObject> get PyExc_IndexError => _PyExc_IndexError.value;
 
-  late final ffi.Pointer<PyObject> PyExc_InterruptedError =
-      _dylib.lookup<ffi.Pointer<PyObject>>('PyExc_InterruptedError').value;
+  set PyExc_IndexError(ffi.Pointer<PyObject> value) =>
+      _PyExc_IndexError.value = value;
 
-  late final ffi.Pointer<PyObject> PyExc_IsADirectoryError =
-      _dylib.lookup<ffi.Pointer<PyObject>>('PyExc_IsADirectoryError').value;
+  late final ffi.Pointer<ffi.Pointer<PyObject>> _PyExc_KeyError =
+      _lookup<ffi.Pointer<PyObject>>('PyExc_KeyError');
 
-  late final ffi.Pointer<PyObject> PyExc_NotADirectoryError =
-      _dylib.lookup<ffi.Pointer<PyObject>>('PyExc_NotADirectoryError').value;
+  ffi.Pointer<PyObject> get PyExc_KeyError => _PyExc_KeyError.value;
 
-  late final ffi.Pointer<PyObject> PyExc_PermissionError =
-      _dylib.lookup<ffi.Pointer<PyObject>>('PyExc_PermissionError').value;
+  set PyExc_KeyError(ffi.Pointer<PyObject> value) =>
+      _PyExc_KeyError.value = value;
 
-  late final ffi.Pointer<PyObject> PyExc_ProcessLookupError =
-      _dylib.lookup<ffi.Pointer<PyObject>>('PyExc_ProcessLookupError').value;
+  late final ffi.Pointer<ffi.Pointer<PyObject>> _PyExc_KeyboardInterrupt =
+      _lookup<ffi.Pointer<PyObject>>('PyExc_KeyboardInterrupt');
 
-  late final ffi.Pointer<PyObject> PyExc_TimeoutError =
-      _dylib.lookup<ffi.Pointer<PyObject>>('PyExc_TimeoutError').value;
+  ffi.Pointer<PyObject> get PyExc_KeyboardInterrupt =>
+      _PyExc_KeyboardInterrupt.value;
 
-  late final ffi.Pointer<PyObject> PyExc_EnvironmentError =
-      _dylib.lookup<ffi.Pointer<PyObject>>('PyExc_EnvironmentError').value;
+  set PyExc_KeyboardInterrupt(ffi.Pointer<PyObject> value) =>
+      _PyExc_KeyboardInterrupt.value = value;
 
-  late final ffi.Pointer<PyObject> PyExc_IOError =
-      _dylib.lookup<ffi.Pointer<PyObject>>('PyExc_IOError').value;
+  late final ffi.Pointer<ffi.Pointer<PyObject>> _PyExc_MemoryError =
+      _lookup<ffi.Pointer<PyObject>>('PyExc_MemoryError');
 
-  late final ffi.Pointer<PyObject> PyExc_Warning =
-      _dylib.lookup<ffi.Pointer<PyObject>>('PyExc_Warning').value;
+  ffi.Pointer<PyObject> get PyExc_MemoryError => _PyExc_MemoryError.value;
 
-  late final ffi.Pointer<PyObject> PyExc_UserWarning =
-      _dylib.lookup<ffi.Pointer<PyObject>>('PyExc_UserWarning').value;
+  set PyExc_MemoryError(ffi.Pointer<PyObject> value) =>
+      _PyExc_MemoryError.value = value;
 
-  late final ffi.Pointer<PyObject> PyExc_DeprecationWarning =
-      _dylib.lookup<ffi.Pointer<PyObject>>('PyExc_DeprecationWarning').value;
+  late final ffi.Pointer<ffi.Pointer<PyObject>> _PyExc_NameError =
+      _lookup<ffi.Pointer<PyObject>>('PyExc_NameError');
 
-  late final ffi.Pointer<PyObject> PyExc_PendingDeprecationWarning = _dylib
-      .lookup<ffi.Pointer<PyObject>>('PyExc_PendingDeprecationWarning')
-      .value;
+  ffi.Pointer<PyObject> get PyExc_NameError => _PyExc_NameError.value;
 
-  late final ffi.Pointer<PyObject> PyExc_SyntaxWarning =
-      _dylib.lookup<ffi.Pointer<PyObject>>('PyExc_SyntaxWarning').value;
+  set PyExc_NameError(ffi.Pointer<PyObject> value) =>
+      _PyExc_NameError.value = value;
 
-  late final ffi.Pointer<PyObject> PyExc_RuntimeWarning =
-      _dylib.lookup<ffi.Pointer<PyObject>>('PyExc_RuntimeWarning').value;
+  late final ffi.Pointer<ffi.Pointer<PyObject>> _PyExc_OverflowError =
+      _lookup<ffi.Pointer<PyObject>>('PyExc_OverflowError');
 
-  late final ffi.Pointer<PyObject> PyExc_FutureWarning =
-      _dylib.lookup<ffi.Pointer<PyObject>>('PyExc_FutureWarning').value;
+  ffi.Pointer<PyObject> get PyExc_OverflowError => _PyExc_OverflowError.value;
 
-  late final ffi.Pointer<PyObject> PyExc_ImportWarning =
-      _dylib.lookup<ffi.Pointer<PyObject>>('PyExc_ImportWarning').value;
+  set PyExc_OverflowError(ffi.Pointer<PyObject> value) =>
+      _PyExc_OverflowError.value = value;
 
-  late final ffi.Pointer<PyObject> PyExc_UnicodeWarning =
-      _dylib.lookup<ffi.Pointer<PyObject>>('PyExc_UnicodeWarning').value;
+  late final ffi.Pointer<ffi.Pointer<PyObject>> _PyExc_RuntimeError =
+      _lookup<ffi.Pointer<PyObject>>('PyExc_RuntimeError');
 
-  late final ffi.Pointer<PyObject> PyExc_BytesWarning =
-      _dylib.lookup<ffi.Pointer<PyObject>>('PyExc_BytesWarning').value;
+  ffi.Pointer<PyObject> get PyExc_RuntimeError => _PyExc_RuntimeError.value;
 
-  late final ffi.Pointer<PyObject> PyExc_ResourceWarning =
-      _dylib.lookup<ffi.Pointer<PyObject>>('PyExc_ResourceWarning').value;
+  set PyExc_RuntimeError(ffi.Pointer<PyObject> value) =>
+      _PyExc_RuntimeError.value = value;
+
+  late final ffi.Pointer<ffi.Pointer<PyObject>> _PyExc_RecursionError =
+      _lookup<ffi.Pointer<PyObject>>('PyExc_RecursionError');
+
+  ffi.Pointer<PyObject> get PyExc_RecursionError => _PyExc_RecursionError.value;
+
+  set PyExc_RecursionError(ffi.Pointer<PyObject> value) =>
+      _PyExc_RecursionError.value = value;
+
+  late final ffi.Pointer<ffi.Pointer<PyObject>> _PyExc_NotImplementedError =
+      _lookup<ffi.Pointer<PyObject>>('PyExc_NotImplementedError');
+
+  ffi.Pointer<PyObject> get PyExc_NotImplementedError =>
+      _PyExc_NotImplementedError.value;
+
+  set PyExc_NotImplementedError(ffi.Pointer<PyObject> value) =>
+      _PyExc_NotImplementedError.value = value;
+
+  late final ffi.Pointer<ffi.Pointer<PyObject>> _PyExc_SyntaxError =
+      _lookup<ffi.Pointer<PyObject>>('PyExc_SyntaxError');
+
+  ffi.Pointer<PyObject> get PyExc_SyntaxError => _PyExc_SyntaxError.value;
+
+  set PyExc_SyntaxError(ffi.Pointer<PyObject> value) =>
+      _PyExc_SyntaxError.value = value;
+
+  late final ffi.Pointer<ffi.Pointer<PyObject>> _PyExc_IndentationError =
+      _lookup<ffi.Pointer<PyObject>>('PyExc_IndentationError');
+
+  ffi.Pointer<PyObject> get PyExc_IndentationError =>
+      _PyExc_IndentationError.value;
+
+  set PyExc_IndentationError(ffi.Pointer<PyObject> value) =>
+      _PyExc_IndentationError.value = value;
+
+  late final ffi.Pointer<ffi.Pointer<PyObject>> _PyExc_TabError =
+      _lookup<ffi.Pointer<PyObject>>('PyExc_TabError');
+
+  ffi.Pointer<PyObject> get PyExc_TabError => _PyExc_TabError.value;
+
+  set PyExc_TabError(ffi.Pointer<PyObject> value) =>
+      _PyExc_TabError.value = value;
+
+  late final ffi.Pointer<ffi.Pointer<PyObject>> _PyExc_ReferenceError =
+      _lookup<ffi.Pointer<PyObject>>('PyExc_ReferenceError');
+
+  ffi.Pointer<PyObject> get PyExc_ReferenceError => _PyExc_ReferenceError.value;
+
+  set PyExc_ReferenceError(ffi.Pointer<PyObject> value) =>
+      _PyExc_ReferenceError.value = value;
+
+  late final ffi.Pointer<ffi.Pointer<PyObject>> _PyExc_SystemError =
+      _lookup<ffi.Pointer<PyObject>>('PyExc_SystemError');
+
+  ffi.Pointer<PyObject> get PyExc_SystemError => _PyExc_SystemError.value;
+
+  set PyExc_SystemError(ffi.Pointer<PyObject> value) =>
+      _PyExc_SystemError.value = value;
+
+  late final ffi.Pointer<ffi.Pointer<PyObject>> _PyExc_SystemExit =
+      _lookup<ffi.Pointer<PyObject>>('PyExc_SystemExit');
+
+  ffi.Pointer<PyObject> get PyExc_SystemExit => _PyExc_SystemExit.value;
+
+  set PyExc_SystemExit(ffi.Pointer<PyObject> value) =>
+      _PyExc_SystemExit.value = value;
+
+  late final ffi.Pointer<ffi.Pointer<PyObject>> _PyExc_TypeError =
+      _lookup<ffi.Pointer<PyObject>>('PyExc_TypeError');
+
+  ffi.Pointer<PyObject> get PyExc_TypeError => _PyExc_TypeError.value;
+
+  set PyExc_TypeError(ffi.Pointer<PyObject> value) =>
+      _PyExc_TypeError.value = value;
+
+  late final ffi.Pointer<ffi.Pointer<PyObject>> _PyExc_UnboundLocalError =
+      _lookup<ffi.Pointer<PyObject>>('PyExc_UnboundLocalError');
+
+  ffi.Pointer<PyObject> get PyExc_UnboundLocalError =>
+      _PyExc_UnboundLocalError.value;
+
+  set PyExc_UnboundLocalError(ffi.Pointer<PyObject> value) =>
+      _PyExc_UnboundLocalError.value = value;
+
+  late final ffi.Pointer<ffi.Pointer<PyObject>> _PyExc_UnicodeError =
+      _lookup<ffi.Pointer<PyObject>>('PyExc_UnicodeError');
+
+  ffi.Pointer<PyObject> get PyExc_UnicodeError => _PyExc_UnicodeError.value;
+
+  set PyExc_UnicodeError(ffi.Pointer<PyObject> value) =>
+      _PyExc_UnicodeError.value = value;
+
+  late final ffi.Pointer<ffi.Pointer<PyObject>> _PyExc_UnicodeEncodeError =
+      _lookup<ffi.Pointer<PyObject>>('PyExc_UnicodeEncodeError');
+
+  ffi.Pointer<PyObject> get PyExc_UnicodeEncodeError =>
+      _PyExc_UnicodeEncodeError.value;
+
+  set PyExc_UnicodeEncodeError(ffi.Pointer<PyObject> value) =>
+      _PyExc_UnicodeEncodeError.value = value;
+
+  late final ffi.Pointer<ffi.Pointer<PyObject>> _PyExc_UnicodeDecodeError =
+      _lookup<ffi.Pointer<PyObject>>('PyExc_UnicodeDecodeError');
+
+  ffi.Pointer<PyObject> get PyExc_UnicodeDecodeError =>
+      _PyExc_UnicodeDecodeError.value;
+
+  set PyExc_UnicodeDecodeError(ffi.Pointer<PyObject> value) =>
+      _PyExc_UnicodeDecodeError.value = value;
+
+  late final ffi.Pointer<ffi.Pointer<PyObject>> _PyExc_UnicodeTranslateError =
+      _lookup<ffi.Pointer<PyObject>>('PyExc_UnicodeTranslateError');
+
+  ffi.Pointer<PyObject> get PyExc_UnicodeTranslateError =>
+      _PyExc_UnicodeTranslateError.value;
+
+  set PyExc_UnicodeTranslateError(ffi.Pointer<PyObject> value) =>
+      _PyExc_UnicodeTranslateError.value = value;
+
+  late final ffi.Pointer<ffi.Pointer<PyObject>> _PyExc_ValueError =
+      _lookup<ffi.Pointer<PyObject>>('PyExc_ValueError');
+
+  ffi.Pointer<PyObject> get PyExc_ValueError => _PyExc_ValueError.value;
+
+  set PyExc_ValueError(ffi.Pointer<PyObject> value) =>
+      _PyExc_ValueError.value = value;
+
+  late final ffi.Pointer<ffi.Pointer<PyObject>> _PyExc_ZeroDivisionError =
+      _lookup<ffi.Pointer<PyObject>>('PyExc_ZeroDivisionError');
+
+  ffi.Pointer<PyObject> get PyExc_ZeroDivisionError =>
+      _PyExc_ZeroDivisionError.value;
+
+  set PyExc_ZeroDivisionError(ffi.Pointer<PyObject> value) =>
+      _PyExc_ZeroDivisionError.value = value;
+
+  late final ffi.Pointer<ffi.Pointer<PyObject>> _PyExc_BlockingIOError =
+      _lookup<ffi.Pointer<PyObject>>('PyExc_BlockingIOError');
+
+  ffi.Pointer<PyObject> get PyExc_BlockingIOError =>
+      _PyExc_BlockingIOError.value;
+
+  set PyExc_BlockingIOError(ffi.Pointer<PyObject> value) =>
+      _PyExc_BlockingIOError.value = value;
+
+  late final ffi.Pointer<ffi.Pointer<PyObject>> _PyExc_BrokenPipeError =
+      _lookup<ffi.Pointer<PyObject>>('PyExc_BrokenPipeError');
+
+  ffi.Pointer<PyObject> get PyExc_BrokenPipeError =>
+      _PyExc_BrokenPipeError.value;
+
+  set PyExc_BrokenPipeError(ffi.Pointer<PyObject> value) =>
+      _PyExc_BrokenPipeError.value = value;
+
+  late final ffi.Pointer<ffi.Pointer<PyObject>> _PyExc_ChildProcessError =
+      _lookup<ffi.Pointer<PyObject>>('PyExc_ChildProcessError');
+
+  ffi.Pointer<PyObject> get PyExc_ChildProcessError =>
+      _PyExc_ChildProcessError.value;
+
+  set PyExc_ChildProcessError(ffi.Pointer<PyObject> value) =>
+      _PyExc_ChildProcessError.value = value;
+
+  late final ffi.Pointer<ffi.Pointer<PyObject>> _PyExc_ConnectionError =
+      _lookup<ffi.Pointer<PyObject>>('PyExc_ConnectionError');
+
+  ffi.Pointer<PyObject> get PyExc_ConnectionError =>
+      _PyExc_ConnectionError.value;
+
+  set PyExc_ConnectionError(ffi.Pointer<PyObject> value) =>
+      _PyExc_ConnectionError.value = value;
+
+  late final ffi.Pointer<ffi.Pointer<PyObject>> _PyExc_ConnectionAbortedError =
+      _lookup<ffi.Pointer<PyObject>>('PyExc_ConnectionAbortedError');
+
+  ffi.Pointer<PyObject> get PyExc_ConnectionAbortedError =>
+      _PyExc_ConnectionAbortedError.value;
+
+  set PyExc_ConnectionAbortedError(ffi.Pointer<PyObject> value) =>
+      _PyExc_ConnectionAbortedError.value = value;
+
+  late final ffi.Pointer<ffi.Pointer<PyObject>> _PyExc_ConnectionRefusedError =
+      _lookup<ffi.Pointer<PyObject>>('PyExc_ConnectionRefusedError');
+
+  ffi.Pointer<PyObject> get PyExc_ConnectionRefusedError =>
+      _PyExc_ConnectionRefusedError.value;
+
+  set PyExc_ConnectionRefusedError(ffi.Pointer<PyObject> value) =>
+      _PyExc_ConnectionRefusedError.value = value;
+
+  late final ffi.Pointer<ffi.Pointer<PyObject>> _PyExc_ConnectionResetError =
+      _lookup<ffi.Pointer<PyObject>>('PyExc_ConnectionResetError');
+
+  ffi.Pointer<PyObject> get PyExc_ConnectionResetError =>
+      _PyExc_ConnectionResetError.value;
+
+  set PyExc_ConnectionResetError(ffi.Pointer<PyObject> value) =>
+      _PyExc_ConnectionResetError.value = value;
+
+  late final ffi.Pointer<ffi.Pointer<PyObject>> _PyExc_FileExistsError =
+      _lookup<ffi.Pointer<PyObject>>('PyExc_FileExistsError');
+
+  ffi.Pointer<PyObject> get PyExc_FileExistsError =>
+      _PyExc_FileExistsError.value;
+
+  set PyExc_FileExistsError(ffi.Pointer<PyObject> value) =>
+      _PyExc_FileExistsError.value = value;
+
+  late final ffi.Pointer<ffi.Pointer<PyObject>> _PyExc_FileNotFoundError =
+      _lookup<ffi.Pointer<PyObject>>('PyExc_FileNotFoundError');
+
+  ffi.Pointer<PyObject> get PyExc_FileNotFoundError =>
+      _PyExc_FileNotFoundError.value;
+
+  set PyExc_FileNotFoundError(ffi.Pointer<PyObject> value) =>
+      _PyExc_FileNotFoundError.value = value;
+
+  late final ffi.Pointer<ffi.Pointer<PyObject>> _PyExc_InterruptedError =
+      _lookup<ffi.Pointer<PyObject>>('PyExc_InterruptedError');
+
+  ffi.Pointer<PyObject> get PyExc_InterruptedError =>
+      _PyExc_InterruptedError.value;
+
+  set PyExc_InterruptedError(ffi.Pointer<PyObject> value) =>
+      _PyExc_InterruptedError.value = value;
+
+  late final ffi.Pointer<ffi.Pointer<PyObject>> _PyExc_IsADirectoryError =
+      _lookup<ffi.Pointer<PyObject>>('PyExc_IsADirectoryError');
+
+  ffi.Pointer<PyObject> get PyExc_IsADirectoryError =>
+      _PyExc_IsADirectoryError.value;
+
+  set PyExc_IsADirectoryError(ffi.Pointer<PyObject> value) =>
+      _PyExc_IsADirectoryError.value = value;
+
+  late final ffi.Pointer<ffi.Pointer<PyObject>> _PyExc_NotADirectoryError =
+      _lookup<ffi.Pointer<PyObject>>('PyExc_NotADirectoryError');
+
+  ffi.Pointer<PyObject> get PyExc_NotADirectoryError =>
+      _PyExc_NotADirectoryError.value;
+
+  set PyExc_NotADirectoryError(ffi.Pointer<PyObject> value) =>
+      _PyExc_NotADirectoryError.value = value;
+
+  late final ffi.Pointer<ffi.Pointer<PyObject>> _PyExc_PermissionError =
+      _lookup<ffi.Pointer<PyObject>>('PyExc_PermissionError');
+
+  ffi.Pointer<PyObject> get PyExc_PermissionError =>
+      _PyExc_PermissionError.value;
+
+  set PyExc_PermissionError(ffi.Pointer<PyObject> value) =>
+      _PyExc_PermissionError.value = value;
+
+  late final ffi.Pointer<ffi.Pointer<PyObject>> _PyExc_ProcessLookupError =
+      _lookup<ffi.Pointer<PyObject>>('PyExc_ProcessLookupError');
+
+  ffi.Pointer<PyObject> get PyExc_ProcessLookupError =>
+      _PyExc_ProcessLookupError.value;
+
+  set PyExc_ProcessLookupError(ffi.Pointer<PyObject> value) =>
+      _PyExc_ProcessLookupError.value = value;
+
+  late final ffi.Pointer<ffi.Pointer<PyObject>> _PyExc_TimeoutError =
+      _lookup<ffi.Pointer<PyObject>>('PyExc_TimeoutError');
+
+  ffi.Pointer<PyObject> get PyExc_TimeoutError => _PyExc_TimeoutError.value;
+
+  set PyExc_TimeoutError(ffi.Pointer<PyObject> value) =>
+      _PyExc_TimeoutError.value = value;
+
+  late final ffi.Pointer<ffi.Pointer<PyObject>> _PyExc_EnvironmentError =
+      _lookup<ffi.Pointer<PyObject>>('PyExc_EnvironmentError');
+
+  ffi.Pointer<PyObject> get PyExc_EnvironmentError =>
+      _PyExc_EnvironmentError.value;
+
+  set PyExc_EnvironmentError(ffi.Pointer<PyObject> value) =>
+      _PyExc_EnvironmentError.value = value;
+
+  late final ffi.Pointer<ffi.Pointer<PyObject>> _PyExc_IOError =
+      _lookup<ffi.Pointer<PyObject>>('PyExc_IOError');
+
+  ffi.Pointer<PyObject> get PyExc_IOError => _PyExc_IOError.value;
+
+  set PyExc_IOError(ffi.Pointer<PyObject> value) =>
+      _PyExc_IOError.value = value;
+
+  late final ffi.Pointer<ffi.Pointer<PyObject>> _PyExc_Warning =
+      _lookup<ffi.Pointer<PyObject>>('PyExc_Warning');
+
+  ffi.Pointer<PyObject> get PyExc_Warning => _PyExc_Warning.value;
+
+  set PyExc_Warning(ffi.Pointer<PyObject> value) =>
+      _PyExc_Warning.value = value;
+
+  late final ffi.Pointer<ffi.Pointer<PyObject>> _PyExc_UserWarning =
+      _lookup<ffi.Pointer<PyObject>>('PyExc_UserWarning');
+
+  ffi.Pointer<PyObject> get PyExc_UserWarning => _PyExc_UserWarning.value;
+
+  set PyExc_UserWarning(ffi.Pointer<PyObject> value) =>
+      _PyExc_UserWarning.value = value;
+
+  late final ffi.Pointer<ffi.Pointer<PyObject>> _PyExc_DeprecationWarning =
+      _lookup<ffi.Pointer<PyObject>>('PyExc_DeprecationWarning');
+
+  ffi.Pointer<PyObject> get PyExc_DeprecationWarning =>
+      _PyExc_DeprecationWarning.value;
+
+  set PyExc_DeprecationWarning(ffi.Pointer<PyObject> value) =>
+      _PyExc_DeprecationWarning.value = value;
+
+  late final ffi.Pointer<ffi.Pointer<PyObject>>
+      _PyExc_PendingDeprecationWarning =
+      _lookup<ffi.Pointer<PyObject>>('PyExc_PendingDeprecationWarning');
+
+  ffi.Pointer<PyObject> get PyExc_PendingDeprecationWarning =>
+      _PyExc_PendingDeprecationWarning.value;
+
+  set PyExc_PendingDeprecationWarning(ffi.Pointer<PyObject> value) =>
+      _PyExc_PendingDeprecationWarning.value = value;
+
+  late final ffi.Pointer<ffi.Pointer<PyObject>> _PyExc_SyntaxWarning =
+      _lookup<ffi.Pointer<PyObject>>('PyExc_SyntaxWarning');
+
+  ffi.Pointer<PyObject> get PyExc_SyntaxWarning => _PyExc_SyntaxWarning.value;
+
+  set PyExc_SyntaxWarning(ffi.Pointer<PyObject> value) =>
+      _PyExc_SyntaxWarning.value = value;
+
+  late final ffi.Pointer<ffi.Pointer<PyObject>> _PyExc_RuntimeWarning =
+      _lookup<ffi.Pointer<PyObject>>('PyExc_RuntimeWarning');
+
+  ffi.Pointer<PyObject> get PyExc_RuntimeWarning => _PyExc_RuntimeWarning.value;
+
+  set PyExc_RuntimeWarning(ffi.Pointer<PyObject> value) =>
+      _PyExc_RuntimeWarning.value = value;
+
+  late final ffi.Pointer<ffi.Pointer<PyObject>> _PyExc_FutureWarning =
+      _lookup<ffi.Pointer<PyObject>>('PyExc_FutureWarning');
+
+  ffi.Pointer<PyObject> get PyExc_FutureWarning => _PyExc_FutureWarning.value;
+
+  set PyExc_FutureWarning(ffi.Pointer<PyObject> value) =>
+      _PyExc_FutureWarning.value = value;
+
+  late final ffi.Pointer<ffi.Pointer<PyObject>> _PyExc_ImportWarning =
+      _lookup<ffi.Pointer<PyObject>>('PyExc_ImportWarning');
+
+  ffi.Pointer<PyObject> get PyExc_ImportWarning => _PyExc_ImportWarning.value;
+
+  set PyExc_ImportWarning(ffi.Pointer<PyObject> value) =>
+      _PyExc_ImportWarning.value = value;
+
+  late final ffi.Pointer<ffi.Pointer<PyObject>> _PyExc_UnicodeWarning =
+      _lookup<ffi.Pointer<PyObject>>('PyExc_UnicodeWarning');
+
+  ffi.Pointer<PyObject> get PyExc_UnicodeWarning => _PyExc_UnicodeWarning.value;
+
+  set PyExc_UnicodeWarning(ffi.Pointer<PyObject> value) =>
+      _PyExc_UnicodeWarning.value = value;
+
+  late final ffi.Pointer<ffi.Pointer<PyObject>> _PyExc_BytesWarning =
+      _lookup<ffi.Pointer<PyObject>>('PyExc_BytesWarning');
+
+  ffi.Pointer<PyObject> get PyExc_BytesWarning => _PyExc_BytesWarning.value;
+
+  set PyExc_BytesWarning(ffi.Pointer<PyObject> value) =>
+      _PyExc_BytesWarning.value = value;
+
+  late final ffi.Pointer<ffi.Pointer<PyObject>> _PyExc_ResourceWarning =
+      _lookup<ffi.Pointer<PyObject>>('PyExc_ResourceWarning');
+
+  ffi.Pointer<PyObject> get PyExc_ResourceWarning =>
+      _PyExc_ResourceWarning.value;
+
+  set PyExc_ResourceWarning(ffi.Pointer<PyObject> value) =>
+      _PyExc_ResourceWarning.value = value;
 
   int PyErr_BadArgument() {
-    return (_PyErr_BadArgument ??=
-        _dylib.lookupFunction<_c_PyErr_BadArgument, _dart_PyErr_BadArgument>(
-            'PyErr_BadArgument'))();
+    return _PyErr_BadArgument();
   }
 
-  _dart_PyErr_BadArgument? _PyErr_BadArgument;
+  late final _PyErr_BadArgument_ptr =
+      _lookup<ffi.NativeFunction<_c_PyErr_BadArgument>>('PyErr_BadArgument');
+  late final _dart_PyErr_BadArgument _PyErr_BadArgument =
+      _PyErr_BadArgument_ptr.asFunction<_dart_PyErr_BadArgument>();
 
   ffi.Pointer<PyObject> PyErr_NoMemory() {
-    return (_PyErr_NoMemory ??=
-        _dylib.lookupFunction<_c_PyErr_NoMemory, _dart_PyErr_NoMemory>(
-            'PyErr_NoMemory'))();
+    return _PyErr_NoMemory();
   }
 
-  _dart_PyErr_NoMemory? _PyErr_NoMemory;
+  late final _PyErr_NoMemory_ptr =
+      _lookup<ffi.NativeFunction<_c_PyErr_NoMemory>>('PyErr_NoMemory');
+  late final _dart_PyErr_NoMemory _PyErr_NoMemory =
+      _PyErr_NoMemory_ptr.asFunction<_dart_PyErr_NoMemory>();
 
   ffi.Pointer<PyObject> PyErr_SetFromErrno(
     ffi.Pointer<PyObject> arg0,
   ) {
-    return (_PyErr_SetFromErrno ??=
-        _dylib.lookupFunction<_c_PyErr_SetFromErrno, _dart_PyErr_SetFromErrno>(
-            'PyErr_SetFromErrno'))(
+    return _PyErr_SetFromErrno(
       arg0,
     );
   }
 
-  _dart_PyErr_SetFromErrno? _PyErr_SetFromErrno;
+  late final _PyErr_SetFromErrno_ptr =
+      _lookup<ffi.NativeFunction<_c_PyErr_SetFromErrno>>('PyErr_SetFromErrno');
+  late final _dart_PyErr_SetFromErrno _PyErr_SetFromErrno =
+      _PyErr_SetFromErrno_ptr.asFunction<_dart_PyErr_SetFromErrno>();
 
   ffi.Pointer<PyObject> PyErr_SetFromErrnoWithFilenameObject(
     ffi.Pointer<PyObject> arg0,
     ffi.Pointer<PyObject> arg1,
   ) {
-    return (_PyErr_SetFromErrnoWithFilenameObject ??= _dylib.lookupFunction<
-            _c_PyErr_SetFromErrnoWithFilenameObject,
-            _dart_PyErr_SetFromErrnoWithFilenameObject>(
-        'PyErr_SetFromErrnoWithFilenameObject'))(
+    return _PyErr_SetFromErrnoWithFilenameObject(
       arg0,
       arg1,
     );
   }
 
-  _dart_PyErr_SetFromErrnoWithFilenameObject?
-      _PyErr_SetFromErrnoWithFilenameObject;
+  late final _PyErr_SetFromErrnoWithFilenameObject_ptr =
+      _lookup<ffi.NativeFunction<_c_PyErr_SetFromErrnoWithFilenameObject>>(
+          'PyErr_SetFromErrnoWithFilenameObject');
+  late final _dart_PyErr_SetFromErrnoWithFilenameObject
+      _PyErr_SetFromErrnoWithFilenameObject =
+      _PyErr_SetFromErrnoWithFilenameObject_ptr.asFunction<
+          _dart_PyErr_SetFromErrnoWithFilenameObject>();
 
   ffi.Pointer<PyObject> PyErr_SetFromErrnoWithFilenameObjects(
     ffi.Pointer<PyObject> arg0,
     ffi.Pointer<PyObject> arg1,
     ffi.Pointer<PyObject> arg2,
   ) {
-    return (_PyErr_SetFromErrnoWithFilenameObjects ??= _dylib.lookupFunction<
-            _c_PyErr_SetFromErrnoWithFilenameObjects,
-            _dart_PyErr_SetFromErrnoWithFilenameObjects>(
-        'PyErr_SetFromErrnoWithFilenameObjects'))(
+    return _PyErr_SetFromErrnoWithFilenameObjects(
       arg0,
       arg1,
       arg2,
     );
   }
 
-  _dart_PyErr_SetFromErrnoWithFilenameObjects?
-      _PyErr_SetFromErrnoWithFilenameObjects;
+  late final _PyErr_SetFromErrnoWithFilenameObjects_ptr =
+      _lookup<ffi.NativeFunction<_c_PyErr_SetFromErrnoWithFilenameObjects>>(
+          'PyErr_SetFromErrnoWithFilenameObjects');
+  late final _dart_PyErr_SetFromErrnoWithFilenameObjects
+      _PyErr_SetFromErrnoWithFilenameObjects =
+      _PyErr_SetFromErrnoWithFilenameObjects_ptr.asFunction<
+          _dart_PyErr_SetFromErrnoWithFilenameObjects>();
 
   ffi.Pointer<PyObject> PyErr_SetFromErrnoWithFilename(
     ffi.Pointer<PyObject> exc,
     ffi.Pointer<ffi.Int8> filename,
   ) {
-    return (_PyErr_SetFromErrnoWithFilename ??= _dylib.lookupFunction<
-            _c_PyErr_SetFromErrnoWithFilename,
-            _dart_PyErr_SetFromErrnoWithFilename>(
-        'PyErr_SetFromErrnoWithFilename'))(
+    return _PyErr_SetFromErrnoWithFilename(
       exc,
       filename,
     );
   }
 
-  _dart_PyErr_SetFromErrnoWithFilename? _PyErr_SetFromErrnoWithFilename;
+  late final _PyErr_SetFromErrnoWithFilename_ptr =
+      _lookup<ffi.NativeFunction<_c_PyErr_SetFromErrnoWithFilename>>(
+          'PyErr_SetFromErrnoWithFilename');
+  late final _dart_PyErr_SetFromErrnoWithFilename
+      _PyErr_SetFromErrnoWithFilename = _PyErr_SetFromErrnoWithFilename_ptr
+          .asFunction<_dart_PyErr_SetFromErrnoWithFilename>();
 
   ffi.Pointer<PyObject> PyErr_Format(
     ffi.Pointer<PyObject> exception,
     ffi.Pointer<ffi.Int8> format,
   ) {
-    return (_PyErr_Format ??= _dylib
-        .lookupFunction<_c_PyErr_Format, _dart_PyErr_Format>('PyErr_Format'))(
+    return _PyErr_Format(
       exception,
       format,
     );
   }
 
-  _dart_PyErr_Format? _PyErr_Format;
+  late final _PyErr_Format_ptr =
+      _lookup<ffi.NativeFunction<_c_PyErr_Format>>('PyErr_Format');
+  late final _dart_PyErr_Format _PyErr_Format =
+      _PyErr_Format_ptr.asFunction<_dart_PyErr_Format>();
 
   ffi.Pointer<PyObject> PyErr_FormatV(
     ffi.Pointer<PyObject> exception,
     ffi.Pointer<ffi.Int8> format,
     ffi.Pointer<__va_list_tag> vargs,
   ) {
-    return (_PyErr_FormatV ??=
-        _dylib.lookupFunction<_c_PyErr_FormatV, _dart_PyErr_FormatV>(
-            'PyErr_FormatV'))(
+    return _PyErr_FormatV(
       exception,
       format,
       vargs,
     );
   }
 
-  _dart_PyErr_FormatV? _PyErr_FormatV;
+  late final _PyErr_FormatV_ptr =
+      _lookup<ffi.NativeFunction<_c_PyErr_FormatV>>('PyErr_FormatV');
+  late final _dart_PyErr_FormatV _PyErr_FormatV =
+      _PyErr_FormatV_ptr.asFunction<_dart_PyErr_FormatV>();
 
   ffi.Pointer<PyObject> PyErr_SetImportErrorSubclass(
     ffi.Pointer<PyObject> arg0,
@@ -8188,9 +9779,7 @@ class DartPyC {
     ffi.Pointer<PyObject> arg2,
     ffi.Pointer<PyObject> arg3,
   ) {
-    return (_PyErr_SetImportErrorSubclass ??= _dylib.lookupFunction<
-        _c_PyErr_SetImportErrorSubclass,
-        _dart_PyErr_SetImportErrorSubclass>('PyErr_SetImportErrorSubclass'))(
+    return _PyErr_SetImportErrorSubclass(
       arg0,
       arg1,
       arg2,
@@ -8198,61 +9787,73 @@ class DartPyC {
     );
   }
 
-  _dart_PyErr_SetImportErrorSubclass? _PyErr_SetImportErrorSubclass;
+  late final _PyErr_SetImportErrorSubclass_ptr =
+      _lookup<ffi.NativeFunction<_c_PyErr_SetImportErrorSubclass>>(
+          'PyErr_SetImportErrorSubclass');
+  late final _dart_PyErr_SetImportErrorSubclass _PyErr_SetImportErrorSubclass =
+      _PyErr_SetImportErrorSubclass_ptr.asFunction<
+          _dart_PyErr_SetImportErrorSubclass>();
 
   ffi.Pointer<PyObject> PyErr_SetImportError(
     ffi.Pointer<PyObject> arg0,
     ffi.Pointer<PyObject> arg1,
     ffi.Pointer<PyObject> arg2,
   ) {
-    return (_PyErr_SetImportError ??= _dylib.lookupFunction<
-        _c_PyErr_SetImportError,
-        _dart_PyErr_SetImportError>('PyErr_SetImportError'))(
+    return _PyErr_SetImportError(
       arg0,
       arg1,
       arg2,
     );
   }
 
-  _dart_PyErr_SetImportError? _PyErr_SetImportError;
+  late final _PyErr_SetImportError_ptr =
+      _lookup<ffi.NativeFunction<_c_PyErr_SetImportError>>(
+          'PyErr_SetImportError');
+  late final _dart_PyErr_SetImportError _PyErr_SetImportError =
+      _PyErr_SetImportError_ptr.asFunction<_dart_PyErr_SetImportError>();
 
   void PyErr_BadInternalCall() {
-    return (_PyErr_BadInternalCall ??= _dylib.lookupFunction<
-        _c_PyErr_BadInternalCall,
-        _dart_PyErr_BadInternalCall>('PyErr_BadInternalCall'))();
+    return _PyErr_BadInternalCall();
   }
 
-  _dart_PyErr_BadInternalCall? _PyErr_BadInternalCall;
+  late final _PyErr_BadInternalCall_ptr =
+      _lookup<ffi.NativeFunction<_c_PyErr_BadInternalCall>>(
+          'PyErr_BadInternalCall');
+  late final _dart_PyErr_BadInternalCall _PyErr_BadInternalCall =
+      _PyErr_BadInternalCall_ptr.asFunction<_dart_PyErr_BadInternalCall>();
 
   void PyErr_BadInternalCall_1(
     ffi.Pointer<ffi.Int8> filename,
     int lineno,
   ) {
-    return (_PyErr_BadInternalCall_1 ??= _dylib.lookupFunction<
-        _c_PyErr_BadInternalCall_1,
-        _dart_PyErr_BadInternalCall_1>('_PyErr_BadInternalCall'))(
+    return _PyErr_BadInternalCall_1(
       filename,
       lineno,
     );
   }
 
-  _dart_PyErr_BadInternalCall_1? _PyErr_BadInternalCall_1;
+  late final _PyErr_BadInternalCall_1_ptr =
+      _lookup<ffi.NativeFunction<_c_PyErr_BadInternalCall_1>>(
+          '_PyErr_BadInternalCall');
+  late final _dart_PyErr_BadInternalCall_1 _PyErr_BadInternalCall_1 =
+      _PyErr_BadInternalCall_1_ptr.asFunction<_dart_PyErr_BadInternalCall_1>();
 
   ffi.Pointer<PyObject> PyErr_NewException(
     ffi.Pointer<ffi.Int8> name,
     ffi.Pointer<PyObject> base,
     ffi.Pointer<PyObject> dict,
   ) {
-    return (_PyErr_NewException ??=
-        _dylib.lookupFunction<_c_PyErr_NewException, _dart_PyErr_NewException>(
-            'PyErr_NewException'))(
+    return _PyErr_NewException(
       name,
       base,
       dict,
     );
   }
 
-  _dart_PyErr_NewException? _PyErr_NewException;
+  late final _PyErr_NewException_ptr =
+      _lookup<ffi.NativeFunction<_c_PyErr_NewException>>('PyErr_NewException');
+  late final _dart_PyErr_NewException _PyErr_NewException =
+      _PyErr_NewException_ptr.asFunction<_dart_PyErr_NewException>();
 
   ffi.Pointer<PyObject> PyErr_NewExceptionWithDoc(
     ffi.Pointer<ffi.Int8> name,
@@ -8260,9 +9861,7 @@ class DartPyC {
     ffi.Pointer<PyObject> base,
     ffi.Pointer<PyObject> dict,
   ) {
-    return (_PyErr_NewExceptionWithDoc ??= _dylib.lookupFunction<
-        _c_PyErr_NewExceptionWithDoc,
-        _dart_PyErr_NewExceptionWithDoc>('PyErr_NewExceptionWithDoc'))(
+    return _PyErr_NewExceptionWithDoc(
       name,
       doc,
       base,
@@ -8270,79 +9869,93 @@ class DartPyC {
     );
   }
 
-  _dart_PyErr_NewExceptionWithDoc? _PyErr_NewExceptionWithDoc;
+  late final _PyErr_NewExceptionWithDoc_ptr =
+      _lookup<ffi.NativeFunction<_c_PyErr_NewExceptionWithDoc>>(
+          'PyErr_NewExceptionWithDoc');
+  late final _dart_PyErr_NewExceptionWithDoc _PyErr_NewExceptionWithDoc =
+      _PyErr_NewExceptionWithDoc_ptr.asFunction<
+          _dart_PyErr_NewExceptionWithDoc>();
 
   void PyErr_WriteUnraisable(
     ffi.Pointer<PyObject> arg0,
   ) {
-    return (_PyErr_WriteUnraisable ??= _dylib.lookupFunction<
-        _c_PyErr_WriteUnraisable,
-        _dart_PyErr_WriteUnraisable>('PyErr_WriteUnraisable'))(
+    return _PyErr_WriteUnraisable(
       arg0,
     );
   }
 
-  _dart_PyErr_WriteUnraisable? _PyErr_WriteUnraisable;
+  late final _PyErr_WriteUnraisable_ptr =
+      _lookup<ffi.NativeFunction<_c_PyErr_WriteUnraisable>>(
+          'PyErr_WriteUnraisable');
+  late final _dart_PyErr_WriteUnraisable _PyErr_WriteUnraisable =
+      _PyErr_WriteUnraisable_ptr.asFunction<_dart_PyErr_WriteUnraisable>();
 
   int PyErr_CheckSignals() {
-    return (_PyErr_CheckSignals ??=
-        _dylib.lookupFunction<_c_PyErr_CheckSignals, _dart_PyErr_CheckSignals>(
-            'PyErr_CheckSignals'))();
+    return _PyErr_CheckSignals();
   }
 
-  _dart_PyErr_CheckSignals? _PyErr_CheckSignals;
+  late final _PyErr_CheckSignals_ptr =
+      _lookup<ffi.NativeFunction<_c_PyErr_CheckSignals>>('PyErr_CheckSignals');
+  late final _dart_PyErr_CheckSignals _PyErr_CheckSignals =
+      _PyErr_CheckSignals_ptr.asFunction<_dart_PyErr_CheckSignals>();
 
   void PyErr_SetInterrupt() {
-    return (_PyErr_SetInterrupt ??=
-        _dylib.lookupFunction<_c_PyErr_SetInterrupt, _dart_PyErr_SetInterrupt>(
-            'PyErr_SetInterrupt'))();
+    return _PyErr_SetInterrupt();
   }
 
-  _dart_PyErr_SetInterrupt? _PyErr_SetInterrupt;
+  late final _PyErr_SetInterrupt_ptr =
+      _lookup<ffi.NativeFunction<_c_PyErr_SetInterrupt>>('PyErr_SetInterrupt');
+  late final _dart_PyErr_SetInterrupt _PyErr_SetInterrupt =
+      _PyErr_SetInterrupt_ptr.asFunction<_dart_PyErr_SetInterrupt>();
 
   void PyErr_SyntaxLocation(
     ffi.Pointer<ffi.Int8> filename,
     int lineno,
   ) {
-    return (_PyErr_SyntaxLocation ??= _dylib.lookupFunction<
-        _c_PyErr_SyntaxLocation,
-        _dart_PyErr_SyntaxLocation>('PyErr_SyntaxLocation'))(
+    return _PyErr_SyntaxLocation(
       filename,
       lineno,
     );
   }
 
-  _dart_PyErr_SyntaxLocation? _PyErr_SyntaxLocation;
+  late final _PyErr_SyntaxLocation_ptr =
+      _lookup<ffi.NativeFunction<_c_PyErr_SyntaxLocation>>(
+          'PyErr_SyntaxLocation');
+  late final _dart_PyErr_SyntaxLocation _PyErr_SyntaxLocation =
+      _PyErr_SyntaxLocation_ptr.asFunction<_dart_PyErr_SyntaxLocation>();
 
   void PyErr_SyntaxLocationEx(
     ffi.Pointer<ffi.Int8> filename,
     int lineno,
     int col_offset,
   ) {
-    return (_PyErr_SyntaxLocationEx ??= _dylib.lookupFunction<
-        _c_PyErr_SyntaxLocationEx,
-        _dart_PyErr_SyntaxLocationEx>('PyErr_SyntaxLocationEx'))(
+    return _PyErr_SyntaxLocationEx(
       filename,
       lineno,
       col_offset,
     );
   }
 
-  _dart_PyErr_SyntaxLocationEx? _PyErr_SyntaxLocationEx;
+  late final _PyErr_SyntaxLocationEx_ptr =
+      _lookup<ffi.NativeFunction<_c_PyErr_SyntaxLocationEx>>(
+          'PyErr_SyntaxLocationEx');
+  late final _dart_PyErr_SyntaxLocationEx _PyErr_SyntaxLocationEx =
+      _PyErr_SyntaxLocationEx_ptr.asFunction<_dart_PyErr_SyntaxLocationEx>();
 
   ffi.Pointer<PyObject> PyErr_ProgramText(
     ffi.Pointer<ffi.Int8> filename,
     int lineno,
   ) {
-    return (_PyErr_ProgramText ??=
-        _dylib.lookupFunction<_c_PyErr_ProgramText, _dart_PyErr_ProgramText>(
-            'PyErr_ProgramText'))(
+    return _PyErr_ProgramText(
       filename,
       lineno,
     );
   }
 
-  _dart_PyErr_ProgramText? _PyErr_ProgramText;
+  late final _PyErr_ProgramText_ptr =
+      _lookup<ffi.NativeFunction<_c_PyErr_ProgramText>>('PyErr_ProgramText');
+  late final _dart_PyErr_ProgramText _PyErr_ProgramText =
+      _PyErr_ProgramText_ptr.asFunction<_dart_PyErr_ProgramText>();
 
   ffi.Pointer<PyObject> PyUnicodeDecodeError_Create(
     ffi.Pointer<ffi.Int8> encoding,
@@ -8352,9 +9965,7 @@ class DartPyC {
     int end,
     ffi.Pointer<ffi.Int8> reason,
   ) {
-    return (_PyUnicodeDecodeError_Create ??= _dylib.lookupFunction<
-        _c_PyUnicodeDecodeError_Create,
-        _dart_PyUnicodeDecodeError_Create>('PyUnicodeDecodeError_Create'))(
+    return _PyUnicodeDecodeError_Create(
       encoding,
       object,
       length,
@@ -8364,344 +9975,407 @@ class DartPyC {
     );
   }
 
-  _dart_PyUnicodeDecodeError_Create? _PyUnicodeDecodeError_Create;
+  late final _PyUnicodeDecodeError_Create_ptr =
+      _lookup<ffi.NativeFunction<_c_PyUnicodeDecodeError_Create>>(
+          'PyUnicodeDecodeError_Create');
+  late final _dart_PyUnicodeDecodeError_Create _PyUnicodeDecodeError_Create =
+      _PyUnicodeDecodeError_Create_ptr.asFunction<
+          _dart_PyUnicodeDecodeError_Create>();
 
   ffi.Pointer<PyObject> PyUnicodeEncodeError_GetEncoding(
     ffi.Pointer<PyObject> arg0,
   ) {
-    return (_PyUnicodeEncodeError_GetEncoding ??= _dylib.lookupFunction<
-            _c_PyUnicodeEncodeError_GetEncoding,
-            _dart_PyUnicodeEncodeError_GetEncoding>(
-        'PyUnicodeEncodeError_GetEncoding'))(
+    return _PyUnicodeEncodeError_GetEncoding(
       arg0,
     );
   }
 
-  _dart_PyUnicodeEncodeError_GetEncoding? _PyUnicodeEncodeError_GetEncoding;
+  late final _PyUnicodeEncodeError_GetEncoding_ptr =
+      _lookup<ffi.NativeFunction<_c_PyUnicodeEncodeError_GetEncoding>>(
+          'PyUnicodeEncodeError_GetEncoding');
+  late final _dart_PyUnicodeEncodeError_GetEncoding
+      _PyUnicodeEncodeError_GetEncoding = _PyUnicodeEncodeError_GetEncoding_ptr
+          .asFunction<_dart_PyUnicodeEncodeError_GetEncoding>();
 
   ffi.Pointer<PyObject> PyUnicodeDecodeError_GetEncoding(
     ffi.Pointer<PyObject> arg0,
   ) {
-    return (_PyUnicodeDecodeError_GetEncoding ??= _dylib.lookupFunction<
-            _c_PyUnicodeDecodeError_GetEncoding,
-            _dart_PyUnicodeDecodeError_GetEncoding>(
-        'PyUnicodeDecodeError_GetEncoding'))(
+    return _PyUnicodeDecodeError_GetEncoding(
       arg0,
     );
   }
 
-  _dart_PyUnicodeDecodeError_GetEncoding? _PyUnicodeDecodeError_GetEncoding;
+  late final _PyUnicodeDecodeError_GetEncoding_ptr =
+      _lookup<ffi.NativeFunction<_c_PyUnicodeDecodeError_GetEncoding>>(
+          'PyUnicodeDecodeError_GetEncoding');
+  late final _dart_PyUnicodeDecodeError_GetEncoding
+      _PyUnicodeDecodeError_GetEncoding = _PyUnicodeDecodeError_GetEncoding_ptr
+          .asFunction<_dart_PyUnicodeDecodeError_GetEncoding>();
 
   ffi.Pointer<PyObject> PyUnicodeEncodeError_GetObject(
     ffi.Pointer<PyObject> arg0,
   ) {
-    return (_PyUnicodeEncodeError_GetObject ??= _dylib.lookupFunction<
-            _c_PyUnicodeEncodeError_GetObject,
-            _dart_PyUnicodeEncodeError_GetObject>(
-        'PyUnicodeEncodeError_GetObject'))(
+    return _PyUnicodeEncodeError_GetObject(
       arg0,
     );
   }
 
-  _dart_PyUnicodeEncodeError_GetObject? _PyUnicodeEncodeError_GetObject;
+  late final _PyUnicodeEncodeError_GetObject_ptr =
+      _lookup<ffi.NativeFunction<_c_PyUnicodeEncodeError_GetObject>>(
+          'PyUnicodeEncodeError_GetObject');
+  late final _dart_PyUnicodeEncodeError_GetObject
+      _PyUnicodeEncodeError_GetObject = _PyUnicodeEncodeError_GetObject_ptr
+          .asFunction<_dart_PyUnicodeEncodeError_GetObject>();
 
   ffi.Pointer<PyObject> PyUnicodeDecodeError_GetObject(
     ffi.Pointer<PyObject> arg0,
   ) {
-    return (_PyUnicodeDecodeError_GetObject ??= _dylib.lookupFunction<
-            _c_PyUnicodeDecodeError_GetObject,
-            _dart_PyUnicodeDecodeError_GetObject>(
-        'PyUnicodeDecodeError_GetObject'))(
+    return _PyUnicodeDecodeError_GetObject(
       arg0,
     );
   }
 
-  _dart_PyUnicodeDecodeError_GetObject? _PyUnicodeDecodeError_GetObject;
+  late final _PyUnicodeDecodeError_GetObject_ptr =
+      _lookup<ffi.NativeFunction<_c_PyUnicodeDecodeError_GetObject>>(
+          'PyUnicodeDecodeError_GetObject');
+  late final _dart_PyUnicodeDecodeError_GetObject
+      _PyUnicodeDecodeError_GetObject = _PyUnicodeDecodeError_GetObject_ptr
+          .asFunction<_dart_PyUnicodeDecodeError_GetObject>();
 
   ffi.Pointer<PyObject> PyUnicodeTranslateError_GetObject(
     ffi.Pointer<PyObject> arg0,
   ) {
-    return (_PyUnicodeTranslateError_GetObject ??= _dylib.lookupFunction<
-            _c_PyUnicodeTranslateError_GetObject,
-            _dart_PyUnicodeTranslateError_GetObject>(
-        'PyUnicodeTranslateError_GetObject'))(
+    return _PyUnicodeTranslateError_GetObject(
       arg0,
     );
   }
 
-  _dart_PyUnicodeTranslateError_GetObject? _PyUnicodeTranslateError_GetObject;
+  late final _PyUnicodeTranslateError_GetObject_ptr =
+      _lookup<ffi.NativeFunction<_c_PyUnicodeTranslateError_GetObject>>(
+          'PyUnicodeTranslateError_GetObject');
+  late final _dart_PyUnicodeTranslateError_GetObject
+      _PyUnicodeTranslateError_GetObject =
+      _PyUnicodeTranslateError_GetObject_ptr.asFunction<
+          _dart_PyUnicodeTranslateError_GetObject>();
 
   int PyUnicodeEncodeError_GetStart(
     ffi.Pointer<PyObject> arg0,
     ffi.Pointer<ffi.Int64> arg1,
   ) {
-    return (_PyUnicodeEncodeError_GetStart ??= _dylib.lookupFunction<
-        _c_PyUnicodeEncodeError_GetStart,
-        _dart_PyUnicodeEncodeError_GetStart>('PyUnicodeEncodeError_GetStart'))(
+    return _PyUnicodeEncodeError_GetStart(
       arg0,
       arg1,
     );
   }
 
-  _dart_PyUnicodeEncodeError_GetStart? _PyUnicodeEncodeError_GetStart;
+  late final _PyUnicodeEncodeError_GetStart_ptr =
+      _lookup<ffi.NativeFunction<_c_PyUnicodeEncodeError_GetStart>>(
+          'PyUnicodeEncodeError_GetStart');
+  late final _dart_PyUnicodeEncodeError_GetStart
+      _PyUnicodeEncodeError_GetStart = _PyUnicodeEncodeError_GetStart_ptr
+          .asFunction<_dart_PyUnicodeEncodeError_GetStart>();
 
   int PyUnicodeDecodeError_GetStart(
     ffi.Pointer<PyObject> arg0,
     ffi.Pointer<ffi.Int64> arg1,
   ) {
-    return (_PyUnicodeDecodeError_GetStart ??= _dylib.lookupFunction<
-        _c_PyUnicodeDecodeError_GetStart,
-        _dart_PyUnicodeDecodeError_GetStart>('PyUnicodeDecodeError_GetStart'))(
+    return _PyUnicodeDecodeError_GetStart(
       arg0,
       arg1,
     );
   }
 
-  _dart_PyUnicodeDecodeError_GetStart? _PyUnicodeDecodeError_GetStart;
+  late final _PyUnicodeDecodeError_GetStart_ptr =
+      _lookup<ffi.NativeFunction<_c_PyUnicodeDecodeError_GetStart>>(
+          'PyUnicodeDecodeError_GetStart');
+  late final _dart_PyUnicodeDecodeError_GetStart
+      _PyUnicodeDecodeError_GetStart = _PyUnicodeDecodeError_GetStart_ptr
+          .asFunction<_dart_PyUnicodeDecodeError_GetStart>();
 
   int PyUnicodeTranslateError_GetStart(
     ffi.Pointer<PyObject> arg0,
     ffi.Pointer<ffi.Int64> arg1,
   ) {
-    return (_PyUnicodeTranslateError_GetStart ??= _dylib.lookupFunction<
-            _c_PyUnicodeTranslateError_GetStart,
-            _dart_PyUnicodeTranslateError_GetStart>(
-        'PyUnicodeTranslateError_GetStart'))(
+    return _PyUnicodeTranslateError_GetStart(
       arg0,
       arg1,
     );
   }
 
-  _dart_PyUnicodeTranslateError_GetStart? _PyUnicodeTranslateError_GetStart;
+  late final _PyUnicodeTranslateError_GetStart_ptr =
+      _lookup<ffi.NativeFunction<_c_PyUnicodeTranslateError_GetStart>>(
+          'PyUnicodeTranslateError_GetStart');
+  late final _dart_PyUnicodeTranslateError_GetStart
+      _PyUnicodeTranslateError_GetStart = _PyUnicodeTranslateError_GetStart_ptr
+          .asFunction<_dart_PyUnicodeTranslateError_GetStart>();
 
   int PyUnicodeEncodeError_SetStart(
     ffi.Pointer<PyObject> arg0,
     int arg1,
   ) {
-    return (_PyUnicodeEncodeError_SetStart ??= _dylib.lookupFunction<
-        _c_PyUnicodeEncodeError_SetStart,
-        _dart_PyUnicodeEncodeError_SetStart>('PyUnicodeEncodeError_SetStart'))(
+    return _PyUnicodeEncodeError_SetStart(
       arg0,
       arg1,
     );
   }
 
-  _dart_PyUnicodeEncodeError_SetStart? _PyUnicodeEncodeError_SetStart;
+  late final _PyUnicodeEncodeError_SetStart_ptr =
+      _lookup<ffi.NativeFunction<_c_PyUnicodeEncodeError_SetStart>>(
+          'PyUnicodeEncodeError_SetStart');
+  late final _dart_PyUnicodeEncodeError_SetStart
+      _PyUnicodeEncodeError_SetStart = _PyUnicodeEncodeError_SetStart_ptr
+          .asFunction<_dart_PyUnicodeEncodeError_SetStart>();
 
   int PyUnicodeDecodeError_SetStart(
     ffi.Pointer<PyObject> arg0,
     int arg1,
   ) {
-    return (_PyUnicodeDecodeError_SetStart ??= _dylib.lookupFunction<
-        _c_PyUnicodeDecodeError_SetStart,
-        _dart_PyUnicodeDecodeError_SetStart>('PyUnicodeDecodeError_SetStart'))(
+    return _PyUnicodeDecodeError_SetStart(
       arg0,
       arg1,
     );
   }
 
-  _dart_PyUnicodeDecodeError_SetStart? _PyUnicodeDecodeError_SetStart;
+  late final _PyUnicodeDecodeError_SetStart_ptr =
+      _lookup<ffi.NativeFunction<_c_PyUnicodeDecodeError_SetStart>>(
+          'PyUnicodeDecodeError_SetStart');
+  late final _dart_PyUnicodeDecodeError_SetStart
+      _PyUnicodeDecodeError_SetStart = _PyUnicodeDecodeError_SetStart_ptr
+          .asFunction<_dart_PyUnicodeDecodeError_SetStart>();
 
   int PyUnicodeTranslateError_SetStart(
     ffi.Pointer<PyObject> arg0,
     int arg1,
   ) {
-    return (_PyUnicodeTranslateError_SetStart ??= _dylib.lookupFunction<
-            _c_PyUnicodeTranslateError_SetStart,
-            _dart_PyUnicodeTranslateError_SetStart>(
-        'PyUnicodeTranslateError_SetStart'))(
+    return _PyUnicodeTranslateError_SetStart(
       arg0,
       arg1,
     );
   }
 
-  _dart_PyUnicodeTranslateError_SetStart? _PyUnicodeTranslateError_SetStart;
+  late final _PyUnicodeTranslateError_SetStart_ptr =
+      _lookup<ffi.NativeFunction<_c_PyUnicodeTranslateError_SetStart>>(
+          'PyUnicodeTranslateError_SetStart');
+  late final _dart_PyUnicodeTranslateError_SetStart
+      _PyUnicodeTranslateError_SetStart = _PyUnicodeTranslateError_SetStart_ptr
+          .asFunction<_dart_PyUnicodeTranslateError_SetStart>();
 
   int PyUnicodeEncodeError_GetEnd(
     ffi.Pointer<PyObject> arg0,
     ffi.Pointer<ffi.Int64> arg1,
   ) {
-    return (_PyUnicodeEncodeError_GetEnd ??= _dylib.lookupFunction<
-        _c_PyUnicodeEncodeError_GetEnd,
-        _dart_PyUnicodeEncodeError_GetEnd>('PyUnicodeEncodeError_GetEnd'))(
+    return _PyUnicodeEncodeError_GetEnd(
       arg0,
       arg1,
     );
   }
 
-  _dart_PyUnicodeEncodeError_GetEnd? _PyUnicodeEncodeError_GetEnd;
+  late final _PyUnicodeEncodeError_GetEnd_ptr =
+      _lookup<ffi.NativeFunction<_c_PyUnicodeEncodeError_GetEnd>>(
+          'PyUnicodeEncodeError_GetEnd');
+  late final _dart_PyUnicodeEncodeError_GetEnd _PyUnicodeEncodeError_GetEnd =
+      _PyUnicodeEncodeError_GetEnd_ptr.asFunction<
+          _dart_PyUnicodeEncodeError_GetEnd>();
 
   int PyUnicodeDecodeError_GetEnd(
     ffi.Pointer<PyObject> arg0,
     ffi.Pointer<ffi.Int64> arg1,
   ) {
-    return (_PyUnicodeDecodeError_GetEnd ??= _dylib.lookupFunction<
-        _c_PyUnicodeDecodeError_GetEnd,
-        _dart_PyUnicodeDecodeError_GetEnd>('PyUnicodeDecodeError_GetEnd'))(
+    return _PyUnicodeDecodeError_GetEnd(
       arg0,
       arg1,
     );
   }
 
-  _dart_PyUnicodeDecodeError_GetEnd? _PyUnicodeDecodeError_GetEnd;
+  late final _PyUnicodeDecodeError_GetEnd_ptr =
+      _lookup<ffi.NativeFunction<_c_PyUnicodeDecodeError_GetEnd>>(
+          'PyUnicodeDecodeError_GetEnd');
+  late final _dart_PyUnicodeDecodeError_GetEnd _PyUnicodeDecodeError_GetEnd =
+      _PyUnicodeDecodeError_GetEnd_ptr.asFunction<
+          _dart_PyUnicodeDecodeError_GetEnd>();
 
   int PyUnicodeTranslateError_GetEnd(
     ffi.Pointer<PyObject> arg0,
     ffi.Pointer<ffi.Int64> arg1,
   ) {
-    return (_PyUnicodeTranslateError_GetEnd ??= _dylib.lookupFunction<
-            _c_PyUnicodeTranslateError_GetEnd,
-            _dart_PyUnicodeTranslateError_GetEnd>(
-        'PyUnicodeTranslateError_GetEnd'))(
+    return _PyUnicodeTranslateError_GetEnd(
       arg0,
       arg1,
     );
   }
 
-  _dart_PyUnicodeTranslateError_GetEnd? _PyUnicodeTranslateError_GetEnd;
+  late final _PyUnicodeTranslateError_GetEnd_ptr =
+      _lookup<ffi.NativeFunction<_c_PyUnicodeTranslateError_GetEnd>>(
+          'PyUnicodeTranslateError_GetEnd');
+  late final _dart_PyUnicodeTranslateError_GetEnd
+      _PyUnicodeTranslateError_GetEnd = _PyUnicodeTranslateError_GetEnd_ptr
+          .asFunction<_dart_PyUnicodeTranslateError_GetEnd>();
 
   int PyUnicodeEncodeError_SetEnd(
     ffi.Pointer<PyObject> arg0,
     int arg1,
   ) {
-    return (_PyUnicodeEncodeError_SetEnd ??= _dylib.lookupFunction<
-        _c_PyUnicodeEncodeError_SetEnd,
-        _dart_PyUnicodeEncodeError_SetEnd>('PyUnicodeEncodeError_SetEnd'))(
+    return _PyUnicodeEncodeError_SetEnd(
       arg0,
       arg1,
     );
   }
 
-  _dart_PyUnicodeEncodeError_SetEnd? _PyUnicodeEncodeError_SetEnd;
+  late final _PyUnicodeEncodeError_SetEnd_ptr =
+      _lookup<ffi.NativeFunction<_c_PyUnicodeEncodeError_SetEnd>>(
+          'PyUnicodeEncodeError_SetEnd');
+  late final _dart_PyUnicodeEncodeError_SetEnd _PyUnicodeEncodeError_SetEnd =
+      _PyUnicodeEncodeError_SetEnd_ptr.asFunction<
+          _dart_PyUnicodeEncodeError_SetEnd>();
 
   int PyUnicodeDecodeError_SetEnd(
     ffi.Pointer<PyObject> arg0,
     int arg1,
   ) {
-    return (_PyUnicodeDecodeError_SetEnd ??= _dylib.lookupFunction<
-        _c_PyUnicodeDecodeError_SetEnd,
-        _dart_PyUnicodeDecodeError_SetEnd>('PyUnicodeDecodeError_SetEnd'))(
+    return _PyUnicodeDecodeError_SetEnd(
       arg0,
       arg1,
     );
   }
 
-  _dart_PyUnicodeDecodeError_SetEnd? _PyUnicodeDecodeError_SetEnd;
+  late final _PyUnicodeDecodeError_SetEnd_ptr =
+      _lookup<ffi.NativeFunction<_c_PyUnicodeDecodeError_SetEnd>>(
+          'PyUnicodeDecodeError_SetEnd');
+  late final _dart_PyUnicodeDecodeError_SetEnd _PyUnicodeDecodeError_SetEnd =
+      _PyUnicodeDecodeError_SetEnd_ptr.asFunction<
+          _dart_PyUnicodeDecodeError_SetEnd>();
 
   int PyUnicodeTranslateError_SetEnd(
     ffi.Pointer<PyObject> arg0,
     int arg1,
   ) {
-    return (_PyUnicodeTranslateError_SetEnd ??= _dylib.lookupFunction<
-            _c_PyUnicodeTranslateError_SetEnd,
-            _dart_PyUnicodeTranslateError_SetEnd>(
-        'PyUnicodeTranslateError_SetEnd'))(
+    return _PyUnicodeTranslateError_SetEnd(
       arg0,
       arg1,
     );
   }
 
-  _dart_PyUnicodeTranslateError_SetEnd? _PyUnicodeTranslateError_SetEnd;
+  late final _PyUnicodeTranslateError_SetEnd_ptr =
+      _lookup<ffi.NativeFunction<_c_PyUnicodeTranslateError_SetEnd>>(
+          'PyUnicodeTranslateError_SetEnd');
+  late final _dart_PyUnicodeTranslateError_SetEnd
+      _PyUnicodeTranslateError_SetEnd = _PyUnicodeTranslateError_SetEnd_ptr
+          .asFunction<_dart_PyUnicodeTranslateError_SetEnd>();
 
   ffi.Pointer<PyObject> PyUnicodeEncodeError_GetReason(
     ffi.Pointer<PyObject> arg0,
   ) {
-    return (_PyUnicodeEncodeError_GetReason ??= _dylib.lookupFunction<
-            _c_PyUnicodeEncodeError_GetReason,
-            _dart_PyUnicodeEncodeError_GetReason>(
-        'PyUnicodeEncodeError_GetReason'))(
+    return _PyUnicodeEncodeError_GetReason(
       arg0,
     );
   }
 
-  _dart_PyUnicodeEncodeError_GetReason? _PyUnicodeEncodeError_GetReason;
+  late final _PyUnicodeEncodeError_GetReason_ptr =
+      _lookup<ffi.NativeFunction<_c_PyUnicodeEncodeError_GetReason>>(
+          'PyUnicodeEncodeError_GetReason');
+  late final _dart_PyUnicodeEncodeError_GetReason
+      _PyUnicodeEncodeError_GetReason = _PyUnicodeEncodeError_GetReason_ptr
+          .asFunction<_dart_PyUnicodeEncodeError_GetReason>();
 
   ffi.Pointer<PyObject> PyUnicodeDecodeError_GetReason(
     ffi.Pointer<PyObject> arg0,
   ) {
-    return (_PyUnicodeDecodeError_GetReason ??= _dylib.lookupFunction<
-            _c_PyUnicodeDecodeError_GetReason,
-            _dart_PyUnicodeDecodeError_GetReason>(
-        'PyUnicodeDecodeError_GetReason'))(
+    return _PyUnicodeDecodeError_GetReason(
       arg0,
     );
   }
 
-  _dart_PyUnicodeDecodeError_GetReason? _PyUnicodeDecodeError_GetReason;
+  late final _PyUnicodeDecodeError_GetReason_ptr =
+      _lookup<ffi.NativeFunction<_c_PyUnicodeDecodeError_GetReason>>(
+          'PyUnicodeDecodeError_GetReason');
+  late final _dart_PyUnicodeDecodeError_GetReason
+      _PyUnicodeDecodeError_GetReason = _PyUnicodeDecodeError_GetReason_ptr
+          .asFunction<_dart_PyUnicodeDecodeError_GetReason>();
 
   ffi.Pointer<PyObject> PyUnicodeTranslateError_GetReason(
     ffi.Pointer<PyObject> arg0,
   ) {
-    return (_PyUnicodeTranslateError_GetReason ??= _dylib.lookupFunction<
-            _c_PyUnicodeTranslateError_GetReason,
-            _dart_PyUnicodeTranslateError_GetReason>(
-        'PyUnicodeTranslateError_GetReason'))(
+    return _PyUnicodeTranslateError_GetReason(
       arg0,
     );
   }
 
-  _dart_PyUnicodeTranslateError_GetReason? _PyUnicodeTranslateError_GetReason;
+  late final _PyUnicodeTranslateError_GetReason_ptr =
+      _lookup<ffi.NativeFunction<_c_PyUnicodeTranslateError_GetReason>>(
+          'PyUnicodeTranslateError_GetReason');
+  late final _dart_PyUnicodeTranslateError_GetReason
+      _PyUnicodeTranslateError_GetReason =
+      _PyUnicodeTranslateError_GetReason_ptr.asFunction<
+          _dart_PyUnicodeTranslateError_GetReason>();
 
   int PyUnicodeEncodeError_SetReason(
     ffi.Pointer<PyObject> exc,
     ffi.Pointer<ffi.Int8> reason,
   ) {
-    return (_PyUnicodeEncodeError_SetReason ??= _dylib.lookupFunction<
-            _c_PyUnicodeEncodeError_SetReason,
-            _dart_PyUnicodeEncodeError_SetReason>(
-        'PyUnicodeEncodeError_SetReason'))(
+    return _PyUnicodeEncodeError_SetReason(
       exc,
       reason,
     );
   }
 
-  _dart_PyUnicodeEncodeError_SetReason? _PyUnicodeEncodeError_SetReason;
+  late final _PyUnicodeEncodeError_SetReason_ptr =
+      _lookup<ffi.NativeFunction<_c_PyUnicodeEncodeError_SetReason>>(
+          'PyUnicodeEncodeError_SetReason');
+  late final _dart_PyUnicodeEncodeError_SetReason
+      _PyUnicodeEncodeError_SetReason = _PyUnicodeEncodeError_SetReason_ptr
+          .asFunction<_dart_PyUnicodeEncodeError_SetReason>();
 
   int PyUnicodeDecodeError_SetReason(
     ffi.Pointer<PyObject> exc,
     ffi.Pointer<ffi.Int8> reason,
   ) {
-    return (_PyUnicodeDecodeError_SetReason ??= _dylib.lookupFunction<
-            _c_PyUnicodeDecodeError_SetReason,
-            _dart_PyUnicodeDecodeError_SetReason>(
-        'PyUnicodeDecodeError_SetReason'))(
+    return _PyUnicodeDecodeError_SetReason(
       exc,
       reason,
     );
   }
 
-  _dart_PyUnicodeDecodeError_SetReason? _PyUnicodeDecodeError_SetReason;
+  late final _PyUnicodeDecodeError_SetReason_ptr =
+      _lookup<ffi.NativeFunction<_c_PyUnicodeDecodeError_SetReason>>(
+          'PyUnicodeDecodeError_SetReason');
+  late final _dart_PyUnicodeDecodeError_SetReason
+      _PyUnicodeDecodeError_SetReason = _PyUnicodeDecodeError_SetReason_ptr
+          .asFunction<_dart_PyUnicodeDecodeError_SetReason>();
 
   int PyUnicodeTranslateError_SetReason(
     ffi.Pointer<PyObject> exc,
     ffi.Pointer<ffi.Int8> reason,
   ) {
-    return (_PyUnicodeTranslateError_SetReason ??= _dylib.lookupFunction<
-            _c_PyUnicodeTranslateError_SetReason,
-            _dart_PyUnicodeTranslateError_SetReason>(
-        'PyUnicodeTranslateError_SetReason'))(
+    return _PyUnicodeTranslateError_SetReason(
       exc,
       reason,
     );
   }
 
-  _dart_PyUnicodeTranslateError_SetReason? _PyUnicodeTranslateError_SetReason;
+  late final _PyUnicodeTranslateError_SetReason_ptr =
+      _lookup<ffi.NativeFunction<_c_PyUnicodeTranslateError_SetReason>>(
+          'PyUnicodeTranslateError_SetReason');
+  late final _dart_PyUnicodeTranslateError_SetReason
+      _PyUnicodeTranslateError_SetReason =
+      _PyUnicodeTranslateError_SetReason_ptr.asFunction<
+          _dart_PyUnicodeTranslateError_SetReason>();
 
   int PyOS_snprintf(
     ffi.Pointer<ffi.Int8> str,
     int size,
     ffi.Pointer<ffi.Int8> format,
   ) {
-    return (_PyOS_snprintf ??=
-        _dylib.lookupFunction<_c_PyOS_snprintf, _dart_PyOS_snprintf>(
-            'PyOS_snprintf'))(
+    return _PyOS_snprintf(
       str,
       size,
       format,
     );
   }
 
-  _dart_PyOS_snprintf? _PyOS_snprintf;
+  late final _PyOS_snprintf_ptr =
+      _lookup<ffi.NativeFunction<_c_PyOS_snprintf>>('PyOS_snprintf');
+  late final _dart_PyOS_snprintf _PyOS_snprintf =
+      _PyOS_snprintf_ptr.asFunction<_dart_PyOS_snprintf>();
 
   int PyOS_vsnprintf(
     ffi.Pointer<ffi.Int8> str,
@@ -8709,9 +10383,7 @@ class DartPyC {
     ffi.Pointer<ffi.Int8> format,
     ffi.Pointer<__va_list_tag> va,
   ) {
-    return (_PyOS_vsnprintf ??=
-        _dylib.lookupFunction<_c_PyOS_vsnprintf, _dart_PyOS_vsnprintf>(
-            'PyOS_vsnprintf'))(
+    return _PyOS_vsnprintf(
       str,
       size,
       format,
@@ -8719,202 +10391,235 @@ class DartPyC {
     );
   }
 
-  _dart_PyOS_vsnprintf? _PyOS_vsnprintf;
+  late final _PyOS_vsnprintf_ptr =
+      _lookup<ffi.NativeFunction<_c_PyOS_vsnprintf>>('PyOS_vsnprintf');
+  late final _dart_PyOS_vsnprintf _PyOS_vsnprintf =
+      _PyOS_vsnprintf_ptr.asFunction<_dart_PyOS_vsnprintf>();
 
-  late final _typeobject PyContext_Type =
-      _dylib.lookup<_typeobject>('PyContext_Type').ref;
+  late final ffi.Pointer<_typeobject> _PyContext_Type =
+      _lookup<_typeobject>('PyContext_Type');
 
-  late final _typeobject PyContextVar_Type =
-      _dylib.lookup<_typeobject>('PyContextVar_Type').ref;
+  _typeobject get PyContext_Type => _PyContext_Type.ref;
 
-  late final _typeobject PyContextToken_Type =
-      _dylib.lookup<_typeobject>('PyContextToken_Type').ref;
+  late final ffi.Pointer<_typeobject> _PyContextVar_Type =
+      _lookup<_typeobject>('PyContextVar_Type');
+
+  _typeobject get PyContextVar_Type => _PyContextVar_Type.ref;
+
+  late final ffi.Pointer<_typeobject> _PyContextToken_Type =
+      _lookup<_typeobject>('PyContextToken_Type');
+
+  _typeobject get PyContextToken_Type => _PyContextToken_Type.ref;
 
   ffi.Pointer<PyObject> PyContext_New() {
-    return (_PyContext_New ??=
-        _dylib.lookupFunction<_c_PyContext_New, _dart_PyContext_New>(
-            'PyContext_New'))();
+    return _PyContext_New();
   }
 
-  _dart_PyContext_New? _PyContext_New;
+  late final _PyContext_New_ptr =
+      _lookup<ffi.NativeFunction<_c_PyContext_New>>('PyContext_New');
+  late final _dart_PyContext_New _PyContext_New =
+      _PyContext_New_ptr.asFunction<_dart_PyContext_New>();
 
   ffi.Pointer<PyObject> PyContext_Copy(
     ffi.Pointer<PyObject> arg0,
   ) {
-    return (_PyContext_Copy ??=
-        _dylib.lookupFunction<_c_PyContext_Copy, _dart_PyContext_Copy>(
-            'PyContext_Copy'))(
+    return _PyContext_Copy(
       arg0,
     );
   }
 
-  _dart_PyContext_Copy? _PyContext_Copy;
+  late final _PyContext_Copy_ptr =
+      _lookup<ffi.NativeFunction<_c_PyContext_Copy>>('PyContext_Copy');
+  late final _dart_PyContext_Copy _PyContext_Copy =
+      _PyContext_Copy_ptr.asFunction<_dart_PyContext_Copy>();
 
   ffi.Pointer<PyObject> PyContext_CopyCurrent() {
-    return (_PyContext_CopyCurrent ??= _dylib.lookupFunction<
-        _c_PyContext_CopyCurrent,
-        _dart_PyContext_CopyCurrent>('PyContext_CopyCurrent'))();
+    return _PyContext_CopyCurrent();
   }
 
-  _dart_PyContext_CopyCurrent? _PyContext_CopyCurrent;
+  late final _PyContext_CopyCurrent_ptr =
+      _lookup<ffi.NativeFunction<_c_PyContext_CopyCurrent>>(
+          'PyContext_CopyCurrent');
+  late final _dart_PyContext_CopyCurrent _PyContext_CopyCurrent =
+      _PyContext_CopyCurrent_ptr.asFunction<_dart_PyContext_CopyCurrent>();
 
   int PyContext_Enter(
     ffi.Pointer<PyObject> arg0,
   ) {
-    return (_PyContext_Enter ??=
-        _dylib.lookupFunction<_c_PyContext_Enter, _dart_PyContext_Enter>(
-            'PyContext_Enter'))(
+    return _PyContext_Enter(
       arg0,
     );
   }
 
-  _dart_PyContext_Enter? _PyContext_Enter;
+  late final _PyContext_Enter_ptr =
+      _lookup<ffi.NativeFunction<_c_PyContext_Enter>>('PyContext_Enter');
+  late final _dart_PyContext_Enter _PyContext_Enter =
+      _PyContext_Enter_ptr.asFunction<_dart_PyContext_Enter>();
 
   int PyContext_Exit(
     ffi.Pointer<PyObject> arg0,
   ) {
-    return (_PyContext_Exit ??=
-        _dylib.lookupFunction<_c_PyContext_Exit, _dart_PyContext_Exit>(
-            'PyContext_Exit'))(
+    return _PyContext_Exit(
       arg0,
     );
   }
 
-  _dart_PyContext_Exit? _PyContext_Exit;
+  late final _PyContext_Exit_ptr =
+      _lookup<ffi.NativeFunction<_c_PyContext_Exit>>('PyContext_Exit');
+  late final _dart_PyContext_Exit _PyContext_Exit =
+      _PyContext_Exit_ptr.asFunction<_dart_PyContext_Exit>();
 
   ffi.Pointer<PyObject> PyContextVar_New(
     ffi.Pointer<ffi.Int8> name,
     ffi.Pointer<PyObject> default_value,
   ) {
-    return (_PyContextVar_New ??=
-        _dylib.lookupFunction<_c_PyContextVar_New, _dart_PyContextVar_New>(
-            'PyContextVar_New'))(
+    return _PyContextVar_New(
       name,
       default_value,
     );
   }
 
-  _dart_PyContextVar_New? _PyContextVar_New;
+  late final _PyContextVar_New_ptr =
+      _lookup<ffi.NativeFunction<_c_PyContextVar_New>>('PyContextVar_New');
+  late final _dart_PyContextVar_New _PyContextVar_New =
+      _PyContextVar_New_ptr.asFunction<_dart_PyContextVar_New>();
 
   int PyContextVar_Get(
     ffi.Pointer<PyObject> var_1,
     ffi.Pointer<PyObject> default_value,
     ffi.Pointer<ffi.Pointer<PyObject>> value,
   ) {
-    return (_PyContextVar_Get ??=
-        _dylib.lookupFunction<_c_PyContextVar_Get, _dart_PyContextVar_Get>(
-            'PyContextVar_Get'))(
+    return _PyContextVar_Get(
       var_1,
       default_value,
       value,
     );
   }
 
-  _dart_PyContextVar_Get? _PyContextVar_Get;
+  late final _PyContextVar_Get_ptr =
+      _lookup<ffi.NativeFunction<_c_PyContextVar_Get>>('PyContextVar_Get');
+  late final _dart_PyContextVar_Get _PyContextVar_Get =
+      _PyContextVar_Get_ptr.asFunction<_dart_PyContextVar_Get>();
 
   ffi.Pointer<PyObject> PyContextVar_Set(
     ffi.Pointer<PyObject> var_1,
     ffi.Pointer<PyObject> value,
   ) {
-    return (_PyContextVar_Set ??=
-        _dylib.lookupFunction<_c_PyContextVar_Set, _dart_PyContextVar_Set>(
-            'PyContextVar_Set'))(
+    return _PyContextVar_Set(
       var_1,
       value,
     );
   }
 
-  _dart_PyContextVar_Set? _PyContextVar_Set;
+  late final _PyContextVar_Set_ptr =
+      _lookup<ffi.NativeFunction<_c_PyContextVar_Set>>('PyContextVar_Set');
+  late final _dart_PyContextVar_Set _PyContextVar_Set =
+      _PyContextVar_Set_ptr.asFunction<_dart_PyContextVar_Set>();
 
   int PyContextVar_Reset(
     ffi.Pointer<PyObject> var_1,
     ffi.Pointer<PyObject> token,
   ) {
-    return (_PyContextVar_Reset ??=
-        _dylib.lookupFunction<_c_PyContextVar_Reset, _dart_PyContextVar_Reset>(
-            'PyContextVar_Reset'))(
+    return _PyContextVar_Reset(
       var_1,
       token,
     );
   }
 
-  _dart_PyContextVar_Reset? _PyContextVar_Reset;
+  late final _PyContextVar_Reset_ptr =
+      _lookup<ffi.NativeFunction<_c_PyContextVar_Reset>>('PyContextVar_Reset');
+  late final _dart_PyContextVar_Reset _PyContextVar_Reset =
+      _PyContextVar_Reset_ptr.asFunction<_dart_PyContextVar_Reset>();
 
   ffi.Pointer<PyObject> PyContext_NewHamtForTests() {
-    return (_PyContext_NewHamtForTests ??= _dylib.lookupFunction<
-        _c_PyContext_NewHamtForTests,
-        _dart_PyContext_NewHamtForTests>('_PyContext_NewHamtForTests'))();
+    return _PyContext_NewHamtForTests();
   }
 
-  _dart_PyContext_NewHamtForTests? _PyContext_NewHamtForTests;
+  late final _PyContext_NewHamtForTests_ptr =
+      _lookup<ffi.NativeFunction<_c_PyContext_NewHamtForTests>>(
+          '_PyContext_NewHamtForTests');
+  late final _dart_PyContext_NewHamtForTests _PyContext_NewHamtForTests =
+      _PyContext_NewHamtForTests_ptr.asFunction<
+          _dart_PyContext_NewHamtForTests>();
 
   int PyContext_ClearFreeList() {
-    return (_PyContext_ClearFreeList ??= _dylib.lookupFunction<
-        _c_PyContext_ClearFreeList,
-        _dart_PyContext_ClearFreeList>('PyContext_ClearFreeList'))();
+    return _PyContext_ClearFreeList();
   }
 
-  _dart_PyContext_ClearFreeList? _PyContext_ClearFreeList;
+  late final _PyContext_ClearFreeList_ptr =
+      _lookup<ffi.NativeFunction<_c_PyContext_ClearFreeList>>(
+          'PyContext_ClearFreeList');
+  late final _dart_PyContext_ClearFreeList _PyContext_ClearFreeList =
+      _PyContext_ClearFreeList_ptr.asFunction<_dart_PyContext_ClearFreeList>();
 
   ffi.Pointer<_arena> PyArena_New() {
-    return (_PyArena_New ??= _dylib
-        .lookupFunction<_c_PyArena_New, _dart_PyArena_New>('PyArena_New'))();
+    return _PyArena_New();
   }
 
-  _dart_PyArena_New? _PyArena_New;
+  late final _PyArena_New_ptr =
+      _lookup<ffi.NativeFunction<_c_PyArena_New>>('PyArena_New');
+  late final _dart_PyArena_New _PyArena_New =
+      _PyArena_New_ptr.asFunction<_dart_PyArena_New>();
 
   void PyArena_Free(
     ffi.Pointer<_arena> arg0,
   ) {
-    return (_PyArena_Free ??= _dylib
-        .lookupFunction<_c_PyArena_Free, _dart_PyArena_Free>('PyArena_Free'))(
+    return _PyArena_Free(
       arg0,
     );
   }
 
-  _dart_PyArena_Free? _PyArena_Free;
+  late final _PyArena_Free_ptr =
+      _lookup<ffi.NativeFunction<_c_PyArena_Free>>('PyArena_Free');
+  late final _dart_PyArena_Free _PyArena_Free =
+      _PyArena_Free_ptr.asFunction<_dart_PyArena_Free>();
 
   ffi.Pointer<ffi.Void> PyArena_Malloc(
     ffi.Pointer<_arena> arg0,
     int size,
   ) {
-    return (_PyArena_Malloc ??=
-        _dylib.lookupFunction<_c_PyArena_Malloc, _dart_PyArena_Malloc>(
-            'PyArena_Malloc'))(
+    return _PyArena_Malloc(
       arg0,
       size,
     );
   }
 
-  _dart_PyArena_Malloc? _PyArena_Malloc;
+  late final _PyArena_Malloc_ptr =
+      _lookup<ffi.NativeFunction<_c_PyArena_Malloc>>('PyArena_Malloc');
+  late final _dart_PyArena_Malloc _PyArena_Malloc =
+      _PyArena_Malloc_ptr.asFunction<_dart_PyArena_Malloc>();
 
   int PyArena_AddPyObject(
     ffi.Pointer<_arena> arg0,
     ffi.Pointer<PyObject> arg1,
   ) {
-    return (_PyArena_AddPyObject ??= _dylib.lookupFunction<
-        _c_PyArena_AddPyObject,
-        _dart_PyArena_AddPyObject>('PyArena_AddPyObject'))(
+    return _PyArena_AddPyObject(
       arg0,
       arg1,
     );
   }
 
-  _dart_PyArena_AddPyObject? _PyArena_AddPyObject;
+  late final _PyArena_AddPyObject_ptr =
+      _lookup<ffi.NativeFunction<_c_PyArena_AddPyObject>>(
+          'PyArena_AddPyObject');
+  late final _dart_PyArena_AddPyObject _PyArena_AddPyObject =
+      _PyArena_AddPyObject_ptr.asFunction<_dart_PyArena_AddPyObject>();
 
   ffi.Pointer<PyObject> Py_VaBuildValue_SizeT(
     ffi.Pointer<ffi.Int8> arg0,
     ffi.Pointer<__va_list_tag> arg1,
   ) {
-    return (_Py_VaBuildValue_SizeT ??= _dylib.lookupFunction<
-        _c_Py_VaBuildValue_SizeT,
-        _dart_Py_VaBuildValue_SizeT>('_Py_VaBuildValue_SizeT'))(
+    return _Py_VaBuildValue_SizeT(
       arg0,
       arg1,
     );
   }
 
-  _dart_Py_VaBuildValue_SizeT? _Py_VaBuildValue_SizeT;
+  late final _Py_VaBuildValue_SizeT_ptr =
+      _lookup<ffi.NativeFunction<_c_Py_VaBuildValue_SizeT>>(
+          '_Py_VaBuildValue_SizeT');
+  late final _dart_Py_VaBuildValue_SizeT _Py_VaBuildValue_SizeT =
+      _Py_VaBuildValue_SizeT_ptr.asFunction<_dart_Py_VaBuildValue_SizeT>();
 
   ffi.Pointer<ffi.Pointer<PyObject>> Py_VaBuildStack_SizeT(
     ffi.Pointer<ffi.Pointer<PyObject>> small_stack,
@@ -8923,9 +10628,7 @@ class DartPyC {
     ffi.Pointer<__va_list_tag> va,
     ffi.Pointer<ffi.Int64> p_nargs,
   ) {
-    return (_Py_VaBuildStack_SizeT ??= _dylib.lookupFunction<
-        _c_Py_VaBuildStack_SizeT,
-        _dart_Py_VaBuildStack_SizeT>('_Py_VaBuildStack_SizeT'))(
+    return _Py_VaBuildStack_SizeT(
       small_stack,
       small_stack_len,
       format,
@@ -8934,34 +10637,41 @@ class DartPyC {
     );
   }
 
-  _dart_Py_VaBuildStack_SizeT? _Py_VaBuildStack_SizeT;
+  late final _Py_VaBuildStack_SizeT_ptr =
+      _lookup<ffi.NativeFunction<_c_Py_VaBuildStack_SizeT>>(
+          '_Py_VaBuildStack_SizeT');
+  late final _dart_Py_VaBuildStack_SizeT _Py_VaBuildStack_SizeT =
+      _Py_VaBuildStack_SizeT_ptr.asFunction<_dart_Py_VaBuildStack_SizeT>();
 
   int PyArg_Parse(
     ffi.Pointer<PyObject> arg0,
     ffi.Pointer<ffi.Int8> arg1,
   ) {
-    return (_PyArg_Parse ??= _dylib
-        .lookupFunction<_c_PyArg_Parse, _dart_PyArg_Parse>('PyArg_Parse'))(
+    return _PyArg_Parse(
       arg0,
       arg1,
     );
   }
 
-  _dart_PyArg_Parse? _PyArg_Parse;
+  late final _PyArg_Parse_ptr =
+      _lookup<ffi.NativeFunction<_c_PyArg_Parse>>('PyArg_Parse');
+  late final _dart_PyArg_Parse _PyArg_Parse =
+      _PyArg_Parse_ptr.asFunction<_dart_PyArg_Parse>();
 
   int PyArg_ParseTuple(
     ffi.Pointer<PyObject> arg0,
     ffi.Pointer<ffi.Int8> arg1,
   ) {
-    return (_PyArg_ParseTuple ??=
-        _dylib.lookupFunction<_c_PyArg_ParseTuple, _dart_PyArg_ParseTuple>(
-            'PyArg_ParseTuple'))(
+    return _PyArg_ParseTuple(
       arg0,
       arg1,
     );
   }
 
-  _dart_PyArg_ParseTuple? _PyArg_ParseTuple;
+  late final _PyArg_ParseTuple_ptr =
+      _lookup<ffi.NativeFunction<_c_PyArg_ParseTuple>>('PyArg_ParseTuple');
+  late final _dart_PyArg_ParseTuple _PyArg_ParseTuple =
+      _PyArg_ParseTuple_ptr.asFunction<_dart_PyArg_ParseTuple>();
 
   int PyArg_ParseTupleAndKeywords(
     ffi.Pointer<PyObject> arg0,
@@ -8969,9 +10679,7 @@ class DartPyC {
     ffi.Pointer<ffi.Int8> arg2,
     ffi.Pointer<ffi.Pointer<ffi.Int8>> arg3,
   ) {
-    return (_PyArg_ParseTupleAndKeywords ??= _dylib.lookupFunction<
-        _c_PyArg_ParseTupleAndKeywords,
-        _dart_PyArg_ParseTupleAndKeywords>('PyArg_ParseTupleAndKeywords'))(
+    return _PyArg_ParseTupleAndKeywords(
       arg0,
       arg1,
       arg2,
@@ -8979,23 +10687,29 @@ class DartPyC {
     );
   }
 
-  _dart_PyArg_ParseTupleAndKeywords? _PyArg_ParseTupleAndKeywords;
+  late final _PyArg_ParseTupleAndKeywords_ptr =
+      _lookup<ffi.NativeFunction<_c_PyArg_ParseTupleAndKeywords>>(
+          'PyArg_ParseTupleAndKeywords');
+  late final _dart_PyArg_ParseTupleAndKeywords _PyArg_ParseTupleAndKeywords =
+      _PyArg_ParseTupleAndKeywords_ptr.asFunction<
+          _dart_PyArg_ParseTupleAndKeywords>();
 
   int PyArg_VaParse(
     ffi.Pointer<PyObject> arg0,
     ffi.Pointer<ffi.Int8> arg1,
     ffi.Pointer<__va_list_tag> arg2,
   ) {
-    return (_PyArg_VaParse ??=
-        _dylib.lookupFunction<_c_PyArg_VaParse, _dart_PyArg_VaParse>(
-            'PyArg_VaParse'))(
+    return _PyArg_VaParse(
       arg0,
       arg1,
       arg2,
     );
   }
 
-  _dart_PyArg_VaParse? _PyArg_VaParse;
+  late final _PyArg_VaParse_ptr =
+      _lookup<ffi.NativeFunction<_c_PyArg_VaParse>>('PyArg_VaParse');
+  late final _dart_PyArg_VaParse _PyArg_VaParse =
+      _PyArg_VaParse_ptr.asFunction<_dart_PyArg_VaParse>();
 
   int PyArg_VaParseTupleAndKeywords(
     ffi.Pointer<PyObject> arg0,
@@ -9004,9 +10718,7 @@ class DartPyC {
     ffi.Pointer<ffi.Pointer<ffi.Int8>> arg3,
     ffi.Pointer<__va_list_tag> arg4,
   ) {
-    return (_PyArg_VaParseTupleAndKeywords ??= _dylib.lookupFunction<
-        _c_PyArg_VaParseTupleAndKeywords,
-        _dart_PyArg_VaParseTupleAndKeywords>('PyArg_VaParseTupleAndKeywords'))(
+    return _PyArg_VaParseTupleAndKeywords(
       arg0,
       arg1,
       arg2,
@@ -9015,20 +10727,27 @@ class DartPyC {
     );
   }
 
-  _dart_PyArg_VaParseTupleAndKeywords? _PyArg_VaParseTupleAndKeywords;
+  late final _PyArg_VaParseTupleAndKeywords_ptr =
+      _lookup<ffi.NativeFunction<_c_PyArg_VaParseTupleAndKeywords>>(
+          'PyArg_VaParseTupleAndKeywords');
+  late final _dart_PyArg_VaParseTupleAndKeywords
+      _PyArg_VaParseTupleAndKeywords = _PyArg_VaParseTupleAndKeywords_ptr
+          .asFunction<_dart_PyArg_VaParseTupleAndKeywords>();
 
   int PyArg_ValidateKeywordArguments(
     ffi.Pointer<PyObject> arg0,
   ) {
-    return (_PyArg_ValidateKeywordArguments ??= _dylib.lookupFunction<
-            _c_PyArg_ValidateKeywordArguments,
-            _dart_PyArg_ValidateKeywordArguments>(
-        'PyArg_ValidateKeywordArguments'))(
+    return _PyArg_ValidateKeywordArguments(
       arg0,
     );
   }
 
-  _dart_PyArg_ValidateKeywordArguments? _PyArg_ValidateKeywordArguments;
+  late final _PyArg_ValidateKeywordArguments_ptr =
+      _lookup<ffi.NativeFunction<_c_PyArg_ValidateKeywordArguments>>(
+          'PyArg_ValidateKeywordArguments');
+  late final _dart_PyArg_ValidateKeywordArguments
+      _PyArg_ValidateKeywordArguments = _PyArg_ValidateKeywordArguments_ptr
+          .asFunction<_dart_PyArg_ValidateKeywordArguments>();
 
   int PyArg_UnpackTuple(
     ffi.Pointer<PyObject> arg0,
@@ -9036,9 +10755,7 @@ class DartPyC {
     int arg2,
     int arg3,
   ) {
-    return (_PyArg_UnpackTuple ??=
-        _dylib.lookupFunction<_c_PyArg_UnpackTuple, _dart_PyArg_UnpackTuple>(
-            'PyArg_UnpackTuple'))(
+    return _PyArg_UnpackTuple(
       arg0,
       arg1,
       arg2,
@@ -9046,31 +10763,37 @@ class DartPyC {
     );
   }
 
-  _dart_PyArg_UnpackTuple? _PyArg_UnpackTuple;
+  late final _PyArg_UnpackTuple_ptr =
+      _lookup<ffi.NativeFunction<_c_PyArg_UnpackTuple>>('PyArg_UnpackTuple');
+  late final _dart_PyArg_UnpackTuple _PyArg_UnpackTuple =
+      _PyArg_UnpackTuple_ptr.asFunction<_dart_PyArg_UnpackTuple>();
 
   ffi.Pointer<PyObject> Py_BuildValue(
     ffi.Pointer<ffi.Int8> arg0,
   ) {
-    return (_Py_BuildValue ??=
-        _dylib.lookupFunction<_c_Py_BuildValue, _dart_Py_BuildValue>(
-            'Py_BuildValue'))(
+    return _Py_BuildValue(
       arg0,
     );
   }
 
-  _dart_Py_BuildValue? _Py_BuildValue;
+  late final _Py_BuildValue_ptr =
+      _lookup<ffi.NativeFunction<_c_Py_BuildValue>>('Py_BuildValue');
+  late final _dart_Py_BuildValue _Py_BuildValue =
+      _Py_BuildValue_ptr.asFunction<_dart_Py_BuildValue>();
 
   ffi.Pointer<PyObject> Py_BuildValue_SizeT(
     ffi.Pointer<ffi.Int8> arg0,
   ) {
-    return (_Py_BuildValue_SizeT ??= _dylib.lookupFunction<
-        _c_Py_BuildValue_SizeT,
-        _dart_Py_BuildValue_SizeT>('_Py_BuildValue_SizeT'))(
+    return _Py_BuildValue_SizeT(
       arg0,
     );
   }
 
-  _dart_Py_BuildValue_SizeT? _Py_BuildValue_SizeT;
+  late final _Py_BuildValue_SizeT_ptr =
+      _lookup<ffi.NativeFunction<_c_Py_BuildValue_SizeT>>(
+          '_Py_BuildValue_SizeT');
+  late final _dart_Py_BuildValue_SizeT _Py_BuildValue_SizeT =
+      _Py_BuildValue_SizeT_ptr.asFunction<_dart_Py_BuildValue_SizeT>();
 
   int PyArg_UnpackStack(
     ffi.Pointer<ffi.Pointer<PyObject>> args,
@@ -9079,9 +10802,7 @@ class DartPyC {
     int min,
     int max,
   ) {
-    return (_PyArg_UnpackStack ??=
-        _dylib.lookupFunction<_c_PyArg_UnpackStack, _dart_PyArg_UnpackStack>(
-            '_PyArg_UnpackStack'))(
+    return _PyArg_UnpackStack(
       args,
       nargs,
       name,
@@ -9090,35 +10811,40 @@ class DartPyC {
     );
   }
 
-  _dart_PyArg_UnpackStack? _PyArg_UnpackStack;
+  late final _PyArg_UnpackStack_ptr =
+      _lookup<ffi.NativeFunction<_c_PyArg_UnpackStack>>('_PyArg_UnpackStack');
+  late final _dart_PyArg_UnpackStack _PyArg_UnpackStack =
+      _PyArg_UnpackStack_ptr.asFunction<_dart_PyArg_UnpackStack>();
 
   int PyArg_NoKeywords(
     ffi.Pointer<ffi.Int8> funcname,
     ffi.Pointer<PyObject> kwargs,
   ) {
-    return (_PyArg_NoKeywords ??=
-        _dylib.lookupFunction<_c_PyArg_NoKeywords, _dart_PyArg_NoKeywords>(
-            '_PyArg_NoKeywords'))(
+    return _PyArg_NoKeywords(
       funcname,
       kwargs,
     );
   }
 
-  _dart_PyArg_NoKeywords? _PyArg_NoKeywords;
+  late final _PyArg_NoKeywords_ptr =
+      _lookup<ffi.NativeFunction<_c_PyArg_NoKeywords>>('_PyArg_NoKeywords');
+  late final _dart_PyArg_NoKeywords _PyArg_NoKeywords =
+      _PyArg_NoKeywords_ptr.asFunction<_dart_PyArg_NoKeywords>();
 
   int PyArg_NoPositional(
     ffi.Pointer<ffi.Int8> funcname,
     ffi.Pointer<PyObject> args,
   ) {
-    return (_PyArg_NoPositional ??=
-        _dylib.lookupFunction<_c_PyArg_NoPositional, _dart_PyArg_NoPositional>(
-            '_PyArg_NoPositional'))(
+    return _PyArg_NoPositional(
       funcname,
       args,
     );
   }
 
-  _dart_PyArg_NoPositional? _PyArg_NoPositional;
+  late final _PyArg_NoPositional_ptr =
+      _lookup<ffi.NativeFunction<_c_PyArg_NoPositional>>('_PyArg_NoPositional');
+  late final _dart_PyArg_NoPositional _PyArg_NoPositional =
+      _PyArg_NoPositional_ptr.asFunction<_dart_PyArg_NoPositional>();
 
   void PyArg_BadArgument(
     ffi.Pointer<ffi.Int8> arg0,
@@ -9126,9 +10852,7 @@ class DartPyC {
     ffi.Pointer<ffi.Int8> arg2,
     ffi.Pointer<PyObject> arg3,
   ) {
-    return (_PyArg_BadArgument ??=
-        _dylib.lookupFunction<_c_PyArg_BadArgument, _dart_PyArg_BadArgument>(
-            '_PyArg_BadArgument'))(
+    return _PyArg_BadArgument(
       arg0,
       arg1,
       arg2,
@@ -9136,7 +10860,10 @@ class DartPyC {
     );
   }
 
-  _dart_PyArg_BadArgument? _PyArg_BadArgument;
+  late final _PyArg_BadArgument_ptr =
+      _lookup<ffi.NativeFunction<_c_PyArg_BadArgument>>('_PyArg_BadArgument');
+  late final _dart_PyArg_BadArgument _PyArg_BadArgument =
+      _PyArg_BadArgument_ptr.asFunction<_dart_PyArg_BadArgument>();
 
   int PyArg_CheckPositional(
     ffi.Pointer<ffi.Int8> arg0,
@@ -9144,9 +10871,7 @@ class DartPyC {
     int arg2,
     int arg3,
   ) {
-    return (_PyArg_CheckPositional ??= _dylib.lookupFunction<
-        _c_PyArg_CheckPositional,
-        _dart_PyArg_CheckPositional>('_PyArg_CheckPositional'))(
+    return _PyArg_CheckPositional(
       arg0,
       arg1,
       arg2,
@@ -9154,21 +10879,26 @@ class DartPyC {
     );
   }
 
-  _dart_PyArg_CheckPositional? _PyArg_CheckPositional;
+  late final _PyArg_CheckPositional_ptr =
+      _lookup<ffi.NativeFunction<_c_PyArg_CheckPositional>>(
+          '_PyArg_CheckPositional');
+  late final _dart_PyArg_CheckPositional _PyArg_CheckPositional =
+      _PyArg_CheckPositional_ptr.asFunction<_dart_PyArg_CheckPositional>();
 
   ffi.Pointer<PyObject> Py_VaBuildValue(
     ffi.Pointer<ffi.Int8> arg0,
     ffi.Pointer<__va_list_tag> arg1,
   ) {
-    return (_Py_VaBuildValue ??=
-        _dylib.lookupFunction<_c_Py_VaBuildValue, _dart_Py_VaBuildValue>(
-            'Py_VaBuildValue'))(
+    return _Py_VaBuildValue(
       arg0,
       arg1,
     );
   }
 
-  _dart_Py_VaBuildValue? _Py_VaBuildValue;
+  late final _Py_VaBuildValue_ptr =
+      _lookup<ffi.NativeFunction<_c_Py_VaBuildValue>>('Py_VaBuildValue');
+  late final _dart_Py_VaBuildValue _Py_VaBuildValue =
+      _Py_VaBuildValue_ptr.asFunction<_dart_Py_VaBuildValue>();
 
   ffi.Pointer<ffi.Pointer<PyObject>> Py_VaBuildStack(
     ffi.Pointer<ffi.Pointer<PyObject>> small_stack,
@@ -9177,9 +10907,7 @@ class DartPyC {
     ffi.Pointer<__va_list_tag> va,
     ffi.Pointer<ffi.Int64> p_nargs,
   ) {
-    return (_Py_VaBuildStack ??=
-        _dylib.lookupFunction<_c_Py_VaBuildStack, _dart_Py_VaBuildStack>(
-            '_Py_VaBuildStack'))(
+    return _Py_VaBuildStack(
       small_stack,
       small_stack_len,
       format,
@@ -9188,40 +10916,46 @@ class DartPyC {
     );
   }
 
-  _dart_Py_VaBuildStack? _Py_VaBuildStack;
+  late final _Py_VaBuildStack_ptr =
+      _lookup<ffi.NativeFunction<_c_Py_VaBuildStack>>('_Py_VaBuildStack');
+  late final _dart_Py_VaBuildStack _Py_VaBuildStack =
+      _Py_VaBuildStack_ptr.asFunction<_dart_Py_VaBuildStack>();
 
   int PyArg_ParseTupleAndKeywordsFast(
     ffi.Pointer<PyObject> arg0,
     ffi.Pointer<PyObject> arg1,
     ffi.Pointer<_PyArg_Parser> arg2,
   ) {
-    return (_PyArg_ParseTupleAndKeywordsFast ??= _dylib.lookupFunction<
-            _c_PyArg_ParseTupleAndKeywordsFast,
-            _dart_PyArg_ParseTupleAndKeywordsFast>(
-        '_PyArg_ParseTupleAndKeywordsFast'))(
+    return _PyArg_ParseTupleAndKeywordsFast(
       arg0,
       arg1,
       arg2,
     );
   }
 
-  _dart_PyArg_ParseTupleAndKeywordsFast? _PyArg_ParseTupleAndKeywordsFast;
+  late final _PyArg_ParseTupleAndKeywordsFast_ptr =
+      _lookup<ffi.NativeFunction<_c_PyArg_ParseTupleAndKeywordsFast>>(
+          '_PyArg_ParseTupleAndKeywordsFast');
+  late final _dart_PyArg_ParseTupleAndKeywordsFast
+      _PyArg_ParseTupleAndKeywordsFast = _PyArg_ParseTupleAndKeywordsFast_ptr
+          .asFunction<_dart_PyArg_ParseTupleAndKeywordsFast>();
 
   int PyArg_ParseStack(
     ffi.Pointer<ffi.Pointer<PyObject>> args,
     int nargs,
     ffi.Pointer<ffi.Int8> format,
   ) {
-    return (_PyArg_ParseStack ??=
-        _dylib.lookupFunction<_c_PyArg_ParseStack, _dart_PyArg_ParseStack>(
-            '_PyArg_ParseStack'))(
+    return _PyArg_ParseStack(
       args,
       nargs,
       format,
     );
   }
 
-  _dart_PyArg_ParseStack? _PyArg_ParseStack;
+  late final _PyArg_ParseStack_ptr =
+      _lookup<ffi.NativeFunction<_c_PyArg_ParseStack>>('_PyArg_ParseStack');
+  late final _dart_PyArg_ParseStack _PyArg_ParseStack =
+      _PyArg_ParseStack_ptr.asFunction<_dart_PyArg_ParseStack>();
 
   int PyArg_ParseStackAndKeywords(
     ffi.Pointer<ffi.Pointer<PyObject>> args,
@@ -9229,9 +10963,7 @@ class DartPyC {
     ffi.Pointer<PyObject> kwnames,
     ffi.Pointer<_PyArg_Parser> arg3,
   ) {
-    return (_PyArg_ParseStackAndKeywords ??= _dylib.lookupFunction<
-        _c_PyArg_ParseStackAndKeywords,
-        _dart_PyArg_ParseStackAndKeywords>('_PyArg_ParseStackAndKeywords'))(
+    return _PyArg_ParseStackAndKeywords(
       args,
       nargs,
       kwnames,
@@ -9239,7 +10971,12 @@ class DartPyC {
     );
   }
 
-  _dart_PyArg_ParseStackAndKeywords? _PyArg_ParseStackAndKeywords;
+  late final _PyArg_ParseStackAndKeywords_ptr =
+      _lookup<ffi.NativeFunction<_c_PyArg_ParseStackAndKeywords>>(
+          '_PyArg_ParseStackAndKeywords');
+  late final _dart_PyArg_ParseStackAndKeywords _PyArg_ParseStackAndKeywords =
+      _PyArg_ParseStackAndKeywords_ptr.asFunction<
+          _dart_PyArg_ParseStackAndKeywords>();
 
   int PyArg_VaParseTupleAndKeywordsFast(
     ffi.Pointer<PyObject> arg0,
@@ -9247,10 +10984,7 @@ class DartPyC {
     ffi.Pointer<_PyArg_Parser> arg2,
     ffi.Pointer<__va_list_tag> arg3,
   ) {
-    return (_PyArg_VaParseTupleAndKeywordsFast ??= _dylib.lookupFunction<
-            _c_PyArg_VaParseTupleAndKeywordsFast,
-            _dart_PyArg_VaParseTupleAndKeywordsFast>(
-        '_PyArg_VaParseTupleAndKeywordsFast'))(
+    return _PyArg_VaParseTupleAndKeywordsFast(
       arg0,
       arg1,
       arg2,
@@ -9258,7 +10992,13 @@ class DartPyC {
     );
   }
 
-  _dart_PyArg_VaParseTupleAndKeywordsFast? _PyArg_VaParseTupleAndKeywordsFast;
+  late final _PyArg_VaParseTupleAndKeywordsFast_ptr =
+      _lookup<ffi.NativeFunction<_c_PyArg_VaParseTupleAndKeywordsFast>>(
+          '_PyArg_VaParseTupleAndKeywordsFast');
+  late final _dart_PyArg_VaParseTupleAndKeywordsFast
+      _PyArg_VaParseTupleAndKeywordsFast =
+      _PyArg_VaParseTupleAndKeywordsFast_ptr.asFunction<
+          _dart_PyArg_VaParseTupleAndKeywordsFast>();
 
   ffi.Pointer<ffi.Pointer<PyObject>> PyArg_UnpackKeywords(
     ffi.Pointer<ffi.Pointer<PyObject>> args,
@@ -9271,9 +11011,7 @@ class DartPyC {
     int minkw,
     ffi.Pointer<ffi.Pointer<PyObject>> buf,
   ) {
-    return (_PyArg_UnpackKeywords ??= _dylib.lookupFunction<
-        _c_PyArg_UnpackKeywords,
-        _dart_PyArg_UnpackKeywords>('_PyArg_UnpackKeywords'))(
+    return _PyArg_UnpackKeywords(
       args,
       nargs,
       kwargs,
@@ -9286,154 +11024,185 @@ class DartPyC {
     );
   }
 
-  _dart_PyArg_UnpackKeywords? _PyArg_UnpackKeywords;
+  late final _PyArg_UnpackKeywords_ptr =
+      _lookup<ffi.NativeFunction<_c_PyArg_UnpackKeywords>>(
+          '_PyArg_UnpackKeywords');
+  late final _dart_PyArg_UnpackKeywords _PyArg_UnpackKeywords =
+      _PyArg_UnpackKeywords_ptr.asFunction<_dart_PyArg_UnpackKeywords>();
 
   void PyArg_Fini() {
-    return (_PyArg_Fini ??= _dylib
-        .lookupFunction<_c_PyArg_Fini, _dart_PyArg_Fini>('_PyArg_Fini'))();
+    return _PyArg_Fini();
   }
 
-  _dart_PyArg_Fini? _PyArg_Fini;
+  late final _PyArg_Fini_ptr =
+      _lookup<ffi.NativeFunction<_c_PyArg_Fini>>('_PyArg_Fini');
+  late final _dart_PyArg_Fini _PyArg_Fini =
+      _PyArg_Fini_ptr.asFunction<_dart_PyArg_Fini>();
 
   int PyModule_AddObject(
     ffi.Pointer<PyObject> arg0,
     ffi.Pointer<ffi.Int8> arg1,
     ffi.Pointer<PyObject> arg2,
   ) {
-    return (_PyModule_AddObject ??=
-        _dylib.lookupFunction<_c_PyModule_AddObject, _dart_PyModule_AddObject>(
-            'PyModule_AddObject'))(
+    return _PyModule_AddObject(
       arg0,
       arg1,
       arg2,
     );
   }
 
-  _dart_PyModule_AddObject? _PyModule_AddObject;
+  late final _PyModule_AddObject_ptr =
+      _lookup<ffi.NativeFunction<_c_PyModule_AddObject>>('PyModule_AddObject');
+  late final _dart_PyModule_AddObject _PyModule_AddObject =
+      _PyModule_AddObject_ptr.asFunction<_dart_PyModule_AddObject>();
 
   int PyModule_AddIntConstant(
     ffi.Pointer<PyObject> arg0,
     ffi.Pointer<ffi.Int8> arg1,
     int arg2,
   ) {
-    return (_PyModule_AddIntConstant ??= _dylib.lookupFunction<
-        _c_PyModule_AddIntConstant,
-        _dart_PyModule_AddIntConstant>('PyModule_AddIntConstant'))(
+    return _PyModule_AddIntConstant(
       arg0,
       arg1,
       arg2,
     );
   }
 
-  _dart_PyModule_AddIntConstant? _PyModule_AddIntConstant;
+  late final _PyModule_AddIntConstant_ptr =
+      _lookup<ffi.NativeFunction<_c_PyModule_AddIntConstant>>(
+          'PyModule_AddIntConstant');
+  late final _dart_PyModule_AddIntConstant _PyModule_AddIntConstant =
+      _PyModule_AddIntConstant_ptr.asFunction<_dart_PyModule_AddIntConstant>();
 
   int PyModule_AddStringConstant(
     ffi.Pointer<PyObject> arg0,
     ffi.Pointer<ffi.Int8> arg1,
     ffi.Pointer<ffi.Int8> arg2,
   ) {
-    return (_PyModule_AddStringConstant ??= _dylib.lookupFunction<
-        _c_PyModule_AddStringConstant,
-        _dart_PyModule_AddStringConstant>('PyModule_AddStringConstant'))(
+    return _PyModule_AddStringConstant(
       arg0,
       arg1,
       arg2,
     );
   }
 
-  _dart_PyModule_AddStringConstant? _PyModule_AddStringConstant;
+  late final _PyModule_AddStringConstant_ptr =
+      _lookup<ffi.NativeFunction<_c_PyModule_AddStringConstant>>(
+          'PyModule_AddStringConstant');
+  late final _dart_PyModule_AddStringConstant _PyModule_AddStringConstant =
+      _PyModule_AddStringConstant_ptr.asFunction<
+          _dart_PyModule_AddStringConstant>();
 
   int PyModule_SetDocString(
     ffi.Pointer<PyObject> arg0,
     ffi.Pointer<ffi.Int8> arg1,
   ) {
-    return (_PyModule_SetDocString ??= _dylib.lookupFunction<
-        _c_PyModule_SetDocString,
-        _dart_PyModule_SetDocString>('PyModule_SetDocString'))(
+    return _PyModule_SetDocString(
       arg0,
       arg1,
     );
   }
 
-  _dart_PyModule_SetDocString? _PyModule_SetDocString;
+  late final _PyModule_SetDocString_ptr =
+      _lookup<ffi.NativeFunction<_c_PyModule_SetDocString>>(
+          'PyModule_SetDocString');
+  late final _dart_PyModule_SetDocString _PyModule_SetDocString =
+      _PyModule_SetDocString_ptr.asFunction<_dart_PyModule_SetDocString>();
 
   int PyModule_AddFunctions(
     ffi.Pointer<PyObject> arg0,
     ffi.Pointer<PyMethodDef> arg1,
   ) {
-    return (_PyModule_AddFunctions ??= _dylib.lookupFunction<
-        _c_PyModule_AddFunctions,
-        _dart_PyModule_AddFunctions>('PyModule_AddFunctions'))(
+    return _PyModule_AddFunctions(
       arg0,
       arg1,
     );
   }
 
-  _dart_PyModule_AddFunctions? _PyModule_AddFunctions;
+  late final _PyModule_AddFunctions_ptr =
+      _lookup<ffi.NativeFunction<_c_PyModule_AddFunctions>>(
+          'PyModule_AddFunctions');
+  late final _dart_PyModule_AddFunctions _PyModule_AddFunctions =
+      _PyModule_AddFunctions_ptr.asFunction<_dart_PyModule_AddFunctions>();
 
   int PyModule_ExecDef(
     ffi.Pointer<PyObject> module,
     ffi.Pointer<PyModuleDef> def,
   ) {
-    return (_PyModule_ExecDef ??=
-        _dylib.lookupFunction<_c_PyModule_ExecDef, _dart_PyModule_ExecDef>(
-            'PyModule_ExecDef'))(
+    return _PyModule_ExecDef(
       module,
       def,
     );
   }
 
-  _dart_PyModule_ExecDef? _PyModule_ExecDef;
+  late final _PyModule_ExecDef_ptr =
+      _lookup<ffi.NativeFunction<_c_PyModule_ExecDef>>('PyModule_ExecDef');
+  late final _dart_PyModule_ExecDef _PyModule_ExecDef =
+      _PyModule_ExecDef_ptr.asFunction<_dart_PyModule_ExecDef>();
 
   ffi.Pointer<PyObject> PyModule_Create2(
     ffi.Pointer<PyModuleDef> arg0,
     int apiver,
   ) {
-    return (_PyModule_Create2 ??=
-        _dylib.lookupFunction<_c_PyModule_Create2, _dart_PyModule_Create2>(
-            'PyModule_Create2'))(
+    return _PyModule_Create2(
       arg0,
       apiver,
     );
   }
 
-  _dart_PyModule_Create2? _PyModule_Create2;
+  late final _PyModule_Create2_ptr =
+      _lookup<ffi.NativeFunction<_c_PyModule_Create2>>('PyModule_Create2');
+  late final _dart_PyModule_Create2 _PyModule_Create2 =
+      _PyModule_Create2_ptr.asFunction<_dart_PyModule_Create2>();
 
   ffi.Pointer<PyObject> PyModule_CreateInitialized(
     ffi.Pointer<PyModuleDef> arg0,
     int apiver,
   ) {
-    return (_PyModule_CreateInitialized ??= _dylib.lookupFunction<
-        _c_PyModule_CreateInitialized,
-        _dart_PyModule_CreateInitialized>('_PyModule_CreateInitialized'))(
+    return _PyModule_CreateInitialized(
       arg0,
       apiver,
     );
   }
 
-  _dart_PyModule_CreateInitialized? _PyModule_CreateInitialized;
+  late final _PyModule_CreateInitialized_ptr =
+      _lookup<ffi.NativeFunction<_c_PyModule_CreateInitialized>>(
+          '_PyModule_CreateInitialized');
+  late final _dart_PyModule_CreateInitialized _PyModule_CreateInitialized =
+      _PyModule_CreateInitialized_ptr.asFunction<
+          _dart_PyModule_CreateInitialized>();
 
   ffi.Pointer<PyObject> PyModule_FromDefAndSpec2(
     ffi.Pointer<PyModuleDef> def,
     ffi.Pointer<PyObject> spec,
     int module_api_version,
   ) {
-    return (_PyModule_FromDefAndSpec2 ??= _dylib.lookupFunction<
-        _c_PyModule_FromDefAndSpec2,
-        _dart_PyModule_FromDefAndSpec2>('PyModule_FromDefAndSpec2'))(
+    return _PyModule_FromDefAndSpec2(
       def,
       spec,
       module_api_version,
     );
   }
 
-  _dart_PyModule_FromDefAndSpec2? _PyModule_FromDefAndSpec2;
+  late final _PyModule_FromDefAndSpec2_ptr =
+      _lookup<ffi.NativeFunction<_c_PyModule_FromDefAndSpec2>>(
+          'PyModule_FromDefAndSpec2');
+  late final _dart_PyModule_FromDefAndSpec2 _PyModule_FromDefAndSpec2 =
+      _PyModule_FromDefAndSpec2_ptr.asFunction<
+          _dart_PyModule_FromDefAndSpec2>();
 
-  late final ffi.Pointer<ffi.Int8> Py_PackageContext =
-      _dylib.lookup<ffi.Pointer<ffi.Int8>>('_Py_PackageContext').value;
+  late final ffi.Pointer<ffi.Pointer<ffi.Int8>> _Py_PackageContext =
+      _lookup<ffi.Pointer<ffi.Int8>>('_Py_PackageContext');
 
-  late final _typeobject PyCode_Type =
-      _dylib.lookup<_typeobject>('PyCode_Type').ref;
+  ffi.Pointer<ffi.Int8> get Py_PackageContext => _Py_PackageContext.value;
+
+  set Py_PackageContext(ffi.Pointer<ffi.Int8> value) =>
+      _Py_PackageContext.value = value;
+
+  late final ffi.Pointer<_typeobject> _PyCode_Type =
+      _lookup<_typeobject>('PyCode_Type');
+
+  _typeobject get PyCode_Type => _PyCode_Type.ref;
 
   ffi.Pointer<PyCodeObject> PyCode_New(
     int arg0,
@@ -9452,8 +11221,7 @@ class DartPyC {
     int arg13,
     ffi.Pointer<PyObject> arg14,
   ) {
-    return (_PyCode_New ??=
-        _dylib.lookupFunction<_c_PyCode_New, _dart_PyCode_New>('PyCode_New'))(
+    return _PyCode_New(
       arg0,
       arg1,
       arg2,
@@ -9472,7 +11240,10 @@ class DartPyC {
     );
   }
 
-  _dart_PyCode_New? _PyCode_New;
+  late final _PyCode_New_ptr =
+      _lookup<ffi.NativeFunction<_c_PyCode_New>>('PyCode_New');
+  late final _dart_PyCode_New _PyCode_New =
+      _PyCode_New_ptr.asFunction<_dart_PyCode_New>();
 
   ffi.Pointer<PyCodeObject> PyCode_NewWithPosOnlyArgs(
     int arg0,
@@ -9492,9 +11263,7 @@ class DartPyC {
     int arg14,
     ffi.Pointer<PyObject> arg15,
   ) {
-    return (_PyCode_NewWithPosOnlyArgs ??= _dylib.lookupFunction<
-        _c_PyCode_NewWithPosOnlyArgs,
-        _dart_PyCode_NewWithPosOnlyArgs>('PyCode_NewWithPosOnlyArgs'))(
+    return _PyCode_NewWithPosOnlyArgs(
       arg0,
       arg1,
       arg2,
@@ -9514,65 +11283,75 @@ class DartPyC {
     );
   }
 
-  _dart_PyCode_NewWithPosOnlyArgs? _PyCode_NewWithPosOnlyArgs;
+  late final _PyCode_NewWithPosOnlyArgs_ptr =
+      _lookup<ffi.NativeFunction<_c_PyCode_NewWithPosOnlyArgs>>(
+          'PyCode_NewWithPosOnlyArgs');
+  late final _dart_PyCode_NewWithPosOnlyArgs _PyCode_NewWithPosOnlyArgs =
+      _PyCode_NewWithPosOnlyArgs_ptr.asFunction<
+          _dart_PyCode_NewWithPosOnlyArgs>();
 
   ffi.Pointer<PyCodeObject> PyCode_NewEmpty(
     ffi.Pointer<ffi.Int8> filename,
     ffi.Pointer<ffi.Int8> funcname,
     int firstlineno,
   ) {
-    return (_PyCode_NewEmpty ??=
-        _dylib.lookupFunction<_c_PyCode_NewEmpty, _dart_PyCode_NewEmpty>(
-            'PyCode_NewEmpty'))(
+    return _PyCode_NewEmpty(
       filename,
       funcname,
       firstlineno,
     );
   }
 
-  _dart_PyCode_NewEmpty? _PyCode_NewEmpty;
+  late final _PyCode_NewEmpty_ptr =
+      _lookup<ffi.NativeFunction<_c_PyCode_NewEmpty>>('PyCode_NewEmpty');
+  late final _dart_PyCode_NewEmpty _PyCode_NewEmpty =
+      _PyCode_NewEmpty_ptr.asFunction<_dart_PyCode_NewEmpty>();
 
   int PyCode_Addr2Line(
     ffi.Pointer<PyCodeObject> arg0,
     int arg1,
   ) {
-    return (_PyCode_Addr2Line ??=
-        _dylib.lookupFunction<_c_PyCode_Addr2Line, _dart_PyCode_Addr2Line>(
-            'PyCode_Addr2Line'))(
+    return _PyCode_Addr2Line(
       arg0,
       arg1,
     );
   }
 
-  _dart_PyCode_Addr2Line? _PyCode_Addr2Line;
+  late final _PyCode_Addr2Line_ptr =
+      _lookup<ffi.NativeFunction<_c_PyCode_Addr2Line>>('PyCode_Addr2Line');
+  late final _dart_PyCode_Addr2Line _PyCode_Addr2Line =
+      _PyCode_Addr2Line_ptr.asFunction<_dart_PyCode_Addr2Line>();
 
   int PyCode_CheckLineNumber(
     ffi.Pointer<PyCodeObject> co,
     int lasti,
     ffi.Pointer<PyAddrPair> bounds,
   ) {
-    return (_PyCode_CheckLineNumber ??= _dylib.lookupFunction<
-        _c_PyCode_CheckLineNumber,
-        _dart_PyCode_CheckLineNumber>('_PyCode_CheckLineNumber'))(
+    return _PyCode_CheckLineNumber(
       co,
       lasti,
       bounds,
     );
   }
 
-  _dart_PyCode_CheckLineNumber? _PyCode_CheckLineNumber;
+  late final _PyCode_CheckLineNumber_ptr =
+      _lookup<ffi.NativeFunction<_c_PyCode_CheckLineNumber>>(
+          '_PyCode_CheckLineNumber');
+  late final _dart_PyCode_CheckLineNumber _PyCode_CheckLineNumber =
+      _PyCode_CheckLineNumber_ptr.asFunction<_dart_PyCode_CheckLineNumber>();
 
   ffi.Pointer<PyObject> PyCode_ConstantKey(
     ffi.Pointer<PyObject> obj,
   ) {
-    return (_PyCode_ConstantKey ??=
-        _dylib.lookupFunction<_c_PyCode_ConstantKey, _dart_PyCode_ConstantKey>(
-            '_PyCode_ConstantKey'))(
+    return _PyCode_ConstantKey(
       obj,
     );
   }
 
-  _dart_PyCode_ConstantKey? _PyCode_ConstantKey;
+  late final _PyCode_ConstantKey_ptr =
+      _lookup<ffi.NativeFunction<_c_PyCode_ConstantKey>>('_PyCode_ConstantKey');
+  late final _dart_PyCode_ConstantKey _PyCode_ConstantKey =
+      _PyCode_ConstantKey_ptr.asFunction<_dart_PyCode_ConstantKey>();
 
   ffi.Pointer<PyObject> PyCode_Optimize(
     ffi.Pointer<PyObject> code,
@@ -9580,9 +11359,7 @@ class DartPyC {
     ffi.Pointer<PyObject> names,
     ffi.Pointer<PyObject> lnotab,
   ) {
-    return (_PyCode_Optimize ??=
-        _dylib.lookupFunction<_c_PyCode_Optimize, _dart_PyCode_Optimize>(
-            'PyCode_Optimize'))(
+    return _PyCode_Optimize(
       code,
       consts,
       names,
@@ -9590,53 +11367,59 @@ class DartPyC {
     );
   }
 
-  _dart_PyCode_Optimize? _PyCode_Optimize;
+  late final _PyCode_Optimize_ptr =
+      _lookup<ffi.NativeFunction<_c_PyCode_Optimize>>('PyCode_Optimize');
+  late final _dart_PyCode_Optimize _PyCode_Optimize =
+      _PyCode_Optimize_ptr.asFunction<_dart_PyCode_Optimize>();
 
   int PyCode_GetExtra(
     ffi.Pointer<PyObject> code,
     int index,
     ffi.Pointer<ffi.Pointer<ffi.Void>> extra,
   ) {
-    return (_PyCode_GetExtra ??=
-        _dylib.lookupFunction<_c_PyCode_GetExtra, _dart_PyCode_GetExtra>(
-            '_PyCode_GetExtra'))(
+    return _PyCode_GetExtra(
       code,
       index,
       extra,
     );
   }
 
-  _dart_PyCode_GetExtra? _PyCode_GetExtra;
+  late final _PyCode_GetExtra_ptr =
+      _lookup<ffi.NativeFunction<_c_PyCode_GetExtra>>('_PyCode_GetExtra');
+  late final _dart_PyCode_GetExtra _PyCode_GetExtra =
+      _PyCode_GetExtra_ptr.asFunction<_dart_PyCode_GetExtra>();
 
   int PyCode_SetExtra(
     ffi.Pointer<PyObject> code,
     int index,
     ffi.Pointer<ffi.Void> extra,
   ) {
-    return (_PyCode_SetExtra ??=
-        _dylib.lookupFunction<_c_PyCode_SetExtra, _dart_PyCode_SetExtra>(
-            '_PyCode_SetExtra'))(
+    return _PyCode_SetExtra(
       code,
       index,
       extra,
     );
   }
 
-  _dart_PyCode_SetExtra? _PyCode_SetExtra;
+  late final _PyCode_SetExtra_ptr =
+      _lookup<ffi.NativeFunction<_c_PyCode_SetExtra>>('_PyCode_SetExtra');
+  late final _dart_PyCode_SetExtra _PyCode_SetExtra =
+      _PyCode_SetExtra_ptr.asFunction<_dart_PyCode_SetExtra>();
 
   ffi.Pointer<PyCodeObject> PyNode_Compile(
     ffi.Pointer<_node> arg0,
     ffi.Pointer<ffi.Int8> arg1,
   ) {
-    return (_PyNode_Compile ??=
-        _dylib.lookupFunction<_c_PyNode_Compile, _dart_PyNode_Compile>(
-            'PyNode_Compile'))(
+    return _PyNode_Compile(
       arg0,
       arg1,
     );
   }
 
-  _dart_PyNode_Compile? _PyNode_Compile;
+  late final _PyNode_Compile_ptr =
+      _lookup<ffi.NativeFunction<_c_PyNode_Compile>>('PyNode_Compile');
+  late final _dart_PyNode_Compile _PyNode_Compile =
+      _PyNode_Compile_ptr.asFunction<_dart_PyNode_Compile>();
 
   ffi.Pointer<PyCodeObject> PyAST_CompileEx(
     ffi.Pointer<_mod> mod,
@@ -9645,9 +11428,7 @@ class DartPyC {
     int optimize,
     ffi.Pointer<_arena> arena,
   ) {
-    return (_PyAST_CompileEx ??=
-        _dylib.lookupFunction<_c_PyAST_CompileEx, _dart_PyAST_CompileEx>(
-            'PyAST_CompileEx'))(
+    return _PyAST_CompileEx(
       mod,
       filename,
       flags,
@@ -9656,7 +11437,10 @@ class DartPyC {
     );
   }
 
-  _dart_PyAST_CompileEx? _PyAST_CompileEx;
+  late final _PyAST_CompileEx_ptr =
+      _lookup<ffi.NativeFunction<_c_PyAST_CompileEx>>('PyAST_CompileEx');
+  late final _dart_PyAST_CompileEx _PyAST_CompileEx =
+      _PyAST_CompileEx_ptr.asFunction<_dart_PyAST_CompileEx>();
 
   ffi.Pointer<PyCodeObject> PyAST_CompileObject(
     ffi.Pointer<_mod> mod,
@@ -9665,9 +11449,7 @@ class DartPyC {
     int optimize,
     ffi.Pointer<_arena> arena,
   ) {
-    return (_PyAST_CompileObject ??= _dylib.lookupFunction<
-        _c_PyAST_CompileObject,
-        _dart_PyAST_CompileObject>('PyAST_CompileObject'))(
+    return _PyAST_CompileObject(
       mod,
       filename,
       flags,
@@ -9676,110 +11458,127 @@ class DartPyC {
     );
   }
 
-  _dart_PyAST_CompileObject? _PyAST_CompileObject;
+  late final _PyAST_CompileObject_ptr =
+      _lookup<ffi.NativeFunction<_c_PyAST_CompileObject>>(
+          'PyAST_CompileObject');
+  late final _dart_PyAST_CompileObject _PyAST_CompileObject =
+      _PyAST_CompileObject_ptr.asFunction<_dart_PyAST_CompileObject>();
 
   ffi.Pointer<PyFutureFeatures> PyFuture_FromAST(
     ffi.Pointer<_mod> mod,
     ffi.Pointer<ffi.Int8> filename,
   ) {
-    return (_PyFuture_FromAST ??=
-        _dylib.lookupFunction<_c_PyFuture_FromAST, _dart_PyFuture_FromAST>(
-            'PyFuture_FromAST'))(
+    return _PyFuture_FromAST(
       mod,
       filename,
     );
   }
 
-  _dart_PyFuture_FromAST? _PyFuture_FromAST;
+  late final _PyFuture_FromAST_ptr =
+      _lookup<ffi.NativeFunction<_c_PyFuture_FromAST>>('PyFuture_FromAST');
+  late final _dart_PyFuture_FromAST _PyFuture_FromAST =
+      _PyFuture_FromAST_ptr.asFunction<_dart_PyFuture_FromAST>();
 
   ffi.Pointer<PyFutureFeatures> PyFuture_FromASTObject(
     ffi.Pointer<_mod> mod,
     ffi.Pointer<PyObject> filename,
   ) {
-    return (_PyFuture_FromASTObject ??= _dylib.lookupFunction<
-        _c_PyFuture_FromASTObject,
-        _dart_PyFuture_FromASTObject>('PyFuture_FromASTObject'))(
+    return _PyFuture_FromASTObject(
       mod,
       filename,
     );
   }
 
-  _dart_PyFuture_FromASTObject? _PyFuture_FromASTObject;
+  late final _PyFuture_FromASTObject_ptr =
+      _lookup<ffi.NativeFunction<_c_PyFuture_FromASTObject>>(
+          'PyFuture_FromASTObject');
+  late final _dart_PyFuture_FromASTObject _PyFuture_FromASTObject =
+      _PyFuture_FromASTObject_ptr.asFunction<_dart_PyFuture_FromASTObject>();
 
   ffi.Pointer<PyObject> Py_Mangle(
     ffi.Pointer<PyObject> p,
     ffi.Pointer<PyObject> name,
   ) {
-    return (_Py_Mangle ??=
-        _dylib.lookupFunction<_c_Py_Mangle, _dart_Py_Mangle>('_Py_Mangle'))(
+    return _Py_Mangle(
       p,
       name,
     );
   }
 
-  _dart_Py_Mangle? _Py_Mangle;
+  late final _Py_Mangle_ptr =
+      _lookup<ffi.NativeFunction<_c_Py_Mangle>>('_Py_Mangle');
+  late final _dart_Py_Mangle _Py_Mangle =
+      _Py_Mangle_ptr.asFunction<_dart_Py_Mangle>();
 
   int PyCompile_OpcodeStackEffect(
     int opcode,
     int oparg,
   ) {
-    return (_PyCompile_OpcodeStackEffect ??= _dylib.lookupFunction<
-        _c_PyCompile_OpcodeStackEffect,
-        _dart_PyCompile_OpcodeStackEffect>('PyCompile_OpcodeStackEffect'))(
+    return _PyCompile_OpcodeStackEffect(
       opcode,
       oparg,
     );
   }
 
-  _dart_PyCompile_OpcodeStackEffect? _PyCompile_OpcodeStackEffect;
+  late final _PyCompile_OpcodeStackEffect_ptr =
+      _lookup<ffi.NativeFunction<_c_PyCompile_OpcodeStackEffect>>(
+          'PyCompile_OpcodeStackEffect');
+  late final _dart_PyCompile_OpcodeStackEffect _PyCompile_OpcodeStackEffect =
+      _PyCompile_OpcodeStackEffect_ptr.asFunction<
+          _dart_PyCompile_OpcodeStackEffect>();
 
   int PyCompile_OpcodeStackEffectWithJump(
     int opcode,
     int oparg,
     int jump,
   ) {
-    return (_PyCompile_OpcodeStackEffectWithJump ??= _dylib.lookupFunction<
-            _c_PyCompile_OpcodeStackEffectWithJump,
-            _dart_PyCompile_OpcodeStackEffectWithJump>(
-        'PyCompile_OpcodeStackEffectWithJump'))(
+    return _PyCompile_OpcodeStackEffectWithJump(
       opcode,
       oparg,
       jump,
     );
   }
 
-  _dart_PyCompile_OpcodeStackEffectWithJump?
-      _PyCompile_OpcodeStackEffectWithJump;
+  late final _PyCompile_OpcodeStackEffectWithJump_ptr =
+      _lookup<ffi.NativeFunction<_c_PyCompile_OpcodeStackEffectWithJump>>(
+          'PyCompile_OpcodeStackEffectWithJump');
+  late final _dart_PyCompile_OpcodeStackEffectWithJump
+      _PyCompile_OpcodeStackEffectWithJump =
+      _PyCompile_OpcodeStackEffectWithJump_ptr.asFunction<
+          _dart_PyCompile_OpcodeStackEffectWithJump>();
 
   int PyAST_Optimize(
     ffi.Pointer<_mod> arg0,
     ffi.Pointer<_arena> arena,
     int optimize,
   ) {
-    return (_PyAST_Optimize ??=
-        _dylib.lookupFunction<_c_PyAST_Optimize, _dart_PyAST_Optimize>(
-            '_PyAST_Optimize'))(
+    return _PyAST_Optimize(
       arg0,
       arena,
       optimize,
     );
   }
 
-  _dart_PyAST_Optimize? _PyAST_Optimize;
+  late final _PyAST_Optimize_ptr =
+      _lookup<ffi.NativeFunction<_c_PyAST_Optimize>>('_PyAST_Optimize');
+  late final _dart_PyAST_Optimize _PyAST_Optimize =
+      _PyAST_Optimize_ptr.asFunction<_dart_PyAST_Optimize>();
 
   int PyRun_SimpleStringFlags(
     ffi.Pointer<ffi.Int8> arg0,
     ffi.Pointer<PyCompilerFlags> arg1,
   ) {
-    return (_PyRun_SimpleStringFlags ??= _dylib.lookupFunction<
-        _c_PyRun_SimpleStringFlags,
-        _dart_PyRun_SimpleStringFlags>('PyRun_SimpleStringFlags'))(
+    return _PyRun_SimpleStringFlags(
       arg0,
       arg1,
     );
   }
 
-  _dart_PyRun_SimpleStringFlags? _PyRun_SimpleStringFlags;
+  late final _PyRun_SimpleStringFlags_ptr =
+      _lookup<ffi.NativeFunction<_c_PyRun_SimpleStringFlags>>(
+          'PyRun_SimpleStringFlags');
+  late final _dart_PyRun_SimpleStringFlags _PyRun_SimpleStringFlags =
+      _PyRun_SimpleStringFlags_ptr.asFunction<_dart_PyRun_SimpleStringFlags>();
 
   int PyRun_AnyFileExFlags(
     ffi.Pointer<FILE> fp,
@@ -9787,9 +11586,7 @@ class DartPyC {
     int closeit,
     ffi.Pointer<PyCompilerFlags> flags,
   ) {
-    return (_PyRun_AnyFileExFlags ??= _dylib.lookupFunction<
-        _c_PyRun_AnyFileExFlags,
-        _dart_PyRun_AnyFileExFlags>('PyRun_AnyFileExFlags'))(
+    return _PyRun_AnyFileExFlags(
       fp,
       filename,
       closeit,
@@ -9797,7 +11594,11 @@ class DartPyC {
     );
   }
 
-  _dart_PyRun_AnyFileExFlags? _PyRun_AnyFileExFlags;
+  late final _PyRun_AnyFileExFlags_ptr =
+      _lookup<ffi.NativeFunction<_c_PyRun_AnyFileExFlags>>(
+          'PyRun_AnyFileExFlags');
+  late final _dart_PyRun_AnyFileExFlags _PyRun_AnyFileExFlags =
+      _PyRun_AnyFileExFlags_ptr.asFunction<_dart_PyRun_AnyFileExFlags>();
 
   int PyRun_SimpleFileExFlags(
     ffi.Pointer<FILE> fp,
@@ -9805,9 +11606,7 @@ class DartPyC {
     int closeit,
     ffi.Pointer<PyCompilerFlags> flags,
   ) {
-    return (_PyRun_SimpleFileExFlags ??= _dylib.lookupFunction<
-        _c_PyRun_SimpleFileExFlags,
-        _dart_PyRun_SimpleFileExFlags>('PyRun_SimpleFileExFlags'))(
+    return _PyRun_SimpleFileExFlags(
       fp,
       filename,
       closeit,
@@ -9815,55 +11614,68 @@ class DartPyC {
     );
   }
 
-  _dart_PyRun_SimpleFileExFlags? _PyRun_SimpleFileExFlags;
+  late final _PyRun_SimpleFileExFlags_ptr =
+      _lookup<ffi.NativeFunction<_c_PyRun_SimpleFileExFlags>>(
+          'PyRun_SimpleFileExFlags');
+  late final _dart_PyRun_SimpleFileExFlags _PyRun_SimpleFileExFlags =
+      _PyRun_SimpleFileExFlags_ptr.asFunction<_dart_PyRun_SimpleFileExFlags>();
 
   int PyRun_InteractiveOneFlags(
     ffi.Pointer<FILE> fp,
     ffi.Pointer<ffi.Int8> filename,
     ffi.Pointer<PyCompilerFlags> flags,
   ) {
-    return (_PyRun_InteractiveOneFlags ??= _dylib.lookupFunction<
-        _c_PyRun_InteractiveOneFlags,
-        _dart_PyRun_InteractiveOneFlags>('PyRun_InteractiveOneFlags'))(
+    return _PyRun_InteractiveOneFlags(
       fp,
       filename,
       flags,
     );
   }
 
-  _dart_PyRun_InteractiveOneFlags? _PyRun_InteractiveOneFlags;
+  late final _PyRun_InteractiveOneFlags_ptr =
+      _lookup<ffi.NativeFunction<_c_PyRun_InteractiveOneFlags>>(
+          'PyRun_InteractiveOneFlags');
+  late final _dart_PyRun_InteractiveOneFlags _PyRun_InteractiveOneFlags =
+      _PyRun_InteractiveOneFlags_ptr.asFunction<
+          _dart_PyRun_InteractiveOneFlags>();
 
   int PyRun_InteractiveOneObject(
     ffi.Pointer<FILE> fp,
     ffi.Pointer<PyObject> filename,
     ffi.Pointer<PyCompilerFlags> flags,
   ) {
-    return (_PyRun_InteractiveOneObject ??= _dylib.lookupFunction<
-        _c_PyRun_InteractiveOneObject,
-        _dart_PyRun_InteractiveOneObject>('PyRun_InteractiveOneObject'))(
+    return _PyRun_InteractiveOneObject(
       fp,
       filename,
       flags,
     );
   }
 
-  _dart_PyRun_InteractiveOneObject? _PyRun_InteractiveOneObject;
+  late final _PyRun_InteractiveOneObject_ptr =
+      _lookup<ffi.NativeFunction<_c_PyRun_InteractiveOneObject>>(
+          'PyRun_InteractiveOneObject');
+  late final _dart_PyRun_InteractiveOneObject _PyRun_InteractiveOneObject =
+      _PyRun_InteractiveOneObject_ptr.asFunction<
+          _dart_PyRun_InteractiveOneObject>();
 
   int PyRun_InteractiveLoopFlags(
     ffi.Pointer<FILE> fp,
     ffi.Pointer<ffi.Int8> filename,
     ffi.Pointer<PyCompilerFlags> flags,
   ) {
-    return (_PyRun_InteractiveLoopFlags ??= _dylib.lookupFunction<
-        _c_PyRun_InteractiveLoopFlags,
-        _dart_PyRun_InteractiveLoopFlags>('PyRun_InteractiveLoopFlags'))(
+    return _PyRun_InteractiveLoopFlags(
       fp,
       filename,
       flags,
     );
   }
 
-  _dart_PyRun_InteractiveLoopFlags? _PyRun_InteractiveLoopFlags;
+  late final _PyRun_InteractiveLoopFlags_ptr =
+      _lookup<ffi.NativeFunction<_c_PyRun_InteractiveLoopFlags>>(
+          'PyRun_InteractiveLoopFlags');
+  late final _dart_PyRun_InteractiveLoopFlags _PyRun_InteractiveLoopFlags =
+      _PyRun_InteractiveLoopFlags_ptr.asFunction<
+          _dart_PyRun_InteractiveLoopFlags>();
 
   ffi.Pointer<_mod> PyParser_ASTFromString(
     ffi.Pointer<ffi.Int8> s,
@@ -9872,9 +11684,7 @@ class DartPyC {
     ffi.Pointer<PyCompilerFlags> flags,
     ffi.Pointer<_arena> arena,
   ) {
-    return (_PyParser_ASTFromString ??= _dylib.lookupFunction<
-        _c_PyParser_ASTFromString,
-        _dart_PyParser_ASTFromString>('PyParser_ASTFromString'))(
+    return _PyParser_ASTFromString(
       s,
       filename,
       start,
@@ -9883,7 +11693,11 @@ class DartPyC {
     );
   }
 
-  _dart_PyParser_ASTFromString? _PyParser_ASTFromString;
+  late final _PyParser_ASTFromString_ptr =
+      _lookup<ffi.NativeFunction<_c_PyParser_ASTFromString>>(
+          'PyParser_ASTFromString');
+  late final _dart_PyParser_ASTFromString _PyParser_ASTFromString =
+      _PyParser_ASTFromString_ptr.asFunction<_dart_PyParser_ASTFromString>();
 
   ffi.Pointer<_mod> PyParser_ASTFromStringObject(
     ffi.Pointer<ffi.Int8> s,
@@ -9892,9 +11706,7 @@ class DartPyC {
     ffi.Pointer<PyCompilerFlags> flags,
     ffi.Pointer<_arena> arena,
   ) {
-    return (_PyParser_ASTFromStringObject ??= _dylib.lookupFunction<
-        _c_PyParser_ASTFromStringObject,
-        _dart_PyParser_ASTFromStringObject>('PyParser_ASTFromStringObject'))(
+    return _PyParser_ASTFromStringObject(
       s,
       filename,
       start,
@@ -9903,7 +11715,12 @@ class DartPyC {
     );
   }
 
-  _dart_PyParser_ASTFromStringObject? _PyParser_ASTFromStringObject;
+  late final _PyParser_ASTFromStringObject_ptr =
+      _lookup<ffi.NativeFunction<_c_PyParser_ASTFromStringObject>>(
+          'PyParser_ASTFromStringObject');
+  late final _dart_PyParser_ASTFromStringObject _PyParser_ASTFromStringObject =
+      _PyParser_ASTFromStringObject_ptr.asFunction<
+          _dart_PyParser_ASTFromStringObject>();
 
   ffi.Pointer<_mod> PyParser_ASTFromFile(
     ffi.Pointer<FILE> fp,
@@ -9916,9 +11733,7 @@ class DartPyC {
     ffi.Pointer<ffi.Int32> errcode,
     ffi.Pointer<_arena> arena,
   ) {
-    return (_PyParser_ASTFromFile ??= _dylib.lookupFunction<
-        _c_PyParser_ASTFromFile,
-        _dart_PyParser_ASTFromFile>('PyParser_ASTFromFile'))(
+    return _PyParser_ASTFromFile(
       fp,
       filename,
       enc,
@@ -9931,7 +11746,11 @@ class DartPyC {
     );
   }
 
-  _dart_PyParser_ASTFromFile? _PyParser_ASTFromFile;
+  late final _PyParser_ASTFromFile_ptr =
+      _lookup<ffi.NativeFunction<_c_PyParser_ASTFromFile>>(
+          'PyParser_ASTFromFile');
+  late final _dart_PyParser_ASTFromFile _PyParser_ASTFromFile =
+      _PyParser_ASTFromFile_ptr.asFunction<_dart_PyParser_ASTFromFile>();
 
   ffi.Pointer<_mod> PyParser_ASTFromFileObject(
     ffi.Pointer<FILE> fp,
@@ -9944,9 +11763,7 @@ class DartPyC {
     ffi.Pointer<ffi.Int32> errcode,
     ffi.Pointer<_arena> arena,
   ) {
-    return (_PyParser_ASTFromFileObject ??= _dylib.lookupFunction<
-        _c_PyParser_ASTFromFileObject,
-        _dart_PyParser_ASTFromFileObject>('PyParser_ASTFromFileObject'))(
+    return _PyParser_ASTFromFileObject(
       fp,
       filename,
       enc,
@@ -9959,24 +11776,31 @@ class DartPyC {
     );
   }
 
-  _dart_PyParser_ASTFromFileObject? _PyParser_ASTFromFileObject;
+  late final _PyParser_ASTFromFileObject_ptr =
+      _lookup<ffi.NativeFunction<_c_PyParser_ASTFromFileObject>>(
+          'PyParser_ASTFromFileObject');
+  late final _dart_PyParser_ASTFromFileObject _PyParser_ASTFromFileObject =
+      _PyParser_ASTFromFileObject_ptr.asFunction<
+          _dart_PyParser_ASTFromFileObject>();
 
   ffi.Pointer<_node> PyParser_SimpleParseStringFlags(
     ffi.Pointer<ffi.Int8> arg0,
     int arg1,
     int arg2,
   ) {
-    return (_PyParser_SimpleParseStringFlags ??= _dylib.lookupFunction<
-            _c_PyParser_SimpleParseStringFlags,
-            _dart_PyParser_SimpleParseStringFlags>(
-        'PyParser_SimpleParseStringFlags'))(
+    return _PyParser_SimpleParseStringFlags(
       arg0,
       arg1,
       arg2,
     );
   }
 
-  _dart_PyParser_SimpleParseStringFlags? _PyParser_SimpleParseStringFlags;
+  late final _PyParser_SimpleParseStringFlags_ptr =
+      _lookup<ffi.NativeFunction<_c_PyParser_SimpleParseStringFlags>>(
+          'PyParser_SimpleParseStringFlags');
+  late final _dart_PyParser_SimpleParseStringFlags
+      _PyParser_SimpleParseStringFlags = _PyParser_SimpleParseStringFlags_ptr
+          .asFunction<_dart_PyParser_SimpleParseStringFlags>();
 
   ffi.Pointer<_node> PyParser_SimpleParseStringFlagsFilename(
     ffi.Pointer<ffi.Int8> arg0,
@@ -9984,10 +11808,7 @@ class DartPyC {
     int arg2,
     int arg3,
   ) {
-    return (_PyParser_SimpleParseStringFlagsFilename ??= _dylib.lookupFunction<
-            _c_PyParser_SimpleParseStringFlagsFilename,
-            _dart_PyParser_SimpleParseStringFlagsFilename>(
-        'PyParser_SimpleParseStringFlagsFilename'))(
+    return _PyParser_SimpleParseStringFlagsFilename(
       arg0,
       arg1,
       arg2,
@@ -9995,8 +11816,13 @@ class DartPyC {
     );
   }
 
-  _dart_PyParser_SimpleParseStringFlagsFilename?
-      _PyParser_SimpleParseStringFlagsFilename;
+  late final _PyParser_SimpleParseStringFlagsFilename_ptr =
+      _lookup<ffi.NativeFunction<_c_PyParser_SimpleParseStringFlagsFilename>>(
+          'PyParser_SimpleParseStringFlagsFilename');
+  late final _dart_PyParser_SimpleParseStringFlagsFilename
+      _PyParser_SimpleParseStringFlagsFilename =
+      _PyParser_SimpleParseStringFlagsFilename_ptr.asFunction<
+          _dart_PyParser_SimpleParseStringFlagsFilename>();
 
   ffi.Pointer<_node> PyParser_SimpleParseFileFlags(
     ffi.Pointer<FILE> arg0,
@@ -10004,9 +11830,7 @@ class DartPyC {
     int arg2,
     int arg3,
   ) {
-    return (_PyParser_SimpleParseFileFlags ??= _dylib.lookupFunction<
-        _c_PyParser_SimpleParseFileFlags,
-        _dart_PyParser_SimpleParseFileFlags>('PyParser_SimpleParseFileFlags'))(
+    return _PyParser_SimpleParseFileFlags(
       arg0,
       arg1,
       arg2,
@@ -10014,7 +11838,12 @@ class DartPyC {
     );
   }
 
-  _dart_PyParser_SimpleParseFileFlags? _PyParser_SimpleParseFileFlags;
+  late final _PyParser_SimpleParseFileFlags_ptr =
+      _lookup<ffi.NativeFunction<_c_PyParser_SimpleParseFileFlags>>(
+          'PyParser_SimpleParseFileFlags');
+  late final _dart_PyParser_SimpleParseFileFlags
+      _PyParser_SimpleParseFileFlags = _PyParser_SimpleParseFileFlags_ptr
+          .asFunction<_dart_PyParser_SimpleParseFileFlags>();
 
   ffi.Pointer<PyObject> PyRun_StringFlags(
     ffi.Pointer<ffi.Int8> arg0,
@@ -10023,9 +11852,7 @@ class DartPyC {
     ffi.Pointer<PyObject> arg3,
     ffi.Pointer<PyCompilerFlags> arg4,
   ) {
-    return (_PyRun_StringFlags ??=
-        _dylib.lookupFunction<_c_PyRun_StringFlags, _dart_PyRun_StringFlags>(
-            'PyRun_StringFlags'))(
+    return _PyRun_StringFlags(
       arg0,
       arg1,
       arg2,
@@ -10034,7 +11861,10 @@ class DartPyC {
     );
   }
 
-  _dart_PyRun_StringFlags? _PyRun_StringFlags;
+  late final _PyRun_StringFlags_ptr =
+      _lookup<ffi.NativeFunction<_c_PyRun_StringFlags>>('PyRun_StringFlags');
+  late final _dart_PyRun_StringFlags _PyRun_StringFlags =
+      _PyRun_StringFlags_ptr.asFunction<_dart_PyRun_StringFlags>();
 
   ffi.Pointer<PyObject> PyRun_FileExFlags(
     ffi.Pointer<FILE> fp,
@@ -10045,9 +11875,7 @@ class DartPyC {
     int closeit,
     ffi.Pointer<PyCompilerFlags> flags,
   ) {
-    return (_PyRun_FileExFlags ??=
-        _dylib.lookupFunction<_c_PyRun_FileExFlags, _dart_PyRun_FileExFlags>(
-            'PyRun_FileExFlags'))(
+    return _PyRun_FileExFlags(
       fp,
       filename,
       start,
@@ -10058,7 +11886,10 @@ class DartPyC {
     );
   }
 
-  _dart_PyRun_FileExFlags? _PyRun_FileExFlags;
+  late final _PyRun_FileExFlags_ptr =
+      _lookup<ffi.NativeFunction<_c_PyRun_FileExFlags>>('PyRun_FileExFlags');
+  late final _dart_PyRun_FileExFlags _PyRun_FileExFlags =
+      _PyRun_FileExFlags_ptr.asFunction<_dart_PyRun_FileExFlags>();
 
   ffi.Pointer<PyObject> Py_CompileStringExFlags(
     ffi.Pointer<ffi.Int8> str,
@@ -10067,9 +11898,7 @@ class DartPyC {
     ffi.Pointer<PyCompilerFlags> flags,
     int optimize,
   ) {
-    return (_Py_CompileStringExFlags ??= _dylib.lookupFunction<
-        _c_Py_CompileStringExFlags,
-        _dart_Py_CompileStringExFlags>('Py_CompileStringExFlags'))(
+    return _Py_CompileStringExFlags(
       str,
       filename,
       start,
@@ -10078,7 +11907,11 @@ class DartPyC {
     );
   }
 
-  _dart_Py_CompileStringExFlags? _Py_CompileStringExFlags;
+  late final _Py_CompileStringExFlags_ptr =
+      _lookup<ffi.NativeFunction<_c_Py_CompileStringExFlags>>(
+          'Py_CompileStringExFlags');
+  late final _dart_Py_CompileStringExFlags _Py_CompileStringExFlags =
+      _Py_CompileStringExFlags_ptr.asFunction<_dart_Py_CompileStringExFlags>();
 
   ffi.Pointer<PyObject> Py_CompileStringObject(
     ffi.Pointer<ffi.Int8> str,
@@ -10087,9 +11920,7 @@ class DartPyC {
     ffi.Pointer<PyCompilerFlags> flags,
     int optimize,
   ) {
-    return (_Py_CompileStringObject ??= _dylib.lookupFunction<
-        _c_Py_CompileStringObject,
-        _dart_Py_CompileStringObject>('Py_CompileStringObject'))(
+    return _Py_CompileStringObject(
       str,
       filename,
       start,
@@ -10098,23 +11929,28 @@ class DartPyC {
     );
   }
 
-  _dart_Py_CompileStringObject? _Py_CompileStringObject;
+  late final _Py_CompileStringObject_ptr =
+      _lookup<ffi.NativeFunction<_c_Py_CompileStringObject>>(
+          'Py_CompileStringObject');
+  late final _dart_Py_CompileStringObject _Py_CompileStringObject =
+      _Py_CompileStringObject_ptr.asFunction<_dart_Py_CompileStringObject>();
 
   ffi.Pointer<symtable> Py_SymtableString(
     ffi.Pointer<ffi.Int8> str,
     ffi.Pointer<ffi.Int8> filename,
     int start,
   ) {
-    return (_Py_SymtableString ??=
-        _dylib.lookupFunction<_c_Py_SymtableString, _dart_Py_SymtableString>(
-            'Py_SymtableString'))(
+    return _Py_SymtableString(
       str,
       filename,
       start,
     );
   }
 
-  _dart_Py_SymtableString? _Py_SymtableString;
+  late final _Py_SymtableString_ptr =
+      _lookup<ffi.NativeFunction<_c_Py_SymtableString>>('Py_SymtableString');
+  late final _dart_Py_SymtableString _Py_SymtableString =
+      _Py_SymtableString_ptr.asFunction<_dart_Py_SymtableString>();
 
   ffi.Pointer<ffi.Int8> Py_SourceAsString(
     ffi.Pointer<PyObject> cmd,
@@ -10123,9 +11959,7 @@ class DartPyC {
     ffi.Pointer<PyCompilerFlags> cf,
     ffi.Pointer<ffi.Pointer<PyObject>> cmd_copy,
   ) {
-    return (_Py_SourceAsString ??=
-        _dylib.lookupFunction<_c_Py_SourceAsString, _dart_Py_SourceAsString>(
-            '_Py_SourceAsString'))(
+    return _Py_SourceAsString(
       cmd,
       funcname,
       what,
@@ -10134,23 +11968,28 @@ class DartPyC {
     );
   }
 
-  _dart_Py_SourceAsString? _Py_SourceAsString;
+  late final _Py_SourceAsString_ptr =
+      _lookup<ffi.NativeFunction<_c_Py_SourceAsString>>('_Py_SourceAsString');
+  late final _dart_Py_SourceAsString _Py_SourceAsString =
+      _Py_SourceAsString_ptr.asFunction<_dart_Py_SourceAsString>();
 
   ffi.Pointer<symtable> Py_SymtableStringObject(
     ffi.Pointer<ffi.Int8> str,
     ffi.Pointer<PyObject> filename,
     int start,
   ) {
-    return (_Py_SymtableStringObject ??= _dylib.lookupFunction<
-        _c_Py_SymtableStringObject,
-        _dart_Py_SymtableStringObject>('Py_SymtableStringObject'))(
+    return _Py_SymtableStringObject(
       str,
       filename,
       start,
     );
   }
 
-  _dart_Py_SymtableStringObject? _Py_SymtableStringObject;
+  late final _Py_SymtableStringObject_ptr =
+      _lookup<ffi.NativeFunction<_c_Py_SymtableStringObject>>(
+          'Py_SymtableStringObject');
+  late final _dart_Py_SymtableStringObject _Py_SymtableStringObject =
+      _Py_SymtableStringObject_ptr.asFunction<_dart_Py_SymtableStringObject>();
 
   ffi.Pointer<symtable> Py_SymtableStringObjectFlags(
     ffi.Pointer<ffi.Int8> str,
@@ -10158,9 +11997,7 @@ class DartPyC {
     int start,
     ffi.Pointer<PyCompilerFlags> flags,
   ) {
-    return (_Py_SymtableStringObjectFlags ??= _dylib.lookupFunction<
-        _c_Py_SymtableStringObjectFlags,
-        _dart_Py_SymtableStringObjectFlags>('_Py_SymtableStringObjectFlags'))(
+    return _Py_SymtableStringObjectFlags(
       str,
       filename,
       start,
@@ -10168,42 +12005,51 @@ class DartPyC {
     );
   }
 
-  _dart_Py_SymtableStringObjectFlags? _Py_SymtableStringObjectFlags;
+  late final _Py_SymtableStringObjectFlags_ptr =
+      _lookup<ffi.NativeFunction<_c_Py_SymtableStringObjectFlags>>(
+          '_Py_SymtableStringObjectFlags');
+  late final _dart_Py_SymtableStringObjectFlags _Py_SymtableStringObjectFlags =
+      _Py_SymtableStringObjectFlags_ptr.asFunction<
+          _dart_Py_SymtableStringObjectFlags>();
 
   void PyErr_Print() {
-    return (_PyErr_Print ??= _dylib
-        .lookupFunction<_c_PyErr_Print, _dart_PyErr_Print>('PyErr_Print'))();
+    return _PyErr_Print();
   }
 
-  _dart_PyErr_Print? _PyErr_Print;
+  late final _PyErr_Print_ptr =
+      _lookup<ffi.NativeFunction<_c_PyErr_Print>>('PyErr_Print');
+  late final _dart_PyErr_Print _PyErr_Print =
+      _PyErr_Print_ptr.asFunction<_dart_PyErr_Print>();
 
   void PyErr_PrintEx(
     int arg0,
   ) {
-    return (_PyErr_PrintEx ??=
-        _dylib.lookupFunction<_c_PyErr_PrintEx, _dart_PyErr_PrintEx>(
-            'PyErr_PrintEx'))(
+    return _PyErr_PrintEx(
       arg0,
     );
   }
 
-  _dart_PyErr_PrintEx? _PyErr_PrintEx;
+  late final _PyErr_PrintEx_ptr =
+      _lookup<ffi.NativeFunction<_c_PyErr_PrintEx>>('PyErr_PrintEx');
+  late final _dart_PyErr_PrintEx _PyErr_PrintEx =
+      _PyErr_PrintEx_ptr.asFunction<_dart_PyErr_PrintEx>();
 
   void PyErr_Display(
     ffi.Pointer<PyObject> arg0,
     ffi.Pointer<PyObject> arg1,
     ffi.Pointer<PyObject> arg2,
   ) {
-    return (_PyErr_Display ??=
-        _dylib.lookupFunction<_c_PyErr_Display, _dart_PyErr_Display>(
-            'PyErr_Display'))(
+    return _PyErr_Display(
       arg0,
       arg1,
       arg2,
     );
   }
 
-  _dart_PyErr_Display? _PyErr_Display;
+  late final _PyErr_Display_ptr =
+      _lookup<ffi.NativeFunction<_c_PyErr_Display>>('PyErr_Display');
+  late final _dart_PyErr_Display _PyErr_Display =
+      _PyErr_Display_ptr.asFunction<_dart_PyErr_Display>();
 
   ffi.Pointer<PyObject> PyRun_String(
     ffi.Pointer<ffi.Int8> str,
@@ -10211,8 +12057,7 @@ class DartPyC {
     ffi.Pointer<PyObject> g,
     ffi.Pointer<PyObject> l,
   ) {
-    return (_PyRun_String ??= _dylib
-        .lookupFunction<_c_PyRun_String, _dart_PyRun_String>('PyRun_String'))(
+    return _PyRun_String(
       str,
       s,
       g,
@@ -10220,123 +12065,136 @@ class DartPyC {
     );
   }
 
-  _dart_PyRun_String? _PyRun_String;
+  late final _PyRun_String_ptr =
+      _lookup<ffi.NativeFunction<_c_PyRun_String>>('PyRun_String');
+  late final _dart_PyRun_String _PyRun_String =
+      _PyRun_String_ptr.asFunction<_dart_PyRun_String>();
 
   int PyRun_AnyFile(
     ffi.Pointer<FILE> fp,
     ffi.Pointer<ffi.Int8> name,
   ) {
-    return (_PyRun_AnyFile ??=
-        _dylib.lookupFunction<_c_PyRun_AnyFile, _dart_PyRun_AnyFile>(
-            'PyRun_AnyFile'))(
+    return _PyRun_AnyFile(
       fp,
       name,
     );
   }
 
-  _dart_PyRun_AnyFile? _PyRun_AnyFile;
+  late final _PyRun_AnyFile_ptr =
+      _lookup<ffi.NativeFunction<_c_PyRun_AnyFile>>('PyRun_AnyFile');
+  late final _dart_PyRun_AnyFile _PyRun_AnyFile =
+      _PyRun_AnyFile_ptr.asFunction<_dart_PyRun_AnyFile>();
 
   int PyRun_AnyFileEx(
     ffi.Pointer<FILE> fp,
     ffi.Pointer<ffi.Int8> name,
     int closeit,
   ) {
-    return (_PyRun_AnyFileEx ??=
-        _dylib.lookupFunction<_c_PyRun_AnyFileEx, _dart_PyRun_AnyFileEx>(
-            'PyRun_AnyFileEx'))(
+    return _PyRun_AnyFileEx(
       fp,
       name,
       closeit,
     );
   }
 
-  _dart_PyRun_AnyFileEx? _PyRun_AnyFileEx;
+  late final _PyRun_AnyFileEx_ptr =
+      _lookup<ffi.NativeFunction<_c_PyRun_AnyFileEx>>('PyRun_AnyFileEx');
+  late final _dart_PyRun_AnyFileEx _PyRun_AnyFileEx =
+      _PyRun_AnyFileEx_ptr.asFunction<_dart_PyRun_AnyFileEx>();
 
   int PyRun_AnyFileFlags(
     ffi.Pointer<FILE> arg0,
     ffi.Pointer<ffi.Int8> arg1,
     ffi.Pointer<PyCompilerFlags> arg2,
   ) {
-    return (_PyRun_AnyFileFlags ??=
-        _dylib.lookupFunction<_c_PyRun_AnyFileFlags, _dart_PyRun_AnyFileFlags>(
-            'PyRun_AnyFileFlags'))(
+    return _PyRun_AnyFileFlags(
       arg0,
       arg1,
       arg2,
     );
   }
 
-  _dart_PyRun_AnyFileFlags? _PyRun_AnyFileFlags;
+  late final _PyRun_AnyFileFlags_ptr =
+      _lookup<ffi.NativeFunction<_c_PyRun_AnyFileFlags>>('PyRun_AnyFileFlags');
+  late final _dart_PyRun_AnyFileFlags _PyRun_AnyFileFlags =
+      _PyRun_AnyFileFlags_ptr.asFunction<_dart_PyRun_AnyFileFlags>();
 
   int PyRun_SimpleString(
     ffi.Pointer<ffi.Int8> s,
   ) {
-    return (_PyRun_SimpleString ??=
-        _dylib.lookupFunction<_c_PyRun_SimpleString, _dart_PyRun_SimpleString>(
-            'PyRun_SimpleString'))(
+    return _PyRun_SimpleString(
       s,
     );
   }
 
-  _dart_PyRun_SimpleString? _PyRun_SimpleString;
+  late final _PyRun_SimpleString_ptr =
+      _lookup<ffi.NativeFunction<_c_PyRun_SimpleString>>('PyRun_SimpleString');
+  late final _dart_PyRun_SimpleString _PyRun_SimpleString =
+      _PyRun_SimpleString_ptr.asFunction<_dart_PyRun_SimpleString>();
 
   int PyRun_SimpleFile(
     ffi.Pointer<FILE> f,
     ffi.Pointer<ffi.Int8> p,
   ) {
-    return (_PyRun_SimpleFile ??=
-        _dylib.lookupFunction<_c_PyRun_SimpleFile, _dart_PyRun_SimpleFile>(
-            'PyRun_SimpleFile'))(
+    return _PyRun_SimpleFile(
       f,
       p,
     );
   }
 
-  _dart_PyRun_SimpleFile? _PyRun_SimpleFile;
+  late final _PyRun_SimpleFile_ptr =
+      _lookup<ffi.NativeFunction<_c_PyRun_SimpleFile>>('PyRun_SimpleFile');
+  late final _dart_PyRun_SimpleFile _PyRun_SimpleFile =
+      _PyRun_SimpleFile_ptr.asFunction<_dart_PyRun_SimpleFile>();
 
   int PyRun_SimpleFileEx(
     ffi.Pointer<FILE> f,
     ffi.Pointer<ffi.Int8> p,
     int c,
   ) {
-    return (_PyRun_SimpleFileEx ??=
-        _dylib.lookupFunction<_c_PyRun_SimpleFileEx, _dart_PyRun_SimpleFileEx>(
-            'PyRun_SimpleFileEx'))(
+    return _PyRun_SimpleFileEx(
       f,
       p,
       c,
     );
   }
 
-  _dart_PyRun_SimpleFileEx? _PyRun_SimpleFileEx;
+  late final _PyRun_SimpleFileEx_ptr =
+      _lookup<ffi.NativeFunction<_c_PyRun_SimpleFileEx>>('PyRun_SimpleFileEx');
+  late final _dart_PyRun_SimpleFileEx _PyRun_SimpleFileEx =
+      _PyRun_SimpleFileEx_ptr.asFunction<_dart_PyRun_SimpleFileEx>();
 
   int PyRun_InteractiveOne(
     ffi.Pointer<FILE> f,
     ffi.Pointer<ffi.Int8> p,
   ) {
-    return (_PyRun_InteractiveOne ??= _dylib.lookupFunction<
-        _c_PyRun_InteractiveOne,
-        _dart_PyRun_InteractiveOne>('PyRun_InteractiveOne'))(
+    return _PyRun_InteractiveOne(
       f,
       p,
     );
   }
 
-  _dart_PyRun_InteractiveOne? _PyRun_InteractiveOne;
+  late final _PyRun_InteractiveOne_ptr =
+      _lookup<ffi.NativeFunction<_c_PyRun_InteractiveOne>>(
+          'PyRun_InteractiveOne');
+  late final _dart_PyRun_InteractiveOne _PyRun_InteractiveOne =
+      _PyRun_InteractiveOne_ptr.asFunction<_dart_PyRun_InteractiveOne>();
 
   int PyRun_InteractiveLoop(
     ffi.Pointer<FILE> f,
     ffi.Pointer<ffi.Int8> p,
   ) {
-    return (_PyRun_InteractiveLoop ??= _dylib.lookupFunction<
-        _c_PyRun_InteractiveLoop,
-        _dart_PyRun_InteractiveLoop>('PyRun_InteractiveLoop'))(
+    return _PyRun_InteractiveLoop(
       f,
       p,
     );
   }
 
-  _dart_PyRun_InteractiveLoop? _PyRun_InteractiveLoop;
+  late final _PyRun_InteractiveLoop_ptr =
+      _lookup<ffi.NativeFunction<_c_PyRun_InteractiveLoop>>(
+          'PyRun_InteractiveLoop');
+  late final _dart_PyRun_InteractiveLoop _PyRun_InteractiveLoop =
+      _PyRun_InteractiveLoop_ptr.asFunction<_dart_PyRun_InteractiveLoop>();
 
   ffi.Pointer<PyObject> PyRun_File(
     ffi.Pointer<FILE> fp,
@@ -10345,8 +12203,7 @@ class DartPyC {
     ffi.Pointer<PyObject> g,
     ffi.Pointer<PyObject> l,
   ) {
-    return (_PyRun_File ??=
-        _dylib.lookupFunction<_c_PyRun_File, _dart_PyRun_File>('PyRun_File'))(
+    return _PyRun_File(
       fp,
       p,
       s,
@@ -10355,7 +12212,10 @@ class DartPyC {
     );
   }
 
-  _dart_PyRun_File? _PyRun_File;
+  late final _PyRun_File_ptr =
+      _lookup<ffi.NativeFunction<_c_PyRun_File>>('PyRun_File');
+  late final _dart_PyRun_File _PyRun_File =
+      _PyRun_File_ptr.asFunction<_dart_PyRun_File>();
 
   ffi.Pointer<PyObject> PyRun_FileEx(
     ffi.Pointer<FILE> fp,
@@ -10365,8 +12225,7 @@ class DartPyC {
     ffi.Pointer<PyObject> l,
     int c,
   ) {
-    return (_PyRun_FileEx ??= _dylib
-        .lookupFunction<_c_PyRun_FileEx, _dart_PyRun_FileEx>('PyRun_FileEx'))(
+    return _PyRun_FileEx(
       fp,
       p,
       s,
@@ -10376,7 +12235,10 @@ class DartPyC {
     );
   }
 
-  _dart_PyRun_FileEx? _PyRun_FileEx;
+  late final _PyRun_FileEx_ptr =
+      _lookup<ffi.NativeFunction<_c_PyRun_FileEx>>('PyRun_FileEx');
+  late final _dart_PyRun_FileEx _PyRun_FileEx =
+      _PyRun_FileEx_ptr.asFunction<_dart_PyRun_FileEx>();
 
   ffi.Pointer<PyObject> PyRun_FileFlags(
     ffi.Pointer<FILE> fp,
@@ -10386,9 +12248,7 @@ class DartPyC {
     ffi.Pointer<PyObject> l,
     ffi.Pointer<PyCompilerFlags> flags,
   ) {
-    return (_PyRun_FileFlags ??=
-        _dylib.lookupFunction<_c_PyRun_FileFlags, _dart_PyRun_FileFlags>(
-            'PyRun_FileFlags'))(
+    return _PyRun_FileFlags(
       fp,
       p,
       s,
@@ -10398,1049 +12258,1226 @@ class DartPyC {
     );
   }
 
-  _dart_PyRun_FileFlags? _PyRun_FileFlags;
+  late final _PyRun_FileFlags_ptr =
+      _lookup<ffi.NativeFunction<_c_PyRun_FileFlags>>('PyRun_FileFlags');
+  late final _dart_PyRun_FileFlags _PyRun_FileFlags =
+      _PyRun_FileFlags_ptr.asFunction<_dart_PyRun_FileFlags>();
 
   ffi.Pointer<ffi.Int8> PyOS_Readline(
     ffi.Pointer<FILE> arg0,
     ffi.Pointer<FILE> arg1,
     ffi.Pointer<ffi.Int8> arg2,
   ) {
-    return (_PyOS_Readline ??=
-        _dylib.lookupFunction<_c_PyOS_Readline, _dart_PyOS_Readline>(
-            'PyOS_Readline'))(
+    return _PyOS_Readline(
       arg0,
       arg1,
       arg2,
     );
   }
 
-  _dart_PyOS_Readline? _PyOS_Readline;
+  late final _PyOS_Readline_ptr =
+      _lookup<ffi.NativeFunction<_c_PyOS_Readline>>('PyOS_Readline');
+  late final _dart_PyOS_Readline _PyOS_Readline =
+      _PyOS_Readline_ptr.asFunction<_dart_PyOS_Readline>();
 
-  late final ffi.Pointer<ffi.NativeFunction<_typedefC_10>> PyOS_InputHook =
-      _dylib
-          .lookup<ffi.Pointer<ffi.NativeFunction<_typedefC_10>>>(
-              'PyOS_InputHook')
-          .value;
+  late final ffi.Pointer<ffi.Pointer<ffi.NativeFunction<_typedefC_6>>>
+      _PyOS_InputHook =
+      _lookup<ffi.Pointer<ffi.NativeFunction<_typedefC_6>>>('PyOS_InputHook');
 
-  late final ffi.Pointer<ffi.NativeFunction<_typedefC_12>>
-      PyOS_ReadlineFunctionPointer = _dylib
-          .lookup<ffi.Pointer<ffi.NativeFunction<_typedefC_12>>>(
-              'PyOS_ReadlineFunctionPointer')
-          .value;
+  ffi.Pointer<ffi.NativeFunction<_typedefC_6>> get PyOS_InputHook =>
+      _PyOS_InputHook.value;
 
-  late final ffi.Pointer<_ts> PyOS_ReadlineTState =
-      _dylib.lookup<ffi.Pointer<_ts>>('_PyOS_ReadlineTState').value;
+  set PyOS_InputHook(ffi.Pointer<ffi.NativeFunction<_typedefC_6>> value) =>
+      _PyOS_InputHook.value = value;
+
+  late final ffi.Pointer<ffi.Pointer<ffi.NativeFunction<_typedefC_7>>>
+      _PyOS_ReadlineFunctionPointer =
+      _lookup<ffi.Pointer<ffi.NativeFunction<_typedefC_7>>>(
+          'PyOS_ReadlineFunctionPointer');
+
+  ffi.Pointer<ffi.NativeFunction<_typedefC_7>>
+      get PyOS_ReadlineFunctionPointer => _PyOS_ReadlineFunctionPointer.value;
+
+  set PyOS_ReadlineFunctionPointer(
+          ffi.Pointer<ffi.NativeFunction<_typedefC_7>> value) =>
+      _PyOS_ReadlineFunctionPointer.value = value;
+
+  late final ffi.Pointer<ffi.Pointer<_ts>> _PyOS_ReadlineTState =
+      _lookup<ffi.Pointer<_ts>>('_PyOS_ReadlineTState');
+
+  ffi.Pointer<_ts> get PyOS_ReadlineTState => _PyOS_ReadlineTState.value;
+
+  set PyOS_ReadlineTState(ffi.Pointer<_ts> value) =>
+      _PyOS_ReadlineTState.value = value;
 
   void Py_Initialize() {
-    return (_Py_Initialize ??=
-        _dylib.lookupFunction<_c_Py_Initialize, _dart_Py_Initialize>(
-            'Py_Initialize'))();
+    return _Py_Initialize();
   }
 
-  _dart_Py_Initialize? _Py_Initialize;
+  late final _Py_Initialize_ptr =
+      _lookup<ffi.NativeFunction<_c_Py_Initialize>>('Py_Initialize');
+  late final _dart_Py_Initialize _Py_Initialize =
+      _Py_Initialize_ptr.asFunction<_dart_Py_Initialize>();
 
   void Py_InitializeEx(
     int arg0,
   ) {
-    return (_Py_InitializeEx ??=
-        _dylib.lookupFunction<_c_Py_InitializeEx, _dart_Py_InitializeEx>(
-            'Py_InitializeEx'))(
+    return _Py_InitializeEx(
       arg0,
     );
   }
 
-  _dart_Py_InitializeEx? _Py_InitializeEx;
+  late final _Py_InitializeEx_ptr =
+      _lookup<ffi.NativeFunction<_c_Py_InitializeEx>>('Py_InitializeEx');
+  late final _dart_Py_InitializeEx _Py_InitializeEx =
+      _Py_InitializeEx_ptr.asFunction<_dart_Py_InitializeEx>();
 
   void Py_Finalize() {
-    return (_Py_Finalize ??= _dylib
-        .lookupFunction<_c_Py_Finalize, _dart_Py_Finalize>('Py_Finalize'))();
+    return _Py_Finalize();
   }
 
-  _dart_Py_Finalize? _Py_Finalize;
+  late final _Py_Finalize_ptr =
+      _lookup<ffi.NativeFunction<_c_Py_Finalize>>('Py_Finalize');
+  late final _dart_Py_Finalize _Py_Finalize =
+      _Py_Finalize_ptr.asFunction<_dart_Py_Finalize>();
 
   int Py_FinalizeEx() {
-    return (_Py_FinalizeEx ??=
-        _dylib.lookupFunction<_c_Py_FinalizeEx, _dart_Py_FinalizeEx>(
-            'Py_FinalizeEx'))();
+    return _Py_FinalizeEx();
   }
 
-  _dart_Py_FinalizeEx? _Py_FinalizeEx;
+  late final _Py_FinalizeEx_ptr =
+      _lookup<ffi.NativeFunction<_c_Py_FinalizeEx>>('Py_FinalizeEx');
+  late final _dart_Py_FinalizeEx _Py_FinalizeEx =
+      _Py_FinalizeEx_ptr.asFunction<_dart_Py_FinalizeEx>();
 
   int Py_IsInitialized() {
-    return (_Py_IsInitialized ??=
-        _dylib.lookupFunction<_c_Py_IsInitialized, _dart_Py_IsInitialized>(
-            'Py_IsInitialized'))();
+    return _Py_IsInitialized();
   }
 
-  _dart_Py_IsInitialized? _Py_IsInitialized;
+  late final _Py_IsInitialized_ptr =
+      _lookup<ffi.NativeFunction<_c_Py_IsInitialized>>('Py_IsInitialized');
+  late final _dart_Py_IsInitialized _Py_IsInitialized =
+      _Py_IsInitialized_ptr.asFunction<_dart_Py_IsInitialized>();
 
   ffi.Pointer<_ts> Py_NewInterpreter() {
-    return (_Py_NewInterpreter ??=
-        _dylib.lookupFunction<_c_Py_NewInterpreter, _dart_Py_NewInterpreter>(
-            'Py_NewInterpreter'))();
+    return _Py_NewInterpreter();
   }
 
-  _dart_Py_NewInterpreter? _Py_NewInterpreter;
+  late final _Py_NewInterpreter_ptr =
+      _lookup<ffi.NativeFunction<_c_Py_NewInterpreter>>('Py_NewInterpreter');
+  late final _dart_Py_NewInterpreter _Py_NewInterpreter =
+      _Py_NewInterpreter_ptr.asFunction<_dart_Py_NewInterpreter>();
 
   void Py_EndInterpreter(
     ffi.Pointer<_ts> arg0,
   ) {
-    return (_Py_EndInterpreter ??=
-        _dylib.lookupFunction<_c_Py_EndInterpreter, _dart_Py_EndInterpreter>(
-            'Py_EndInterpreter'))(
+    return _Py_EndInterpreter(
       arg0,
     );
   }
 
-  _dart_Py_EndInterpreter? _Py_EndInterpreter;
+  late final _Py_EndInterpreter_ptr =
+      _lookup<ffi.NativeFunction<_c_Py_EndInterpreter>>('Py_EndInterpreter');
+  late final _dart_Py_EndInterpreter _Py_EndInterpreter =
+      _Py_EndInterpreter_ptr.asFunction<_dart_Py_EndInterpreter>();
 
   int Py_AtExit(
-    ffi.Pointer<ffi.NativeFunction<_typedefC_13>> func,
+    ffi.Pointer<ffi.NativeFunction<_typedefC_8>> func,
   ) {
-    return (_Py_AtExit ??=
-        _dylib.lookupFunction<_c_Py_AtExit, _dart_Py_AtExit>('Py_AtExit'))(
+    return _Py_AtExit(
       func,
     );
   }
 
-  _dart_Py_AtExit? _Py_AtExit;
+  late final _Py_AtExit_ptr =
+      _lookup<ffi.NativeFunction<_c_Py_AtExit>>('Py_AtExit');
+  late final _dart_Py_AtExit _Py_AtExit =
+      _Py_AtExit_ptr.asFunction<_dart_Py_AtExit>();
 
   void Py_Exit(
     int arg0,
   ) {
-    return (_Py_Exit ??=
-        _dylib.lookupFunction<_c_Py_Exit, _dart_Py_Exit>('Py_Exit'))(
+    return _Py_Exit(
       arg0,
     );
   }
 
-  _dart_Py_Exit? _Py_Exit;
+  late final _Py_Exit_ptr = _lookup<ffi.NativeFunction<_c_Py_Exit>>('Py_Exit');
+  late final _dart_Py_Exit _Py_Exit = _Py_Exit_ptr.asFunction<_dart_Py_Exit>();
 
   int Py_Main(
     int argc,
     ffi.Pointer<ffi.Pointer<ffi.Int32>> argv,
   ) {
-    return (_Py_Main ??=
-        _dylib.lookupFunction<_c_Py_Main, _dart_Py_Main>('Py_Main'))(
+    return _Py_Main(
       argc,
       argv,
     );
   }
 
-  _dart_Py_Main? _Py_Main;
+  late final _Py_Main_ptr = _lookup<ffi.NativeFunction<_c_Py_Main>>('Py_Main');
+  late final _dart_Py_Main _Py_Main = _Py_Main_ptr.asFunction<_dart_Py_Main>();
 
   int Py_BytesMain(
     int argc,
     ffi.Pointer<ffi.Pointer<ffi.Int8>> argv,
   ) {
-    return (_Py_BytesMain ??= _dylib
-        .lookupFunction<_c_Py_BytesMain, _dart_Py_BytesMain>('Py_BytesMain'))(
+    return _Py_BytesMain(
       argc,
       argv,
     );
   }
 
-  _dart_Py_BytesMain? _Py_BytesMain;
+  late final _Py_BytesMain_ptr =
+      _lookup<ffi.NativeFunction<_c_Py_BytesMain>>('Py_BytesMain');
+  late final _dart_Py_BytesMain _Py_BytesMain =
+      _Py_BytesMain_ptr.asFunction<_dart_Py_BytesMain>();
 
   void Py_SetProgramName(
     ffi.Pointer<ffi.Int32> arg0,
   ) {
-    return (_Py_SetProgramName ??=
-        _dylib.lookupFunction<_c_Py_SetProgramName, _dart_Py_SetProgramName>(
-            'Py_SetProgramName'))(
+    return _Py_SetProgramName(
       arg0,
     );
   }
 
-  _dart_Py_SetProgramName? _Py_SetProgramName;
+  late final _Py_SetProgramName_ptr =
+      _lookup<ffi.NativeFunction<_c_Py_SetProgramName>>('Py_SetProgramName');
+  late final _dart_Py_SetProgramName _Py_SetProgramName =
+      _Py_SetProgramName_ptr.asFunction<_dart_Py_SetProgramName>();
 
   ffi.Pointer<ffi.Int32> Py_GetProgramName() {
-    return (_Py_GetProgramName ??=
-        _dylib.lookupFunction<_c_Py_GetProgramName, _dart_Py_GetProgramName>(
-            'Py_GetProgramName'))();
+    return _Py_GetProgramName();
   }
 
-  _dart_Py_GetProgramName? _Py_GetProgramName;
+  late final _Py_GetProgramName_ptr =
+      _lookup<ffi.NativeFunction<_c_Py_GetProgramName>>('Py_GetProgramName');
+  late final _dart_Py_GetProgramName _Py_GetProgramName =
+      _Py_GetProgramName_ptr.asFunction<_dart_Py_GetProgramName>();
 
   void Py_SetPythonHome(
     ffi.Pointer<ffi.Int32> arg0,
   ) {
-    return (_Py_SetPythonHome ??=
-        _dylib.lookupFunction<_c_Py_SetPythonHome, _dart_Py_SetPythonHome>(
-            'Py_SetPythonHome'))(
+    return _Py_SetPythonHome(
       arg0,
     );
   }
 
-  _dart_Py_SetPythonHome? _Py_SetPythonHome;
+  late final _Py_SetPythonHome_ptr =
+      _lookup<ffi.NativeFunction<_c_Py_SetPythonHome>>('Py_SetPythonHome');
+  late final _dart_Py_SetPythonHome _Py_SetPythonHome =
+      _Py_SetPythonHome_ptr.asFunction<_dart_Py_SetPythonHome>();
 
   ffi.Pointer<ffi.Int32> Py_GetPythonHome() {
-    return (_Py_GetPythonHome ??=
-        _dylib.lookupFunction<_c_Py_GetPythonHome, _dart_Py_GetPythonHome>(
-            'Py_GetPythonHome'))();
+    return _Py_GetPythonHome();
   }
 
-  _dart_Py_GetPythonHome? _Py_GetPythonHome;
+  late final _Py_GetPythonHome_ptr =
+      _lookup<ffi.NativeFunction<_c_Py_GetPythonHome>>('Py_GetPythonHome');
+  late final _dart_Py_GetPythonHome _Py_GetPythonHome =
+      _Py_GetPythonHome_ptr.asFunction<_dart_Py_GetPythonHome>();
 
   ffi.Pointer<ffi.Int32> Py_GetProgramFullPath() {
-    return (_Py_GetProgramFullPath ??= _dylib.lookupFunction<
-        _c_Py_GetProgramFullPath,
-        _dart_Py_GetProgramFullPath>('Py_GetProgramFullPath'))();
+    return _Py_GetProgramFullPath();
   }
 
-  _dart_Py_GetProgramFullPath? _Py_GetProgramFullPath;
+  late final _Py_GetProgramFullPath_ptr =
+      _lookup<ffi.NativeFunction<_c_Py_GetProgramFullPath>>(
+          'Py_GetProgramFullPath');
+  late final _dart_Py_GetProgramFullPath _Py_GetProgramFullPath =
+      _Py_GetProgramFullPath_ptr.asFunction<_dart_Py_GetProgramFullPath>();
 
   ffi.Pointer<ffi.Int32> Py_GetPrefix() {
-    return (_Py_GetPrefix ??= _dylib
-        .lookupFunction<_c_Py_GetPrefix, _dart_Py_GetPrefix>('Py_GetPrefix'))();
+    return _Py_GetPrefix();
   }
 
-  _dart_Py_GetPrefix? _Py_GetPrefix;
+  late final _Py_GetPrefix_ptr =
+      _lookup<ffi.NativeFunction<_c_Py_GetPrefix>>('Py_GetPrefix');
+  late final _dart_Py_GetPrefix _Py_GetPrefix =
+      _Py_GetPrefix_ptr.asFunction<_dart_Py_GetPrefix>();
 
   ffi.Pointer<ffi.Int32> Py_GetExecPrefix() {
-    return (_Py_GetExecPrefix ??=
-        _dylib.lookupFunction<_c_Py_GetExecPrefix, _dart_Py_GetExecPrefix>(
-            'Py_GetExecPrefix'))();
+    return _Py_GetExecPrefix();
   }
 
-  _dart_Py_GetExecPrefix? _Py_GetExecPrefix;
+  late final _Py_GetExecPrefix_ptr =
+      _lookup<ffi.NativeFunction<_c_Py_GetExecPrefix>>('Py_GetExecPrefix');
+  late final _dart_Py_GetExecPrefix _Py_GetExecPrefix =
+      _Py_GetExecPrefix_ptr.asFunction<_dart_Py_GetExecPrefix>();
 
   ffi.Pointer<ffi.Int32> Py_GetPath() {
-    return (_Py_GetPath ??=
-        _dylib.lookupFunction<_c_Py_GetPath, _dart_Py_GetPath>('Py_GetPath'))();
+    return _Py_GetPath();
   }
 
-  _dart_Py_GetPath? _Py_GetPath;
+  late final _Py_GetPath_ptr =
+      _lookup<ffi.NativeFunction<_c_Py_GetPath>>('Py_GetPath');
+  late final _dart_Py_GetPath _Py_GetPath =
+      _Py_GetPath_ptr.asFunction<_dart_Py_GetPath>();
 
   void Py_SetPath(
     ffi.Pointer<ffi.Int32> arg0,
   ) {
-    return (_Py_SetPath ??=
-        _dylib.lookupFunction<_c_Py_SetPath, _dart_Py_SetPath>('Py_SetPath'))(
+    return _Py_SetPath(
       arg0,
     );
   }
 
-  _dart_Py_SetPath? _Py_SetPath;
+  late final _Py_SetPath_ptr =
+      _lookup<ffi.NativeFunction<_c_Py_SetPath>>('Py_SetPath');
+  late final _dart_Py_SetPath _Py_SetPath =
+      _Py_SetPath_ptr.asFunction<_dart_Py_SetPath>();
 
   ffi.Pointer<ffi.Int8> Py_GetVersion() {
-    return (_Py_GetVersion ??=
-        _dylib.lookupFunction<_c_Py_GetVersion, _dart_Py_GetVersion>(
-            'Py_GetVersion'))();
+    return _Py_GetVersion();
   }
 
-  _dart_Py_GetVersion? _Py_GetVersion;
+  late final _Py_GetVersion_ptr =
+      _lookup<ffi.NativeFunction<_c_Py_GetVersion>>('Py_GetVersion');
+  late final _dart_Py_GetVersion _Py_GetVersion =
+      _Py_GetVersion_ptr.asFunction<_dart_Py_GetVersion>();
 
   ffi.Pointer<ffi.Int8> Py_GetPlatform() {
-    return (_Py_GetPlatform ??=
-        _dylib.lookupFunction<_c_Py_GetPlatform, _dart_Py_GetPlatform>(
-            'Py_GetPlatform'))();
+    return _Py_GetPlatform();
   }
 
-  _dart_Py_GetPlatform? _Py_GetPlatform;
+  late final _Py_GetPlatform_ptr =
+      _lookup<ffi.NativeFunction<_c_Py_GetPlatform>>('Py_GetPlatform');
+  late final _dart_Py_GetPlatform _Py_GetPlatform =
+      _Py_GetPlatform_ptr.asFunction<_dart_Py_GetPlatform>();
 
   ffi.Pointer<ffi.Int8> Py_GetCopyright() {
-    return (_Py_GetCopyright ??=
-        _dylib.lookupFunction<_c_Py_GetCopyright, _dart_Py_GetCopyright>(
-            'Py_GetCopyright'))();
+    return _Py_GetCopyright();
   }
 
-  _dart_Py_GetCopyright? _Py_GetCopyright;
+  late final _Py_GetCopyright_ptr =
+      _lookup<ffi.NativeFunction<_c_Py_GetCopyright>>('Py_GetCopyright');
+  late final _dart_Py_GetCopyright _Py_GetCopyright =
+      _Py_GetCopyright_ptr.asFunction<_dart_Py_GetCopyright>();
 
   ffi.Pointer<ffi.Int8> Py_GetCompiler() {
-    return (_Py_GetCompiler ??=
-        _dylib.lookupFunction<_c_Py_GetCompiler, _dart_Py_GetCompiler>(
-            'Py_GetCompiler'))();
+    return _Py_GetCompiler();
   }
 
-  _dart_Py_GetCompiler? _Py_GetCompiler;
+  late final _Py_GetCompiler_ptr =
+      _lookup<ffi.NativeFunction<_c_Py_GetCompiler>>('Py_GetCompiler');
+  late final _dart_Py_GetCompiler _Py_GetCompiler =
+      _Py_GetCompiler_ptr.asFunction<_dart_Py_GetCompiler>();
 
   ffi.Pointer<ffi.Int8> Py_GetBuildInfo() {
-    return (_Py_GetBuildInfo ??=
-        _dylib.lookupFunction<_c_Py_GetBuildInfo, _dart_Py_GetBuildInfo>(
-            'Py_GetBuildInfo'))();
+    return _Py_GetBuildInfo();
   }
 
-  _dart_Py_GetBuildInfo? _Py_GetBuildInfo;
+  late final _Py_GetBuildInfo_ptr =
+      _lookup<ffi.NativeFunction<_c_Py_GetBuildInfo>>('Py_GetBuildInfo');
+  late final _dart_Py_GetBuildInfo _Py_GetBuildInfo =
+      _Py_GetBuildInfo_ptr.asFunction<_dart_Py_GetBuildInfo>();
 
   ffi.Pointer<ffi.NativeFunction<PyOS_sighandler_t>> PyOS_getsig(
     int arg0,
   ) {
-    return (_PyOS_getsig ??= _dylib
-        .lookupFunction<_c_PyOS_getsig, _dart_PyOS_getsig>('PyOS_getsig'))(
+    return _PyOS_getsig(
       arg0,
     );
   }
 
-  _dart_PyOS_getsig? _PyOS_getsig;
+  late final _PyOS_getsig_ptr =
+      _lookup<ffi.NativeFunction<_c_PyOS_getsig>>('PyOS_getsig');
+  late final _dart_PyOS_getsig _PyOS_getsig =
+      _PyOS_getsig_ptr.asFunction<_dart_PyOS_getsig>();
 
   ffi.Pointer<ffi.NativeFunction<PyOS_sighandler_t>> PyOS_setsig(
     int arg0,
     ffi.Pointer<ffi.NativeFunction<PyOS_sighandler_t>> arg1,
   ) {
-    return (_PyOS_setsig ??= _dylib
-        .lookupFunction<_c_PyOS_setsig, _dart_PyOS_setsig>('PyOS_setsig'))(
+    return _PyOS_setsig(
       arg0,
       arg1,
     );
   }
 
-  _dart_PyOS_setsig? _PyOS_setsig;
+  late final _PyOS_setsig_ptr =
+      _lookup<ffi.NativeFunction<_c_PyOS_setsig>>('PyOS_setsig');
+  late final _dart_PyOS_setsig _PyOS_setsig =
+      _PyOS_setsig_ptr.asFunction<_dart_PyOS_setsig>();
 
   ffi.Pointer<PyObject> PyEval_CallObjectWithKeywords(
     ffi.Pointer<PyObject> callable,
     ffi.Pointer<PyObject> args,
     ffi.Pointer<PyObject> kwargs,
   ) {
-    return (_PyEval_CallObjectWithKeywords ??= _dylib.lookupFunction<
-        _c_PyEval_CallObjectWithKeywords,
-        _dart_PyEval_CallObjectWithKeywords>('PyEval_CallObjectWithKeywords'))(
+    return _PyEval_CallObjectWithKeywords(
       callable,
       args,
       kwargs,
     );
   }
 
-  _dart_PyEval_CallObjectWithKeywords? _PyEval_CallObjectWithKeywords;
+  late final _PyEval_CallObjectWithKeywords_ptr =
+      _lookup<ffi.NativeFunction<_c_PyEval_CallObjectWithKeywords>>(
+          'PyEval_CallObjectWithKeywords');
+  late final _dart_PyEval_CallObjectWithKeywords
+      _PyEval_CallObjectWithKeywords = _PyEval_CallObjectWithKeywords_ptr
+          .asFunction<_dart_PyEval_CallObjectWithKeywords>();
 
   ffi.Pointer<PyObject> PyEval_CallFunction(
     ffi.Pointer<PyObject> callable,
     ffi.Pointer<ffi.Int8> format,
   ) {
-    return (_PyEval_CallFunction ??= _dylib.lookupFunction<
-        _c_PyEval_CallFunction,
-        _dart_PyEval_CallFunction>('PyEval_CallFunction'))(
+    return _PyEval_CallFunction(
       callable,
       format,
     );
   }
 
-  _dart_PyEval_CallFunction? _PyEval_CallFunction;
+  late final _PyEval_CallFunction_ptr =
+      _lookup<ffi.NativeFunction<_c_PyEval_CallFunction>>(
+          'PyEval_CallFunction');
+  late final _dart_PyEval_CallFunction _PyEval_CallFunction =
+      _PyEval_CallFunction_ptr.asFunction<_dart_PyEval_CallFunction>();
 
   ffi.Pointer<PyObject> PyEval_CallMethod(
     ffi.Pointer<PyObject> obj,
     ffi.Pointer<ffi.Int8> name,
     ffi.Pointer<ffi.Int8> format,
   ) {
-    return (_PyEval_CallMethod ??=
-        _dylib.lookupFunction<_c_PyEval_CallMethod, _dart_PyEval_CallMethod>(
-            'PyEval_CallMethod'))(
+    return _PyEval_CallMethod(
       obj,
       name,
       format,
     );
   }
 
-  _dart_PyEval_CallMethod? _PyEval_CallMethod;
+  late final _PyEval_CallMethod_ptr =
+      _lookup<ffi.NativeFunction<_c_PyEval_CallMethod>>('PyEval_CallMethod');
+  late final _dart_PyEval_CallMethod _PyEval_CallMethod =
+      _PyEval_CallMethod_ptr.asFunction<_dart_PyEval_CallMethod>();
 
   void PyEval_SetProfile(
     ffi.Pointer<ffi.NativeFunction<Py_tracefunc>> arg0,
     ffi.Pointer<PyObject> arg1,
   ) {
-    return (_PyEval_SetProfile ??=
-        _dylib.lookupFunction<_c_PyEval_SetProfile, _dart_PyEval_SetProfile>(
-            'PyEval_SetProfile'))(
+    return _PyEval_SetProfile(
       arg0,
       arg1,
     );
   }
 
-  _dart_PyEval_SetProfile? _PyEval_SetProfile;
+  late final _PyEval_SetProfile_ptr =
+      _lookup<ffi.NativeFunction<_c_PyEval_SetProfile>>('PyEval_SetProfile');
+  late final _dart_PyEval_SetProfile _PyEval_SetProfile =
+      _PyEval_SetProfile_ptr.asFunction<_dart_PyEval_SetProfile>();
 
   void PyEval_SetTrace(
     ffi.Pointer<ffi.NativeFunction<Py_tracefunc>> arg0,
     ffi.Pointer<PyObject> arg1,
   ) {
-    return (_PyEval_SetTrace ??=
-        _dylib.lookupFunction<_c_PyEval_SetTrace, _dart_PyEval_SetTrace>(
-            'PyEval_SetTrace'))(
+    return _PyEval_SetTrace(
       arg0,
       arg1,
     );
   }
 
-  _dart_PyEval_SetTrace? _PyEval_SetTrace;
+  late final _PyEval_SetTrace_ptr =
+      _lookup<ffi.NativeFunction<_c_PyEval_SetTrace>>('PyEval_SetTrace');
+  late final _dart_PyEval_SetTrace _PyEval_SetTrace =
+      _PyEval_SetTrace_ptr.asFunction<_dart_PyEval_SetTrace>();
 
   void PyEval_SetCoroutineOriginTrackingDepth(
     int new_depth,
   ) {
-    return (_PyEval_SetCoroutineOriginTrackingDepth ??= _dylib.lookupFunction<
-            _c_PyEval_SetCoroutineOriginTrackingDepth,
-            _dart_PyEval_SetCoroutineOriginTrackingDepth>(
-        '_PyEval_SetCoroutineOriginTrackingDepth'))(
+    return _PyEval_SetCoroutineOriginTrackingDepth(
       new_depth,
     );
   }
 
-  _dart_PyEval_SetCoroutineOriginTrackingDepth?
-      _PyEval_SetCoroutineOriginTrackingDepth;
+  late final _PyEval_SetCoroutineOriginTrackingDepth_ptr =
+      _lookup<ffi.NativeFunction<_c_PyEval_SetCoroutineOriginTrackingDepth>>(
+          '_PyEval_SetCoroutineOriginTrackingDepth');
+  late final _dart_PyEval_SetCoroutineOriginTrackingDepth
+      _PyEval_SetCoroutineOriginTrackingDepth =
+      _PyEval_SetCoroutineOriginTrackingDepth_ptr.asFunction<
+          _dart_PyEval_SetCoroutineOriginTrackingDepth>();
 
   int PyEval_GetCoroutineOriginTrackingDepth() {
-    return (_PyEval_GetCoroutineOriginTrackingDepth ??= _dylib.lookupFunction<
-            _c_PyEval_GetCoroutineOriginTrackingDepth,
-            _dart_PyEval_GetCoroutineOriginTrackingDepth>(
-        '_PyEval_GetCoroutineOriginTrackingDepth'))();
+    return _PyEval_GetCoroutineOriginTrackingDepth();
   }
 
-  _dart_PyEval_GetCoroutineOriginTrackingDepth?
-      _PyEval_GetCoroutineOriginTrackingDepth;
+  late final _PyEval_GetCoroutineOriginTrackingDepth_ptr =
+      _lookup<ffi.NativeFunction<_c_PyEval_GetCoroutineOriginTrackingDepth>>(
+          '_PyEval_GetCoroutineOriginTrackingDepth');
+  late final _dart_PyEval_GetCoroutineOriginTrackingDepth
+      _PyEval_GetCoroutineOriginTrackingDepth =
+      _PyEval_GetCoroutineOriginTrackingDepth_ptr.asFunction<
+          _dart_PyEval_GetCoroutineOriginTrackingDepth>();
 
   void PyEval_SetAsyncGenFirstiter(
     ffi.Pointer<PyObject> arg0,
   ) {
-    return (_PyEval_SetAsyncGenFirstiter ??= _dylib.lookupFunction<
-        _c_PyEval_SetAsyncGenFirstiter,
-        _dart_PyEval_SetAsyncGenFirstiter>('_PyEval_SetAsyncGenFirstiter'))(
+    return _PyEval_SetAsyncGenFirstiter(
       arg0,
     );
   }
 
-  _dart_PyEval_SetAsyncGenFirstiter? _PyEval_SetAsyncGenFirstiter;
+  late final _PyEval_SetAsyncGenFirstiter_ptr =
+      _lookup<ffi.NativeFunction<_c_PyEval_SetAsyncGenFirstiter>>(
+          '_PyEval_SetAsyncGenFirstiter');
+  late final _dart_PyEval_SetAsyncGenFirstiter _PyEval_SetAsyncGenFirstiter =
+      _PyEval_SetAsyncGenFirstiter_ptr.asFunction<
+          _dart_PyEval_SetAsyncGenFirstiter>();
 
   ffi.Pointer<PyObject> PyEval_GetAsyncGenFirstiter() {
-    return (_PyEval_GetAsyncGenFirstiter ??= _dylib.lookupFunction<
-        _c_PyEval_GetAsyncGenFirstiter,
-        _dart_PyEval_GetAsyncGenFirstiter>('_PyEval_GetAsyncGenFirstiter'))();
+    return _PyEval_GetAsyncGenFirstiter();
   }
 
-  _dart_PyEval_GetAsyncGenFirstiter? _PyEval_GetAsyncGenFirstiter;
+  late final _PyEval_GetAsyncGenFirstiter_ptr =
+      _lookup<ffi.NativeFunction<_c_PyEval_GetAsyncGenFirstiter>>(
+          '_PyEval_GetAsyncGenFirstiter');
+  late final _dart_PyEval_GetAsyncGenFirstiter _PyEval_GetAsyncGenFirstiter =
+      _PyEval_GetAsyncGenFirstiter_ptr.asFunction<
+          _dart_PyEval_GetAsyncGenFirstiter>();
 
   void PyEval_SetAsyncGenFinalizer(
     ffi.Pointer<PyObject> arg0,
   ) {
-    return (_PyEval_SetAsyncGenFinalizer ??= _dylib.lookupFunction<
-        _c_PyEval_SetAsyncGenFinalizer,
-        _dart_PyEval_SetAsyncGenFinalizer>('_PyEval_SetAsyncGenFinalizer'))(
+    return _PyEval_SetAsyncGenFinalizer(
       arg0,
     );
   }
 
-  _dart_PyEval_SetAsyncGenFinalizer? _PyEval_SetAsyncGenFinalizer;
+  late final _PyEval_SetAsyncGenFinalizer_ptr =
+      _lookup<ffi.NativeFunction<_c_PyEval_SetAsyncGenFinalizer>>(
+          '_PyEval_SetAsyncGenFinalizer');
+  late final _dart_PyEval_SetAsyncGenFinalizer _PyEval_SetAsyncGenFinalizer =
+      _PyEval_SetAsyncGenFinalizer_ptr.asFunction<
+          _dart_PyEval_SetAsyncGenFinalizer>();
 
   ffi.Pointer<PyObject> PyEval_GetAsyncGenFinalizer() {
-    return (_PyEval_GetAsyncGenFinalizer ??= _dylib.lookupFunction<
-        _c_PyEval_GetAsyncGenFinalizer,
-        _dart_PyEval_GetAsyncGenFinalizer>('_PyEval_GetAsyncGenFinalizer'))();
+    return _PyEval_GetAsyncGenFinalizer();
   }
 
-  _dart_PyEval_GetAsyncGenFinalizer? _PyEval_GetAsyncGenFinalizer;
+  late final _PyEval_GetAsyncGenFinalizer_ptr =
+      _lookup<ffi.NativeFunction<_c_PyEval_GetAsyncGenFinalizer>>(
+          '_PyEval_GetAsyncGenFinalizer');
+  late final _dart_PyEval_GetAsyncGenFinalizer _PyEval_GetAsyncGenFinalizer =
+      _PyEval_GetAsyncGenFinalizer_ptr.asFunction<
+          _dart_PyEval_GetAsyncGenFinalizer>();
 
   ffi.Pointer<PyObject> PyEval_GetBuiltins() {
-    return (_PyEval_GetBuiltins ??=
-        _dylib.lookupFunction<_c_PyEval_GetBuiltins, _dart_PyEval_GetBuiltins>(
-            'PyEval_GetBuiltins'))();
+    return _PyEval_GetBuiltins();
   }
 
-  _dart_PyEval_GetBuiltins? _PyEval_GetBuiltins;
+  late final _PyEval_GetBuiltins_ptr =
+      _lookup<ffi.NativeFunction<_c_PyEval_GetBuiltins>>('PyEval_GetBuiltins');
+  late final _dart_PyEval_GetBuiltins _PyEval_GetBuiltins =
+      _PyEval_GetBuiltins_ptr.asFunction<_dart_PyEval_GetBuiltins>();
 
   ffi.Pointer<PyObject> PyEval_GetGlobals() {
-    return (_PyEval_GetGlobals ??=
-        _dylib.lookupFunction<_c_PyEval_GetGlobals, _dart_PyEval_GetGlobals>(
-            'PyEval_GetGlobals'))();
+    return _PyEval_GetGlobals();
   }
 
-  _dart_PyEval_GetGlobals? _PyEval_GetGlobals;
+  late final _PyEval_GetGlobals_ptr =
+      _lookup<ffi.NativeFunction<_c_PyEval_GetGlobals>>('PyEval_GetGlobals');
+  late final _dart_PyEval_GetGlobals _PyEval_GetGlobals =
+      _PyEval_GetGlobals_ptr.asFunction<_dart_PyEval_GetGlobals>();
 
   ffi.Pointer<PyObject> PyEval_GetLocals() {
-    return (_PyEval_GetLocals ??=
-        _dylib.lookupFunction<_c_PyEval_GetLocals, _dart_PyEval_GetLocals>(
-            'PyEval_GetLocals'))();
+    return _PyEval_GetLocals();
   }
 
-  _dart_PyEval_GetLocals? _PyEval_GetLocals;
+  late final _PyEval_GetLocals_ptr =
+      _lookup<ffi.NativeFunction<_c_PyEval_GetLocals>>('PyEval_GetLocals');
+  late final _dart_PyEval_GetLocals _PyEval_GetLocals =
+      _PyEval_GetLocals_ptr.asFunction<_dart_PyEval_GetLocals>();
 
   ffi.Pointer<_frame> PyEval_GetFrame() {
-    return (_PyEval_GetFrame ??=
-        _dylib.lookupFunction<_c_PyEval_GetFrame, _dart_PyEval_GetFrame>(
-            'PyEval_GetFrame'))();
+    return _PyEval_GetFrame();
   }
 
-  _dart_PyEval_GetFrame? _PyEval_GetFrame;
+  late final _PyEval_GetFrame_ptr =
+      _lookup<ffi.NativeFunction<_c_PyEval_GetFrame>>('PyEval_GetFrame');
+  late final _dart_PyEval_GetFrame _PyEval_GetFrame =
+      _PyEval_GetFrame_ptr.asFunction<_dart_PyEval_GetFrame>();
 
   ffi.Pointer<PyObject> PyEval_GetBuiltinId(
     ffi.Pointer<_Py_Identifier> arg0,
   ) {
-    return (_PyEval_GetBuiltinId ??= _dylib.lookupFunction<
-        _c_PyEval_GetBuiltinId,
-        _dart_PyEval_GetBuiltinId>('_PyEval_GetBuiltinId'))(
+    return _PyEval_GetBuiltinId(
       arg0,
     );
   }
 
-  _dart_PyEval_GetBuiltinId? _PyEval_GetBuiltinId;
+  late final _PyEval_GetBuiltinId_ptr =
+      _lookup<ffi.NativeFunction<_c_PyEval_GetBuiltinId>>(
+          '_PyEval_GetBuiltinId');
+  late final _dart_PyEval_GetBuiltinId _PyEval_GetBuiltinId =
+      _PyEval_GetBuiltinId_ptr.asFunction<_dart_PyEval_GetBuiltinId>();
 
   int PyEval_MergeCompilerFlags(
     ffi.Pointer<PyCompilerFlags> cf,
   ) {
-    return (_PyEval_MergeCompilerFlags ??= _dylib.lookupFunction<
-        _c_PyEval_MergeCompilerFlags,
-        _dart_PyEval_MergeCompilerFlags>('PyEval_MergeCompilerFlags'))(
+    return _PyEval_MergeCompilerFlags(
       cf,
     );
   }
 
-  _dart_PyEval_MergeCompilerFlags? _PyEval_MergeCompilerFlags;
+  late final _PyEval_MergeCompilerFlags_ptr =
+      _lookup<ffi.NativeFunction<_c_PyEval_MergeCompilerFlags>>(
+          'PyEval_MergeCompilerFlags');
+  late final _dart_PyEval_MergeCompilerFlags _PyEval_MergeCompilerFlags =
+      _PyEval_MergeCompilerFlags_ptr.asFunction<
+          _dart_PyEval_MergeCompilerFlags>();
 
   int Py_AddPendingCall(
-    ffi.Pointer<ffi.NativeFunction<_typedefC_14>> func,
+    ffi.Pointer<ffi.NativeFunction<_typedefC_9>> func,
     ffi.Pointer<ffi.Void> arg,
   ) {
-    return (_Py_AddPendingCall ??=
-        _dylib.lookupFunction<_c_Py_AddPendingCall, _dart_Py_AddPendingCall>(
-            'Py_AddPendingCall'))(
+    return _Py_AddPendingCall(
       func,
       arg,
     );
   }
 
-  _dart_Py_AddPendingCall? _Py_AddPendingCall;
+  late final _Py_AddPendingCall_ptr =
+      _lookup<ffi.NativeFunction<_c_Py_AddPendingCall>>('Py_AddPendingCall');
+  late final _dart_Py_AddPendingCall _Py_AddPendingCall =
+      _Py_AddPendingCall_ptr.asFunction<_dart_Py_AddPendingCall>();
 
   int Py_MakePendingCalls() {
-    return (_Py_MakePendingCalls ??= _dylib.lookupFunction<
-        _c_Py_MakePendingCalls,
-        _dart_Py_MakePendingCalls>('Py_MakePendingCalls'))();
+    return _Py_MakePendingCalls();
   }
 
-  _dart_Py_MakePendingCalls? _Py_MakePendingCalls;
+  late final _Py_MakePendingCalls_ptr =
+      _lookup<ffi.NativeFunction<_c_Py_MakePendingCalls>>(
+          'Py_MakePendingCalls');
+  late final _dart_Py_MakePendingCalls _Py_MakePendingCalls =
+      _Py_MakePendingCalls_ptr.asFunction<_dart_Py_MakePendingCalls>();
 
   void Py_SetRecursionLimit(
     int arg0,
   ) {
-    return (_Py_SetRecursionLimit ??= _dylib.lookupFunction<
-        _c_Py_SetRecursionLimit,
-        _dart_Py_SetRecursionLimit>('Py_SetRecursionLimit'))(
+    return _Py_SetRecursionLimit(
       arg0,
     );
   }
 
-  _dart_Py_SetRecursionLimit? _Py_SetRecursionLimit;
+  late final _Py_SetRecursionLimit_ptr =
+      _lookup<ffi.NativeFunction<_c_Py_SetRecursionLimit>>(
+          'Py_SetRecursionLimit');
+  late final _dart_Py_SetRecursionLimit _Py_SetRecursionLimit =
+      _Py_SetRecursionLimit_ptr.asFunction<_dart_Py_SetRecursionLimit>();
 
   int Py_GetRecursionLimit() {
-    return (_Py_GetRecursionLimit ??= _dylib.lookupFunction<
-        _c_Py_GetRecursionLimit,
-        _dart_Py_GetRecursionLimit>('Py_GetRecursionLimit'))();
+    return _Py_GetRecursionLimit();
   }
 
-  _dart_Py_GetRecursionLimit? _Py_GetRecursionLimit;
+  late final _Py_GetRecursionLimit_ptr =
+      _lookup<ffi.NativeFunction<_c_Py_GetRecursionLimit>>(
+          'Py_GetRecursionLimit');
+  late final _dart_Py_GetRecursionLimit _Py_GetRecursionLimit =
+      _Py_GetRecursionLimit_ptr.asFunction<_dart_Py_GetRecursionLimit>();
 
   int Py_CheckRecursiveCall(
     ffi.Pointer<ffi.Int8> where,
   ) {
-    return (_Py_CheckRecursiveCall ??= _dylib.lookupFunction<
-        _c_Py_CheckRecursiveCall,
-        _dart_Py_CheckRecursiveCall>('_Py_CheckRecursiveCall'))(
+    return _Py_CheckRecursiveCall(
       where,
     );
   }
 
-  _dart_Py_CheckRecursiveCall? _Py_CheckRecursiveCall;
+  late final _Py_CheckRecursiveCall_ptr =
+      _lookup<ffi.NativeFunction<_c_Py_CheckRecursiveCall>>(
+          '_Py_CheckRecursiveCall');
+  late final _dart_Py_CheckRecursiveCall _Py_CheckRecursiveCall =
+      _Py_CheckRecursiveCall_ptr.asFunction<_dart_Py_CheckRecursiveCall>();
 
-  late final int Py_CheckRecursionLimit =
-      _dylib.lookup<ffi.Int32>('_Py_CheckRecursionLimit').value;
+  late final ffi.Pointer<ffi.Int32> _Py_CheckRecursionLimit =
+      _lookup<ffi.Int32>('_Py_CheckRecursionLimit');
+
+  int get Py_CheckRecursionLimit => _Py_CheckRecursionLimit.value;
+
+  set Py_CheckRecursionLimit(int value) =>
+      _Py_CheckRecursionLimit.value = value;
 
   ffi.Pointer<ffi.Int8> PyEval_GetFuncName(
     ffi.Pointer<PyObject> arg0,
   ) {
-    return (_PyEval_GetFuncName ??=
-        _dylib.lookupFunction<_c_PyEval_GetFuncName, _dart_PyEval_GetFuncName>(
-            'PyEval_GetFuncName'))(
+    return _PyEval_GetFuncName(
       arg0,
     );
   }
 
-  _dart_PyEval_GetFuncName? _PyEval_GetFuncName;
+  late final _PyEval_GetFuncName_ptr =
+      _lookup<ffi.NativeFunction<_c_PyEval_GetFuncName>>('PyEval_GetFuncName');
+  late final _dart_PyEval_GetFuncName _PyEval_GetFuncName =
+      _PyEval_GetFuncName_ptr.asFunction<_dart_PyEval_GetFuncName>();
 
   ffi.Pointer<ffi.Int8> PyEval_GetFuncDesc(
     ffi.Pointer<PyObject> arg0,
   ) {
-    return (_PyEval_GetFuncDesc ??=
-        _dylib.lookupFunction<_c_PyEval_GetFuncDesc, _dart_PyEval_GetFuncDesc>(
-            'PyEval_GetFuncDesc'))(
+    return _PyEval_GetFuncDesc(
       arg0,
     );
   }
 
-  _dart_PyEval_GetFuncDesc? _PyEval_GetFuncDesc;
+  late final _PyEval_GetFuncDesc_ptr =
+      _lookup<ffi.NativeFunction<_c_PyEval_GetFuncDesc>>('PyEval_GetFuncDesc');
+  late final _dart_PyEval_GetFuncDesc _PyEval_GetFuncDesc =
+      _PyEval_GetFuncDesc_ptr.asFunction<_dart_PyEval_GetFuncDesc>();
 
   ffi.Pointer<PyObject> PyEval_EvalFrame(
     ffi.Pointer<_frame> arg0,
   ) {
-    return (_PyEval_EvalFrame ??=
-        _dylib.lookupFunction<_c_PyEval_EvalFrame, _dart_PyEval_EvalFrame>(
-            'PyEval_EvalFrame'))(
+    return _PyEval_EvalFrame(
       arg0,
     );
   }
 
-  _dart_PyEval_EvalFrame? _PyEval_EvalFrame;
+  late final _PyEval_EvalFrame_ptr =
+      _lookup<ffi.NativeFunction<_c_PyEval_EvalFrame>>('PyEval_EvalFrame');
+  late final _dart_PyEval_EvalFrame _PyEval_EvalFrame =
+      _PyEval_EvalFrame_ptr.asFunction<_dart_PyEval_EvalFrame>();
 
   ffi.Pointer<PyObject> PyEval_EvalFrameEx(
     ffi.Pointer<_frame> f,
     int exc,
   ) {
-    return (_PyEval_EvalFrameEx ??=
-        _dylib.lookupFunction<_c_PyEval_EvalFrameEx, _dart_PyEval_EvalFrameEx>(
-            'PyEval_EvalFrameEx'))(
+    return _PyEval_EvalFrameEx(
       f,
       exc,
     );
   }
 
-  _dart_PyEval_EvalFrameEx? _PyEval_EvalFrameEx;
+  late final _PyEval_EvalFrameEx_ptr =
+      _lookup<ffi.NativeFunction<_c_PyEval_EvalFrameEx>>('PyEval_EvalFrameEx');
+  late final _dart_PyEval_EvalFrameEx _PyEval_EvalFrameEx =
+      _PyEval_EvalFrameEx_ptr.asFunction<_dart_PyEval_EvalFrameEx>();
 
   ffi.Pointer<PyObject> PyEval_EvalFrameDefault(
     ffi.Pointer<_frame> f,
     int exc,
   ) {
-    return (_PyEval_EvalFrameDefault ??= _dylib.lookupFunction<
-        _c_PyEval_EvalFrameDefault,
-        _dart_PyEval_EvalFrameDefault>('_PyEval_EvalFrameDefault'))(
+    return _PyEval_EvalFrameDefault(
       f,
       exc,
     );
   }
 
-  _dart_PyEval_EvalFrameDefault? _PyEval_EvalFrameDefault;
+  late final _PyEval_EvalFrameDefault_ptr =
+      _lookup<ffi.NativeFunction<_c_PyEval_EvalFrameDefault>>(
+          '_PyEval_EvalFrameDefault');
+  late final _dart_PyEval_EvalFrameDefault _PyEval_EvalFrameDefault =
+      _PyEval_EvalFrameDefault_ptr.asFunction<_dart_PyEval_EvalFrameDefault>();
 
   ffi.Pointer<_ts> PyEval_SaveThread() {
-    return (_PyEval_SaveThread ??=
-        _dylib.lookupFunction<_c_PyEval_SaveThread, _dart_PyEval_SaveThread>(
-            'PyEval_SaveThread'))();
+    return _PyEval_SaveThread();
   }
 
-  _dart_PyEval_SaveThread? _PyEval_SaveThread;
+  late final _PyEval_SaveThread_ptr =
+      _lookup<ffi.NativeFunction<_c_PyEval_SaveThread>>('PyEval_SaveThread');
+  late final _dart_PyEval_SaveThread _PyEval_SaveThread =
+      _PyEval_SaveThread_ptr.asFunction<_dart_PyEval_SaveThread>();
 
   void PyEval_RestoreThread(
     ffi.Pointer<_ts> arg0,
   ) {
-    return (_PyEval_RestoreThread ??= _dylib.lookupFunction<
-        _c_PyEval_RestoreThread,
-        _dart_PyEval_RestoreThread>('PyEval_RestoreThread'))(
+    return _PyEval_RestoreThread(
       arg0,
     );
   }
 
-  _dart_PyEval_RestoreThread? _PyEval_RestoreThread;
+  late final _PyEval_RestoreThread_ptr =
+      _lookup<ffi.NativeFunction<_c_PyEval_RestoreThread>>(
+          'PyEval_RestoreThread');
+  late final _dart_PyEval_RestoreThread _PyEval_RestoreThread =
+      _PyEval_RestoreThread_ptr.asFunction<_dart_PyEval_RestoreThread>();
 
   int PyEval_ThreadsInitialized() {
-    return (_PyEval_ThreadsInitialized ??= _dylib.lookupFunction<
-        _c_PyEval_ThreadsInitialized,
-        _dart_PyEval_ThreadsInitialized>('PyEval_ThreadsInitialized'))();
+    return _PyEval_ThreadsInitialized();
   }
 
-  _dart_PyEval_ThreadsInitialized? _PyEval_ThreadsInitialized;
+  late final _PyEval_ThreadsInitialized_ptr =
+      _lookup<ffi.NativeFunction<_c_PyEval_ThreadsInitialized>>(
+          'PyEval_ThreadsInitialized');
+  late final _dart_PyEval_ThreadsInitialized _PyEval_ThreadsInitialized =
+      _PyEval_ThreadsInitialized_ptr.asFunction<
+          _dart_PyEval_ThreadsInitialized>();
 
   void PyEval_InitThreads() {
-    return (_PyEval_InitThreads ??=
-        _dylib.lookupFunction<_c_PyEval_InitThreads, _dart_PyEval_InitThreads>(
-            'PyEval_InitThreads'))();
+    return _PyEval_InitThreads();
   }
 
-  _dart_PyEval_InitThreads? _PyEval_InitThreads;
+  late final _PyEval_InitThreads_ptr =
+      _lookup<ffi.NativeFunction<_c_PyEval_InitThreads>>('PyEval_InitThreads');
+  late final _dart_PyEval_InitThreads _PyEval_InitThreads =
+      _PyEval_InitThreads_ptr.asFunction<_dart_PyEval_InitThreads>();
 
   void PyEval_AcquireLock() {
-    return (_PyEval_AcquireLock ??=
-        _dylib.lookupFunction<_c_PyEval_AcquireLock, _dart_PyEval_AcquireLock>(
-            'PyEval_AcquireLock'))();
+    return _PyEval_AcquireLock();
   }
 
-  _dart_PyEval_AcquireLock? _PyEval_AcquireLock;
+  late final _PyEval_AcquireLock_ptr =
+      _lookup<ffi.NativeFunction<_c_PyEval_AcquireLock>>('PyEval_AcquireLock');
+  late final _dart_PyEval_AcquireLock _PyEval_AcquireLock =
+      _PyEval_AcquireLock_ptr.asFunction<_dart_PyEval_AcquireLock>();
 
   void PyEval_ReleaseLock() {
-    return (_PyEval_ReleaseLock ??=
-        _dylib.lookupFunction<_c_PyEval_ReleaseLock, _dart_PyEval_ReleaseLock>(
-            'PyEval_ReleaseLock'))();
+    return _PyEval_ReleaseLock();
   }
 
-  _dart_PyEval_ReleaseLock? _PyEval_ReleaseLock;
+  late final _PyEval_ReleaseLock_ptr =
+      _lookup<ffi.NativeFunction<_c_PyEval_ReleaseLock>>('PyEval_ReleaseLock');
+  late final _dart_PyEval_ReleaseLock _PyEval_ReleaseLock =
+      _PyEval_ReleaseLock_ptr.asFunction<_dart_PyEval_ReleaseLock>();
 
   void PyEval_AcquireThread(
     ffi.Pointer<_ts> tstate,
   ) {
-    return (_PyEval_AcquireThread ??= _dylib.lookupFunction<
-        _c_PyEval_AcquireThread,
-        _dart_PyEval_AcquireThread>('PyEval_AcquireThread'))(
+    return _PyEval_AcquireThread(
       tstate,
     );
   }
 
-  _dart_PyEval_AcquireThread? _PyEval_AcquireThread;
+  late final _PyEval_AcquireThread_ptr =
+      _lookup<ffi.NativeFunction<_c_PyEval_AcquireThread>>(
+          'PyEval_AcquireThread');
+  late final _dart_PyEval_AcquireThread _PyEval_AcquireThread =
+      _PyEval_AcquireThread_ptr.asFunction<_dart_PyEval_AcquireThread>();
 
   void PyEval_ReleaseThread(
     ffi.Pointer<_ts> tstate,
   ) {
-    return (_PyEval_ReleaseThread ??= _dylib.lookupFunction<
-        _c_PyEval_ReleaseThread,
-        _dart_PyEval_ReleaseThread>('PyEval_ReleaseThread'))(
+    return _PyEval_ReleaseThread(
       tstate,
     );
   }
 
-  _dart_PyEval_ReleaseThread? _PyEval_ReleaseThread;
+  late final _PyEval_ReleaseThread_ptr =
+      _lookup<ffi.NativeFunction<_c_PyEval_ReleaseThread>>(
+          'PyEval_ReleaseThread');
+  late final _dart_PyEval_ReleaseThread _PyEval_ReleaseThread =
+      _PyEval_ReleaseThread_ptr.asFunction<_dart_PyEval_ReleaseThread>();
 
   void PyEval_SetSwitchInterval(
     int microseconds,
   ) {
-    return (_PyEval_SetSwitchInterval ??= _dylib.lookupFunction<
-        _c_PyEval_SetSwitchInterval,
-        _dart_PyEval_SetSwitchInterval>('_PyEval_SetSwitchInterval'))(
+    return _PyEval_SetSwitchInterval(
       microseconds,
     );
   }
 
-  _dart_PyEval_SetSwitchInterval? _PyEval_SetSwitchInterval;
+  late final _PyEval_SetSwitchInterval_ptr =
+      _lookup<ffi.NativeFunction<_c_PyEval_SetSwitchInterval>>(
+          '_PyEval_SetSwitchInterval');
+  late final _dart_PyEval_SetSwitchInterval _PyEval_SetSwitchInterval =
+      _PyEval_SetSwitchInterval_ptr.asFunction<
+          _dart_PyEval_SetSwitchInterval>();
 
   int PyEval_GetSwitchInterval() {
-    return (_PyEval_GetSwitchInterval ??= _dylib.lookupFunction<
-        _c_PyEval_GetSwitchInterval,
-        _dart_PyEval_GetSwitchInterval>('_PyEval_GetSwitchInterval'))();
+    return _PyEval_GetSwitchInterval();
   }
 
-  _dart_PyEval_GetSwitchInterval? _PyEval_GetSwitchInterval;
+  late final _PyEval_GetSwitchInterval_ptr =
+      _lookup<ffi.NativeFunction<_c_PyEval_GetSwitchInterval>>(
+          '_PyEval_GetSwitchInterval');
+  late final _dart_PyEval_GetSwitchInterval _PyEval_GetSwitchInterval =
+      _PyEval_GetSwitchInterval_ptr.asFunction<
+          _dart_PyEval_GetSwitchInterval>();
 
   int PyEval_RequestCodeExtraIndex(
     ffi.Pointer<ffi.NativeFunction<freefunc>> arg0,
   ) {
-    return (_PyEval_RequestCodeExtraIndex ??= _dylib.lookupFunction<
-        _c_PyEval_RequestCodeExtraIndex,
-        _dart_PyEval_RequestCodeExtraIndex>('_PyEval_RequestCodeExtraIndex'))(
+    return _PyEval_RequestCodeExtraIndex(
       arg0,
     );
   }
 
-  _dart_PyEval_RequestCodeExtraIndex? _PyEval_RequestCodeExtraIndex;
+  late final _PyEval_RequestCodeExtraIndex_ptr =
+      _lookup<ffi.NativeFunction<_c_PyEval_RequestCodeExtraIndex>>(
+          '_PyEval_RequestCodeExtraIndex');
+  late final _dart_PyEval_RequestCodeExtraIndex _PyEval_RequestCodeExtraIndex =
+      _PyEval_RequestCodeExtraIndex_ptr.asFunction<
+          _dart_PyEval_RequestCodeExtraIndex>();
 
   int PyEval_SliceIndex(
     ffi.Pointer<PyObject> arg0,
     ffi.Pointer<ffi.Int64> arg1,
   ) {
-    return (_PyEval_SliceIndex ??=
-        _dylib.lookupFunction<_c_PyEval_SliceIndex, _dart_PyEval_SliceIndex>(
-            '_PyEval_SliceIndex'))(
+    return _PyEval_SliceIndex(
       arg0,
       arg1,
     );
   }
 
-  _dart_PyEval_SliceIndex? _PyEval_SliceIndex;
+  late final _PyEval_SliceIndex_ptr =
+      _lookup<ffi.NativeFunction<_c_PyEval_SliceIndex>>('_PyEval_SliceIndex');
+  late final _dart_PyEval_SliceIndex _PyEval_SliceIndex =
+      _PyEval_SliceIndex_ptr.asFunction<_dart_PyEval_SliceIndex>();
 
   int PyEval_SliceIndexNotNone(
     ffi.Pointer<PyObject> arg0,
     ffi.Pointer<ffi.Int64> arg1,
   ) {
-    return (_PyEval_SliceIndexNotNone ??= _dylib.lookupFunction<
-        _c_PyEval_SliceIndexNotNone,
-        _dart_PyEval_SliceIndexNotNone>('_PyEval_SliceIndexNotNone'))(
+    return _PyEval_SliceIndexNotNone(
       arg0,
       arg1,
     );
   }
 
-  _dart_PyEval_SliceIndexNotNone? _PyEval_SliceIndexNotNone;
+  late final _PyEval_SliceIndexNotNone_ptr =
+      _lookup<ffi.NativeFunction<_c_PyEval_SliceIndexNotNone>>(
+          '_PyEval_SliceIndexNotNone');
+  late final _dart_PyEval_SliceIndexNotNone _PyEval_SliceIndexNotNone =
+      _PyEval_SliceIndexNotNone_ptr.asFunction<
+          _dart_PyEval_SliceIndexNotNone>();
 
   ffi.Pointer<PyObject> PySys_GetObject(
     ffi.Pointer<ffi.Int8> arg0,
   ) {
-    return (_PySys_GetObject ??=
-        _dylib.lookupFunction<_c_PySys_GetObject, _dart_PySys_GetObject>(
-            'PySys_GetObject'))(
+    return _PySys_GetObject(
       arg0,
     );
   }
 
-  _dart_PySys_GetObject? _PySys_GetObject;
+  late final _PySys_GetObject_ptr =
+      _lookup<ffi.NativeFunction<_c_PySys_GetObject>>('PySys_GetObject');
+  late final _dart_PySys_GetObject _PySys_GetObject =
+      _PySys_GetObject_ptr.asFunction<_dart_PySys_GetObject>();
 
   int PySys_SetObject(
     ffi.Pointer<ffi.Int8> arg0,
     ffi.Pointer<PyObject> arg1,
   ) {
-    return (_PySys_SetObject ??=
-        _dylib.lookupFunction<_c_PySys_SetObject, _dart_PySys_SetObject>(
-            'PySys_SetObject'))(
+    return _PySys_SetObject(
       arg0,
       arg1,
     );
   }
 
-  _dart_PySys_SetObject? _PySys_SetObject;
+  late final _PySys_SetObject_ptr =
+      _lookup<ffi.NativeFunction<_c_PySys_SetObject>>('PySys_SetObject');
+  late final _dart_PySys_SetObject _PySys_SetObject =
+      _PySys_SetObject_ptr.asFunction<_dart_PySys_SetObject>();
 
   void PySys_SetArgv(
     int arg0,
     ffi.Pointer<ffi.Pointer<ffi.Int32>> arg1,
   ) {
-    return (_PySys_SetArgv ??=
-        _dylib.lookupFunction<_c_PySys_SetArgv, _dart_PySys_SetArgv>(
-            'PySys_SetArgv'))(
+    return _PySys_SetArgv(
       arg0,
       arg1,
     );
   }
 
-  _dart_PySys_SetArgv? _PySys_SetArgv;
+  late final _PySys_SetArgv_ptr =
+      _lookup<ffi.NativeFunction<_c_PySys_SetArgv>>('PySys_SetArgv');
+  late final _dart_PySys_SetArgv _PySys_SetArgv =
+      _PySys_SetArgv_ptr.asFunction<_dart_PySys_SetArgv>();
 
   void PySys_SetArgvEx(
     int arg0,
     ffi.Pointer<ffi.Pointer<ffi.Int32>> arg1,
     int arg2,
   ) {
-    return (_PySys_SetArgvEx ??=
-        _dylib.lookupFunction<_c_PySys_SetArgvEx, _dart_PySys_SetArgvEx>(
-            'PySys_SetArgvEx'))(
+    return _PySys_SetArgvEx(
       arg0,
       arg1,
       arg2,
     );
   }
 
-  _dart_PySys_SetArgvEx? _PySys_SetArgvEx;
+  late final _PySys_SetArgvEx_ptr =
+      _lookup<ffi.NativeFunction<_c_PySys_SetArgvEx>>('PySys_SetArgvEx');
+  late final _dart_PySys_SetArgvEx _PySys_SetArgvEx =
+      _PySys_SetArgvEx_ptr.asFunction<_dart_PySys_SetArgvEx>();
 
   void PySys_SetPath(
     ffi.Pointer<ffi.Int32> arg0,
   ) {
-    return (_PySys_SetPath ??=
-        _dylib.lookupFunction<_c_PySys_SetPath, _dart_PySys_SetPath>(
-            'PySys_SetPath'))(
+    return _PySys_SetPath(
       arg0,
     );
   }
 
-  _dart_PySys_SetPath? _PySys_SetPath;
+  late final _PySys_SetPath_ptr =
+      _lookup<ffi.NativeFunction<_c_PySys_SetPath>>('PySys_SetPath');
+  late final _dart_PySys_SetPath _PySys_SetPath =
+      _PySys_SetPath_ptr.asFunction<_dart_PySys_SetPath>();
 
   void PySys_WriteStdout(
     ffi.Pointer<ffi.Int8> format,
   ) {
-    return (_PySys_WriteStdout ??=
-        _dylib.lookupFunction<_c_PySys_WriteStdout, _dart_PySys_WriteStdout>(
-            'PySys_WriteStdout'))(
+    return _PySys_WriteStdout(
       format,
     );
   }
 
-  _dart_PySys_WriteStdout? _PySys_WriteStdout;
+  late final _PySys_WriteStdout_ptr =
+      _lookup<ffi.NativeFunction<_c_PySys_WriteStdout>>('PySys_WriteStdout');
+  late final _dart_PySys_WriteStdout _PySys_WriteStdout =
+      _PySys_WriteStdout_ptr.asFunction<_dart_PySys_WriteStdout>();
 
   void PySys_WriteStderr(
     ffi.Pointer<ffi.Int8> format,
   ) {
-    return (_PySys_WriteStderr ??=
-        _dylib.lookupFunction<_c_PySys_WriteStderr, _dart_PySys_WriteStderr>(
-            'PySys_WriteStderr'))(
+    return _PySys_WriteStderr(
       format,
     );
   }
 
-  _dart_PySys_WriteStderr? _PySys_WriteStderr;
+  late final _PySys_WriteStderr_ptr =
+      _lookup<ffi.NativeFunction<_c_PySys_WriteStderr>>('PySys_WriteStderr');
+  late final _dart_PySys_WriteStderr _PySys_WriteStderr =
+      _PySys_WriteStderr_ptr.asFunction<_dart_PySys_WriteStderr>();
 
   void PySys_FormatStdout(
     ffi.Pointer<ffi.Int8> format,
   ) {
-    return (_PySys_FormatStdout ??=
-        _dylib.lookupFunction<_c_PySys_FormatStdout, _dart_PySys_FormatStdout>(
-            'PySys_FormatStdout'))(
+    return _PySys_FormatStdout(
       format,
     );
   }
 
-  _dart_PySys_FormatStdout? _PySys_FormatStdout;
+  late final _PySys_FormatStdout_ptr =
+      _lookup<ffi.NativeFunction<_c_PySys_FormatStdout>>('PySys_FormatStdout');
+  late final _dart_PySys_FormatStdout _PySys_FormatStdout =
+      _PySys_FormatStdout_ptr.asFunction<_dart_PySys_FormatStdout>();
 
   void PySys_FormatStderr(
     ffi.Pointer<ffi.Int8> format,
   ) {
-    return (_PySys_FormatStderr ??=
-        _dylib.lookupFunction<_c_PySys_FormatStderr, _dart_PySys_FormatStderr>(
-            'PySys_FormatStderr'))(
+    return _PySys_FormatStderr(
       format,
     );
   }
 
-  _dart_PySys_FormatStderr? _PySys_FormatStderr;
+  late final _PySys_FormatStderr_ptr =
+      _lookup<ffi.NativeFunction<_c_PySys_FormatStderr>>('PySys_FormatStderr');
+  late final _dart_PySys_FormatStderr _PySys_FormatStderr =
+      _PySys_FormatStderr_ptr.asFunction<_dart_PySys_FormatStderr>();
 
   void PySys_ResetWarnOptions() {
-    return (_PySys_ResetWarnOptions ??= _dylib.lookupFunction<
-        _c_PySys_ResetWarnOptions,
-        _dart_PySys_ResetWarnOptions>('PySys_ResetWarnOptions'))();
+    return _PySys_ResetWarnOptions();
   }
 
-  _dart_PySys_ResetWarnOptions? _PySys_ResetWarnOptions;
+  late final _PySys_ResetWarnOptions_ptr =
+      _lookup<ffi.NativeFunction<_c_PySys_ResetWarnOptions>>(
+          'PySys_ResetWarnOptions');
+  late final _dart_PySys_ResetWarnOptions _PySys_ResetWarnOptions =
+      _PySys_ResetWarnOptions_ptr.asFunction<_dart_PySys_ResetWarnOptions>();
 
   void PySys_AddWarnOption(
     ffi.Pointer<ffi.Int32> arg0,
   ) {
-    return (_PySys_AddWarnOption ??= _dylib.lookupFunction<
-        _c_PySys_AddWarnOption,
-        _dart_PySys_AddWarnOption>('PySys_AddWarnOption'))(
+    return _PySys_AddWarnOption(
       arg0,
     );
   }
 
-  _dart_PySys_AddWarnOption? _PySys_AddWarnOption;
+  late final _PySys_AddWarnOption_ptr =
+      _lookup<ffi.NativeFunction<_c_PySys_AddWarnOption>>(
+          'PySys_AddWarnOption');
+  late final _dart_PySys_AddWarnOption _PySys_AddWarnOption =
+      _PySys_AddWarnOption_ptr.asFunction<_dart_PySys_AddWarnOption>();
 
   void PySys_AddWarnOptionUnicode(
     ffi.Pointer<PyObject> arg0,
   ) {
-    return (_PySys_AddWarnOptionUnicode ??= _dylib.lookupFunction<
-        _c_PySys_AddWarnOptionUnicode,
-        _dart_PySys_AddWarnOptionUnicode>('PySys_AddWarnOptionUnicode'))(
+    return _PySys_AddWarnOptionUnicode(
       arg0,
     );
   }
 
-  _dart_PySys_AddWarnOptionUnicode? _PySys_AddWarnOptionUnicode;
+  late final _PySys_AddWarnOptionUnicode_ptr =
+      _lookup<ffi.NativeFunction<_c_PySys_AddWarnOptionUnicode>>(
+          'PySys_AddWarnOptionUnicode');
+  late final _dart_PySys_AddWarnOptionUnicode _PySys_AddWarnOptionUnicode =
+      _PySys_AddWarnOptionUnicode_ptr.asFunction<
+          _dart_PySys_AddWarnOptionUnicode>();
 
   int PySys_HasWarnOptions() {
-    return (_PySys_HasWarnOptions ??= _dylib.lookupFunction<
-        _c_PySys_HasWarnOptions,
-        _dart_PySys_HasWarnOptions>('PySys_HasWarnOptions'))();
+    return _PySys_HasWarnOptions();
   }
 
-  _dart_PySys_HasWarnOptions? _PySys_HasWarnOptions;
+  late final _PySys_HasWarnOptions_ptr =
+      _lookup<ffi.NativeFunction<_c_PySys_HasWarnOptions>>(
+          'PySys_HasWarnOptions');
+  late final _dart_PySys_HasWarnOptions _PySys_HasWarnOptions =
+      _PySys_HasWarnOptions_ptr.asFunction<_dart_PySys_HasWarnOptions>();
 
   void PySys_AddXOption(
     ffi.Pointer<ffi.Int32> arg0,
   ) {
-    return (_PySys_AddXOption ??=
-        _dylib.lookupFunction<_c_PySys_AddXOption, _dart_PySys_AddXOption>(
-            'PySys_AddXOption'))(
+    return _PySys_AddXOption(
       arg0,
     );
   }
 
-  _dart_PySys_AddXOption? _PySys_AddXOption;
+  late final _PySys_AddXOption_ptr =
+      _lookup<ffi.NativeFunction<_c_PySys_AddXOption>>('PySys_AddXOption');
+  late final _dart_PySys_AddXOption _PySys_AddXOption =
+      _PySys_AddXOption_ptr.asFunction<_dart_PySys_AddXOption>();
 
   ffi.Pointer<PyObject> PySys_GetXOptions() {
-    return (_PySys_GetXOptions ??=
-        _dylib.lookupFunction<_c_PySys_GetXOptions, _dart_PySys_GetXOptions>(
-            'PySys_GetXOptions'))();
+    return _PySys_GetXOptions();
   }
 
-  _dart_PySys_GetXOptions? _PySys_GetXOptions;
+  late final _PySys_GetXOptions_ptr =
+      _lookup<ffi.NativeFunction<_c_PySys_GetXOptions>>('PySys_GetXOptions');
+  late final _dart_PySys_GetXOptions _PySys_GetXOptions =
+      _PySys_GetXOptions_ptr.asFunction<_dart_PySys_GetXOptions>();
 
   ffi.Pointer<PyObject> PyOS_FSPath(
     ffi.Pointer<PyObject> path,
   ) {
-    return (_PyOS_FSPath ??= _dylib
-        .lookupFunction<_c_PyOS_FSPath, _dart_PyOS_FSPath>('PyOS_FSPath'))(
+    return _PyOS_FSPath(
       path,
     );
   }
 
-  _dart_PyOS_FSPath? _PyOS_FSPath;
+  late final _PyOS_FSPath_ptr =
+      _lookup<ffi.NativeFunction<_c_PyOS_FSPath>>('PyOS_FSPath');
+  late final _dart_PyOS_FSPath _PyOS_FSPath =
+      _PyOS_FSPath_ptr.asFunction<_dart_PyOS_FSPath>();
 
   int PyOS_InterruptOccurred() {
-    return (_PyOS_InterruptOccurred ??= _dylib.lookupFunction<
-        _c_PyOS_InterruptOccurred,
-        _dart_PyOS_InterruptOccurred>('PyOS_InterruptOccurred'))();
+    return _PyOS_InterruptOccurred();
   }
 
-  _dart_PyOS_InterruptOccurred? _PyOS_InterruptOccurred;
+  late final _PyOS_InterruptOccurred_ptr =
+      _lookup<ffi.NativeFunction<_c_PyOS_InterruptOccurred>>(
+          'PyOS_InterruptOccurred');
+  late final _dart_PyOS_InterruptOccurred _PyOS_InterruptOccurred =
+      _PyOS_InterruptOccurred_ptr.asFunction<_dart_PyOS_InterruptOccurred>();
 
   void PyOS_InitInterrupts() {
-    return (_PyOS_InitInterrupts ??= _dylib.lookupFunction<
-        _c_PyOS_InitInterrupts,
-        _dart_PyOS_InitInterrupts>('PyOS_InitInterrupts'))();
+    return _PyOS_InitInterrupts();
   }
 
-  _dart_PyOS_InitInterrupts? _PyOS_InitInterrupts;
+  late final _PyOS_InitInterrupts_ptr =
+      _lookup<ffi.NativeFunction<_c_PyOS_InitInterrupts>>(
+          'PyOS_InitInterrupts');
+  late final _dart_PyOS_InitInterrupts _PyOS_InitInterrupts =
+      _PyOS_InitInterrupts_ptr.asFunction<_dart_PyOS_InitInterrupts>();
 
   void PyOS_BeforeFork() {
-    return (_PyOS_BeforeFork ??=
-        _dylib.lookupFunction<_c_PyOS_BeforeFork, _dart_PyOS_BeforeFork>(
-            'PyOS_BeforeFork'))();
+    return _PyOS_BeforeFork();
   }
 
-  _dart_PyOS_BeforeFork? _PyOS_BeforeFork;
+  late final _PyOS_BeforeFork_ptr =
+      _lookup<ffi.NativeFunction<_c_PyOS_BeforeFork>>('PyOS_BeforeFork');
+  late final _dart_PyOS_BeforeFork _PyOS_BeforeFork =
+      _PyOS_BeforeFork_ptr.asFunction<_dart_PyOS_BeforeFork>();
 
   void PyOS_AfterFork_Parent() {
-    return (_PyOS_AfterFork_Parent ??= _dylib.lookupFunction<
-        _c_PyOS_AfterFork_Parent,
-        _dart_PyOS_AfterFork_Parent>('PyOS_AfterFork_Parent'))();
+    return _PyOS_AfterFork_Parent();
   }
 
-  _dart_PyOS_AfterFork_Parent? _PyOS_AfterFork_Parent;
+  late final _PyOS_AfterFork_Parent_ptr =
+      _lookup<ffi.NativeFunction<_c_PyOS_AfterFork_Parent>>(
+          'PyOS_AfterFork_Parent');
+  late final _dart_PyOS_AfterFork_Parent _PyOS_AfterFork_Parent =
+      _PyOS_AfterFork_Parent_ptr.asFunction<_dart_PyOS_AfterFork_Parent>();
 
   void PyOS_AfterFork_Child() {
-    return (_PyOS_AfterFork_Child ??= _dylib.lookupFunction<
-        _c_PyOS_AfterFork_Child,
-        _dart_PyOS_AfterFork_Child>('PyOS_AfterFork_Child'))();
+    return _PyOS_AfterFork_Child();
   }
 
-  _dart_PyOS_AfterFork_Child? _PyOS_AfterFork_Child;
+  late final _PyOS_AfterFork_Child_ptr =
+      _lookup<ffi.NativeFunction<_c_PyOS_AfterFork_Child>>(
+          'PyOS_AfterFork_Child');
+  late final _dart_PyOS_AfterFork_Child _PyOS_AfterFork_Child =
+      _PyOS_AfterFork_Child_ptr.asFunction<_dart_PyOS_AfterFork_Child>();
 
   void PyOS_AfterFork() {
-    return (_PyOS_AfterFork ??=
-        _dylib.lookupFunction<_c_PyOS_AfterFork, _dart_PyOS_AfterFork>(
-            'PyOS_AfterFork'))();
+    return _PyOS_AfterFork();
   }
 
-  _dart_PyOS_AfterFork? _PyOS_AfterFork;
+  late final _PyOS_AfterFork_ptr =
+      _lookup<ffi.NativeFunction<_c_PyOS_AfterFork>>('PyOS_AfterFork');
+  late final _dart_PyOS_AfterFork _PyOS_AfterFork =
+      _PyOS_AfterFork_ptr.asFunction<_dart_PyOS_AfterFork>();
 
   int PyOS_IsMainThread() {
-    return (_PyOS_IsMainThread ??=
-        _dylib.lookupFunction<_c_PyOS_IsMainThread, _dart_PyOS_IsMainThread>(
-            '_PyOS_IsMainThread'))();
+    return _PyOS_IsMainThread();
   }
 
-  _dart_PyOS_IsMainThread? _PyOS_IsMainThread;
+  late final _PyOS_IsMainThread_ptr =
+      _lookup<ffi.NativeFunction<_c_PyOS_IsMainThread>>('_PyOS_IsMainThread');
+  late final _dart_PyOS_IsMainThread _PyOS_IsMainThread =
+      _PyOS_IsMainThread_ptr.asFunction<_dart_PyOS_IsMainThread>();
 
   void PySignal_AfterFork() {
-    return (_PySignal_AfterFork ??=
-        _dylib.lookupFunction<_c_PySignal_AfterFork, _dart_PySignal_AfterFork>(
-            '_PySignal_AfterFork'))();
+    return _PySignal_AfterFork();
   }
 
-  _dart_PySignal_AfterFork? _PySignal_AfterFork;
+  late final _PySignal_AfterFork_ptr =
+      _lookup<ffi.NativeFunction<_c_PySignal_AfterFork>>('_PySignal_AfterFork');
+  late final _dart_PySignal_AfterFork _PySignal_AfterFork =
+      _PySignal_AfterFork_ptr.asFunction<_dart_PySignal_AfterFork>();
 
   ffi.Pointer<PyObject> PyInit__imp() {
-    return (_PyInit__imp ??= _dylib
-        .lookupFunction<_c_PyInit__imp, _dart_PyInit__imp>('PyInit__imp'))();
+    return _PyInit__imp();
   }
 
-  _dart_PyInit__imp? _PyInit__imp;
+  late final _PyInit__imp_ptr =
+      _lookup<ffi.NativeFunction<_c_PyInit__imp>>('PyInit__imp');
+  late final _dart_PyInit__imp _PyInit__imp =
+      _PyInit__imp_ptr.asFunction<_dart_PyInit__imp>();
 
   int PyImport_GetMagicNumber() {
-    return (_PyImport_GetMagicNumber ??= _dylib.lookupFunction<
-        _c_PyImport_GetMagicNumber,
-        _dart_PyImport_GetMagicNumber>('PyImport_GetMagicNumber'))();
+    return _PyImport_GetMagicNumber();
   }
 
-  _dart_PyImport_GetMagicNumber? _PyImport_GetMagicNumber;
+  late final _PyImport_GetMagicNumber_ptr =
+      _lookup<ffi.NativeFunction<_c_PyImport_GetMagicNumber>>(
+          'PyImport_GetMagicNumber');
+  late final _dart_PyImport_GetMagicNumber _PyImport_GetMagicNumber =
+      _PyImport_GetMagicNumber_ptr.asFunction<_dart_PyImport_GetMagicNumber>();
 
   ffi.Pointer<ffi.Int8> PyImport_GetMagicTag() {
-    return (_PyImport_GetMagicTag ??= _dylib.lookupFunction<
-        _c_PyImport_GetMagicTag,
-        _dart_PyImport_GetMagicTag>('PyImport_GetMagicTag'))();
+    return _PyImport_GetMagicTag();
   }
 
-  _dart_PyImport_GetMagicTag? _PyImport_GetMagicTag;
+  late final _PyImport_GetMagicTag_ptr =
+      _lookup<ffi.NativeFunction<_c_PyImport_GetMagicTag>>(
+          'PyImport_GetMagicTag');
+  late final _dart_PyImport_GetMagicTag _PyImport_GetMagicTag =
+      _PyImport_GetMagicTag_ptr.asFunction<_dart_PyImport_GetMagicTag>();
 
   ffi.Pointer<PyObject> PyImport_ExecCodeModule(
     ffi.Pointer<ffi.Int8> name,
     ffi.Pointer<PyObject> co,
   ) {
-    return (_PyImport_ExecCodeModule ??= _dylib.lookupFunction<
-        _c_PyImport_ExecCodeModule,
-        _dart_PyImport_ExecCodeModule>('PyImport_ExecCodeModule'))(
+    return _PyImport_ExecCodeModule(
       name,
       co,
     );
   }
 
-  _dart_PyImport_ExecCodeModule? _PyImport_ExecCodeModule;
+  late final _PyImport_ExecCodeModule_ptr =
+      _lookup<ffi.NativeFunction<_c_PyImport_ExecCodeModule>>(
+          'PyImport_ExecCodeModule');
+  late final _dart_PyImport_ExecCodeModule _PyImport_ExecCodeModule =
+      _PyImport_ExecCodeModule_ptr.asFunction<_dart_PyImport_ExecCodeModule>();
 
   ffi.Pointer<PyObject> PyImport_ExecCodeModuleEx(
     ffi.Pointer<ffi.Int8> name,
     ffi.Pointer<PyObject> co,
     ffi.Pointer<ffi.Int8> pathname,
   ) {
-    return (_PyImport_ExecCodeModuleEx ??= _dylib.lookupFunction<
-        _c_PyImport_ExecCodeModuleEx,
-        _dart_PyImport_ExecCodeModuleEx>('PyImport_ExecCodeModuleEx'))(
+    return _PyImport_ExecCodeModuleEx(
       name,
       co,
       pathname,
     );
   }
 
-  _dart_PyImport_ExecCodeModuleEx? _PyImport_ExecCodeModuleEx;
+  late final _PyImport_ExecCodeModuleEx_ptr =
+      _lookup<ffi.NativeFunction<_c_PyImport_ExecCodeModuleEx>>(
+          'PyImport_ExecCodeModuleEx');
+  late final _dart_PyImport_ExecCodeModuleEx _PyImport_ExecCodeModuleEx =
+      _PyImport_ExecCodeModuleEx_ptr.asFunction<
+          _dart_PyImport_ExecCodeModuleEx>();
 
   ffi.Pointer<PyObject> PyImport_ExecCodeModuleWithPathnames(
     ffi.Pointer<ffi.Int8> name,
@@ -11448,10 +13485,7 @@ class DartPyC {
     ffi.Pointer<ffi.Int8> pathname,
     ffi.Pointer<ffi.Int8> cpathname,
   ) {
-    return (_PyImport_ExecCodeModuleWithPathnames ??= _dylib.lookupFunction<
-            _c_PyImport_ExecCodeModuleWithPathnames,
-            _dart_PyImport_ExecCodeModuleWithPathnames>(
-        'PyImport_ExecCodeModuleWithPathnames'))(
+    return _PyImport_ExecCodeModuleWithPathnames(
       name,
       co,
       pathname,
@@ -11459,8 +13493,13 @@ class DartPyC {
     );
   }
 
-  _dart_PyImport_ExecCodeModuleWithPathnames?
-      _PyImport_ExecCodeModuleWithPathnames;
+  late final _PyImport_ExecCodeModuleWithPathnames_ptr =
+      _lookup<ffi.NativeFunction<_c_PyImport_ExecCodeModuleWithPathnames>>(
+          'PyImport_ExecCodeModuleWithPathnames');
+  late final _dart_PyImport_ExecCodeModuleWithPathnames
+      _PyImport_ExecCodeModuleWithPathnames =
+      _PyImport_ExecCodeModuleWithPathnames_ptr.asFunction<
+          _dart_PyImport_ExecCodeModuleWithPathnames>();
 
   ffi.Pointer<PyObject> PyImport_ExecCodeModuleObject(
     ffi.Pointer<PyObject> name,
@@ -11468,9 +13507,7 @@ class DartPyC {
     ffi.Pointer<PyObject> pathname,
     ffi.Pointer<PyObject> cpathname,
   ) {
-    return (_PyImport_ExecCodeModuleObject ??= _dylib.lookupFunction<
-        _c_PyImport_ExecCodeModuleObject,
-        _dart_PyImport_ExecCodeModuleObject>('PyImport_ExecCodeModuleObject'))(
+    return _PyImport_ExecCodeModuleObject(
       name,
       co,
       pathname,
@@ -11478,141 +13515,169 @@ class DartPyC {
     );
   }
 
-  _dart_PyImport_ExecCodeModuleObject? _PyImport_ExecCodeModuleObject;
+  late final _PyImport_ExecCodeModuleObject_ptr =
+      _lookup<ffi.NativeFunction<_c_PyImport_ExecCodeModuleObject>>(
+          'PyImport_ExecCodeModuleObject');
+  late final _dart_PyImport_ExecCodeModuleObject
+      _PyImport_ExecCodeModuleObject = _PyImport_ExecCodeModuleObject_ptr
+          .asFunction<_dart_PyImport_ExecCodeModuleObject>();
 
   ffi.Pointer<PyObject> PyImport_GetModuleDict() {
-    return (_PyImport_GetModuleDict ??= _dylib.lookupFunction<
-        _c_PyImport_GetModuleDict,
-        _dart_PyImport_GetModuleDict>('PyImport_GetModuleDict'))();
+    return _PyImport_GetModuleDict();
   }
 
-  _dart_PyImport_GetModuleDict? _PyImport_GetModuleDict;
+  late final _PyImport_GetModuleDict_ptr =
+      _lookup<ffi.NativeFunction<_c_PyImport_GetModuleDict>>(
+          'PyImport_GetModuleDict');
+  late final _dart_PyImport_GetModuleDict _PyImport_GetModuleDict =
+      _PyImport_GetModuleDict_ptr.asFunction<_dart_PyImport_GetModuleDict>();
 
   ffi.Pointer<PyObject> PyImport_GetModule(
     ffi.Pointer<PyObject> name,
   ) {
-    return (_PyImport_GetModule ??=
-        _dylib.lookupFunction<_c_PyImport_GetModule, _dart_PyImport_GetModule>(
-            'PyImport_GetModule'))(
+    return _PyImport_GetModule(
       name,
     );
   }
 
-  _dart_PyImport_GetModule? _PyImport_GetModule;
+  late final _PyImport_GetModule_ptr =
+      _lookup<ffi.NativeFunction<_c_PyImport_GetModule>>('PyImport_GetModule');
+  late final _dart_PyImport_GetModule _PyImport_GetModule =
+      _PyImport_GetModule_ptr.asFunction<_dart_PyImport_GetModule>();
 
   int PyImport_IsInitialized(
     ffi.Pointer<_is> arg0,
   ) {
-    return (_PyImport_IsInitialized ??= _dylib.lookupFunction<
-        _c_PyImport_IsInitialized,
-        _dart_PyImport_IsInitialized>('_PyImport_IsInitialized'))(
+    return _PyImport_IsInitialized(
       arg0,
     );
   }
 
-  _dart_PyImport_IsInitialized? _PyImport_IsInitialized;
+  late final _PyImport_IsInitialized_ptr =
+      _lookup<ffi.NativeFunction<_c_PyImport_IsInitialized>>(
+          '_PyImport_IsInitialized');
+  late final _dart_PyImport_IsInitialized _PyImport_IsInitialized =
+      _PyImport_IsInitialized_ptr.asFunction<_dart_PyImport_IsInitialized>();
 
   ffi.Pointer<PyObject> PyImport_GetModuleId(
     ffi.Pointer<_Py_Identifier> name,
   ) {
-    return (_PyImport_GetModuleId ??= _dylib.lookupFunction<
-        _c_PyImport_GetModuleId,
-        _dart_PyImport_GetModuleId>('_PyImport_GetModuleId'))(
+    return _PyImport_GetModuleId(
       name,
     );
   }
 
-  _dart_PyImport_GetModuleId? _PyImport_GetModuleId;
+  late final _PyImport_GetModuleId_ptr =
+      _lookup<ffi.NativeFunction<_c_PyImport_GetModuleId>>(
+          '_PyImport_GetModuleId');
+  late final _dart_PyImport_GetModuleId _PyImport_GetModuleId =
+      _PyImport_GetModuleId_ptr.asFunction<_dart_PyImport_GetModuleId>();
 
   ffi.Pointer<PyObject> PyImport_AddModuleObject(
     ffi.Pointer<PyObject> name,
     ffi.Pointer<PyObject> modules,
   ) {
-    return (_PyImport_AddModuleObject ??= _dylib.lookupFunction<
-        _c_PyImport_AddModuleObject,
-        _dart_PyImport_AddModuleObject>('_PyImport_AddModuleObject'))(
+    return _PyImport_AddModuleObject(
       name,
       modules,
     );
   }
 
-  _dart_PyImport_AddModuleObject? _PyImport_AddModuleObject;
+  late final _PyImport_AddModuleObject_ptr =
+      _lookup<ffi.NativeFunction<_c_PyImport_AddModuleObject>>(
+          '_PyImport_AddModuleObject');
+  late final _dart_PyImport_AddModuleObject _PyImport_AddModuleObject =
+      _PyImport_AddModuleObject_ptr.asFunction<
+          _dart_PyImport_AddModuleObject>();
 
   int PyImport_SetModule(
     ffi.Pointer<PyObject> name,
     ffi.Pointer<PyObject> module,
   ) {
-    return (_PyImport_SetModule ??=
-        _dylib.lookupFunction<_c_PyImport_SetModule, _dart_PyImport_SetModule>(
-            '_PyImport_SetModule'))(
+    return _PyImport_SetModule(
       name,
       module,
     );
   }
 
-  _dart_PyImport_SetModule? _PyImport_SetModule;
+  late final _PyImport_SetModule_ptr =
+      _lookup<ffi.NativeFunction<_c_PyImport_SetModule>>('_PyImport_SetModule');
+  late final _dart_PyImport_SetModule _PyImport_SetModule =
+      _PyImport_SetModule_ptr.asFunction<_dart_PyImport_SetModule>();
 
   int PyImport_SetModuleString(
     ffi.Pointer<ffi.Int8> name,
     ffi.Pointer<PyObject> module,
   ) {
-    return (_PyImport_SetModuleString ??= _dylib.lookupFunction<
-        _c_PyImport_SetModuleString,
-        _dart_PyImport_SetModuleString>('_PyImport_SetModuleString'))(
+    return _PyImport_SetModuleString(
       name,
       module,
     );
   }
 
-  _dart_PyImport_SetModuleString? _PyImport_SetModuleString;
+  late final _PyImport_SetModuleString_ptr =
+      _lookup<ffi.NativeFunction<_c_PyImport_SetModuleString>>(
+          '_PyImport_SetModuleString');
+  late final _dart_PyImport_SetModuleString _PyImport_SetModuleString =
+      _PyImport_SetModuleString_ptr.asFunction<
+          _dart_PyImport_SetModuleString>();
 
   ffi.Pointer<PyObject> PyImport_AddModuleObject_1(
     ffi.Pointer<PyObject> name,
   ) {
-    return (_PyImport_AddModuleObject_1 ??= _dylib.lookupFunction<
-        _c_PyImport_AddModuleObject_1,
-        _dart_PyImport_AddModuleObject_1>('PyImport_AddModuleObject'))(
+    return _PyImport_AddModuleObject_1(
       name,
     );
   }
 
-  _dart_PyImport_AddModuleObject_1? _PyImport_AddModuleObject_1;
+  late final _PyImport_AddModuleObject_1_ptr =
+      _lookup<ffi.NativeFunction<_c_PyImport_AddModuleObject_1>>(
+          'PyImport_AddModuleObject');
+  late final _dart_PyImport_AddModuleObject_1 _PyImport_AddModuleObject_1 =
+      _PyImport_AddModuleObject_1_ptr.asFunction<
+          _dart_PyImport_AddModuleObject_1>();
 
   ffi.Pointer<PyObject> PyImport_AddModule(
     ffi.Pointer<ffi.Int8> name,
   ) {
-    return (_PyImport_AddModule ??=
-        _dylib.lookupFunction<_c_PyImport_AddModule, _dart_PyImport_AddModule>(
-            'PyImport_AddModule'))(
+    return _PyImport_AddModule(
       name,
     );
   }
 
-  _dart_PyImport_AddModule? _PyImport_AddModule;
+  late final _PyImport_AddModule_ptr =
+      _lookup<ffi.NativeFunction<_c_PyImport_AddModule>>('PyImport_AddModule');
+  late final _dart_PyImport_AddModule _PyImport_AddModule =
+      _PyImport_AddModule_ptr.asFunction<_dart_PyImport_AddModule>();
 
   ffi.Pointer<PyObject> PyImport_ImportModule(
     ffi.Pointer<ffi.Int8> name,
   ) {
-    return (_PyImport_ImportModule ??= _dylib.lookupFunction<
-        _c_PyImport_ImportModule,
-        _dart_PyImport_ImportModule>('PyImport_ImportModule'))(
+    return _PyImport_ImportModule(
       name,
     );
   }
 
-  _dart_PyImport_ImportModule? _PyImport_ImportModule;
+  late final _PyImport_ImportModule_ptr =
+      _lookup<ffi.NativeFunction<_c_PyImport_ImportModule>>(
+          'PyImport_ImportModule');
+  late final _dart_PyImport_ImportModule _PyImport_ImportModule =
+      _PyImport_ImportModule_ptr.asFunction<_dart_PyImport_ImportModule>();
 
   ffi.Pointer<PyObject> PyImport_ImportModuleNoBlock(
     ffi.Pointer<ffi.Int8> name,
   ) {
-    return (_PyImport_ImportModuleNoBlock ??= _dylib.lookupFunction<
-        _c_PyImport_ImportModuleNoBlock,
-        _dart_PyImport_ImportModuleNoBlock>('PyImport_ImportModuleNoBlock'))(
+    return _PyImport_ImportModuleNoBlock(
       name,
     );
   }
 
-  _dart_PyImport_ImportModuleNoBlock? _PyImport_ImportModuleNoBlock;
+  late final _PyImport_ImportModuleNoBlock_ptr =
+      _lookup<ffi.NativeFunction<_c_PyImport_ImportModuleNoBlock>>(
+          'PyImport_ImportModuleNoBlock');
+  late final _dart_PyImport_ImportModuleNoBlock _PyImport_ImportModuleNoBlock =
+      _PyImport_ImportModuleNoBlock_ptr.asFunction<
+          _dart_PyImport_ImportModuleNoBlock>();
 
   ffi.Pointer<PyObject> PyImport_ImportModuleLevel(
     ffi.Pointer<ffi.Int8> name,
@@ -11621,9 +13686,7 @@ class DartPyC {
     ffi.Pointer<PyObject> fromlist,
     int level,
   ) {
-    return (_PyImport_ImportModuleLevel ??= _dylib.lookupFunction<
-        _c_PyImport_ImportModuleLevel,
-        _dart_PyImport_ImportModuleLevel>('PyImport_ImportModuleLevel'))(
+    return _PyImport_ImportModuleLevel(
       name,
       globals,
       locals,
@@ -11632,7 +13695,12 @@ class DartPyC {
     );
   }
 
-  _dart_PyImport_ImportModuleLevel? _PyImport_ImportModuleLevel;
+  late final _PyImport_ImportModuleLevel_ptr =
+      _lookup<ffi.NativeFunction<_c_PyImport_ImportModuleLevel>>(
+          'PyImport_ImportModuleLevel');
+  late final _dart_PyImport_ImportModuleLevel _PyImport_ImportModuleLevel =
+      _PyImport_ImportModuleLevel_ptr.asFunction<
+          _dart_PyImport_ImportModuleLevel>();
 
   ffi.Pointer<PyObject> PyImport_ImportModuleLevelObject(
     ffi.Pointer<PyObject> name,
@@ -11641,10 +13709,7 @@ class DartPyC {
     ffi.Pointer<PyObject> fromlist,
     int level,
   ) {
-    return (_PyImport_ImportModuleLevelObject ??= _dylib.lookupFunction<
-            _c_PyImport_ImportModuleLevelObject,
-            _dart_PyImport_ImportModuleLevelObject>(
-        'PyImport_ImportModuleLevelObject'))(
+    return _PyImport_ImportModuleLevelObject(
       name,
       globals,
       locals,
@@ -11653,161 +13718,193 @@ class DartPyC {
     );
   }
 
-  _dart_PyImport_ImportModuleLevelObject? _PyImport_ImportModuleLevelObject;
+  late final _PyImport_ImportModuleLevelObject_ptr =
+      _lookup<ffi.NativeFunction<_c_PyImport_ImportModuleLevelObject>>(
+          'PyImport_ImportModuleLevelObject');
+  late final _dart_PyImport_ImportModuleLevelObject
+      _PyImport_ImportModuleLevelObject = _PyImport_ImportModuleLevelObject_ptr
+          .asFunction<_dart_PyImport_ImportModuleLevelObject>();
 
   ffi.Pointer<PyObject> PyImport_GetImporter(
     ffi.Pointer<PyObject> path,
   ) {
-    return (_PyImport_GetImporter ??= _dylib.lookupFunction<
-        _c_PyImport_GetImporter,
-        _dart_PyImport_GetImporter>('PyImport_GetImporter'))(
+    return _PyImport_GetImporter(
       path,
     );
   }
 
-  _dart_PyImport_GetImporter? _PyImport_GetImporter;
+  late final _PyImport_GetImporter_ptr =
+      _lookup<ffi.NativeFunction<_c_PyImport_GetImporter>>(
+          'PyImport_GetImporter');
+  late final _dart_PyImport_GetImporter _PyImport_GetImporter =
+      _PyImport_GetImporter_ptr.asFunction<_dart_PyImport_GetImporter>();
 
   ffi.Pointer<PyObject> PyImport_Import(
     ffi.Pointer<PyObject> name,
   ) {
-    return (_PyImport_Import ??=
-        _dylib.lookupFunction<_c_PyImport_Import, _dart_PyImport_Import>(
-            'PyImport_Import'))(
+    return _PyImport_Import(
       name,
     );
   }
 
-  _dart_PyImport_Import? _PyImport_Import;
+  late final _PyImport_Import_ptr =
+      _lookup<ffi.NativeFunction<_c_PyImport_Import>>('PyImport_Import');
+  late final _dart_PyImport_Import _PyImport_Import =
+      _PyImport_Import_ptr.asFunction<_dart_PyImport_Import>();
 
   ffi.Pointer<PyObject> PyImport_ReloadModule(
     ffi.Pointer<PyObject> m,
   ) {
-    return (_PyImport_ReloadModule ??= _dylib.lookupFunction<
-        _c_PyImport_ReloadModule,
-        _dart_PyImport_ReloadModule>('PyImport_ReloadModule'))(
+    return _PyImport_ReloadModule(
       m,
     );
   }
 
-  _dart_PyImport_ReloadModule? _PyImport_ReloadModule;
+  late final _PyImport_ReloadModule_ptr =
+      _lookup<ffi.NativeFunction<_c_PyImport_ReloadModule>>(
+          'PyImport_ReloadModule');
+  late final _dart_PyImport_ReloadModule _PyImport_ReloadModule =
+      _PyImport_ReloadModule_ptr.asFunction<_dart_PyImport_ReloadModule>();
 
   void PyImport_Cleanup() {
-    return (_PyImport_Cleanup ??=
-        _dylib.lookupFunction<_c_PyImport_Cleanup, _dart_PyImport_Cleanup>(
-            'PyImport_Cleanup'))();
+    return _PyImport_Cleanup();
   }
 
-  _dart_PyImport_Cleanup? _PyImport_Cleanup;
+  late final _PyImport_Cleanup_ptr =
+      _lookup<ffi.NativeFunction<_c_PyImport_Cleanup>>('PyImport_Cleanup');
+  late final _dart_PyImport_Cleanup _PyImport_Cleanup =
+      _PyImport_Cleanup_ptr.asFunction<_dart_PyImport_Cleanup>();
 
   int PyImport_ImportFrozenModuleObject(
     ffi.Pointer<PyObject> name,
   ) {
-    return (_PyImport_ImportFrozenModuleObject ??= _dylib.lookupFunction<
-            _c_PyImport_ImportFrozenModuleObject,
-            _dart_PyImport_ImportFrozenModuleObject>(
-        'PyImport_ImportFrozenModuleObject'))(
+    return _PyImport_ImportFrozenModuleObject(
       name,
     );
   }
 
-  _dart_PyImport_ImportFrozenModuleObject? _PyImport_ImportFrozenModuleObject;
+  late final _PyImport_ImportFrozenModuleObject_ptr =
+      _lookup<ffi.NativeFunction<_c_PyImport_ImportFrozenModuleObject>>(
+          'PyImport_ImportFrozenModuleObject');
+  late final _dart_PyImport_ImportFrozenModuleObject
+      _PyImport_ImportFrozenModuleObject =
+      _PyImport_ImportFrozenModuleObject_ptr.asFunction<
+          _dart_PyImport_ImportFrozenModuleObject>();
 
   int PyImport_ImportFrozenModule(
     ffi.Pointer<ffi.Int8> name,
   ) {
-    return (_PyImport_ImportFrozenModule ??= _dylib.lookupFunction<
-        _c_PyImport_ImportFrozenModule,
-        _dart_PyImport_ImportFrozenModule>('PyImport_ImportFrozenModule'))(
+    return _PyImport_ImportFrozenModule(
       name,
     );
   }
 
-  _dart_PyImport_ImportFrozenModule? _PyImport_ImportFrozenModule;
+  late final _PyImport_ImportFrozenModule_ptr =
+      _lookup<ffi.NativeFunction<_c_PyImport_ImportFrozenModule>>(
+          'PyImport_ImportFrozenModule');
+  late final _dart_PyImport_ImportFrozenModule _PyImport_ImportFrozenModule =
+      _PyImport_ImportFrozenModule_ptr.asFunction<
+          _dart_PyImport_ImportFrozenModule>();
 
   void PyImport_AcquireLock() {
-    return (_PyImport_AcquireLock ??= _dylib.lookupFunction<
-        _c_PyImport_AcquireLock,
-        _dart_PyImport_AcquireLock>('_PyImport_AcquireLock'))();
+    return _PyImport_AcquireLock();
   }
 
-  _dart_PyImport_AcquireLock? _PyImport_AcquireLock;
+  late final _PyImport_AcquireLock_ptr =
+      _lookup<ffi.NativeFunction<_c_PyImport_AcquireLock>>(
+          '_PyImport_AcquireLock');
+  late final _dart_PyImport_AcquireLock _PyImport_AcquireLock =
+      _PyImport_AcquireLock_ptr.asFunction<_dart_PyImport_AcquireLock>();
 
   int PyImport_ReleaseLock() {
-    return (_PyImport_ReleaseLock ??= _dylib.lookupFunction<
-        _c_PyImport_ReleaseLock,
-        _dart_PyImport_ReleaseLock>('_PyImport_ReleaseLock'))();
+    return _PyImport_ReleaseLock();
   }
 
-  _dart_PyImport_ReleaseLock? _PyImport_ReleaseLock;
+  late final _PyImport_ReleaseLock_ptr =
+      _lookup<ffi.NativeFunction<_c_PyImport_ReleaseLock>>(
+          '_PyImport_ReleaseLock');
+  late final _dart_PyImport_ReleaseLock _PyImport_ReleaseLock =
+      _PyImport_ReleaseLock_ptr.asFunction<_dart_PyImport_ReleaseLock>();
 
   void PyImport_ReInitLock() {
-    return (_PyImport_ReInitLock ??= _dylib.lookupFunction<
-        _c_PyImport_ReInitLock,
-        _dart_PyImport_ReInitLock>('_PyImport_ReInitLock'))();
+    return _PyImport_ReInitLock();
   }
 
-  _dart_PyImport_ReInitLock? _PyImport_ReInitLock;
+  late final _PyImport_ReInitLock_ptr =
+      _lookup<ffi.NativeFunction<_c_PyImport_ReInitLock>>(
+          '_PyImport_ReInitLock');
+  late final _dart_PyImport_ReInitLock _PyImport_ReInitLock =
+      _PyImport_ReInitLock_ptr.asFunction<_dart_PyImport_ReInitLock>();
 
   ffi.Pointer<PyObject> PyImport_FindBuiltin(
     ffi.Pointer<ffi.Int8> name,
     ffi.Pointer<PyObject> modules,
   ) {
-    return (_PyImport_FindBuiltin ??= _dylib.lookupFunction<
-        _c_PyImport_FindBuiltin,
-        _dart_PyImport_FindBuiltin>('_PyImport_FindBuiltin'))(
+    return _PyImport_FindBuiltin(
       name,
       modules,
     );
   }
 
-  _dart_PyImport_FindBuiltin? _PyImport_FindBuiltin;
+  late final _PyImport_FindBuiltin_ptr =
+      _lookup<ffi.NativeFunction<_c_PyImport_FindBuiltin>>(
+          '_PyImport_FindBuiltin');
+  late final _dart_PyImport_FindBuiltin _PyImport_FindBuiltin =
+      _PyImport_FindBuiltin_ptr.asFunction<_dart_PyImport_FindBuiltin>();
 
   ffi.Pointer<PyObject> PyImport_FindExtensionObject(
     ffi.Pointer<PyObject> arg0,
     ffi.Pointer<PyObject> arg1,
   ) {
-    return (_PyImport_FindExtensionObject ??= _dylib.lookupFunction<
-        _c_PyImport_FindExtensionObject,
-        _dart_PyImport_FindExtensionObject>('_PyImport_FindExtensionObject'))(
+    return _PyImport_FindExtensionObject(
       arg0,
       arg1,
     );
   }
 
-  _dart_PyImport_FindExtensionObject? _PyImport_FindExtensionObject;
+  late final _PyImport_FindExtensionObject_ptr =
+      _lookup<ffi.NativeFunction<_c_PyImport_FindExtensionObject>>(
+          '_PyImport_FindExtensionObject');
+  late final _dart_PyImport_FindExtensionObject _PyImport_FindExtensionObject =
+      _PyImport_FindExtensionObject_ptr.asFunction<
+          _dart_PyImport_FindExtensionObject>();
 
   ffi.Pointer<PyObject> PyImport_FindExtensionObjectEx(
     ffi.Pointer<PyObject> arg0,
     ffi.Pointer<PyObject> arg1,
     ffi.Pointer<PyObject> arg2,
   ) {
-    return (_PyImport_FindExtensionObjectEx ??= _dylib.lookupFunction<
-            _c_PyImport_FindExtensionObjectEx,
-            _dart_PyImport_FindExtensionObjectEx>(
-        '_PyImport_FindExtensionObjectEx'))(
+    return _PyImport_FindExtensionObjectEx(
       arg0,
       arg1,
       arg2,
     );
   }
 
-  _dart_PyImport_FindExtensionObjectEx? _PyImport_FindExtensionObjectEx;
+  late final _PyImport_FindExtensionObjectEx_ptr =
+      _lookup<ffi.NativeFunction<_c_PyImport_FindExtensionObjectEx>>(
+          '_PyImport_FindExtensionObjectEx');
+  late final _dart_PyImport_FindExtensionObjectEx
+      _PyImport_FindExtensionObjectEx = _PyImport_FindExtensionObjectEx_ptr
+          .asFunction<_dart_PyImport_FindExtensionObjectEx>();
 
   int PyImport_FixupBuiltin(
     ffi.Pointer<PyObject> mod,
     ffi.Pointer<ffi.Int8> name,
     ffi.Pointer<PyObject> modules,
   ) {
-    return (_PyImport_FixupBuiltin ??= _dylib.lookupFunction<
-        _c_PyImport_FixupBuiltin,
-        _dart_PyImport_FixupBuiltin>('_PyImport_FixupBuiltin'))(
+    return _PyImport_FixupBuiltin(
       mod,
       name,
       modules,
     );
   }
 
-  _dart_PyImport_FixupBuiltin? _PyImport_FixupBuiltin;
+  late final _PyImport_FixupBuiltin_ptr =
+      _lookup<ffi.NativeFunction<_c_PyImport_FixupBuiltin>>(
+          '_PyImport_FixupBuiltin');
+  late final _dart_PyImport_FixupBuiltin _PyImport_FixupBuiltin =
+      _PyImport_FixupBuiltin_ptr.asFunction<_dart_PyImport_FixupBuiltin>();
 
   int PyImport_FixupExtensionObject(
     ffi.Pointer<PyObject> arg0,
@@ -11815,9 +13912,7 @@ class DartPyC {
     ffi.Pointer<PyObject> arg2,
     ffi.Pointer<PyObject> arg3,
   ) {
-    return (_PyImport_FixupExtensionObject ??= _dylib.lookupFunction<
-        _c_PyImport_FixupExtensionObject,
-        _dart_PyImport_FixupExtensionObject>('_PyImport_FixupExtensionObject'))(
+    return _PyImport_FixupExtensionObject(
       arg0,
       arg1,
       arg2,
@@ -11825,999 +13920,1135 @@ class DartPyC {
     );
   }
 
-  _dart_PyImport_FixupExtensionObject? _PyImport_FixupExtensionObject;
+  late final _PyImport_FixupExtensionObject_ptr =
+      _lookup<ffi.NativeFunction<_c_PyImport_FixupExtensionObject>>(
+          '_PyImport_FixupExtensionObject');
+  late final _dart_PyImport_FixupExtensionObject
+      _PyImport_FixupExtensionObject = _PyImport_FixupExtensionObject_ptr
+          .asFunction<_dart_PyImport_FixupExtensionObject>();
 
-  late final ffi.Pointer<_inittab> PyImport_Inittab =
-      _dylib.lookup<ffi.Pointer<_inittab>>('PyImport_Inittab').value;
+  late final ffi.Pointer<ffi.Pointer<_inittab>> _PyImport_Inittab =
+      _lookup<ffi.Pointer<_inittab>>('PyImport_Inittab');
+
+  ffi.Pointer<_inittab> get PyImport_Inittab => _PyImport_Inittab.value;
+
+  set PyImport_Inittab(ffi.Pointer<_inittab> value) =>
+      _PyImport_Inittab.value = value;
 
   int PyImport_ExtendInittab(
     ffi.Pointer<_inittab> newtab,
   ) {
-    return (_PyImport_ExtendInittab ??= _dylib.lookupFunction<
-        _c_PyImport_ExtendInittab,
-        _dart_PyImport_ExtendInittab>('PyImport_ExtendInittab'))(
+    return _PyImport_ExtendInittab(
       newtab,
     );
   }
 
-  _dart_PyImport_ExtendInittab? _PyImport_ExtendInittab;
+  late final _PyImport_ExtendInittab_ptr =
+      _lookup<ffi.NativeFunction<_c_PyImport_ExtendInittab>>(
+          'PyImport_ExtendInittab');
+  late final _dart_PyImport_ExtendInittab _PyImport_ExtendInittab =
+      _PyImport_ExtendInittab_ptr.asFunction<_dart_PyImport_ExtendInittab>();
 
-  late final _typeobject PyNullImporter_Type =
-      _dylib.lookup<_typeobject>('PyNullImporter_Type').ref;
+  late final ffi.Pointer<_typeobject> _PyNullImporter_Type =
+      _lookup<_typeobject>('PyNullImporter_Type');
+
+  _typeobject get PyNullImporter_Type => _PyNullImporter_Type.ref;
 
   int PyImport_AppendInittab(
     ffi.Pointer<ffi.Int8> name,
-    ffi.Pointer<ffi.NativeFunction<_typedefC_16>> initfunc,
+    ffi.Pointer<ffi.NativeFunction<_typedefC_11>> initfunc,
   ) {
-    return (_PyImport_AppendInittab ??= _dylib.lookupFunction<
-        _c_PyImport_AppendInittab,
-        _dart_PyImport_AppendInittab>('PyImport_AppendInittab'))(
+    return _PyImport_AppendInittab(
       name,
       initfunc,
     );
   }
 
-  _dart_PyImport_AppendInittab? _PyImport_AppendInittab;
+  late final _PyImport_AppendInittab_ptr =
+      _lookup<ffi.NativeFunction<_c_PyImport_AppendInittab>>(
+          'PyImport_AppendInittab');
+  late final _dart_PyImport_AppendInittab _PyImport_AppendInittab =
+      _PyImport_AppendInittab_ptr.asFunction<_dart_PyImport_AppendInittab>();
 
-  late final ffi.Pointer<_frozen> PyImport_FrozenModules =
-      _dylib.lookup<ffi.Pointer<_frozen>>('PyImport_FrozenModules').value;
+  late final ffi.Pointer<ffi.Pointer<_frozen>> _PyImport_FrozenModules =
+      _lookup<ffi.Pointer<_frozen>>('PyImport_FrozenModules');
+
+  ffi.Pointer<_frozen> get PyImport_FrozenModules =>
+      _PyImport_FrozenModules.value;
+
+  set PyImport_FrozenModules(ffi.Pointer<_frozen> value) =>
+      _PyImport_FrozenModules.value = value;
 
   ffi.Pointer<PyObject> PyObject_Call(
     ffi.Pointer<PyObject> callable,
     ffi.Pointer<PyObject> args,
     ffi.Pointer<PyObject> kwargs,
   ) {
-    return (_PyObject_Call ??=
-        _dylib.lookupFunction<_c_PyObject_Call, _dart_PyObject_Call>(
-            'PyObject_Call'))(
+    return _PyObject_Call(
       callable,
       args,
       kwargs,
     );
   }
 
-  _dart_PyObject_Call? _PyObject_Call;
+  late final _PyObject_Call_ptr =
+      _lookup<ffi.NativeFunction<_c_PyObject_Call>>('PyObject_Call');
+  late final _dart_PyObject_Call _PyObject_Call =
+      _PyObject_Call_ptr.asFunction<_dart_PyObject_Call>();
 
   ffi.Pointer<PyObject> PyObject_CallObject(
     ffi.Pointer<PyObject> callable,
     ffi.Pointer<PyObject> args,
   ) {
-    return (_PyObject_CallObject ??= _dylib.lookupFunction<
-        _c_PyObject_CallObject,
-        _dart_PyObject_CallObject>('PyObject_CallObject'))(
+    return _PyObject_CallObject(
       callable,
       args,
     );
   }
 
-  _dart_PyObject_CallObject? _PyObject_CallObject;
+  late final _PyObject_CallObject_ptr =
+      _lookup<ffi.NativeFunction<_c_PyObject_CallObject>>(
+          'PyObject_CallObject');
+  late final _dart_PyObject_CallObject _PyObject_CallObject =
+      _PyObject_CallObject_ptr.asFunction<_dart_PyObject_CallObject>();
 
   ffi.Pointer<PyObject> PyObject_CallFunction(
     ffi.Pointer<PyObject> callable,
     ffi.Pointer<ffi.Int8> format,
   ) {
-    return (_PyObject_CallFunction ??= _dylib.lookupFunction<
-        _c_PyObject_CallFunction,
-        _dart_PyObject_CallFunction>('PyObject_CallFunction'))(
+    return _PyObject_CallFunction(
       callable,
       format,
     );
   }
 
-  _dart_PyObject_CallFunction? _PyObject_CallFunction;
+  late final _PyObject_CallFunction_ptr =
+      _lookup<ffi.NativeFunction<_c_PyObject_CallFunction>>(
+          'PyObject_CallFunction');
+  late final _dart_PyObject_CallFunction _PyObject_CallFunction =
+      _PyObject_CallFunction_ptr.asFunction<_dart_PyObject_CallFunction>();
 
   ffi.Pointer<PyObject> PyObject_CallMethod(
     ffi.Pointer<PyObject> obj,
     ffi.Pointer<ffi.Int8> name,
     ffi.Pointer<ffi.Int8> format,
   ) {
-    return (_PyObject_CallMethod ??= _dylib.lookupFunction<
-        _c_PyObject_CallMethod,
-        _dart_PyObject_CallMethod>('PyObject_CallMethod'))(
+    return _PyObject_CallMethod(
       obj,
       name,
       format,
     );
   }
 
-  _dart_PyObject_CallMethod? _PyObject_CallMethod;
+  late final _PyObject_CallMethod_ptr =
+      _lookup<ffi.NativeFunction<_c_PyObject_CallMethod>>(
+          'PyObject_CallMethod');
+  late final _dart_PyObject_CallMethod _PyObject_CallMethod =
+      _PyObject_CallMethod_ptr.asFunction<_dart_PyObject_CallMethod>();
 
   ffi.Pointer<PyObject> PyObject_CallFunction_SizeT(
     ffi.Pointer<PyObject> callable,
     ffi.Pointer<ffi.Int8> format,
   ) {
-    return (_PyObject_CallFunction_SizeT ??= _dylib.lookupFunction<
-        _c_PyObject_CallFunction_SizeT,
-        _dart_PyObject_CallFunction_SizeT>('_PyObject_CallFunction_SizeT'))(
+    return _PyObject_CallFunction_SizeT(
       callable,
       format,
     );
   }
 
-  _dart_PyObject_CallFunction_SizeT? _PyObject_CallFunction_SizeT;
+  late final _PyObject_CallFunction_SizeT_ptr =
+      _lookup<ffi.NativeFunction<_c_PyObject_CallFunction_SizeT>>(
+          '_PyObject_CallFunction_SizeT');
+  late final _dart_PyObject_CallFunction_SizeT _PyObject_CallFunction_SizeT =
+      _PyObject_CallFunction_SizeT_ptr.asFunction<
+          _dart_PyObject_CallFunction_SizeT>();
 
   ffi.Pointer<PyObject> PyObject_CallMethod_SizeT(
     ffi.Pointer<PyObject> obj,
     ffi.Pointer<ffi.Int8> name,
     ffi.Pointer<ffi.Int8> format,
   ) {
-    return (_PyObject_CallMethod_SizeT ??= _dylib.lookupFunction<
-        _c_PyObject_CallMethod_SizeT,
-        _dart_PyObject_CallMethod_SizeT>('_PyObject_CallMethod_SizeT'))(
+    return _PyObject_CallMethod_SizeT(
       obj,
       name,
       format,
     );
   }
 
-  _dart_PyObject_CallMethod_SizeT? _PyObject_CallMethod_SizeT;
+  late final _PyObject_CallMethod_SizeT_ptr =
+      _lookup<ffi.NativeFunction<_c_PyObject_CallMethod_SizeT>>(
+          '_PyObject_CallMethod_SizeT');
+  late final _dart_PyObject_CallMethod_SizeT _PyObject_CallMethod_SizeT =
+      _PyObject_CallMethod_SizeT_ptr.asFunction<
+          _dart_PyObject_CallMethod_SizeT>();
 
   ffi.Pointer<PyObject> PyObject_CallFunctionObjArgs(
     ffi.Pointer<PyObject> callable,
   ) {
-    return (_PyObject_CallFunctionObjArgs ??= _dylib.lookupFunction<
-        _c_PyObject_CallFunctionObjArgs,
-        _dart_PyObject_CallFunctionObjArgs>('PyObject_CallFunctionObjArgs'))(
+    return _PyObject_CallFunctionObjArgs(
       callable,
     );
   }
 
-  _dart_PyObject_CallFunctionObjArgs? _PyObject_CallFunctionObjArgs;
+  late final _PyObject_CallFunctionObjArgs_ptr =
+      _lookup<ffi.NativeFunction<_c_PyObject_CallFunctionObjArgs>>(
+          'PyObject_CallFunctionObjArgs');
+  late final _dart_PyObject_CallFunctionObjArgs _PyObject_CallFunctionObjArgs =
+      _PyObject_CallFunctionObjArgs_ptr.asFunction<
+          _dart_PyObject_CallFunctionObjArgs>();
 
   ffi.Pointer<PyObject> PyObject_CallMethodObjArgs(
     ffi.Pointer<PyObject> obj,
     ffi.Pointer<PyObject> name,
   ) {
-    return (_PyObject_CallMethodObjArgs ??= _dylib.lookupFunction<
-        _c_PyObject_CallMethodObjArgs,
-        _dart_PyObject_CallMethodObjArgs>('PyObject_CallMethodObjArgs'))(
+    return _PyObject_CallMethodObjArgs(
       obj,
       name,
     );
   }
 
-  _dart_PyObject_CallMethodObjArgs? _PyObject_CallMethodObjArgs;
+  late final _PyObject_CallMethodObjArgs_ptr =
+      _lookup<ffi.NativeFunction<_c_PyObject_CallMethodObjArgs>>(
+          'PyObject_CallMethodObjArgs');
+  late final _dart_PyObject_CallMethodObjArgs _PyObject_CallMethodObjArgs =
+      _PyObject_CallMethodObjArgs_ptr.asFunction<
+          _dart_PyObject_CallMethodObjArgs>();
 
   ffi.Pointer<PyObject> PyObject_Type(
     ffi.Pointer<PyObject> o,
   ) {
-    return (_PyObject_Type ??=
-        _dylib.lookupFunction<_c_PyObject_Type, _dart_PyObject_Type>(
-            'PyObject_Type'))(
+    return _PyObject_Type(
       o,
     );
   }
 
-  _dart_PyObject_Type? _PyObject_Type;
+  late final _PyObject_Type_ptr =
+      _lookup<ffi.NativeFunction<_c_PyObject_Type>>('PyObject_Type');
+  late final _dart_PyObject_Type _PyObject_Type =
+      _PyObject_Type_ptr.asFunction<_dart_PyObject_Type>();
 
   int PyObject_Size(
     ffi.Pointer<PyObject> o,
   ) {
-    return (_PyObject_Size ??=
-        _dylib.lookupFunction<_c_PyObject_Size, _dart_PyObject_Size>(
-            'PyObject_Size'))(
+    return _PyObject_Size(
       o,
     );
   }
 
-  _dart_PyObject_Size? _PyObject_Size;
+  late final _PyObject_Size_ptr =
+      _lookup<ffi.NativeFunction<_c_PyObject_Size>>('PyObject_Size');
+  late final _dart_PyObject_Size _PyObject_Size =
+      _PyObject_Size_ptr.asFunction<_dart_PyObject_Size>();
 
   int PyObject_Length(
     ffi.Pointer<PyObject> o,
   ) {
-    return (_PyObject_Length ??=
-        _dylib.lookupFunction<_c_PyObject_Length, _dart_PyObject_Length>(
-            'PyObject_Length'))(
+    return _PyObject_Length(
       o,
     );
   }
 
-  _dart_PyObject_Length? _PyObject_Length;
+  late final _PyObject_Length_ptr =
+      _lookup<ffi.NativeFunction<_c_PyObject_Length>>('PyObject_Length');
+  late final _dart_PyObject_Length _PyObject_Length =
+      _PyObject_Length_ptr.asFunction<_dart_PyObject_Length>();
 
   ffi.Pointer<PyObject> PyObject_GetItem(
     ffi.Pointer<PyObject> o,
     ffi.Pointer<PyObject> key,
   ) {
-    return (_PyObject_GetItem ??=
-        _dylib.lookupFunction<_c_PyObject_GetItem, _dart_PyObject_GetItem>(
-            'PyObject_GetItem'))(
+    return _PyObject_GetItem(
       o,
       key,
     );
   }
 
-  _dart_PyObject_GetItem? _PyObject_GetItem;
+  late final _PyObject_GetItem_ptr =
+      _lookup<ffi.NativeFunction<_c_PyObject_GetItem>>('PyObject_GetItem');
+  late final _dart_PyObject_GetItem _PyObject_GetItem =
+      _PyObject_GetItem_ptr.asFunction<_dart_PyObject_GetItem>();
 
   int PyObject_SetItem(
     ffi.Pointer<PyObject> o,
     ffi.Pointer<PyObject> key,
     ffi.Pointer<PyObject> v,
   ) {
-    return (_PyObject_SetItem ??=
-        _dylib.lookupFunction<_c_PyObject_SetItem, _dart_PyObject_SetItem>(
-            'PyObject_SetItem'))(
+    return _PyObject_SetItem(
       o,
       key,
       v,
     );
   }
 
-  _dart_PyObject_SetItem? _PyObject_SetItem;
+  late final _PyObject_SetItem_ptr =
+      _lookup<ffi.NativeFunction<_c_PyObject_SetItem>>('PyObject_SetItem');
+  late final _dart_PyObject_SetItem _PyObject_SetItem =
+      _PyObject_SetItem_ptr.asFunction<_dart_PyObject_SetItem>();
 
   int PyObject_DelItemString(
     ffi.Pointer<PyObject> o,
     ffi.Pointer<ffi.Int8> key,
   ) {
-    return (_PyObject_DelItemString ??= _dylib.lookupFunction<
-        _c_PyObject_DelItemString,
-        _dart_PyObject_DelItemString>('PyObject_DelItemString'))(
+    return _PyObject_DelItemString(
       o,
       key,
     );
   }
 
-  _dart_PyObject_DelItemString? _PyObject_DelItemString;
+  late final _PyObject_DelItemString_ptr =
+      _lookup<ffi.NativeFunction<_c_PyObject_DelItemString>>(
+          'PyObject_DelItemString');
+  late final _dart_PyObject_DelItemString _PyObject_DelItemString =
+      _PyObject_DelItemString_ptr.asFunction<_dart_PyObject_DelItemString>();
 
   int PyObject_DelItem(
     ffi.Pointer<PyObject> o,
     ffi.Pointer<PyObject> key,
   ) {
-    return (_PyObject_DelItem ??=
-        _dylib.lookupFunction<_c_PyObject_DelItem, _dart_PyObject_DelItem>(
-            'PyObject_DelItem'))(
+    return _PyObject_DelItem(
       o,
       key,
     );
   }
 
-  _dart_PyObject_DelItem? _PyObject_DelItem;
+  late final _PyObject_DelItem_ptr =
+      _lookup<ffi.NativeFunction<_c_PyObject_DelItem>>('PyObject_DelItem');
+  late final _dart_PyObject_DelItem _PyObject_DelItem =
+      _PyObject_DelItem_ptr.asFunction<_dart_PyObject_DelItem>();
 
   int PyObject_AsCharBuffer(
     ffi.Pointer<PyObject> obj,
     ffi.Pointer<ffi.Pointer<ffi.Int8>> buffer,
     ffi.Pointer<ffi.Int64> buffer_len,
   ) {
-    return (_PyObject_AsCharBuffer ??= _dylib.lookupFunction<
-        _c_PyObject_AsCharBuffer,
-        _dart_PyObject_AsCharBuffer>('PyObject_AsCharBuffer'))(
+    return _PyObject_AsCharBuffer(
       obj,
       buffer,
       buffer_len,
     );
   }
 
-  _dart_PyObject_AsCharBuffer? _PyObject_AsCharBuffer;
+  late final _PyObject_AsCharBuffer_ptr =
+      _lookup<ffi.NativeFunction<_c_PyObject_AsCharBuffer>>(
+          'PyObject_AsCharBuffer');
+  late final _dart_PyObject_AsCharBuffer _PyObject_AsCharBuffer =
+      _PyObject_AsCharBuffer_ptr.asFunction<_dart_PyObject_AsCharBuffer>();
 
   int PyObject_CheckReadBuffer(
     ffi.Pointer<PyObject> obj,
   ) {
-    return (_PyObject_CheckReadBuffer ??= _dylib.lookupFunction<
-        _c_PyObject_CheckReadBuffer,
-        _dart_PyObject_CheckReadBuffer>('PyObject_CheckReadBuffer'))(
+    return _PyObject_CheckReadBuffer(
       obj,
     );
   }
 
-  _dart_PyObject_CheckReadBuffer? _PyObject_CheckReadBuffer;
+  late final _PyObject_CheckReadBuffer_ptr =
+      _lookup<ffi.NativeFunction<_c_PyObject_CheckReadBuffer>>(
+          'PyObject_CheckReadBuffer');
+  late final _dart_PyObject_CheckReadBuffer _PyObject_CheckReadBuffer =
+      _PyObject_CheckReadBuffer_ptr.asFunction<
+          _dart_PyObject_CheckReadBuffer>();
 
   int PyObject_AsReadBuffer(
     ffi.Pointer<PyObject> obj,
     ffi.Pointer<ffi.Pointer<ffi.Void>> buffer,
     ffi.Pointer<ffi.Int64> buffer_len,
   ) {
-    return (_PyObject_AsReadBuffer ??= _dylib.lookupFunction<
-        _c_PyObject_AsReadBuffer,
-        _dart_PyObject_AsReadBuffer>('PyObject_AsReadBuffer'))(
+    return _PyObject_AsReadBuffer(
       obj,
       buffer,
       buffer_len,
     );
   }
 
-  _dart_PyObject_AsReadBuffer? _PyObject_AsReadBuffer;
+  late final _PyObject_AsReadBuffer_ptr =
+      _lookup<ffi.NativeFunction<_c_PyObject_AsReadBuffer>>(
+          'PyObject_AsReadBuffer');
+  late final _dart_PyObject_AsReadBuffer _PyObject_AsReadBuffer =
+      _PyObject_AsReadBuffer_ptr.asFunction<_dart_PyObject_AsReadBuffer>();
 
   int PyObject_AsWriteBuffer(
     ffi.Pointer<PyObject> obj,
     ffi.Pointer<ffi.Pointer<ffi.Void>> buffer,
     ffi.Pointer<ffi.Int64> buffer_len,
   ) {
-    return (_PyObject_AsWriteBuffer ??= _dylib.lookupFunction<
-        _c_PyObject_AsWriteBuffer,
-        _dart_PyObject_AsWriteBuffer>('PyObject_AsWriteBuffer'))(
+    return _PyObject_AsWriteBuffer(
       obj,
       buffer,
       buffer_len,
     );
   }
 
-  _dart_PyObject_AsWriteBuffer? _PyObject_AsWriteBuffer;
+  late final _PyObject_AsWriteBuffer_ptr =
+      _lookup<ffi.NativeFunction<_c_PyObject_AsWriteBuffer>>(
+          'PyObject_AsWriteBuffer');
+  late final _dart_PyObject_AsWriteBuffer _PyObject_AsWriteBuffer =
+      _PyObject_AsWriteBuffer_ptr.asFunction<_dart_PyObject_AsWriteBuffer>();
 
   ffi.Pointer<PyObject> PyObject_Format(
     ffi.Pointer<PyObject> obj,
     ffi.Pointer<PyObject> format_spec,
   ) {
-    return (_PyObject_Format ??=
-        _dylib.lookupFunction<_c_PyObject_Format, _dart_PyObject_Format>(
-            'PyObject_Format'))(
+    return _PyObject_Format(
       obj,
       format_spec,
     );
   }
 
-  _dart_PyObject_Format? _PyObject_Format;
+  late final _PyObject_Format_ptr =
+      _lookup<ffi.NativeFunction<_c_PyObject_Format>>('PyObject_Format');
+  late final _dart_PyObject_Format _PyObject_Format =
+      _PyObject_Format_ptr.asFunction<_dart_PyObject_Format>();
 
   ffi.Pointer<PyObject> PyObject_GetIter(
     ffi.Pointer<PyObject> arg0,
   ) {
-    return (_PyObject_GetIter ??=
-        _dylib.lookupFunction<_c_PyObject_GetIter, _dart_PyObject_GetIter>(
-            'PyObject_GetIter'))(
+    return _PyObject_GetIter(
       arg0,
     );
   }
 
-  _dart_PyObject_GetIter? _PyObject_GetIter;
+  late final _PyObject_GetIter_ptr =
+      _lookup<ffi.NativeFunction<_c_PyObject_GetIter>>('PyObject_GetIter');
+  late final _dart_PyObject_GetIter _PyObject_GetIter =
+      _PyObject_GetIter_ptr.asFunction<_dart_PyObject_GetIter>();
 
   int PyIter_Check(
     ffi.Pointer<PyObject> arg0,
   ) {
-    return (_PyIter_Check ??= _dylib
-        .lookupFunction<_c_PyIter_Check, _dart_PyIter_Check>('PyIter_Check'))(
+    return _PyIter_Check(
       arg0,
     );
   }
 
-  _dart_PyIter_Check? _PyIter_Check;
+  late final _PyIter_Check_ptr =
+      _lookup<ffi.NativeFunction<_c_PyIter_Check>>('PyIter_Check');
+  late final _dart_PyIter_Check _PyIter_Check =
+      _PyIter_Check_ptr.asFunction<_dart_PyIter_Check>();
 
   ffi.Pointer<PyObject> PyIter_Next(
     ffi.Pointer<PyObject> arg0,
   ) {
-    return (_PyIter_Next ??= _dylib
-        .lookupFunction<_c_PyIter_Next, _dart_PyIter_Next>('PyIter_Next'))(
+    return _PyIter_Next(
       arg0,
     );
   }
 
-  _dart_PyIter_Next? _PyIter_Next;
+  late final _PyIter_Next_ptr =
+      _lookup<ffi.NativeFunction<_c_PyIter_Next>>('PyIter_Next');
+  late final _dart_PyIter_Next _PyIter_Next =
+      _PyIter_Next_ptr.asFunction<_dart_PyIter_Next>();
 
   int PyNumber_Check(
     ffi.Pointer<PyObject> o,
   ) {
-    return (_PyNumber_Check ??=
-        _dylib.lookupFunction<_c_PyNumber_Check, _dart_PyNumber_Check>(
-            'PyNumber_Check'))(
+    return _PyNumber_Check(
       o,
     );
   }
 
-  _dart_PyNumber_Check? _PyNumber_Check;
+  late final _PyNumber_Check_ptr =
+      _lookup<ffi.NativeFunction<_c_PyNumber_Check>>('PyNumber_Check');
+  late final _dart_PyNumber_Check _PyNumber_Check =
+      _PyNumber_Check_ptr.asFunction<_dart_PyNumber_Check>();
 
   ffi.Pointer<PyObject> PyNumber_Add(
     ffi.Pointer<PyObject> o1,
     ffi.Pointer<PyObject> o2,
   ) {
-    return (_PyNumber_Add ??= _dylib
-        .lookupFunction<_c_PyNumber_Add, _dart_PyNumber_Add>('PyNumber_Add'))(
+    return _PyNumber_Add(
       o1,
       o2,
     );
   }
 
-  _dart_PyNumber_Add? _PyNumber_Add;
+  late final _PyNumber_Add_ptr =
+      _lookup<ffi.NativeFunction<_c_PyNumber_Add>>('PyNumber_Add');
+  late final _dart_PyNumber_Add _PyNumber_Add =
+      _PyNumber_Add_ptr.asFunction<_dart_PyNumber_Add>();
 
   ffi.Pointer<PyObject> PyNumber_Subtract(
     ffi.Pointer<PyObject> o1,
     ffi.Pointer<PyObject> o2,
   ) {
-    return (_PyNumber_Subtract ??=
-        _dylib.lookupFunction<_c_PyNumber_Subtract, _dart_PyNumber_Subtract>(
-            'PyNumber_Subtract'))(
+    return _PyNumber_Subtract(
       o1,
       o2,
     );
   }
 
-  _dart_PyNumber_Subtract? _PyNumber_Subtract;
+  late final _PyNumber_Subtract_ptr =
+      _lookup<ffi.NativeFunction<_c_PyNumber_Subtract>>('PyNumber_Subtract');
+  late final _dart_PyNumber_Subtract _PyNumber_Subtract =
+      _PyNumber_Subtract_ptr.asFunction<_dart_PyNumber_Subtract>();
 
   ffi.Pointer<PyObject> PyNumber_Multiply(
     ffi.Pointer<PyObject> o1,
     ffi.Pointer<PyObject> o2,
   ) {
-    return (_PyNumber_Multiply ??=
-        _dylib.lookupFunction<_c_PyNumber_Multiply, _dart_PyNumber_Multiply>(
-            'PyNumber_Multiply'))(
+    return _PyNumber_Multiply(
       o1,
       o2,
     );
   }
 
-  _dart_PyNumber_Multiply? _PyNumber_Multiply;
+  late final _PyNumber_Multiply_ptr =
+      _lookup<ffi.NativeFunction<_c_PyNumber_Multiply>>('PyNumber_Multiply');
+  late final _dart_PyNumber_Multiply _PyNumber_Multiply =
+      _PyNumber_Multiply_ptr.asFunction<_dart_PyNumber_Multiply>();
 
   ffi.Pointer<PyObject> PyNumber_MatrixMultiply(
     ffi.Pointer<PyObject> o1,
     ffi.Pointer<PyObject> o2,
   ) {
-    return (_PyNumber_MatrixMultiply ??= _dylib.lookupFunction<
-        _c_PyNumber_MatrixMultiply,
-        _dart_PyNumber_MatrixMultiply>('PyNumber_MatrixMultiply'))(
+    return _PyNumber_MatrixMultiply(
       o1,
       o2,
     );
   }
 
-  _dart_PyNumber_MatrixMultiply? _PyNumber_MatrixMultiply;
+  late final _PyNumber_MatrixMultiply_ptr =
+      _lookup<ffi.NativeFunction<_c_PyNumber_MatrixMultiply>>(
+          'PyNumber_MatrixMultiply');
+  late final _dart_PyNumber_MatrixMultiply _PyNumber_MatrixMultiply =
+      _PyNumber_MatrixMultiply_ptr.asFunction<_dart_PyNumber_MatrixMultiply>();
 
   ffi.Pointer<PyObject> PyNumber_FloorDivide(
     ffi.Pointer<PyObject> o1,
     ffi.Pointer<PyObject> o2,
   ) {
-    return (_PyNumber_FloorDivide ??= _dylib.lookupFunction<
-        _c_PyNumber_FloorDivide,
-        _dart_PyNumber_FloorDivide>('PyNumber_FloorDivide'))(
+    return _PyNumber_FloorDivide(
       o1,
       o2,
     );
   }
 
-  _dart_PyNumber_FloorDivide? _PyNumber_FloorDivide;
+  late final _PyNumber_FloorDivide_ptr =
+      _lookup<ffi.NativeFunction<_c_PyNumber_FloorDivide>>(
+          'PyNumber_FloorDivide');
+  late final _dart_PyNumber_FloorDivide _PyNumber_FloorDivide =
+      _PyNumber_FloorDivide_ptr.asFunction<_dart_PyNumber_FloorDivide>();
 
   ffi.Pointer<PyObject> PyNumber_TrueDivide(
     ffi.Pointer<PyObject> o1,
     ffi.Pointer<PyObject> o2,
   ) {
-    return (_PyNumber_TrueDivide ??= _dylib.lookupFunction<
-        _c_PyNumber_TrueDivide,
-        _dart_PyNumber_TrueDivide>('PyNumber_TrueDivide'))(
+    return _PyNumber_TrueDivide(
       o1,
       o2,
     );
   }
 
-  _dart_PyNumber_TrueDivide? _PyNumber_TrueDivide;
+  late final _PyNumber_TrueDivide_ptr =
+      _lookup<ffi.NativeFunction<_c_PyNumber_TrueDivide>>(
+          'PyNumber_TrueDivide');
+  late final _dart_PyNumber_TrueDivide _PyNumber_TrueDivide =
+      _PyNumber_TrueDivide_ptr.asFunction<_dart_PyNumber_TrueDivide>();
 
   ffi.Pointer<PyObject> PyNumber_Remainder(
     ffi.Pointer<PyObject> o1,
     ffi.Pointer<PyObject> o2,
   ) {
-    return (_PyNumber_Remainder ??=
-        _dylib.lookupFunction<_c_PyNumber_Remainder, _dart_PyNumber_Remainder>(
-            'PyNumber_Remainder'))(
+    return _PyNumber_Remainder(
       o1,
       o2,
     );
   }
 
-  _dart_PyNumber_Remainder? _PyNumber_Remainder;
+  late final _PyNumber_Remainder_ptr =
+      _lookup<ffi.NativeFunction<_c_PyNumber_Remainder>>('PyNumber_Remainder');
+  late final _dart_PyNumber_Remainder _PyNumber_Remainder =
+      _PyNumber_Remainder_ptr.asFunction<_dart_PyNumber_Remainder>();
 
   ffi.Pointer<PyObject> PyNumber_Divmod(
     ffi.Pointer<PyObject> o1,
     ffi.Pointer<PyObject> o2,
   ) {
-    return (_PyNumber_Divmod ??=
-        _dylib.lookupFunction<_c_PyNumber_Divmod, _dart_PyNumber_Divmod>(
-            'PyNumber_Divmod'))(
+    return _PyNumber_Divmod(
       o1,
       o2,
     );
   }
 
-  _dart_PyNumber_Divmod? _PyNumber_Divmod;
+  late final _PyNumber_Divmod_ptr =
+      _lookup<ffi.NativeFunction<_c_PyNumber_Divmod>>('PyNumber_Divmod');
+  late final _dart_PyNumber_Divmod _PyNumber_Divmod =
+      _PyNumber_Divmod_ptr.asFunction<_dart_PyNumber_Divmod>();
 
   ffi.Pointer<PyObject> PyNumber_Power(
     ffi.Pointer<PyObject> o1,
     ffi.Pointer<PyObject> o2,
     ffi.Pointer<PyObject> o3,
   ) {
-    return (_PyNumber_Power ??=
-        _dylib.lookupFunction<_c_PyNumber_Power, _dart_PyNumber_Power>(
-            'PyNumber_Power'))(
+    return _PyNumber_Power(
       o1,
       o2,
       o3,
     );
   }
 
-  _dart_PyNumber_Power? _PyNumber_Power;
+  late final _PyNumber_Power_ptr =
+      _lookup<ffi.NativeFunction<_c_PyNumber_Power>>('PyNumber_Power');
+  late final _dart_PyNumber_Power _PyNumber_Power =
+      _PyNumber_Power_ptr.asFunction<_dart_PyNumber_Power>();
 
   ffi.Pointer<PyObject> PyNumber_Negative(
     ffi.Pointer<PyObject> o,
   ) {
-    return (_PyNumber_Negative ??=
-        _dylib.lookupFunction<_c_PyNumber_Negative, _dart_PyNumber_Negative>(
-            'PyNumber_Negative'))(
+    return _PyNumber_Negative(
       o,
     );
   }
 
-  _dart_PyNumber_Negative? _PyNumber_Negative;
+  late final _PyNumber_Negative_ptr =
+      _lookup<ffi.NativeFunction<_c_PyNumber_Negative>>('PyNumber_Negative');
+  late final _dart_PyNumber_Negative _PyNumber_Negative =
+      _PyNumber_Negative_ptr.asFunction<_dart_PyNumber_Negative>();
 
   ffi.Pointer<PyObject> PyNumber_Positive(
     ffi.Pointer<PyObject> o,
   ) {
-    return (_PyNumber_Positive ??=
-        _dylib.lookupFunction<_c_PyNumber_Positive, _dart_PyNumber_Positive>(
-            'PyNumber_Positive'))(
+    return _PyNumber_Positive(
       o,
     );
   }
 
-  _dart_PyNumber_Positive? _PyNumber_Positive;
+  late final _PyNumber_Positive_ptr =
+      _lookup<ffi.NativeFunction<_c_PyNumber_Positive>>('PyNumber_Positive');
+  late final _dart_PyNumber_Positive _PyNumber_Positive =
+      _PyNumber_Positive_ptr.asFunction<_dart_PyNumber_Positive>();
 
   ffi.Pointer<PyObject> PyNumber_Absolute(
     ffi.Pointer<PyObject> o,
   ) {
-    return (_PyNumber_Absolute ??=
-        _dylib.lookupFunction<_c_PyNumber_Absolute, _dart_PyNumber_Absolute>(
-            'PyNumber_Absolute'))(
+    return _PyNumber_Absolute(
       o,
     );
   }
 
-  _dart_PyNumber_Absolute? _PyNumber_Absolute;
+  late final _PyNumber_Absolute_ptr =
+      _lookup<ffi.NativeFunction<_c_PyNumber_Absolute>>('PyNumber_Absolute');
+  late final _dart_PyNumber_Absolute _PyNumber_Absolute =
+      _PyNumber_Absolute_ptr.asFunction<_dart_PyNumber_Absolute>();
 
   ffi.Pointer<PyObject> PyNumber_Invert(
     ffi.Pointer<PyObject> o,
   ) {
-    return (_PyNumber_Invert ??=
-        _dylib.lookupFunction<_c_PyNumber_Invert, _dart_PyNumber_Invert>(
-            'PyNumber_Invert'))(
+    return _PyNumber_Invert(
       o,
     );
   }
 
-  _dart_PyNumber_Invert? _PyNumber_Invert;
+  late final _PyNumber_Invert_ptr =
+      _lookup<ffi.NativeFunction<_c_PyNumber_Invert>>('PyNumber_Invert');
+  late final _dart_PyNumber_Invert _PyNumber_Invert =
+      _PyNumber_Invert_ptr.asFunction<_dart_PyNumber_Invert>();
 
   ffi.Pointer<PyObject> PyNumber_Lshift(
     ffi.Pointer<PyObject> o1,
     ffi.Pointer<PyObject> o2,
   ) {
-    return (_PyNumber_Lshift ??=
-        _dylib.lookupFunction<_c_PyNumber_Lshift, _dart_PyNumber_Lshift>(
-            'PyNumber_Lshift'))(
+    return _PyNumber_Lshift(
       o1,
       o2,
     );
   }
 
-  _dart_PyNumber_Lshift? _PyNumber_Lshift;
+  late final _PyNumber_Lshift_ptr =
+      _lookup<ffi.NativeFunction<_c_PyNumber_Lshift>>('PyNumber_Lshift');
+  late final _dart_PyNumber_Lshift _PyNumber_Lshift =
+      _PyNumber_Lshift_ptr.asFunction<_dart_PyNumber_Lshift>();
 
   ffi.Pointer<PyObject> PyNumber_Rshift(
     ffi.Pointer<PyObject> o1,
     ffi.Pointer<PyObject> o2,
   ) {
-    return (_PyNumber_Rshift ??=
-        _dylib.lookupFunction<_c_PyNumber_Rshift, _dart_PyNumber_Rshift>(
-            'PyNumber_Rshift'))(
+    return _PyNumber_Rshift(
       o1,
       o2,
     );
   }
 
-  _dart_PyNumber_Rshift? _PyNumber_Rshift;
+  late final _PyNumber_Rshift_ptr =
+      _lookup<ffi.NativeFunction<_c_PyNumber_Rshift>>('PyNumber_Rshift');
+  late final _dart_PyNumber_Rshift _PyNumber_Rshift =
+      _PyNumber_Rshift_ptr.asFunction<_dart_PyNumber_Rshift>();
 
   ffi.Pointer<PyObject> PyNumber_And(
     ffi.Pointer<PyObject> o1,
     ffi.Pointer<PyObject> o2,
   ) {
-    return (_PyNumber_And ??= _dylib
-        .lookupFunction<_c_PyNumber_And, _dart_PyNumber_And>('PyNumber_And'))(
+    return _PyNumber_And(
       o1,
       o2,
     );
   }
 
-  _dart_PyNumber_And? _PyNumber_And;
+  late final _PyNumber_And_ptr =
+      _lookup<ffi.NativeFunction<_c_PyNumber_And>>('PyNumber_And');
+  late final _dart_PyNumber_And _PyNumber_And =
+      _PyNumber_And_ptr.asFunction<_dart_PyNumber_And>();
 
   ffi.Pointer<PyObject> PyNumber_Xor(
     ffi.Pointer<PyObject> o1,
     ffi.Pointer<PyObject> o2,
   ) {
-    return (_PyNumber_Xor ??= _dylib
-        .lookupFunction<_c_PyNumber_Xor, _dart_PyNumber_Xor>('PyNumber_Xor'))(
+    return _PyNumber_Xor(
       o1,
       o2,
     );
   }
 
-  _dart_PyNumber_Xor? _PyNumber_Xor;
+  late final _PyNumber_Xor_ptr =
+      _lookup<ffi.NativeFunction<_c_PyNumber_Xor>>('PyNumber_Xor');
+  late final _dart_PyNumber_Xor _PyNumber_Xor =
+      _PyNumber_Xor_ptr.asFunction<_dart_PyNumber_Xor>();
 
   ffi.Pointer<PyObject> PyNumber_Or(
     ffi.Pointer<PyObject> o1,
     ffi.Pointer<PyObject> o2,
   ) {
-    return (_PyNumber_Or ??= _dylib
-        .lookupFunction<_c_PyNumber_Or, _dart_PyNumber_Or>('PyNumber_Or'))(
+    return _PyNumber_Or(
       o1,
       o2,
     );
   }
 
-  _dart_PyNumber_Or? _PyNumber_Or;
+  late final _PyNumber_Or_ptr =
+      _lookup<ffi.NativeFunction<_c_PyNumber_Or>>('PyNumber_Or');
+  late final _dart_PyNumber_Or _PyNumber_Or =
+      _PyNumber_Or_ptr.asFunction<_dart_PyNumber_Or>();
 
   int PyIndex_Check(
     ffi.Pointer<PyObject> arg0,
   ) {
-    return (_PyIndex_Check ??=
-        _dylib.lookupFunction<_c_PyIndex_Check, _dart_PyIndex_Check>(
-            'PyIndex_Check'))(
+    return _PyIndex_Check(
       arg0,
     );
   }
 
-  _dart_PyIndex_Check? _PyIndex_Check;
+  late final _PyIndex_Check_ptr =
+      _lookup<ffi.NativeFunction<_c_PyIndex_Check>>('PyIndex_Check');
+  late final _dart_PyIndex_Check _PyIndex_Check =
+      _PyIndex_Check_ptr.asFunction<_dart_PyIndex_Check>();
 
   ffi.Pointer<PyObject> PyNumber_Index(
     ffi.Pointer<PyObject> o,
   ) {
-    return (_PyNumber_Index ??=
-        _dylib.lookupFunction<_c_PyNumber_Index, _dart_PyNumber_Index>(
-            'PyNumber_Index'))(
+    return _PyNumber_Index(
       o,
     );
   }
 
-  _dart_PyNumber_Index? _PyNumber_Index;
+  late final _PyNumber_Index_ptr =
+      _lookup<ffi.NativeFunction<_c_PyNumber_Index>>('PyNumber_Index');
+  late final _dart_PyNumber_Index _PyNumber_Index =
+      _PyNumber_Index_ptr.asFunction<_dart_PyNumber_Index>();
 
   int PyNumber_AsSsize_t(
     ffi.Pointer<PyObject> o,
     ffi.Pointer<PyObject> exc,
   ) {
-    return (_PyNumber_AsSsize_t ??=
-        _dylib.lookupFunction<_c_PyNumber_AsSsize_t, _dart_PyNumber_AsSsize_t>(
-            'PyNumber_AsSsize_t'))(
+    return _PyNumber_AsSsize_t(
       o,
       exc,
     );
   }
 
-  _dart_PyNumber_AsSsize_t? _PyNumber_AsSsize_t;
+  late final _PyNumber_AsSsize_t_ptr =
+      _lookup<ffi.NativeFunction<_c_PyNumber_AsSsize_t>>('PyNumber_AsSsize_t');
+  late final _dart_PyNumber_AsSsize_t _PyNumber_AsSsize_t =
+      _PyNumber_AsSsize_t_ptr.asFunction<_dart_PyNumber_AsSsize_t>();
 
   ffi.Pointer<PyObject> PyNumber_Long(
     ffi.Pointer<PyObject> o,
   ) {
-    return (_PyNumber_Long ??=
-        _dylib.lookupFunction<_c_PyNumber_Long, _dart_PyNumber_Long>(
-            'PyNumber_Long'))(
+    return _PyNumber_Long(
       o,
     );
   }
 
-  _dart_PyNumber_Long? _PyNumber_Long;
+  late final _PyNumber_Long_ptr =
+      _lookup<ffi.NativeFunction<_c_PyNumber_Long>>('PyNumber_Long');
+  late final _dart_PyNumber_Long _PyNumber_Long =
+      _PyNumber_Long_ptr.asFunction<_dart_PyNumber_Long>();
 
   ffi.Pointer<PyObject> PyNumber_Float(
     ffi.Pointer<PyObject> o,
   ) {
-    return (_PyNumber_Float ??=
-        _dylib.lookupFunction<_c_PyNumber_Float, _dart_PyNumber_Float>(
-            'PyNumber_Float'))(
+    return _PyNumber_Float(
       o,
     );
   }
 
-  _dart_PyNumber_Float? _PyNumber_Float;
+  late final _PyNumber_Float_ptr =
+      _lookup<ffi.NativeFunction<_c_PyNumber_Float>>('PyNumber_Float');
+  late final _dart_PyNumber_Float _PyNumber_Float =
+      _PyNumber_Float_ptr.asFunction<_dart_PyNumber_Float>();
 
   ffi.Pointer<PyObject> PyNumber_InPlaceAdd(
     ffi.Pointer<PyObject> o1,
     ffi.Pointer<PyObject> o2,
   ) {
-    return (_PyNumber_InPlaceAdd ??= _dylib.lookupFunction<
-        _c_PyNumber_InPlaceAdd,
-        _dart_PyNumber_InPlaceAdd>('PyNumber_InPlaceAdd'))(
+    return _PyNumber_InPlaceAdd(
       o1,
       o2,
     );
   }
 
-  _dart_PyNumber_InPlaceAdd? _PyNumber_InPlaceAdd;
+  late final _PyNumber_InPlaceAdd_ptr =
+      _lookup<ffi.NativeFunction<_c_PyNumber_InPlaceAdd>>(
+          'PyNumber_InPlaceAdd');
+  late final _dart_PyNumber_InPlaceAdd _PyNumber_InPlaceAdd =
+      _PyNumber_InPlaceAdd_ptr.asFunction<_dart_PyNumber_InPlaceAdd>();
 
   ffi.Pointer<PyObject> PyNumber_InPlaceSubtract(
     ffi.Pointer<PyObject> o1,
     ffi.Pointer<PyObject> o2,
   ) {
-    return (_PyNumber_InPlaceSubtract ??= _dylib.lookupFunction<
-        _c_PyNumber_InPlaceSubtract,
-        _dart_PyNumber_InPlaceSubtract>('PyNumber_InPlaceSubtract'))(
+    return _PyNumber_InPlaceSubtract(
       o1,
       o2,
     );
   }
 
-  _dart_PyNumber_InPlaceSubtract? _PyNumber_InPlaceSubtract;
+  late final _PyNumber_InPlaceSubtract_ptr =
+      _lookup<ffi.NativeFunction<_c_PyNumber_InPlaceSubtract>>(
+          'PyNumber_InPlaceSubtract');
+  late final _dart_PyNumber_InPlaceSubtract _PyNumber_InPlaceSubtract =
+      _PyNumber_InPlaceSubtract_ptr.asFunction<
+          _dart_PyNumber_InPlaceSubtract>();
 
   ffi.Pointer<PyObject> PyNumber_InPlaceMultiply(
     ffi.Pointer<PyObject> o1,
     ffi.Pointer<PyObject> o2,
   ) {
-    return (_PyNumber_InPlaceMultiply ??= _dylib.lookupFunction<
-        _c_PyNumber_InPlaceMultiply,
-        _dart_PyNumber_InPlaceMultiply>('PyNumber_InPlaceMultiply'))(
+    return _PyNumber_InPlaceMultiply(
       o1,
       o2,
     );
   }
 
-  _dart_PyNumber_InPlaceMultiply? _PyNumber_InPlaceMultiply;
+  late final _PyNumber_InPlaceMultiply_ptr =
+      _lookup<ffi.NativeFunction<_c_PyNumber_InPlaceMultiply>>(
+          'PyNumber_InPlaceMultiply');
+  late final _dart_PyNumber_InPlaceMultiply _PyNumber_InPlaceMultiply =
+      _PyNumber_InPlaceMultiply_ptr.asFunction<
+          _dart_PyNumber_InPlaceMultiply>();
 
   ffi.Pointer<PyObject> PyNumber_InPlaceMatrixMultiply(
     ffi.Pointer<PyObject> o1,
     ffi.Pointer<PyObject> o2,
   ) {
-    return (_PyNumber_InPlaceMatrixMultiply ??= _dylib.lookupFunction<
-            _c_PyNumber_InPlaceMatrixMultiply,
-            _dart_PyNumber_InPlaceMatrixMultiply>(
-        'PyNumber_InPlaceMatrixMultiply'))(
+    return _PyNumber_InPlaceMatrixMultiply(
       o1,
       o2,
     );
   }
 
-  _dart_PyNumber_InPlaceMatrixMultiply? _PyNumber_InPlaceMatrixMultiply;
+  late final _PyNumber_InPlaceMatrixMultiply_ptr =
+      _lookup<ffi.NativeFunction<_c_PyNumber_InPlaceMatrixMultiply>>(
+          'PyNumber_InPlaceMatrixMultiply');
+  late final _dart_PyNumber_InPlaceMatrixMultiply
+      _PyNumber_InPlaceMatrixMultiply = _PyNumber_InPlaceMatrixMultiply_ptr
+          .asFunction<_dart_PyNumber_InPlaceMatrixMultiply>();
 
   ffi.Pointer<PyObject> PyNumber_InPlaceFloorDivide(
     ffi.Pointer<PyObject> o1,
     ffi.Pointer<PyObject> o2,
   ) {
-    return (_PyNumber_InPlaceFloorDivide ??= _dylib.lookupFunction<
-        _c_PyNumber_InPlaceFloorDivide,
-        _dart_PyNumber_InPlaceFloorDivide>('PyNumber_InPlaceFloorDivide'))(
+    return _PyNumber_InPlaceFloorDivide(
       o1,
       o2,
     );
   }
 
-  _dart_PyNumber_InPlaceFloorDivide? _PyNumber_InPlaceFloorDivide;
+  late final _PyNumber_InPlaceFloorDivide_ptr =
+      _lookup<ffi.NativeFunction<_c_PyNumber_InPlaceFloorDivide>>(
+          'PyNumber_InPlaceFloorDivide');
+  late final _dart_PyNumber_InPlaceFloorDivide _PyNumber_InPlaceFloorDivide =
+      _PyNumber_InPlaceFloorDivide_ptr.asFunction<
+          _dart_PyNumber_InPlaceFloorDivide>();
 
   ffi.Pointer<PyObject> PyNumber_InPlaceTrueDivide(
     ffi.Pointer<PyObject> o1,
     ffi.Pointer<PyObject> o2,
   ) {
-    return (_PyNumber_InPlaceTrueDivide ??= _dylib.lookupFunction<
-        _c_PyNumber_InPlaceTrueDivide,
-        _dart_PyNumber_InPlaceTrueDivide>('PyNumber_InPlaceTrueDivide'))(
+    return _PyNumber_InPlaceTrueDivide(
       o1,
       o2,
     );
   }
 
-  _dart_PyNumber_InPlaceTrueDivide? _PyNumber_InPlaceTrueDivide;
+  late final _PyNumber_InPlaceTrueDivide_ptr =
+      _lookup<ffi.NativeFunction<_c_PyNumber_InPlaceTrueDivide>>(
+          'PyNumber_InPlaceTrueDivide');
+  late final _dart_PyNumber_InPlaceTrueDivide _PyNumber_InPlaceTrueDivide =
+      _PyNumber_InPlaceTrueDivide_ptr.asFunction<
+          _dart_PyNumber_InPlaceTrueDivide>();
 
   ffi.Pointer<PyObject> PyNumber_InPlaceRemainder(
     ffi.Pointer<PyObject> o1,
     ffi.Pointer<PyObject> o2,
   ) {
-    return (_PyNumber_InPlaceRemainder ??= _dylib.lookupFunction<
-        _c_PyNumber_InPlaceRemainder,
-        _dart_PyNumber_InPlaceRemainder>('PyNumber_InPlaceRemainder'))(
+    return _PyNumber_InPlaceRemainder(
       o1,
       o2,
     );
   }
 
-  _dart_PyNumber_InPlaceRemainder? _PyNumber_InPlaceRemainder;
+  late final _PyNumber_InPlaceRemainder_ptr =
+      _lookup<ffi.NativeFunction<_c_PyNumber_InPlaceRemainder>>(
+          'PyNumber_InPlaceRemainder');
+  late final _dart_PyNumber_InPlaceRemainder _PyNumber_InPlaceRemainder =
+      _PyNumber_InPlaceRemainder_ptr.asFunction<
+          _dart_PyNumber_InPlaceRemainder>();
 
   ffi.Pointer<PyObject> PyNumber_InPlacePower(
     ffi.Pointer<PyObject> o1,
     ffi.Pointer<PyObject> o2,
     ffi.Pointer<PyObject> o3,
   ) {
-    return (_PyNumber_InPlacePower ??= _dylib.lookupFunction<
-        _c_PyNumber_InPlacePower,
-        _dart_PyNumber_InPlacePower>('PyNumber_InPlacePower'))(
+    return _PyNumber_InPlacePower(
       o1,
       o2,
       o3,
     );
   }
 
-  _dart_PyNumber_InPlacePower? _PyNumber_InPlacePower;
+  late final _PyNumber_InPlacePower_ptr =
+      _lookup<ffi.NativeFunction<_c_PyNumber_InPlacePower>>(
+          'PyNumber_InPlacePower');
+  late final _dart_PyNumber_InPlacePower _PyNumber_InPlacePower =
+      _PyNumber_InPlacePower_ptr.asFunction<_dart_PyNumber_InPlacePower>();
 
   ffi.Pointer<PyObject> PyNumber_InPlaceLshift(
     ffi.Pointer<PyObject> o1,
     ffi.Pointer<PyObject> o2,
   ) {
-    return (_PyNumber_InPlaceLshift ??= _dylib.lookupFunction<
-        _c_PyNumber_InPlaceLshift,
-        _dart_PyNumber_InPlaceLshift>('PyNumber_InPlaceLshift'))(
+    return _PyNumber_InPlaceLshift(
       o1,
       o2,
     );
   }
 
-  _dart_PyNumber_InPlaceLshift? _PyNumber_InPlaceLshift;
+  late final _PyNumber_InPlaceLshift_ptr =
+      _lookup<ffi.NativeFunction<_c_PyNumber_InPlaceLshift>>(
+          'PyNumber_InPlaceLshift');
+  late final _dart_PyNumber_InPlaceLshift _PyNumber_InPlaceLshift =
+      _PyNumber_InPlaceLshift_ptr.asFunction<_dart_PyNumber_InPlaceLshift>();
 
   ffi.Pointer<PyObject> PyNumber_InPlaceRshift(
     ffi.Pointer<PyObject> o1,
     ffi.Pointer<PyObject> o2,
   ) {
-    return (_PyNumber_InPlaceRshift ??= _dylib.lookupFunction<
-        _c_PyNumber_InPlaceRshift,
-        _dart_PyNumber_InPlaceRshift>('PyNumber_InPlaceRshift'))(
+    return _PyNumber_InPlaceRshift(
       o1,
       o2,
     );
   }
 
-  _dart_PyNumber_InPlaceRshift? _PyNumber_InPlaceRshift;
+  late final _PyNumber_InPlaceRshift_ptr =
+      _lookup<ffi.NativeFunction<_c_PyNumber_InPlaceRshift>>(
+          'PyNumber_InPlaceRshift');
+  late final _dart_PyNumber_InPlaceRshift _PyNumber_InPlaceRshift =
+      _PyNumber_InPlaceRshift_ptr.asFunction<_dart_PyNumber_InPlaceRshift>();
 
   ffi.Pointer<PyObject> PyNumber_InPlaceAnd(
     ffi.Pointer<PyObject> o1,
     ffi.Pointer<PyObject> o2,
   ) {
-    return (_PyNumber_InPlaceAnd ??= _dylib.lookupFunction<
-        _c_PyNumber_InPlaceAnd,
-        _dart_PyNumber_InPlaceAnd>('PyNumber_InPlaceAnd'))(
+    return _PyNumber_InPlaceAnd(
       o1,
       o2,
     );
   }
 
-  _dart_PyNumber_InPlaceAnd? _PyNumber_InPlaceAnd;
+  late final _PyNumber_InPlaceAnd_ptr =
+      _lookup<ffi.NativeFunction<_c_PyNumber_InPlaceAnd>>(
+          'PyNumber_InPlaceAnd');
+  late final _dart_PyNumber_InPlaceAnd _PyNumber_InPlaceAnd =
+      _PyNumber_InPlaceAnd_ptr.asFunction<_dart_PyNumber_InPlaceAnd>();
 
   ffi.Pointer<PyObject> PyNumber_InPlaceXor(
     ffi.Pointer<PyObject> o1,
     ffi.Pointer<PyObject> o2,
   ) {
-    return (_PyNumber_InPlaceXor ??= _dylib.lookupFunction<
-        _c_PyNumber_InPlaceXor,
-        _dart_PyNumber_InPlaceXor>('PyNumber_InPlaceXor'))(
+    return _PyNumber_InPlaceXor(
       o1,
       o2,
     );
   }
 
-  _dart_PyNumber_InPlaceXor? _PyNumber_InPlaceXor;
+  late final _PyNumber_InPlaceXor_ptr =
+      _lookup<ffi.NativeFunction<_c_PyNumber_InPlaceXor>>(
+          'PyNumber_InPlaceXor');
+  late final _dart_PyNumber_InPlaceXor _PyNumber_InPlaceXor =
+      _PyNumber_InPlaceXor_ptr.asFunction<_dart_PyNumber_InPlaceXor>();
 
   ffi.Pointer<PyObject> PyNumber_InPlaceOr(
     ffi.Pointer<PyObject> o1,
     ffi.Pointer<PyObject> o2,
   ) {
-    return (_PyNumber_InPlaceOr ??=
-        _dylib.lookupFunction<_c_PyNumber_InPlaceOr, _dart_PyNumber_InPlaceOr>(
-            'PyNumber_InPlaceOr'))(
+    return _PyNumber_InPlaceOr(
       o1,
       o2,
     );
   }
 
-  _dart_PyNumber_InPlaceOr? _PyNumber_InPlaceOr;
+  late final _PyNumber_InPlaceOr_ptr =
+      _lookup<ffi.NativeFunction<_c_PyNumber_InPlaceOr>>('PyNumber_InPlaceOr');
+  late final _dart_PyNumber_InPlaceOr _PyNumber_InPlaceOr =
+      _PyNumber_InPlaceOr_ptr.asFunction<_dart_PyNumber_InPlaceOr>();
 
   ffi.Pointer<PyObject> PyNumber_ToBase(
     ffi.Pointer<PyObject> n,
     int base,
   ) {
-    return (_PyNumber_ToBase ??=
-        _dylib.lookupFunction<_c_PyNumber_ToBase, _dart_PyNumber_ToBase>(
-            'PyNumber_ToBase'))(
+    return _PyNumber_ToBase(
       n,
       base,
     );
   }
 
-  _dart_PyNumber_ToBase? _PyNumber_ToBase;
+  late final _PyNumber_ToBase_ptr =
+      _lookup<ffi.NativeFunction<_c_PyNumber_ToBase>>('PyNumber_ToBase');
+  late final _dart_PyNumber_ToBase _PyNumber_ToBase =
+      _PyNumber_ToBase_ptr.asFunction<_dart_PyNumber_ToBase>();
 
   int PySequence_Check(
     ffi.Pointer<PyObject> o,
   ) {
-    return (_PySequence_Check ??=
-        _dylib.lookupFunction<_c_PySequence_Check, _dart_PySequence_Check>(
-            'PySequence_Check'))(
+    return _PySequence_Check(
       o,
     );
   }
 
-  _dart_PySequence_Check? _PySequence_Check;
+  late final _PySequence_Check_ptr =
+      _lookup<ffi.NativeFunction<_c_PySequence_Check>>('PySequence_Check');
+  late final _dart_PySequence_Check _PySequence_Check =
+      _PySequence_Check_ptr.asFunction<_dart_PySequence_Check>();
 
   int PySequence_Size(
     ffi.Pointer<PyObject> o,
   ) {
-    return (_PySequence_Size ??=
-        _dylib.lookupFunction<_c_PySequence_Size, _dart_PySequence_Size>(
-            'PySequence_Size'))(
+    return _PySequence_Size(
       o,
     );
   }
 
-  _dart_PySequence_Size? _PySequence_Size;
+  late final _PySequence_Size_ptr =
+      _lookup<ffi.NativeFunction<_c_PySequence_Size>>('PySequence_Size');
+  late final _dart_PySequence_Size _PySequence_Size =
+      _PySequence_Size_ptr.asFunction<_dart_PySequence_Size>();
 
   int PySequence_Length(
     ffi.Pointer<PyObject> o,
   ) {
-    return (_PySequence_Length ??=
-        _dylib.lookupFunction<_c_PySequence_Length, _dart_PySequence_Length>(
-            'PySequence_Length'))(
+    return _PySequence_Length(
       o,
     );
   }
 
-  _dart_PySequence_Length? _PySequence_Length;
+  late final _PySequence_Length_ptr =
+      _lookup<ffi.NativeFunction<_c_PySequence_Length>>('PySequence_Length');
+  late final _dart_PySequence_Length _PySequence_Length =
+      _PySequence_Length_ptr.asFunction<_dart_PySequence_Length>();
 
   ffi.Pointer<PyObject> PySequence_Concat(
     ffi.Pointer<PyObject> o1,
     ffi.Pointer<PyObject> o2,
   ) {
-    return (_PySequence_Concat ??=
-        _dylib.lookupFunction<_c_PySequence_Concat, _dart_PySequence_Concat>(
-            'PySequence_Concat'))(
+    return _PySequence_Concat(
       o1,
       o2,
     );
   }
 
-  _dart_PySequence_Concat? _PySequence_Concat;
+  late final _PySequence_Concat_ptr =
+      _lookup<ffi.NativeFunction<_c_PySequence_Concat>>('PySequence_Concat');
+  late final _dart_PySequence_Concat _PySequence_Concat =
+      _PySequence_Concat_ptr.asFunction<_dart_PySequence_Concat>();
 
   ffi.Pointer<PyObject> PySequence_Repeat(
     ffi.Pointer<PyObject> o,
     int count,
   ) {
-    return (_PySequence_Repeat ??=
-        _dylib.lookupFunction<_c_PySequence_Repeat, _dart_PySequence_Repeat>(
-            'PySequence_Repeat'))(
+    return _PySequence_Repeat(
       o,
       count,
     );
   }
 
-  _dart_PySequence_Repeat? _PySequence_Repeat;
+  late final _PySequence_Repeat_ptr =
+      _lookup<ffi.NativeFunction<_c_PySequence_Repeat>>('PySequence_Repeat');
+  late final _dart_PySequence_Repeat _PySequence_Repeat =
+      _PySequence_Repeat_ptr.asFunction<_dart_PySequence_Repeat>();
 
   ffi.Pointer<PyObject> PySequence_GetItem(
     ffi.Pointer<PyObject> o,
     int i,
   ) {
-    return (_PySequence_GetItem ??=
-        _dylib.lookupFunction<_c_PySequence_GetItem, _dart_PySequence_GetItem>(
-            'PySequence_GetItem'))(
+    return _PySequence_GetItem(
       o,
       i,
     );
   }
 
-  _dart_PySequence_GetItem? _PySequence_GetItem;
+  late final _PySequence_GetItem_ptr =
+      _lookup<ffi.NativeFunction<_c_PySequence_GetItem>>('PySequence_GetItem');
+  late final _dart_PySequence_GetItem _PySequence_GetItem =
+      _PySequence_GetItem_ptr.asFunction<_dart_PySequence_GetItem>();
 
   ffi.Pointer<PyObject> PySequence_GetSlice(
     ffi.Pointer<PyObject> o,
     int i1,
     int i2,
   ) {
-    return (_PySequence_GetSlice ??= _dylib.lookupFunction<
-        _c_PySequence_GetSlice,
-        _dart_PySequence_GetSlice>('PySequence_GetSlice'))(
+    return _PySequence_GetSlice(
       o,
       i1,
       i2,
     );
   }
 
-  _dart_PySequence_GetSlice? _PySequence_GetSlice;
+  late final _PySequence_GetSlice_ptr =
+      _lookup<ffi.NativeFunction<_c_PySequence_GetSlice>>(
+          'PySequence_GetSlice');
+  late final _dart_PySequence_GetSlice _PySequence_GetSlice =
+      _PySequence_GetSlice_ptr.asFunction<_dart_PySequence_GetSlice>();
 
   int PySequence_SetItem(
     ffi.Pointer<PyObject> o,
     int i,
     ffi.Pointer<PyObject> v,
   ) {
-    return (_PySequence_SetItem ??=
-        _dylib.lookupFunction<_c_PySequence_SetItem, _dart_PySequence_SetItem>(
-            'PySequence_SetItem'))(
+    return _PySequence_SetItem(
       o,
       i,
       v,
     );
   }
 
-  _dart_PySequence_SetItem? _PySequence_SetItem;
+  late final _PySequence_SetItem_ptr =
+      _lookup<ffi.NativeFunction<_c_PySequence_SetItem>>('PySequence_SetItem');
+  late final _dart_PySequence_SetItem _PySequence_SetItem =
+      _PySequence_SetItem_ptr.asFunction<_dart_PySequence_SetItem>();
 
   int PySequence_DelItem(
     ffi.Pointer<PyObject> o,
     int i,
   ) {
-    return (_PySequence_DelItem ??=
-        _dylib.lookupFunction<_c_PySequence_DelItem, _dart_PySequence_DelItem>(
-            'PySequence_DelItem'))(
+    return _PySequence_DelItem(
       o,
       i,
     );
   }
 
-  _dart_PySequence_DelItem? _PySequence_DelItem;
+  late final _PySequence_DelItem_ptr =
+      _lookup<ffi.NativeFunction<_c_PySequence_DelItem>>('PySequence_DelItem');
+  late final _dart_PySequence_DelItem _PySequence_DelItem =
+      _PySequence_DelItem_ptr.asFunction<_dart_PySequence_DelItem>();
 
   int PySequence_SetSlice(
     ffi.Pointer<PyObject> o,
@@ -12825,9 +15056,7 @@ class DartPyC {
     int i2,
     ffi.Pointer<PyObject> v,
   ) {
-    return (_PySequence_SetSlice ??= _dylib.lookupFunction<
-        _c_PySequence_SetSlice,
-        _dart_PySequence_SetSlice>('PySequence_SetSlice'))(
+    return _PySequence_SetSlice(
       o,
       i1,
       i2,
@@ -12835,328 +15064,372 @@ class DartPyC {
     );
   }
 
-  _dart_PySequence_SetSlice? _PySequence_SetSlice;
+  late final _PySequence_SetSlice_ptr =
+      _lookup<ffi.NativeFunction<_c_PySequence_SetSlice>>(
+          'PySequence_SetSlice');
+  late final _dart_PySequence_SetSlice _PySequence_SetSlice =
+      _PySequence_SetSlice_ptr.asFunction<_dart_PySequence_SetSlice>();
 
   int PySequence_DelSlice(
     ffi.Pointer<PyObject> o,
     int i1,
     int i2,
   ) {
-    return (_PySequence_DelSlice ??= _dylib.lookupFunction<
-        _c_PySequence_DelSlice,
-        _dart_PySequence_DelSlice>('PySequence_DelSlice'))(
+    return _PySequence_DelSlice(
       o,
       i1,
       i2,
     );
   }
 
-  _dart_PySequence_DelSlice? _PySequence_DelSlice;
+  late final _PySequence_DelSlice_ptr =
+      _lookup<ffi.NativeFunction<_c_PySequence_DelSlice>>(
+          'PySequence_DelSlice');
+  late final _dart_PySequence_DelSlice _PySequence_DelSlice =
+      _PySequence_DelSlice_ptr.asFunction<_dart_PySequence_DelSlice>();
 
   ffi.Pointer<PyObject> PySequence_Tuple(
     ffi.Pointer<PyObject> o,
   ) {
-    return (_PySequence_Tuple ??=
-        _dylib.lookupFunction<_c_PySequence_Tuple, _dart_PySequence_Tuple>(
-            'PySequence_Tuple'))(
+    return _PySequence_Tuple(
       o,
     );
   }
 
-  _dart_PySequence_Tuple? _PySequence_Tuple;
+  late final _PySequence_Tuple_ptr =
+      _lookup<ffi.NativeFunction<_c_PySequence_Tuple>>('PySequence_Tuple');
+  late final _dart_PySequence_Tuple _PySequence_Tuple =
+      _PySequence_Tuple_ptr.asFunction<_dart_PySequence_Tuple>();
 
   ffi.Pointer<PyObject> PySequence_List(
     ffi.Pointer<PyObject> o,
   ) {
-    return (_PySequence_List ??=
-        _dylib.lookupFunction<_c_PySequence_List, _dart_PySequence_List>(
-            'PySequence_List'))(
+    return _PySequence_List(
       o,
     );
   }
 
-  _dart_PySequence_List? _PySequence_List;
+  late final _PySequence_List_ptr =
+      _lookup<ffi.NativeFunction<_c_PySequence_List>>('PySequence_List');
+  late final _dart_PySequence_List _PySequence_List =
+      _PySequence_List_ptr.asFunction<_dart_PySequence_List>();
 
   ffi.Pointer<PyObject> PySequence_Fast(
     ffi.Pointer<PyObject> o,
     ffi.Pointer<ffi.Int8> m,
   ) {
-    return (_PySequence_Fast ??=
-        _dylib.lookupFunction<_c_PySequence_Fast, _dart_PySequence_Fast>(
-            'PySequence_Fast'))(
+    return _PySequence_Fast(
       o,
       m,
     );
   }
 
-  _dart_PySequence_Fast? _PySequence_Fast;
+  late final _PySequence_Fast_ptr =
+      _lookup<ffi.NativeFunction<_c_PySequence_Fast>>('PySequence_Fast');
+  late final _dart_PySequence_Fast _PySequence_Fast =
+      _PySequence_Fast_ptr.asFunction<_dart_PySequence_Fast>();
 
   int PySequence_Count(
     ffi.Pointer<PyObject> o,
     ffi.Pointer<PyObject> value,
   ) {
-    return (_PySequence_Count ??=
-        _dylib.lookupFunction<_c_PySequence_Count, _dart_PySequence_Count>(
-            'PySequence_Count'))(
+    return _PySequence_Count(
       o,
       value,
     );
   }
 
-  _dart_PySequence_Count? _PySequence_Count;
+  late final _PySequence_Count_ptr =
+      _lookup<ffi.NativeFunction<_c_PySequence_Count>>('PySequence_Count');
+  late final _dart_PySequence_Count _PySequence_Count =
+      _PySequence_Count_ptr.asFunction<_dart_PySequence_Count>();
 
   int PySequence_Contains(
     ffi.Pointer<PyObject> seq,
     ffi.Pointer<PyObject> ob,
   ) {
-    return (_PySequence_Contains ??= _dylib.lookupFunction<
-        _c_PySequence_Contains,
-        _dart_PySequence_Contains>('PySequence_Contains'))(
+    return _PySequence_Contains(
       seq,
       ob,
     );
   }
 
-  _dart_PySequence_Contains? _PySequence_Contains;
+  late final _PySequence_Contains_ptr =
+      _lookup<ffi.NativeFunction<_c_PySequence_Contains>>(
+          'PySequence_Contains');
+  late final _dart_PySequence_Contains _PySequence_Contains =
+      _PySequence_Contains_ptr.asFunction<_dart_PySequence_Contains>();
 
   int PySequence_In(
     ffi.Pointer<PyObject> o,
     ffi.Pointer<PyObject> value,
   ) {
-    return (_PySequence_In ??=
-        _dylib.lookupFunction<_c_PySequence_In, _dart_PySequence_In>(
-            'PySequence_In'))(
+    return _PySequence_In(
       o,
       value,
     );
   }
 
-  _dart_PySequence_In? _PySequence_In;
+  late final _PySequence_In_ptr =
+      _lookup<ffi.NativeFunction<_c_PySequence_In>>('PySequence_In');
+  late final _dart_PySequence_In _PySequence_In =
+      _PySequence_In_ptr.asFunction<_dart_PySequence_In>();
 
   int PySequence_Index(
     ffi.Pointer<PyObject> o,
     ffi.Pointer<PyObject> value,
   ) {
-    return (_PySequence_Index ??=
-        _dylib.lookupFunction<_c_PySequence_Index, _dart_PySequence_Index>(
-            'PySequence_Index'))(
+    return _PySequence_Index(
       o,
       value,
     );
   }
 
-  _dart_PySequence_Index? _PySequence_Index;
+  late final _PySequence_Index_ptr =
+      _lookup<ffi.NativeFunction<_c_PySequence_Index>>('PySequence_Index');
+  late final _dart_PySequence_Index _PySequence_Index =
+      _PySequence_Index_ptr.asFunction<_dart_PySequence_Index>();
 
   ffi.Pointer<PyObject> PySequence_InPlaceConcat(
     ffi.Pointer<PyObject> o1,
     ffi.Pointer<PyObject> o2,
   ) {
-    return (_PySequence_InPlaceConcat ??= _dylib.lookupFunction<
-        _c_PySequence_InPlaceConcat,
-        _dart_PySequence_InPlaceConcat>('PySequence_InPlaceConcat'))(
+    return _PySequence_InPlaceConcat(
       o1,
       o2,
     );
   }
 
-  _dart_PySequence_InPlaceConcat? _PySequence_InPlaceConcat;
+  late final _PySequence_InPlaceConcat_ptr =
+      _lookup<ffi.NativeFunction<_c_PySequence_InPlaceConcat>>(
+          'PySequence_InPlaceConcat');
+  late final _dart_PySequence_InPlaceConcat _PySequence_InPlaceConcat =
+      _PySequence_InPlaceConcat_ptr.asFunction<
+          _dart_PySequence_InPlaceConcat>();
 
   ffi.Pointer<PyObject> PySequence_InPlaceRepeat(
     ffi.Pointer<PyObject> o,
     int count,
   ) {
-    return (_PySequence_InPlaceRepeat ??= _dylib.lookupFunction<
-        _c_PySequence_InPlaceRepeat,
-        _dart_PySequence_InPlaceRepeat>('PySequence_InPlaceRepeat'))(
+    return _PySequence_InPlaceRepeat(
       o,
       count,
     );
   }
 
-  _dart_PySequence_InPlaceRepeat? _PySequence_InPlaceRepeat;
+  late final _PySequence_InPlaceRepeat_ptr =
+      _lookup<ffi.NativeFunction<_c_PySequence_InPlaceRepeat>>(
+          'PySequence_InPlaceRepeat');
+  late final _dart_PySequence_InPlaceRepeat _PySequence_InPlaceRepeat =
+      _PySequence_InPlaceRepeat_ptr.asFunction<
+          _dart_PySequence_InPlaceRepeat>();
 
   int PyMapping_Check(
     ffi.Pointer<PyObject> o,
   ) {
-    return (_PyMapping_Check ??=
-        _dylib.lookupFunction<_c_PyMapping_Check, _dart_PyMapping_Check>(
-            'PyMapping_Check'))(
+    return _PyMapping_Check(
       o,
     );
   }
 
-  _dart_PyMapping_Check? _PyMapping_Check;
+  late final _PyMapping_Check_ptr =
+      _lookup<ffi.NativeFunction<_c_PyMapping_Check>>('PyMapping_Check');
+  late final _dart_PyMapping_Check _PyMapping_Check =
+      _PyMapping_Check_ptr.asFunction<_dart_PyMapping_Check>();
 
   int PyMapping_Size(
     ffi.Pointer<PyObject> o,
   ) {
-    return (_PyMapping_Size ??=
-        _dylib.lookupFunction<_c_PyMapping_Size, _dart_PyMapping_Size>(
-            'PyMapping_Size'))(
+    return _PyMapping_Size(
       o,
     );
   }
 
-  _dart_PyMapping_Size? _PyMapping_Size;
+  late final _PyMapping_Size_ptr =
+      _lookup<ffi.NativeFunction<_c_PyMapping_Size>>('PyMapping_Size');
+  late final _dart_PyMapping_Size _PyMapping_Size =
+      _PyMapping_Size_ptr.asFunction<_dart_PyMapping_Size>();
 
   int PyMapping_Length(
     ffi.Pointer<PyObject> o,
   ) {
-    return (_PyMapping_Length ??=
-        _dylib.lookupFunction<_c_PyMapping_Length, _dart_PyMapping_Length>(
-            'PyMapping_Length'))(
+    return _PyMapping_Length(
       o,
     );
   }
 
-  _dart_PyMapping_Length? _PyMapping_Length;
+  late final _PyMapping_Length_ptr =
+      _lookup<ffi.NativeFunction<_c_PyMapping_Length>>('PyMapping_Length');
+  late final _dart_PyMapping_Length _PyMapping_Length =
+      _PyMapping_Length_ptr.asFunction<_dart_PyMapping_Length>();
 
   int PyMapping_HasKeyString(
     ffi.Pointer<PyObject> o,
     ffi.Pointer<ffi.Int8> key,
   ) {
-    return (_PyMapping_HasKeyString ??= _dylib.lookupFunction<
-        _c_PyMapping_HasKeyString,
-        _dart_PyMapping_HasKeyString>('PyMapping_HasKeyString'))(
+    return _PyMapping_HasKeyString(
       o,
       key,
     );
   }
 
-  _dart_PyMapping_HasKeyString? _PyMapping_HasKeyString;
+  late final _PyMapping_HasKeyString_ptr =
+      _lookup<ffi.NativeFunction<_c_PyMapping_HasKeyString>>(
+          'PyMapping_HasKeyString');
+  late final _dart_PyMapping_HasKeyString _PyMapping_HasKeyString =
+      _PyMapping_HasKeyString_ptr.asFunction<_dart_PyMapping_HasKeyString>();
 
   int PyMapping_HasKey(
     ffi.Pointer<PyObject> o,
     ffi.Pointer<PyObject> key,
   ) {
-    return (_PyMapping_HasKey ??=
-        _dylib.lookupFunction<_c_PyMapping_HasKey, _dart_PyMapping_HasKey>(
-            'PyMapping_HasKey'))(
+    return _PyMapping_HasKey(
       o,
       key,
     );
   }
 
-  _dart_PyMapping_HasKey? _PyMapping_HasKey;
+  late final _PyMapping_HasKey_ptr =
+      _lookup<ffi.NativeFunction<_c_PyMapping_HasKey>>('PyMapping_HasKey');
+  late final _dart_PyMapping_HasKey _PyMapping_HasKey =
+      _PyMapping_HasKey_ptr.asFunction<_dart_PyMapping_HasKey>();
 
   ffi.Pointer<PyObject> PyMapping_Keys(
     ffi.Pointer<PyObject> o,
   ) {
-    return (_PyMapping_Keys ??=
-        _dylib.lookupFunction<_c_PyMapping_Keys, _dart_PyMapping_Keys>(
-            'PyMapping_Keys'))(
+    return _PyMapping_Keys(
       o,
     );
   }
 
-  _dart_PyMapping_Keys? _PyMapping_Keys;
+  late final _PyMapping_Keys_ptr =
+      _lookup<ffi.NativeFunction<_c_PyMapping_Keys>>('PyMapping_Keys');
+  late final _dart_PyMapping_Keys _PyMapping_Keys =
+      _PyMapping_Keys_ptr.asFunction<_dart_PyMapping_Keys>();
 
   ffi.Pointer<PyObject> PyMapping_Values(
     ffi.Pointer<PyObject> o,
   ) {
-    return (_PyMapping_Values ??=
-        _dylib.lookupFunction<_c_PyMapping_Values, _dart_PyMapping_Values>(
-            'PyMapping_Values'))(
+    return _PyMapping_Values(
       o,
     );
   }
 
-  _dart_PyMapping_Values? _PyMapping_Values;
+  late final _PyMapping_Values_ptr =
+      _lookup<ffi.NativeFunction<_c_PyMapping_Values>>('PyMapping_Values');
+  late final _dart_PyMapping_Values _PyMapping_Values =
+      _PyMapping_Values_ptr.asFunction<_dart_PyMapping_Values>();
 
   ffi.Pointer<PyObject> PyMapping_Items(
     ffi.Pointer<PyObject> o,
   ) {
-    return (_PyMapping_Items ??=
-        _dylib.lookupFunction<_c_PyMapping_Items, _dart_PyMapping_Items>(
-            'PyMapping_Items'))(
+    return _PyMapping_Items(
       o,
     );
   }
 
-  _dart_PyMapping_Items? _PyMapping_Items;
+  late final _PyMapping_Items_ptr =
+      _lookup<ffi.NativeFunction<_c_PyMapping_Items>>('PyMapping_Items');
+  late final _dart_PyMapping_Items _PyMapping_Items =
+      _PyMapping_Items_ptr.asFunction<_dart_PyMapping_Items>();
 
   ffi.Pointer<PyObject> PyMapping_GetItemString(
     ffi.Pointer<PyObject> o,
     ffi.Pointer<ffi.Int8> key,
   ) {
-    return (_PyMapping_GetItemString ??= _dylib.lookupFunction<
-        _c_PyMapping_GetItemString,
-        _dart_PyMapping_GetItemString>('PyMapping_GetItemString'))(
+    return _PyMapping_GetItemString(
       o,
       key,
     );
   }
 
-  _dart_PyMapping_GetItemString? _PyMapping_GetItemString;
+  late final _PyMapping_GetItemString_ptr =
+      _lookup<ffi.NativeFunction<_c_PyMapping_GetItemString>>(
+          'PyMapping_GetItemString');
+  late final _dart_PyMapping_GetItemString _PyMapping_GetItemString =
+      _PyMapping_GetItemString_ptr.asFunction<_dart_PyMapping_GetItemString>();
 
   int PyMapping_SetItemString(
     ffi.Pointer<PyObject> o,
     ffi.Pointer<ffi.Int8> key,
     ffi.Pointer<PyObject> value,
   ) {
-    return (_PyMapping_SetItemString ??= _dylib.lookupFunction<
-        _c_PyMapping_SetItemString,
-        _dart_PyMapping_SetItemString>('PyMapping_SetItemString'))(
+    return _PyMapping_SetItemString(
       o,
       key,
       value,
     );
   }
 
-  _dart_PyMapping_SetItemString? _PyMapping_SetItemString;
+  late final _PyMapping_SetItemString_ptr =
+      _lookup<ffi.NativeFunction<_c_PyMapping_SetItemString>>(
+          'PyMapping_SetItemString');
+  late final _dart_PyMapping_SetItemString _PyMapping_SetItemString =
+      _PyMapping_SetItemString_ptr.asFunction<_dart_PyMapping_SetItemString>();
 
   int PyObject_IsInstance(
     ffi.Pointer<PyObject> object,
     ffi.Pointer<PyObject> typeorclass,
   ) {
-    return (_PyObject_IsInstance ??= _dylib.lookupFunction<
-        _c_PyObject_IsInstance,
-        _dart_PyObject_IsInstance>('PyObject_IsInstance'))(
+    return _PyObject_IsInstance(
       object,
       typeorclass,
     );
   }
 
-  _dart_PyObject_IsInstance? _PyObject_IsInstance;
+  late final _PyObject_IsInstance_ptr =
+      _lookup<ffi.NativeFunction<_c_PyObject_IsInstance>>(
+          'PyObject_IsInstance');
+  late final _dart_PyObject_IsInstance _PyObject_IsInstance =
+      _PyObject_IsInstance_ptr.asFunction<_dart_PyObject_IsInstance>();
 
   int PyObject_IsSubclass(
     ffi.Pointer<PyObject> object,
     ffi.Pointer<PyObject> typeorclass,
   ) {
-    return (_PyObject_IsSubclass ??= _dylib.lookupFunction<
-        _c_PyObject_IsSubclass,
-        _dart_PyObject_IsSubclass>('PyObject_IsSubclass'))(
+    return _PyObject_IsSubclass(
       object,
       typeorclass,
     );
   }
 
-  _dart_PyObject_IsSubclass? _PyObject_IsSubclass;
+  late final _PyObject_IsSubclass_ptr =
+      _lookup<ffi.NativeFunction<_c_PyObject_IsSubclass>>(
+          'PyObject_IsSubclass');
+  late final _dart_PyObject_IsSubclass _PyObject_IsSubclass =
+      _PyObject_IsSubclass_ptr.asFunction<_dart_PyObject_IsSubclass>();
 
-  late final _typeobject PyFilter_Type =
-      _dylib.lookup<_typeobject>('PyFilter_Type').ref;
+  late final ffi.Pointer<_typeobject> _PyFilter_Type =
+      _lookup<_typeobject>('PyFilter_Type');
 
-  late final _typeobject PyMap_Type =
-      _dylib.lookup<_typeobject>('PyMap_Type').ref;
+  _typeobject get PyFilter_Type => _PyFilter_Type.ref;
 
-  late final _typeobject PyZip_Type =
-      _dylib.lookup<_typeobject>('PyZip_Type').ref;
+  late final ffi.Pointer<_typeobject> _PyMap_Type =
+      _lookup<_typeobject>('PyMap_Type');
+
+  _typeobject get PyMap_Type => _PyMap_Type.ref;
+
+  late final ffi.Pointer<_typeobject> _PyZip_Type =
+      _lookup<_typeobject>('PyZip_Type');
+
+  _typeobject get PyZip_Type => _PyZip_Type.ref;
 
   ffi.Pointer<PyObject> PyEval_EvalCode(
     ffi.Pointer<PyObject> arg0,
     ffi.Pointer<PyObject> arg1,
     ffi.Pointer<PyObject> arg2,
   ) {
-    return (_PyEval_EvalCode ??=
-        _dylib.lookupFunction<_c_PyEval_EvalCode, _dart_PyEval_EvalCode>(
-            'PyEval_EvalCode'))(
+    return _PyEval_EvalCode(
       arg0,
       arg1,
       arg2,
     );
   }
 
-  _dart_PyEval_EvalCode? _PyEval_EvalCode;
+  late final _PyEval_EvalCode_ptr =
+      _lookup<ffi.NativeFunction<_c_PyEval_EvalCode>>('PyEval_EvalCode');
+  late final _dart_PyEval_EvalCode _PyEval_EvalCode =
+      _PyEval_EvalCode_ptr.asFunction<_dart_PyEval_EvalCode>();
 
   ffi.Pointer<PyObject> PyEval_EvalCodeEx(
     ffi.Pointer<PyObject> co,
@@ -13171,9 +15444,7 @@ class DartPyC {
     ffi.Pointer<PyObject> kwdefs,
     ffi.Pointer<PyObject> closure,
   ) {
-    return (_PyEval_EvalCodeEx ??=
-        _dylib.lookupFunction<_c_PyEval_EvalCodeEx, _dart_PyEval_EvalCodeEx>(
-            'PyEval_EvalCodeEx'))(
+    return _PyEval_EvalCodeEx(
       co,
       globals,
       locals,
@@ -13188,7 +15459,10 @@ class DartPyC {
     );
   }
 
-  _dart_PyEval_EvalCodeEx? _PyEval_EvalCodeEx;
+  late final _PyEval_EvalCodeEx_ptr =
+      _lookup<ffi.NativeFunction<_c_PyEval_EvalCodeEx>>('PyEval_EvalCodeEx');
+  late final _dart_PyEval_EvalCodeEx _PyEval_EvalCodeEx =
+      _PyEval_EvalCodeEx_ptr.asFunction<_dart_PyEval_EvalCodeEx>();
 
   ffi.Pointer<PyObject> PyEval_EvalCodeWithName(
     ffi.Pointer<PyObject> co,
@@ -13207,9 +15481,7 @@ class DartPyC {
     ffi.Pointer<PyObject> name,
     ffi.Pointer<PyObject> qualname,
   ) {
-    return (_PyEval_EvalCodeWithName ??= _dylib.lookupFunction<
-        _c_PyEval_EvalCodeWithName,
-        _dart_PyEval_EvalCodeWithName>('_PyEval_EvalCodeWithName'))(
+    return _PyEval_EvalCodeWithName(
       co,
       globals,
       locals,
@@ -13228,46 +15500,68 @@ class DartPyC {
     );
   }
 
-  _dart_PyEval_EvalCodeWithName? _PyEval_EvalCodeWithName;
+  late final _PyEval_EvalCodeWithName_ptr =
+      _lookup<ffi.NativeFunction<_c_PyEval_EvalCodeWithName>>(
+          '_PyEval_EvalCodeWithName');
+  late final _dart_PyEval_EvalCodeWithName _PyEval_EvalCodeWithName =
+      _PyEval_EvalCodeWithName_ptr.asFunction<_dart_PyEval_EvalCodeWithName>();
 
   ffi.Pointer<PyObject> PyEval_CallTracing(
     ffi.Pointer<PyObject> func,
     ffi.Pointer<PyObject> args,
   ) {
-    return (_PyEval_CallTracing ??=
-        _dylib.lookupFunction<_c_PyEval_CallTracing, _dart_PyEval_CallTracing>(
-            '_PyEval_CallTracing'))(
+    return _PyEval_CallTracing(
       func,
       args,
     );
   }
 
-  _dart_PyEval_CallTracing? _PyEval_CallTracing;
+  late final _PyEval_CallTracing_ptr =
+      _lookup<ffi.NativeFunction<_c_PyEval_CallTracing>>('_PyEval_CallTracing');
+  late final _dart_PyEval_CallTracing _PyEval_CallTracing =
+      _PyEval_CallTracing_ptr.asFunction<_dart_PyEval_CallTracing>();
 
-  late final ffi.Pointer<ffi.Uint32> Py_ctype_table =
-      _dylib.lookup<ffi.Pointer<ffi.Uint32>>('_Py_ctype_table').value;
+  late final ffi.Pointer<ffi.Pointer<ffi.Uint32>> _Py_ctype_table =
+      _lookup<ffi.Pointer<ffi.Uint32>>('_Py_ctype_table');
 
-  late final ffi.Pointer<ffi.Uint8> Py_ctype_tolower =
-      _dylib.lookup<ffi.Pointer<ffi.Uint8>>('_Py_ctype_tolower').value;
+  ffi.Pointer<ffi.Uint32> get Py_ctype_table => _Py_ctype_table.value;
 
-  late final ffi.Pointer<ffi.Uint8> Py_ctype_toupper =
-      _dylib.lookup<ffi.Pointer<ffi.Uint8>>('_Py_ctype_toupper').value;
+  set Py_ctype_table(ffi.Pointer<ffi.Uint32> value) =>
+      _Py_ctype_table.value = value;
+
+  late final ffi.Pointer<ffi.Pointer<ffi.Uint8>> _Py_ctype_tolower =
+      _lookup<ffi.Pointer<ffi.Uint8>>('_Py_ctype_tolower');
+
+  ffi.Pointer<ffi.Uint8> get Py_ctype_tolower => _Py_ctype_tolower.value;
+
+  set Py_ctype_tolower(ffi.Pointer<ffi.Uint8> value) =>
+      _Py_ctype_tolower.value = value;
+
+  late final ffi.Pointer<ffi.Pointer<ffi.Uint8>> _Py_ctype_toupper =
+      _lookup<ffi.Pointer<ffi.Uint8>>('_Py_ctype_toupper');
+
+  ffi.Pointer<ffi.Uint8> get Py_ctype_toupper => _Py_ctype_toupper.value;
+
+  set Py_ctype_toupper(ffi.Pointer<ffi.Uint8> value) =>
+      _Py_ctype_toupper.value = value;
 
   double PyOS_string_to_double(
     ffi.Pointer<ffi.Int8> str,
     ffi.Pointer<ffi.Pointer<ffi.Int8>> endptr,
     ffi.Pointer<PyObject> overflow_exception,
   ) {
-    return (_PyOS_string_to_double ??= _dylib.lookupFunction<
-        _c_PyOS_string_to_double,
-        _dart_PyOS_string_to_double>('PyOS_string_to_double'))(
+    return _PyOS_string_to_double(
       str,
       endptr,
       overflow_exception,
     );
   }
 
-  _dart_PyOS_string_to_double? _PyOS_string_to_double;
+  late final _PyOS_string_to_double_ptr =
+      _lookup<ffi.NativeFunction<_c_PyOS_string_to_double>>(
+          'PyOS_string_to_double');
+  late final _dart_PyOS_string_to_double _PyOS_string_to_double =
+      _PyOS_string_to_double_ptr.asFunction<_dart_PyOS_string_to_double>();
 
   ffi.Pointer<ffi.Int8> PyOS_double_to_string(
     double val,
@@ -13276,9 +15570,7 @@ class DartPyC {
     int flags,
     ffi.Pointer<ffi.Int32> type,
   ) {
-    return (_PyOS_double_to_string ??= _dylib.lookupFunction<
-        _c_PyOS_double_to_string,
-        _dart_PyOS_double_to_string>('PyOS_double_to_string'))(
+    return _PyOS_double_to_string(
       val,
       format_code,
       precision,
@@ -13287,7 +15579,11 @@ class DartPyC {
     );
   }
 
-  _dart_PyOS_double_to_string? _PyOS_double_to_string;
+  late final _PyOS_double_to_string_ptr =
+      _lookup<ffi.NativeFunction<_c_PyOS_double_to_string>>(
+          'PyOS_double_to_string');
+  late final _dart_PyOS_double_to_string _PyOS_double_to_string =
+      _PyOS_double_to_string_ptr.asFunction<_dart_PyOS_double_to_string>();
 
   ffi.Pointer<PyObject> Py_string_to_number_with_underscores(
     ffi.Pointer<ffi.Int8> str,
@@ -13295,12 +15591,9 @@ class DartPyC {
     ffi.Pointer<ffi.Int8> what,
     ffi.Pointer<PyObject> obj,
     ffi.Pointer<ffi.Void> arg,
-    ffi.Pointer<ffi.NativeFunction<_typedefC_17>> innerfunc,
+    ffi.Pointer<ffi.NativeFunction<_typedefC_12>> innerfunc,
   ) {
-    return (_Py_string_to_number_with_underscores ??= _dylib.lookupFunction<
-            _c_Py_string_to_number_with_underscores,
-            _dart_Py_string_to_number_with_underscores>(
-        '_Py_string_to_number_with_underscores'))(
+    return _Py_string_to_number_with_underscores(
       str,
       len,
       what,
@@ -13310,65 +15603,76 @@ class DartPyC {
     );
   }
 
-  _dart_Py_string_to_number_with_underscores?
-      _Py_string_to_number_with_underscores;
+  late final _Py_string_to_number_with_underscores_ptr =
+      _lookup<ffi.NativeFunction<_c_Py_string_to_number_with_underscores>>(
+          '_Py_string_to_number_with_underscores');
+  late final _dart_Py_string_to_number_with_underscores
+      _Py_string_to_number_with_underscores =
+      _Py_string_to_number_with_underscores_ptr.asFunction<
+          _dart_Py_string_to_number_with_underscores>();
 
   double Py_parse_inf_or_nan(
     ffi.Pointer<ffi.Int8> p,
     ffi.Pointer<ffi.Pointer<ffi.Int8>> endptr,
   ) {
-    return (_Py_parse_inf_or_nan ??= _dylib.lookupFunction<
-        _c_Py_parse_inf_or_nan,
-        _dart_Py_parse_inf_or_nan>('_Py_parse_inf_or_nan'))(
+    return _Py_parse_inf_or_nan(
       p,
       endptr,
     );
   }
 
-  _dart_Py_parse_inf_or_nan? _Py_parse_inf_or_nan;
+  late final _Py_parse_inf_or_nan_ptr =
+      _lookup<ffi.NativeFunction<_c_Py_parse_inf_or_nan>>(
+          '_Py_parse_inf_or_nan');
+  late final _dart_Py_parse_inf_or_nan _Py_parse_inf_or_nan =
+      _Py_parse_inf_or_nan_ptr.asFunction<_dart_Py_parse_inf_or_nan>();
 
   int PyOS_mystrnicmp(
     ffi.Pointer<ffi.Int8> arg0,
     ffi.Pointer<ffi.Int8> arg1,
     int arg2,
   ) {
-    return (_PyOS_mystrnicmp ??=
-        _dylib.lookupFunction<_c_PyOS_mystrnicmp, _dart_PyOS_mystrnicmp>(
-            'PyOS_mystrnicmp'))(
+    return _PyOS_mystrnicmp(
       arg0,
       arg1,
       arg2,
     );
   }
 
-  _dart_PyOS_mystrnicmp? _PyOS_mystrnicmp;
+  late final _PyOS_mystrnicmp_ptr =
+      _lookup<ffi.NativeFunction<_c_PyOS_mystrnicmp>>('PyOS_mystrnicmp');
+  late final _dart_PyOS_mystrnicmp _PyOS_mystrnicmp =
+      _PyOS_mystrnicmp_ptr.asFunction<_dart_PyOS_mystrnicmp>();
 
   int PyOS_mystricmp(
     ffi.Pointer<ffi.Int8> arg0,
     ffi.Pointer<ffi.Int8> arg1,
   ) {
-    return (_PyOS_mystricmp ??=
-        _dylib.lookupFunction<_c_PyOS_mystricmp, _dart_PyOS_mystricmp>(
-            'PyOS_mystricmp'))(
+    return _PyOS_mystricmp(
       arg0,
       arg1,
     );
   }
 
-  _dart_PyOS_mystricmp? _PyOS_mystricmp;
+  late final _PyOS_mystricmp_ptr =
+      _lookup<ffi.NativeFunction<_c_PyOS_mystricmp>>('PyOS_mystricmp');
+  late final _dart_PyOS_mystricmp _PyOS_mystricmp =
+      _PyOS_mystricmp_ptr.asFunction<_dart_PyOS_mystricmp>();
 
   double Py_dg_strtod(
     ffi.Pointer<ffi.Int8> str,
     ffi.Pointer<ffi.Pointer<ffi.Int8>> ptr,
   ) {
-    return (_Py_dg_strtod ??= _dylib
-        .lookupFunction<_c_Py_dg_strtod, _dart_Py_dg_strtod>('_Py_dg_strtod'))(
+    return _Py_dg_strtod(
       str,
       ptr,
     );
   }
 
-  _dart_Py_dg_strtod? _Py_dg_strtod;
+  late final _Py_dg_strtod_ptr =
+      _lookup<ffi.NativeFunction<_c_Py_dg_strtod>>('_Py_dg_strtod');
+  late final _dart_Py_dg_strtod _Py_dg_strtod =
+      _Py_dg_strtod_ptr.asFunction<_dart_Py_dg_strtod>();
 
   ffi.Pointer<ffi.Int8> Py_dg_dtoa(
     double d,
@@ -13378,8 +15682,7 @@ class DartPyC {
     ffi.Pointer<ffi.Int32> sign,
     ffi.Pointer<ffi.Pointer<ffi.Int8>> rve,
   ) {
-    return (_Py_dg_dtoa ??=
-        _dylib.lookupFunction<_c_Py_dg_dtoa, _dart_Py_dg_dtoa>('_Py_dg_dtoa'))(
+    return _Py_dg_dtoa(
       d,
       mode,
       ndigits,
@@ -13389,96 +15692,107 @@ class DartPyC {
     );
   }
 
-  _dart_Py_dg_dtoa? _Py_dg_dtoa;
+  late final _Py_dg_dtoa_ptr =
+      _lookup<ffi.NativeFunction<_c_Py_dg_dtoa>>('_Py_dg_dtoa');
+  late final _dart_Py_dg_dtoa _Py_dg_dtoa =
+      _Py_dg_dtoa_ptr.asFunction<_dart_Py_dg_dtoa>();
 
   void Py_dg_freedtoa(
     ffi.Pointer<ffi.Int8> s,
   ) {
-    return (_Py_dg_freedtoa ??=
-        _dylib.lookupFunction<_c_Py_dg_freedtoa, _dart_Py_dg_freedtoa>(
-            '_Py_dg_freedtoa'))(
+    return _Py_dg_freedtoa(
       s,
     );
   }
 
-  _dart_Py_dg_freedtoa? _Py_dg_freedtoa;
+  late final _Py_dg_freedtoa_ptr =
+      _lookup<ffi.NativeFunction<_c_Py_dg_freedtoa>>('_Py_dg_freedtoa');
+  late final _dart_Py_dg_freedtoa _Py_dg_freedtoa =
+      _Py_dg_freedtoa_ptr.asFunction<_dart_Py_dg_freedtoa>();
 
   double Py_dg_stdnan(
     int sign,
   ) {
-    return (_Py_dg_stdnan ??= _dylib
-        .lookupFunction<_c_Py_dg_stdnan, _dart_Py_dg_stdnan>('_Py_dg_stdnan'))(
+    return _Py_dg_stdnan(
       sign,
     );
   }
 
-  _dart_Py_dg_stdnan? _Py_dg_stdnan;
+  late final _Py_dg_stdnan_ptr =
+      _lookup<ffi.NativeFunction<_c_Py_dg_stdnan>>('_Py_dg_stdnan');
+  late final _dart_Py_dg_stdnan _Py_dg_stdnan =
+      _Py_dg_stdnan_ptr.asFunction<_dart_Py_dg_stdnan>();
 
   double Py_dg_infinity(
     int sign,
   ) {
-    return (_Py_dg_infinity ??=
-        _dylib.lookupFunction<_c_Py_dg_infinity, _dart_Py_dg_infinity>(
-            '_Py_dg_infinity'))(
+    return _Py_dg_infinity(
       sign,
     );
   }
 
-  _dart_Py_dg_infinity? _Py_dg_infinity;
+  late final _Py_dg_infinity_ptr =
+      _lookup<ffi.NativeFunction<_c_Py_dg_infinity>>('_Py_dg_infinity');
+  late final _dart_Py_dg_infinity _Py_dg_infinity =
+      _Py_dg_infinity_ptr.asFunction<_dart_Py_dg_infinity>();
 
   ffi.Pointer<ffi.Int32> Py_DecodeLocale(
     ffi.Pointer<ffi.Int8> arg,
     ffi.Pointer<ffi.Uint64> size,
   ) {
-    return (_Py_DecodeLocale ??=
-        _dylib.lookupFunction<_c_Py_DecodeLocale, _dart_Py_DecodeLocale>(
-            'Py_DecodeLocale'))(
+    return _Py_DecodeLocale(
       arg,
       size,
     );
   }
 
-  _dart_Py_DecodeLocale? _Py_DecodeLocale;
+  late final _Py_DecodeLocale_ptr =
+      _lookup<ffi.NativeFunction<_c_Py_DecodeLocale>>('Py_DecodeLocale');
+  late final _dart_Py_DecodeLocale _Py_DecodeLocale =
+      _Py_DecodeLocale_ptr.asFunction<_dart_Py_DecodeLocale>();
 
   ffi.Pointer<ffi.Int8> Py_EncodeLocale(
     ffi.Pointer<ffi.Int32> text,
     ffi.Pointer<ffi.Uint64> error_pos,
   ) {
-    return (_Py_EncodeLocale ??=
-        _dylib.lookupFunction<_c_Py_EncodeLocale, _dart_Py_EncodeLocale>(
-            'Py_EncodeLocale'))(
+    return _Py_EncodeLocale(
       text,
       error_pos,
     );
   }
 
-  _dart_Py_EncodeLocale? _Py_EncodeLocale;
+  late final _Py_EncodeLocale_ptr =
+      _lookup<ffi.NativeFunction<_c_Py_EncodeLocale>>('Py_EncodeLocale');
+  late final _dart_Py_EncodeLocale _Py_EncodeLocale =
+      _Py_EncodeLocale_ptr.asFunction<_dart_Py_EncodeLocale>();
 
   ffi.Pointer<ffi.Int8> Py_EncodeLocaleRaw(
     ffi.Pointer<ffi.Int32> text,
     ffi.Pointer<ffi.Uint64> error_pos,
   ) {
-    return (_Py_EncodeLocaleRaw ??=
-        _dylib.lookupFunction<_c_Py_EncodeLocaleRaw, _dart_Py_EncodeLocaleRaw>(
-            '_Py_EncodeLocaleRaw'))(
+    return _Py_EncodeLocaleRaw(
       text,
       error_pos,
     );
   }
 
-  _dart_Py_EncodeLocaleRaw? _Py_EncodeLocaleRaw;
+  late final _Py_EncodeLocaleRaw_ptr =
+      _lookup<ffi.NativeFunction<_c_Py_EncodeLocaleRaw>>('_Py_EncodeLocaleRaw');
+  late final _dart_Py_EncodeLocaleRaw _Py_EncodeLocaleRaw =
+      _Py_EncodeLocaleRaw_ptr.asFunction<_dart_Py_EncodeLocaleRaw>();
 
   int Py_GetErrorHandler(
     ffi.Pointer<ffi.Int8> errors,
   ) {
-    return (_Py_GetErrorHandler ??=
-        _dylib.lookupFunction<_c_Py_GetErrorHandler, _dart_Py_GetErrorHandler>(
-            '_Py_GetErrorHandler'))(
+    return _Py_GetErrorHandler(
       errors,
     );
   }
 
-  _dart_Py_GetErrorHandler? _Py_GetErrorHandler;
+  late final _Py_GetErrorHandler_ptr =
+      _lookup<ffi.NativeFunction<_c_Py_GetErrorHandler>>('_Py_GetErrorHandler');
+  late final _dart_Py_GetErrorHandler _Py_GetErrorHandler =
+      _Py_GetErrorHandler_ptr.asFunction<_dart_Py_GetErrorHandler>();
 
   int Py_DecodeLocaleEx(
     ffi.Pointer<ffi.Int8> arg,
@@ -13488,9 +15802,7 @@ class DartPyC {
     int current_locale,
     int errors,
   ) {
-    return (_Py_DecodeLocaleEx ??=
-        _dylib.lookupFunction<_c_Py_DecodeLocaleEx, _dart_Py_DecodeLocaleEx>(
-            '_Py_DecodeLocaleEx'))(
+    return _Py_DecodeLocaleEx(
       arg,
       wstr,
       wlen,
@@ -13500,7 +15812,10 @@ class DartPyC {
     );
   }
 
-  _dart_Py_DecodeLocaleEx? _Py_DecodeLocaleEx;
+  late final _Py_DecodeLocaleEx_ptr =
+      _lookup<ffi.NativeFunction<_c_Py_DecodeLocaleEx>>('_Py_DecodeLocaleEx');
+  late final _dart_Py_DecodeLocaleEx _Py_DecodeLocaleEx =
+      _Py_DecodeLocaleEx_ptr.asFunction<_dart_Py_DecodeLocaleEx>();
 
   int Py_EncodeLocaleEx(
     ffi.Pointer<ffi.Int32> text,
@@ -13510,9 +15825,7 @@ class DartPyC {
     int current_locale,
     int errors,
   ) {
-    return (_Py_EncodeLocaleEx ??=
-        _dylib.lookupFunction<_c_Py_EncodeLocaleEx, _dart_Py_EncodeLocaleEx>(
-            '_Py_EncodeLocaleEx'))(
+    return _Py_EncodeLocaleEx(
       text,
       str,
       error_pos,
@@ -13522,339 +15835,376 @@ class DartPyC {
     );
   }
 
-  _dart_Py_EncodeLocaleEx? _Py_EncodeLocaleEx;
+  late final _Py_EncodeLocaleEx_ptr =
+      _lookup<ffi.NativeFunction<_c_Py_EncodeLocaleEx>>('_Py_EncodeLocaleEx');
+  late final _dart_Py_EncodeLocaleEx _Py_EncodeLocaleEx =
+      _Py_EncodeLocaleEx_ptr.asFunction<_dart_Py_EncodeLocaleEx>();
 
   ffi.Pointer<PyObject> Py_device_encoding(
     int arg0,
   ) {
-    return (_Py_device_encoding ??=
-        _dylib.lookupFunction<_c_Py_device_encoding, _dart_Py_device_encoding>(
-            '_Py_device_encoding'))(
+    return _Py_device_encoding(
       arg0,
     );
   }
 
-  _dart_Py_device_encoding? _Py_device_encoding;
+  late final _Py_device_encoding_ptr =
+      _lookup<ffi.NativeFunction<_c_Py_device_encoding>>('_Py_device_encoding');
+  late final _dart_Py_device_encoding _Py_device_encoding =
+      _Py_device_encoding_ptr.asFunction<_dart_Py_device_encoding>();
 
   int Py_fstat(
     int fd,
     ffi.Pointer<stat> status,
   ) {
-    return (_Py_fstat ??=
-        _dylib.lookupFunction<_c_Py_fstat, _dart_Py_fstat>('_Py_fstat'))(
+    return _Py_fstat(
       fd,
       status,
     );
   }
 
-  _dart_Py_fstat? _Py_fstat;
+  late final _Py_fstat_ptr =
+      _lookup<ffi.NativeFunction<_c_Py_fstat>>('_Py_fstat');
+  late final _dart_Py_fstat _Py_fstat =
+      _Py_fstat_ptr.asFunction<_dart_Py_fstat>();
 
   int Py_fstat_noraise(
     int fd,
     ffi.Pointer<stat> status,
   ) {
-    return (_Py_fstat_noraise ??=
-        _dylib.lookupFunction<_c_Py_fstat_noraise, _dart_Py_fstat_noraise>(
-            '_Py_fstat_noraise'))(
+    return _Py_fstat_noraise(
       fd,
       status,
     );
   }
 
-  _dart_Py_fstat_noraise? _Py_fstat_noraise;
+  late final _Py_fstat_noraise_ptr =
+      _lookup<ffi.NativeFunction<_c_Py_fstat_noraise>>('_Py_fstat_noraise');
+  late final _dart_Py_fstat_noraise _Py_fstat_noraise =
+      _Py_fstat_noraise_ptr.asFunction<_dart_Py_fstat_noraise>();
 
   int Py_stat(
     ffi.Pointer<PyObject> path,
     ffi.Pointer<stat> status,
   ) {
-    return (_Py_stat ??=
-        _dylib.lookupFunction<_c_Py_stat, _dart_Py_stat>('_Py_stat'))(
+    return _Py_stat(
       path,
       status,
     );
   }
 
-  _dart_Py_stat? _Py_stat;
+  late final _Py_stat_ptr = _lookup<ffi.NativeFunction<_c_Py_stat>>('_Py_stat');
+  late final _dart_Py_stat _Py_stat = _Py_stat_ptr.asFunction<_dart_Py_stat>();
 
   int Py_open(
     ffi.Pointer<ffi.Int8> pathname,
     int flags,
   ) {
-    return (_Py_open ??=
-        _dylib.lookupFunction<_c_Py_open, _dart_Py_open>('_Py_open'))(
+    return _Py_open(
       pathname,
       flags,
     );
   }
 
-  _dart_Py_open? _Py_open;
+  late final _Py_open_ptr = _lookup<ffi.NativeFunction<_c_Py_open>>('_Py_open');
+  late final _dart_Py_open _Py_open = _Py_open_ptr.asFunction<_dart_Py_open>();
 
   int Py_open_noraise(
     ffi.Pointer<ffi.Int8> pathname,
     int flags,
   ) {
-    return (_Py_open_noraise ??=
-        _dylib.lookupFunction<_c_Py_open_noraise, _dart_Py_open_noraise>(
-            '_Py_open_noraise'))(
+    return _Py_open_noraise(
       pathname,
       flags,
     );
   }
 
-  _dart_Py_open_noraise? _Py_open_noraise;
+  late final _Py_open_noraise_ptr =
+      _lookup<ffi.NativeFunction<_c_Py_open_noraise>>('_Py_open_noraise');
+  late final _dart_Py_open_noraise _Py_open_noraise =
+      _Py_open_noraise_ptr.asFunction<_dart_Py_open_noraise>();
 
   ffi.Pointer<FILE> Py_wfopen(
     ffi.Pointer<ffi.Int32> path,
     ffi.Pointer<ffi.Int32> mode,
   ) {
-    return (_Py_wfopen ??=
-        _dylib.lookupFunction<_c_Py_wfopen, _dart_Py_wfopen>('_Py_wfopen'))(
+    return _Py_wfopen(
       path,
       mode,
     );
   }
 
-  _dart_Py_wfopen? _Py_wfopen;
+  late final _Py_wfopen_ptr =
+      _lookup<ffi.NativeFunction<_c_Py_wfopen>>('_Py_wfopen');
+  late final _dart_Py_wfopen _Py_wfopen =
+      _Py_wfopen_ptr.asFunction<_dart_Py_wfopen>();
 
   ffi.Pointer<FILE> Py_fopen(
     ffi.Pointer<ffi.Int8> pathname,
     ffi.Pointer<ffi.Int8> mode,
   ) {
-    return (_Py_fopen ??=
-        _dylib.lookupFunction<_c_Py_fopen, _dart_Py_fopen>('_Py_fopen'))(
+    return _Py_fopen(
       pathname,
       mode,
     );
   }
 
-  _dart_Py_fopen? _Py_fopen;
+  late final _Py_fopen_ptr =
+      _lookup<ffi.NativeFunction<_c_Py_fopen>>('_Py_fopen');
+  late final _dart_Py_fopen _Py_fopen =
+      _Py_fopen_ptr.asFunction<_dart_Py_fopen>();
 
   ffi.Pointer<FILE> Py_fopen_obj(
     ffi.Pointer<PyObject> path,
     ffi.Pointer<ffi.Int8> mode,
   ) {
-    return (_Py_fopen_obj ??= _dylib
-        .lookupFunction<_c_Py_fopen_obj, _dart_Py_fopen_obj>('_Py_fopen_obj'))(
+    return _Py_fopen_obj(
       path,
       mode,
     );
   }
 
-  _dart_Py_fopen_obj? _Py_fopen_obj;
+  late final _Py_fopen_obj_ptr =
+      _lookup<ffi.NativeFunction<_c_Py_fopen_obj>>('_Py_fopen_obj');
+  late final _dart_Py_fopen_obj _Py_fopen_obj =
+      _Py_fopen_obj_ptr.asFunction<_dart_Py_fopen_obj>();
 
   int Py_read(
     int fd,
     ffi.Pointer<ffi.Void> buf,
     int count,
   ) {
-    return (_Py_read ??=
-        _dylib.lookupFunction<_c_Py_read, _dart_Py_read>('_Py_read'))(
+    return _Py_read(
       fd,
       buf,
       count,
     );
   }
 
-  _dart_Py_read? _Py_read;
+  late final _Py_read_ptr = _lookup<ffi.NativeFunction<_c_Py_read>>('_Py_read');
+  late final _dart_Py_read _Py_read = _Py_read_ptr.asFunction<_dart_Py_read>();
 
   int Py_write(
     int fd,
     ffi.Pointer<ffi.Void> buf,
     int count,
   ) {
-    return (_Py_write ??=
-        _dylib.lookupFunction<_c_Py_write, _dart_Py_write>('_Py_write'))(
+    return _Py_write(
       fd,
       buf,
       count,
     );
   }
 
-  _dart_Py_write? _Py_write;
+  late final _Py_write_ptr =
+      _lookup<ffi.NativeFunction<_c_Py_write>>('_Py_write');
+  late final _dart_Py_write _Py_write =
+      _Py_write_ptr.asFunction<_dart_Py_write>();
 
   int Py_write_noraise(
     int fd,
     ffi.Pointer<ffi.Void> buf,
     int count,
   ) {
-    return (_Py_write_noraise ??=
-        _dylib.lookupFunction<_c_Py_write_noraise, _dart_Py_write_noraise>(
-            '_Py_write_noraise'))(
+    return _Py_write_noraise(
       fd,
       buf,
       count,
     );
   }
 
-  _dart_Py_write_noraise? _Py_write_noraise;
+  late final _Py_write_noraise_ptr =
+      _lookup<ffi.NativeFunction<_c_Py_write_noraise>>('_Py_write_noraise');
+  late final _dart_Py_write_noraise _Py_write_noraise =
+      _Py_write_noraise_ptr.asFunction<_dart_Py_write_noraise>();
 
   int Py_wreadlink(
     ffi.Pointer<ffi.Int32> path,
     ffi.Pointer<ffi.Int32> buf,
     int buflen,
   ) {
-    return (_Py_wreadlink ??= _dylib
-        .lookupFunction<_c_Py_wreadlink, _dart_Py_wreadlink>('_Py_wreadlink'))(
+    return _Py_wreadlink(
       path,
       buf,
       buflen,
     );
   }
 
-  _dart_Py_wreadlink? _Py_wreadlink;
+  late final _Py_wreadlink_ptr =
+      _lookup<ffi.NativeFunction<_c_Py_wreadlink>>('_Py_wreadlink');
+  late final _dart_Py_wreadlink _Py_wreadlink =
+      _Py_wreadlink_ptr.asFunction<_dart_Py_wreadlink>();
 
   ffi.Pointer<ffi.Int32> Py_wrealpath(
     ffi.Pointer<ffi.Int32> path,
     ffi.Pointer<ffi.Int32> resolved_path,
     int resolved_path_len,
   ) {
-    return (_Py_wrealpath ??= _dylib
-        .lookupFunction<_c_Py_wrealpath, _dart_Py_wrealpath>('_Py_wrealpath'))(
+    return _Py_wrealpath(
       path,
       resolved_path,
       resolved_path_len,
     );
   }
 
-  _dart_Py_wrealpath? _Py_wrealpath;
+  late final _Py_wrealpath_ptr =
+      _lookup<ffi.NativeFunction<_c_Py_wrealpath>>('_Py_wrealpath');
+  late final _dart_Py_wrealpath _Py_wrealpath =
+      _Py_wrealpath_ptr.asFunction<_dart_Py_wrealpath>();
 
   ffi.Pointer<ffi.Int32> Py_wgetcwd(
     ffi.Pointer<ffi.Int32> buf,
     int buflen,
   ) {
-    return (_Py_wgetcwd ??=
-        _dylib.lookupFunction<_c_Py_wgetcwd, _dart_Py_wgetcwd>('_Py_wgetcwd'))(
+    return _Py_wgetcwd(
       buf,
       buflen,
     );
   }
 
-  _dart_Py_wgetcwd? _Py_wgetcwd;
+  late final _Py_wgetcwd_ptr =
+      _lookup<ffi.NativeFunction<_c_Py_wgetcwd>>('_Py_wgetcwd');
+  late final _dart_Py_wgetcwd _Py_wgetcwd =
+      _Py_wgetcwd_ptr.asFunction<_dart_Py_wgetcwd>();
 
   int Py_get_inheritable(
     int fd,
   ) {
-    return (_Py_get_inheritable ??=
-        _dylib.lookupFunction<_c_Py_get_inheritable, _dart_Py_get_inheritable>(
-            '_Py_get_inheritable'))(
+    return _Py_get_inheritable(
       fd,
     );
   }
 
-  _dart_Py_get_inheritable? _Py_get_inheritable;
+  late final _Py_get_inheritable_ptr =
+      _lookup<ffi.NativeFunction<_c_Py_get_inheritable>>('_Py_get_inheritable');
+  late final _dart_Py_get_inheritable _Py_get_inheritable =
+      _Py_get_inheritable_ptr.asFunction<_dart_Py_get_inheritable>();
 
   int Py_set_inheritable(
     int fd,
     int inheritable,
     ffi.Pointer<ffi.Int32> atomic_flag_works,
   ) {
-    return (_Py_set_inheritable ??=
-        _dylib.lookupFunction<_c_Py_set_inheritable, _dart_Py_set_inheritable>(
-            '_Py_set_inheritable'))(
+    return _Py_set_inheritable(
       fd,
       inheritable,
       atomic_flag_works,
     );
   }
 
-  _dart_Py_set_inheritable? _Py_set_inheritable;
+  late final _Py_set_inheritable_ptr =
+      _lookup<ffi.NativeFunction<_c_Py_set_inheritable>>('_Py_set_inheritable');
+  late final _dart_Py_set_inheritable _Py_set_inheritable =
+      _Py_set_inheritable_ptr.asFunction<_dart_Py_set_inheritable>();
 
   int Py_set_inheritable_async_safe(
     int fd,
     int inheritable,
     ffi.Pointer<ffi.Int32> atomic_flag_works,
   ) {
-    return (_Py_set_inheritable_async_safe ??= _dylib.lookupFunction<
-        _c_Py_set_inheritable_async_safe,
-        _dart_Py_set_inheritable_async_safe>('_Py_set_inheritable_async_safe'))(
+    return _Py_set_inheritable_async_safe(
       fd,
       inheritable,
       atomic_flag_works,
     );
   }
 
-  _dart_Py_set_inheritable_async_safe? _Py_set_inheritable_async_safe;
+  late final _Py_set_inheritable_async_safe_ptr =
+      _lookup<ffi.NativeFunction<_c_Py_set_inheritable_async_safe>>(
+          '_Py_set_inheritable_async_safe');
+  late final _dart_Py_set_inheritable_async_safe
+      _Py_set_inheritable_async_safe = _Py_set_inheritable_async_safe_ptr
+          .asFunction<_dart_Py_set_inheritable_async_safe>();
 
   int Py_dup(
     int fd,
   ) {
-    return (_Py_dup ??=
-        _dylib.lookupFunction<_c_Py_dup, _dart_Py_dup>('_Py_dup'))(
+    return _Py_dup(
       fd,
     );
   }
 
-  _dart_Py_dup? _Py_dup;
+  late final _Py_dup_ptr = _lookup<ffi.NativeFunction<_c_Py_dup>>('_Py_dup');
+  late final _dart_Py_dup _Py_dup = _Py_dup_ptr.asFunction<_dart_Py_dup>();
 
   int Py_get_blocking(
     int fd,
   ) {
-    return (_Py_get_blocking ??=
-        _dylib.lookupFunction<_c_Py_get_blocking, _dart_Py_get_blocking>(
-            '_Py_get_blocking'))(
+    return _Py_get_blocking(
       fd,
     );
   }
 
-  _dart_Py_get_blocking? _Py_get_blocking;
+  late final _Py_get_blocking_ptr =
+      _lookup<ffi.NativeFunction<_c_Py_get_blocking>>('_Py_get_blocking');
+  late final _dart_Py_get_blocking _Py_get_blocking =
+      _Py_get_blocking_ptr.asFunction<_dart_Py_get_blocking>();
 
   int Py_set_blocking(
     int fd,
     int blocking,
   ) {
-    return (_Py_set_blocking ??=
-        _dylib.lookupFunction<_c_Py_set_blocking, _dart_Py_set_blocking>(
-            '_Py_set_blocking'))(
+    return _Py_set_blocking(
       fd,
       blocking,
     );
   }
 
-  _dart_Py_set_blocking? _Py_set_blocking;
+  late final _Py_set_blocking_ptr =
+      _lookup<ffi.NativeFunction<_c_Py_set_blocking>>('_Py_set_blocking');
+  late final _dart_Py_set_blocking _Py_set_blocking =
+      _Py_set_blocking_ptr.asFunction<_dart_Py_set_blocking>();
 
   int PyTraceMalloc_Track(
     int domain,
     int ptr,
     int size,
   ) {
-    return (_PyTraceMalloc_Track ??= _dylib.lookupFunction<
-        _c_PyTraceMalloc_Track,
-        _dart_PyTraceMalloc_Track>('PyTraceMalloc_Track'))(
+    return _PyTraceMalloc_Track(
       domain,
       ptr,
       size,
     );
   }
 
-  _dart_PyTraceMalloc_Track? _PyTraceMalloc_Track;
+  late final _PyTraceMalloc_Track_ptr =
+      _lookup<ffi.NativeFunction<_c_PyTraceMalloc_Track>>(
+          'PyTraceMalloc_Track');
+  late final _dart_PyTraceMalloc_Track _PyTraceMalloc_Track =
+      _PyTraceMalloc_Track_ptr.asFunction<_dart_PyTraceMalloc_Track>();
 
   int PyTraceMalloc_Untrack(
     int domain,
     int ptr,
   ) {
-    return (_PyTraceMalloc_Untrack ??= _dylib.lookupFunction<
-        _c_PyTraceMalloc_Untrack,
-        _dart_PyTraceMalloc_Untrack>('PyTraceMalloc_Untrack'))(
+    return _PyTraceMalloc_Untrack(
       domain,
       ptr,
     );
   }
 
-  _dart_PyTraceMalloc_Untrack? _PyTraceMalloc_Untrack;
+  late final _PyTraceMalloc_Untrack_ptr =
+      _lookup<ffi.NativeFunction<_c_PyTraceMalloc_Untrack>>(
+          'PyTraceMalloc_Untrack');
+  late final _dart_PyTraceMalloc_Untrack _PyTraceMalloc_Untrack =
+      _PyTraceMalloc_Untrack_ptr.asFunction<_dart_PyTraceMalloc_Untrack>();
 
   ffi.Pointer<PyObject> PyTraceMalloc_GetTraceback(
     int domain,
     int ptr,
   ) {
-    return (_PyTraceMalloc_GetTraceback ??= _dylib.lookupFunction<
-        _c_PyTraceMalloc_GetTraceback,
-        _dart_PyTraceMalloc_GetTraceback>('_PyTraceMalloc_GetTraceback'))(
+    return _PyTraceMalloc_GetTraceback(
       domain,
       ptr,
     );
   }
 
-  _dart_PyTraceMalloc_GetTraceback? _PyTraceMalloc_GetTraceback;
+  late final _PyTraceMalloc_GetTraceback_ptr =
+      _lookup<ffi.NativeFunction<_c_PyTraceMalloc_GetTraceback>>(
+          '_PyTraceMalloc_GetTraceback');
+  late final _dart_PyTraceMalloc_GetTraceback _PyTraceMalloc_GetTraceback =
+      _PyTraceMalloc_GetTraceback_ptr.asFunction<
+          _dart_PyTraceMalloc_GetTraceback>();
 }
 
 class _PyTraceMalloc_Config extends ffi.Struct {
@@ -14036,7 +16386,7 @@ class PyMethodDef extends ffi.Struct {
   external ffi.Pointer<ffi.Int8> ml_doc;
 }
 
-class PyMemberDef extends ffi.Struct {}
+class PyMemberDef extends ffi.Opaque {}
 
 class PyGetSetDef extends ffi.Struct {
   external ffi.Pointer<ffi.Int8> name;
@@ -14050,90 +16400,144 @@ class PyGetSetDef extends ffi.Struct {
   external ffi.Pointer<ffi.Void> closure;
 }
 
-class __sbuf extends ffi.Struct {
-  external ffi.Pointer<ffi.Uint8> _base;
+class _IO_marker extends ffi.Struct {
+  external ffi.Pointer<_IO_marker> _next;
+
+  external ffi.Pointer<FILE> _sbuf;
 
   @ffi.Int32()
-  external int _size;
+  external int _pos;
 }
 
-class __sFILEX extends ffi.Struct {}
-
 class FILE extends ffi.Struct {
-  external ffi.Pointer<ffi.Uint8> _p;
-
   @ffi.Int32()
-  external int _r;
-
-  @ffi.Int32()
-  external int _w;
-
-  @ffi.Int16()
   external int _flags;
 
-  @ffi.Int16()
-  external int _file;
+  external ffi.Pointer<ffi.Int8> _IO_read_ptr;
 
-  external __sbuf _bf;
+  external ffi.Pointer<ffi.Int8> _IO_read_end;
 
-  @ffi.Int32()
-  external int _lbfsize;
+  external ffi.Pointer<ffi.Int8> _IO_read_base;
 
-  external ffi.Pointer<ffi.Void> _cookie;
+  external ffi.Pointer<ffi.Int8> _IO_write_base;
 
-  external ffi.Pointer<ffi.NativeFunction<_typedefC_1>> _close;
+  external ffi.Pointer<ffi.Int8> _IO_write_ptr;
 
-  external ffi.Pointer<ffi.NativeFunction<_typedefC_2>> _read;
+  external ffi.Pointer<ffi.Int8> _IO_write_end;
 
-  external ffi.Pointer<ffi.NativeFunction<_typedefC_3>> _seek;
+  external ffi.Pointer<ffi.Int8> _IO_buf_base;
 
-  external ffi.Pointer<ffi.NativeFunction<_typedefC_4>> _write;
+  external ffi.Pointer<ffi.Int8> _IO_buf_end;
 
-  external __sbuf _ub;
+  external ffi.Pointer<ffi.Int8> _IO_save_base;
 
-  external ffi.Pointer<__sFILEX> _extra;
+  external ffi.Pointer<ffi.Int8> _IO_backup_base;
 
-  @ffi.Int32()
-  external int _ur;
+  external ffi.Pointer<ffi.Int8> _IO_save_end;
 
-  @ffi.Uint8()
-  external int _unique__ubuf_item_0;
-  @ffi.Uint8()
-  external int _unique__ubuf_item_1;
-  @ffi.Uint8()
-  external int _unique__ubuf_item_2;
+  external ffi.Pointer<_IO_marker> _markers;
 
-  /// Helper for array `_ubuf`.
-  ArrayHelper_FILE__ubuf_level0 get _ubuf =>
-      ArrayHelper_FILE__ubuf_level0(this, [3], 0, 0);
-  @ffi.Uint8()
-  external int _unique__nbuf_item_0;
-
-  /// Helper for array `_nbuf`.
-  ArrayHelper_FILE__nbuf_level0 get _nbuf =>
-      ArrayHelper_FILE__nbuf_level0(this, [1], 0, 0);
-  external __sbuf _lb;
+  external ffi.Pointer<FILE> _chain;
 
   @ffi.Int32()
-  external int _blksize;
+  external int _fileno;
+
+  @ffi.Int32()
+  external int _flags2;
+
+  @ffi.Int64()
+  external int _old_offset;
+
+  @ffi.Uint16()
+  external int _cur_column;
+
+  @ffi.Int8()
+  external int _vtable_offset;
+
+  @ffi.Int8()
+  external int _unique__shortbuf_item_0;
+
+  /// Helper for array `_shortbuf`.
+  ArrayHelper_FILE__shortbuf_level0 get _shortbuf =>
+      ArrayHelper_FILE__shortbuf_level0(this, [1], 0, 0);
+  external ffi.Pointer<ffi.Void> _lock;
 
   @ffi.Int64()
   external int _offset;
+
+  external ffi.Pointer<ffi.Void> __pad1;
+
+  external ffi.Pointer<ffi.Void> __pad2;
+
+  external ffi.Pointer<ffi.Void> __pad3;
+
+  external ffi.Pointer<ffi.Void> __pad4;
+
+  @ffi.Uint64()
+  external int __pad5;
+
+  @ffi.Int32()
+  external int _mode;
+
+  @ffi.Int8()
+  external int _unique__unused2_item_0;
+  @ffi.Int8()
+  external int _unique__unused2_item_1;
+  @ffi.Int8()
+  external int _unique__unused2_item_2;
+  @ffi.Int8()
+  external int _unique__unused2_item_3;
+  @ffi.Int8()
+  external int _unique__unused2_item_4;
+  @ffi.Int8()
+  external int _unique__unused2_item_5;
+  @ffi.Int8()
+  external int _unique__unused2_item_6;
+  @ffi.Int8()
+  external int _unique__unused2_item_7;
+  @ffi.Int8()
+  external int _unique__unused2_item_8;
+  @ffi.Int8()
+  external int _unique__unused2_item_9;
+  @ffi.Int8()
+  external int _unique__unused2_item_10;
+  @ffi.Int8()
+  external int _unique__unused2_item_11;
+  @ffi.Int8()
+  external int _unique__unused2_item_12;
+  @ffi.Int8()
+  external int _unique__unused2_item_13;
+  @ffi.Int8()
+  external int _unique__unused2_item_14;
+  @ffi.Int8()
+  external int _unique__unused2_item_15;
+  @ffi.Int8()
+  external int _unique__unused2_item_16;
+  @ffi.Int8()
+  external int _unique__unused2_item_17;
+  @ffi.Int8()
+  external int _unique__unused2_item_18;
+  @ffi.Int8()
+  external int _unique__unused2_item_19;
+
+  /// Helper for array `_unused2`.
+  ArrayHelper_FILE__unused2_level0 get _unused2 =>
+      ArrayHelper_FILE__unused2_level0(this, [20], 0, 0);
 }
 
-/// Helper for array `_ubuf` in struct `FILE`.
-class ArrayHelper_FILE__ubuf_level0 {
+/// Helper for array `_shortbuf` in struct `FILE`.
+class ArrayHelper_FILE__shortbuf_level0 {
   final FILE _struct;
   final List<int> dimensions;
   final int level;
   final int _absoluteIndex;
   int get length => dimensions[level];
-  ArrayHelper_FILE__ubuf_level0(
+  ArrayHelper_FILE__shortbuf_level0(
       this._struct, this.dimensions, this.level, this._absoluteIndex);
   void _checkBounds(int index) {
     if (index >= length || index < 0) {
       throw RangeError(
-          'Dimension $level: index not in range 0..${length} exclusive.');
+          'Dimension $level: index not in range 0..$length exclusive.');
     }
   }
 
@@ -14141,11 +16545,7 @@ class ArrayHelper_FILE__ubuf_level0 {
     _checkBounds(index);
     switch (_absoluteIndex + index) {
       case 0:
-        return _struct._unique__ubuf_item_0;
-      case 1:
-        return _struct._unique__ubuf_item_1;
-      case 2:
-        return _struct._unique__ubuf_item_2;
+        return _struct._unique__shortbuf_item_0;
       default:
         throw Exception('Invalid Array Helper generated.');
     }
@@ -14155,13 +16555,7 @@ class ArrayHelper_FILE__ubuf_level0 {
     _checkBounds(index);
     switch (_absoluteIndex + index) {
       case 0:
-        _struct._unique__ubuf_item_0 = value;
-        break;
-      case 1:
-        _struct._unique__ubuf_item_1 = value;
-        break;
-      case 2:
-        _struct._unique__ubuf_item_2 = value;
+        _struct._unique__shortbuf_item_0 = value;
         break;
       default:
         throw Exception('Invalid Array Helper generated.');
@@ -14169,19 +16563,19 @@ class ArrayHelper_FILE__ubuf_level0 {
   }
 }
 
-/// Helper for array `_nbuf` in struct `FILE`.
-class ArrayHelper_FILE__nbuf_level0 {
+/// Helper for array `_unused2` in struct `FILE`.
+class ArrayHelper_FILE__unused2_level0 {
   final FILE _struct;
   final List<int> dimensions;
   final int level;
   final int _absoluteIndex;
   int get length => dimensions[level];
-  ArrayHelper_FILE__nbuf_level0(
+  ArrayHelper_FILE__unused2_level0(
       this._struct, this.dimensions, this.level, this._absoluteIndex);
   void _checkBounds(int index) {
     if (index >= length || index < 0) {
       throw RangeError(
-          'Dimension $level: index not in range 0..${length} exclusive.');
+          'Dimension $level: index not in range 0..$length exclusive.');
     }
   }
 
@@ -14189,7 +16583,45 @@ class ArrayHelper_FILE__nbuf_level0 {
     _checkBounds(index);
     switch (_absoluteIndex + index) {
       case 0:
-        return _struct._unique__nbuf_item_0;
+        return _struct._unique__unused2_item_0;
+      case 1:
+        return _struct._unique__unused2_item_1;
+      case 2:
+        return _struct._unique__unused2_item_2;
+      case 3:
+        return _struct._unique__unused2_item_3;
+      case 4:
+        return _struct._unique__unused2_item_4;
+      case 5:
+        return _struct._unique__unused2_item_5;
+      case 6:
+        return _struct._unique__unused2_item_6;
+      case 7:
+        return _struct._unique__unused2_item_7;
+      case 8:
+        return _struct._unique__unused2_item_8;
+      case 9:
+        return _struct._unique__unused2_item_9;
+      case 10:
+        return _struct._unique__unused2_item_10;
+      case 11:
+        return _struct._unique__unused2_item_11;
+      case 12:
+        return _struct._unique__unused2_item_12;
+      case 13:
+        return _struct._unique__unused2_item_13;
+      case 14:
+        return _struct._unique__unused2_item_14;
+      case 15:
+        return _struct._unique__unused2_item_15;
+      case 16:
+        return _struct._unique__unused2_item_16;
+      case 17:
+        return _struct._unique__unused2_item_17;
+      case 18:
+        return _struct._unique__unused2_item_18;
+      case 19:
+        return _struct._unique__unused2_item_19;
       default:
         throw Exception('Invalid Array Helper generated.');
     }
@@ -14199,7 +16631,64 @@ class ArrayHelper_FILE__nbuf_level0 {
     _checkBounds(index);
     switch (_absoluteIndex + index) {
       case 0:
-        _struct._unique__nbuf_item_0 = value;
+        _struct._unique__unused2_item_0 = value;
+        break;
+      case 1:
+        _struct._unique__unused2_item_1 = value;
+        break;
+      case 2:
+        _struct._unique__unused2_item_2 = value;
+        break;
+      case 3:
+        _struct._unique__unused2_item_3 = value;
+        break;
+      case 4:
+        _struct._unique__unused2_item_4 = value;
+        break;
+      case 5:
+        _struct._unique__unused2_item_5 = value;
+        break;
+      case 6:
+        _struct._unique__unused2_item_6 = value;
+        break;
+      case 7:
+        _struct._unique__unused2_item_7 = value;
+        break;
+      case 8:
+        _struct._unique__unused2_item_8 = value;
+        break;
+      case 9:
+        _struct._unique__unused2_item_9 = value;
+        break;
+      case 10:
+        _struct._unique__unused2_item_10 = value;
+        break;
+      case 11:
+        _struct._unique__unused2_item_11 = value;
+        break;
+      case 12:
+        _struct._unique__unused2_item_12 = value;
+        break;
+      case 13:
+        _struct._unique__unused2_item_13 = value;
+        break;
+      case 14:
+        _struct._unique__unused2_item_14 = value;
+        break;
+      case 15:
+        _struct._unique__unused2_item_15 = value;
+        break;
+      case 16:
+        _struct._unique__unused2_item_16 = value;
+        break;
+      case 17:
+        _struct._unique__unused2_item_17 = value;
+        break;
+      case 18:
+        _struct._unique__unused2_item_18 = value;
+        break;
+      case 19:
+        _struct._unique__unused2_item_19 = value;
         break;
       default:
         throw Exception('Invalid Array Helper generated.');
@@ -14313,7 +16802,7 @@ class _typeobject extends ffi.Struct {
 
   external ffi.Pointer<ffi.NativeFunction<vectorcallfunc>> tp_vectorcall;
 
-  external ffi.Pointer<ffi.NativeFunction<_typedefC_5>> tp_print;
+  external ffi.Pointer<ffi.NativeFunction<_typedefC_1>> tp_print;
 }
 
 class PyObject extends ffi.Struct {
@@ -14357,7 +16846,7 @@ class timeval extends ffi.Struct {
   @ffi.Int64()
   external int tv_sec;
 
-  @ffi.Int32()
+  @ffi.Int64()
   external int tv_usec;
 }
 
@@ -14417,7 +16906,7 @@ class tm extends ffi.Struct {
 }
 
 class PyHash_FuncDef extends ffi.Struct {
-  external ffi.Pointer<ffi.NativeFunction<_typedefC_6>> hash;
+  external ffi.Pointer<ffi.NativeFunction<_typedefC_2>> hash;
 
   external ffi.Pointer<ffi.Int8> name;
 
@@ -14468,7 +16957,7 @@ class ArrayHelper_PyBytesObject_ob_sval_level0 {
   void _checkBounds(int index) {
     if (index >= length || index < 0) {
       throw RangeError(
-          'Dimension $level: index not in range 0..${length} exclusive.');
+          'Dimension $level: index not in range 0..$length exclusive.');
     }
   }
 
@@ -15566,7 +18055,7 @@ class ArrayHelper__PyBytesWriter_small_buffer_level0 {
   void _checkBounds(int index) {
     if (index >= length || index < 0) {
       throw RangeError(
-          'Dimension $level: index not in range 0..${length} exclusive.');
+          'Dimension $level: index not in range 0..$length exclusive.');
     }
   }
 
@@ -18147,7 +20636,54 @@ class ArrayHelper__PyBytesWriter_small_buffer_level0 {
   }
 }
 
-class _longobject extends ffi.Struct {}
+class _longobject extends ffi.Struct {
+  external PyVarObject ob_base;
+
+  @ffi.Uint32()
+  external int _unique_ob_digit_item_0;
+
+  /// Helper for array `ob_digit`.
+  ArrayHelper__longobject_ob_digit_level0 get ob_digit =>
+      ArrayHelper__longobject_ob_digit_level0(this, [1], 0, 0);
+}
+
+/// Helper for array `ob_digit` in struct `_longobject`.
+class ArrayHelper__longobject_ob_digit_level0 {
+  final _longobject _struct;
+  final List<int> dimensions;
+  final int level;
+  final int _absoluteIndex;
+  int get length => dimensions[level];
+  ArrayHelper__longobject_ob_digit_level0(
+      this._struct, this.dimensions, this.level, this._absoluteIndex);
+  void _checkBounds(int index) {
+    if (index >= length || index < 0) {
+      throw RangeError(
+          'Dimension $level: index not in range 0..$length exclusive.');
+    }
+  }
+
+  int operator [](int index) {
+    _checkBounds(index);
+    switch (_absoluteIndex + index) {
+      case 0:
+        return _struct._unique_ob_digit_item_0;
+      default:
+        throw Exception('Invalid Array Helper generated.');
+    }
+  }
+
+  void operator []=(int index, int value) {
+    _checkBounds(index);
+    switch (_absoluteIndex + index) {
+      case 0:
+        _struct._unique_ob_digit_item_0 = value;
+        break;
+      default:
+        throw Exception('Invalid Array Helper generated.');
+    }
+  }
+}
 
 class _PyUnicodeWriter extends ffi.Struct {
   external ffi.Pointer<PyObject> buffer;
@@ -18250,7 +20786,7 @@ class ArrayHelper_PyMemoryViewObject_ob_array_level0 {
   void _checkBounds(int index) {
     if (index >= length || index < 0) {
       throw RangeError(
-          'Dimension $level: index not in range 0..${length} exclusive.');
+          'Dimension $level: index not in range 0..$length exclusive.');
     }
   }
 
@@ -18285,7 +20821,7 @@ class PyListObject extends ffi.Struct {
   external int allocated;
 }
 
-class _odictobject extends ffi.Struct {}
+class _odictobject extends ffi.Opaque {}
 
 class setentry extends ffi.Struct {
   external ffi.Pointer<PyObject> key;
@@ -18341,7 +20877,7 @@ class ArrayHelper_PySetObject_smalltable_level0 {
   void _checkBounds(int index) {
     if (index >= length || index < 0) {
       throw RangeError(
-          'Dimension $level: index not in range 0..${length} exclusive.');
+          'Dimension $level: index not in range 0..$length exclusive.');
     }
   }
 
@@ -18416,12 +20952,10 @@ class PyCFunctionObject extends ffi.Struct {
   external ffi.Pointer<ffi.NativeFunction<vectorcallfunc>> vectorcall;
 }
 
-class PyModuleDef extends ffi.Struct {}
-
 class PyModuleDef_Base extends ffi.Struct {
   external PyObject ob_base;
 
-  external ffi.Pointer<ffi.NativeFunction<_typedefC_7>> m_init;
+  external ffi.Pointer<ffi.NativeFunction<_typedefC_3>> m_init;
 
   @ffi.Int64()
   external int m_index;
@@ -18429,7 +20963,33 @@ class PyModuleDef_Base extends ffi.Struct {
   external ffi.Pointer<PyObject> m_copy;
 }
 
-class PyModuleDef_Slot extends ffi.Struct {}
+class PyModuleDef_Slot extends ffi.Struct {
+  @ffi.Int32()
+  external int slot;
+
+  external ffi.Pointer<ffi.Void> value;
+}
+
+class PyModuleDef extends ffi.Struct {
+  external PyModuleDef_Base m_base;
+
+  external ffi.Pointer<ffi.Int8> m_name;
+
+  external ffi.Pointer<ffi.Int8> m_doc;
+
+  @ffi.Int64()
+  external int m_size;
+
+  external ffi.Pointer<PyMethodDef> m_methods;
+
+  external ffi.Pointer<PyModuleDef_Slot> m_slots;
+
+  external ffi.Pointer<ffi.NativeFunction<traverseproc>> m_traverse;
+
+  external ffi.Pointer<ffi.NativeFunction<inquiry>> m_clear;
+
+  external ffi.Pointer<ffi.NativeFunction<freefunc>> m_free;
+}
 
 class PyFunctionObject extends ffi.Struct {
   external PyObject ob_base;
@@ -18479,7 +21039,7 @@ class PyInstanceMethodObject extends ffi.Struct {
   external ffi.Pointer<PyObject> func;
 }
 
-class _frame extends ffi.Struct {}
+class _frame extends ffi.Opaque {}
 
 class PySliceObject extends ffi.Struct {
   external PyObject ob_base;
@@ -18503,16 +21063,15 @@ abstract class PyLockStatus {
   static const int PY_LOCK_INTR = 2;
 }
 
-class _Py_tss_t extends ffi.Struct {}
+class _Py_tss_t extends ffi.Struct {
+  @ffi.Int32()
+  external int _is_initialized;
 
-class _ts extends ffi.Struct {}
-
-class _is extends ffi.Struct {}
-
-abstract class PyGILState_STATE {
-  static const int PyGILState_LOCKED = 0;
-  static const int PyGILState_UNLOCKED = 1;
+  @ffi.Uint32()
+  external int _key;
 }
+
+class _is extends ffi.Opaque {}
 
 class _PyErr_StackItem extends ffi.Struct {
   external ffi.Pointer<PyObject> exc_type;
@@ -18522,6 +21081,91 @@ class _PyErr_StackItem extends ffi.Struct {
   external ffi.Pointer<PyObject> exc_traceback;
 
   external ffi.Pointer<_PyErr_StackItem> previous_item;
+}
+
+class _ts extends ffi.Struct {
+  external ffi.Pointer<_ts> prev;
+
+  external ffi.Pointer<_ts> next;
+
+  external ffi.Pointer<_is> interp;
+
+  external ffi.Pointer<_frame> frame;
+
+  @ffi.Int32()
+  external int recursion_depth;
+
+  @ffi.Int8()
+  external int overflowed;
+
+  @ffi.Int8()
+  external int recursion_critical;
+
+  @ffi.Int32()
+  external int stackcheck_counter;
+
+  @ffi.Int32()
+  external int tracing;
+
+  @ffi.Int32()
+  external int use_tracing;
+
+  external ffi.Pointer<ffi.NativeFunction<Py_tracefunc>> c_profilefunc;
+
+  external ffi.Pointer<ffi.NativeFunction<Py_tracefunc>> c_tracefunc;
+
+  external ffi.Pointer<PyObject> c_profileobj;
+
+  external ffi.Pointer<PyObject> c_traceobj;
+
+  external ffi.Pointer<PyObject> curexc_type;
+
+  external ffi.Pointer<PyObject> curexc_value;
+
+  external ffi.Pointer<PyObject> curexc_traceback;
+
+  external _PyErr_StackItem exc_state;
+
+  external ffi.Pointer<_PyErr_StackItem> exc_info;
+
+  external ffi.Pointer<PyObject> dict;
+
+  @ffi.Int32()
+  external int gilstate_counter;
+
+  external ffi.Pointer<PyObject> async_exc;
+
+  @ffi.Uint64()
+  external int thread_id;
+
+  @ffi.Int32()
+  external int trash_delete_nesting;
+
+  external ffi.Pointer<PyObject> trash_delete_later;
+
+  external ffi.Pointer<ffi.NativeFunction<_typedefC_5>> on_delete;
+
+  external ffi.Pointer<ffi.Void> on_delete_data;
+
+  @ffi.Int32()
+  external int coroutine_origin_tracking_depth;
+
+  external ffi.Pointer<PyObject> async_gen_firstiter;
+
+  external ffi.Pointer<PyObject> async_gen_finalizer;
+
+  external ffi.Pointer<PyObject> context;
+
+  @ffi.Uint64()
+  external int context_ver;
+
+  @ffi.Uint64()
+  external int id;
+}
+
+abstract class PyGILState_STATE {
+  static const int PyGILState_LOCKED = 0;
+  static const int PyGILState_UNLOCKED = 1;
 }
 
 class PyGenObject extends ffi.Struct {
@@ -18650,7 +21294,20 @@ class PyWrapperDescrObject extends ffi.Struct {
   external ffi.Pointer<ffi.Void> d_wrapped;
 }
 
-class _PyWeakReference extends ffi.Struct {}
+class _PyWeakReference extends ffi.Struct {
+  external PyObject ob_base;
+
+  external ffi.Pointer<PyObject> wr_object;
+
+  external ffi.Pointer<PyObject> wr_callback;
+
+  @ffi.Int64()
+  external int hash;
+
+  external ffi.Pointer<_PyWeakReference> wr_prev;
+
+  external ffi.Pointer<_PyWeakReference> wr_next;
+}
 
 class PyStructSequence_Field extends ffi.Struct {
   external ffi.Pointer<ffi.Int8> name;
@@ -18669,13 +21326,13 @@ class PyStructSequence_Desc extends ffi.Struct {
   external int n_in_sequence;
 }
 
-class _pycontextobject extends ffi.Struct {}
+class _pycontextobject extends ffi.Opaque {}
 
-class _pycontextvarobject extends ffi.Struct {}
+class _pycontextvarobject extends ffi.Opaque {}
 
-class _pycontexttokenobject extends ffi.Struct {}
+class _pycontexttokenobject extends ffi.Opaque {}
 
-class _arena extends ffi.Struct {}
+class _arena extends ffi.Opaque {}
 
 class _PyArg_Parser extends ffi.Struct {
   external ffi.Pointer<ffi.Int8> format;
@@ -18700,7 +21357,7 @@ class _PyArg_Parser extends ffi.Struct {
   external ffi.Pointer<_PyArg_Parser> next;
 }
 
-class _PyOpcache extends ffi.Struct {}
+class _PyOpcache extends ffi.Opaque {}
 
 class PyCodeObject extends ffi.Struct {
   external PyObject ob_base;
@@ -18771,7 +21428,7 @@ class PyAddrPair extends ffi.Struct {
   external int ap_upper;
 }
 
-class _node extends ffi.Struct {}
+class _node extends ffi.Opaque {}
 
 class PyCompilerFlags extends ffi.Struct {
   @ffi.Int32()
@@ -18789,9 +21446,9 @@ class PyFutureFeatures extends ffi.Struct {
   external int ff_lineno;
 }
 
-class _mod extends ffi.Struct {}
+class _mod extends ffi.Opaque {}
 
-class symtable extends ffi.Struct {}
+class symtable extends ffi.Opaque {}
 
 class _Py_Identifier extends ffi.Struct {
   external ffi.Pointer<_Py_Identifier> next;
@@ -18804,7 +21461,7 @@ class _Py_Identifier extends ffi.Struct {
 class _inittab extends ffi.Struct {
   external ffi.Pointer<ffi.Int8> name;
 
-  external ffi.Pointer<ffi.NativeFunction<_typedefC_15>> initfunc;
+  external ffi.Pointer<ffi.NativeFunction<_typedefC_10>> initfunc;
 }
 
 class _frozen extends ffi.Struct {
@@ -18829,17 +21486,17 @@ abstract class Py_error_handler {
 }
 
 class stat extends ffi.Struct {
-  @ffi.Int32()
+  @ffi.Uint64()
   external int st_dev;
-
-  @ffi.Uint16()
-  external int st_mode;
-
-  @ffi.Uint16()
-  external int st_nlink;
 
   @ffi.Uint64()
   external int st_ino;
+
+  @ffi.Uint64()
+  external int st_nlink;
+
+  @ffi.Uint32()
+  external int st_mode;
 
   @ffi.Uint32()
   external int st_uid;
@@ -18848,57 +21505,51 @@ class stat extends ffi.Struct {
   external int st_gid;
 
   @ffi.Int32()
+  external int __pad0;
+
+  @ffi.Uint64()
   external int st_rdev;
-
-  external timespec st_atimespec;
-
-  external timespec st_mtimespec;
-
-  external timespec st_ctimespec;
-
-  external timespec st_birthtimespec;
 
   @ffi.Int64()
   external int st_size;
 
   @ffi.Int64()
-  external int st_blocks;
-
-  @ffi.Int32()
   external int st_blksize;
 
-  @ffi.Uint32()
-  external int st_flags;
+  @ffi.Int64()
+  external int st_blocks;
 
-  @ffi.Uint32()
-  external int st_gen;
+  external timespec st_atim;
 
-  @ffi.Int32()
-  external int st_lspare;
+  external timespec st_mtim;
+
+  external timespec st_ctim;
 
   @ffi.Int64()
-  external int _unique_st_qspare_item_0;
+  external int _unique___glibc_reserved_item_0;
   @ffi.Int64()
-  external int _unique_st_qspare_item_1;
+  external int _unique___glibc_reserved_item_1;
+  @ffi.Int64()
+  external int _unique___glibc_reserved_item_2;
 
-  /// Helper for array `st_qspare`.
-  ArrayHelper_stat_st_qspare_level0 get st_qspare =>
-      ArrayHelper_stat_st_qspare_level0(this, [2], 0, 0);
+  /// Helper for array `__glibc_reserved`.
+  ArrayHelper_stat___glibc_reserved_level0 get __glibc_reserved =>
+      ArrayHelper_stat___glibc_reserved_level0(this, [3], 0, 0);
 }
 
-/// Helper for array `st_qspare` in struct `stat`.
-class ArrayHelper_stat_st_qspare_level0 {
+/// Helper for array `__glibc_reserved` in struct `stat`.
+class ArrayHelper_stat___glibc_reserved_level0 {
   final stat _struct;
   final List<int> dimensions;
   final int level;
   final int _absoluteIndex;
   int get length => dimensions[level];
-  ArrayHelper_stat_st_qspare_level0(
+  ArrayHelper_stat___glibc_reserved_level0(
       this._struct, this.dimensions, this.level, this._absoluteIndex);
   void _checkBounds(int index) {
     if (index >= length || index < 0) {
       throw RangeError(
-          'Dimension $level: index not in range 0..${length} exclusive.');
+          'Dimension $level: index not in range 0..$length exclusive.');
     }
   }
 
@@ -18906,9 +21557,11 @@ class ArrayHelper_stat_st_qspare_level0 {
     _checkBounds(index);
     switch (_absoluteIndex + index) {
       case 0:
-        return _struct._unique_st_qspare_item_0;
+        return _struct._unique___glibc_reserved_item_0;
       case 1:
-        return _struct._unique_st_qspare_item_1;
+        return _struct._unique___glibc_reserved_item_1;
+      case 2:
+        return _struct._unique___glibc_reserved_item_2;
       default:
         throw Exception('Invalid Array Helper generated.');
     }
@@ -18918,10 +21571,13 @@ class ArrayHelper_stat_st_qspare_level0 {
     _checkBounds(index);
     switch (_absoluteIndex + index) {
       case 0:
-        _struct._unique_st_qspare_item_0 = value;
+        _struct._unique___glibc_reserved_item_0 = value;
         break;
       case 1:
-        _struct._unique_st_qspare_item_1 = value;
+        _struct._unique___glibc_reserved_item_1 = value;
+        break;
+      case 2:
+        _struct._unique___glibc_reserved_item_2 = value;
         break;
       default:
         throw Exception('Invalid Array Helper generated.');
@@ -18941,699 +21597,15 @@ const int PY_MAJOR_VERSION = 3;
 
 const int PY_MINOR_VERSION = 8;
 
-const int PY_MICRO_VERSION = 5;
+const int PY_MICRO_VERSION = 0;
 
 const int PY_RELEASE_LEVEL = 15;
 
 const int PY_RELEASE_SERIAL = 0;
 
-const String PY_VERSION = '3.8.5';
+const String PY_VERSION = '3.8.0';
 
-const int PY_VERSION_HEX = 50857456;
-
-const int ENABLE_IPV6 = 1;
-
-const int HAVE_ACOSH = 1;
-
-const int HAVE_ADDRINFO = 1;
-
-const int HAVE_ALARM = 1;
-
-const int HAVE_ALLOCA_H = 1;
-
-const int HAVE_ASINH = 1;
-
-const int HAVE_ATANH = 1;
-
-const int HAVE_BROKEN_SEM_GETVALUE = 1;
-
-const int HAVE_BUILTIN_ATOMIC = 1;
-
-const int HAVE_CHFLAGS = 1;
-
-const int HAVE_CHOWN = 1;
-
-const int HAVE_CHROOT = 1;
-
-const int HAVE_CLOCK = 1;
-
-const int HAVE_CLOCK_GETRES = 1;
-
-const int HAVE_CLOCK_GETTIME = 1;
-
-const int HAVE_CLOCK_SETTIME = 1;
-
-const int HAVE_COMPUTED_GOTOS = 1;
-
-const int HAVE_CONFSTR = 1;
-
-const int HAVE_COPYSIGN = 1;
-
-const int HAVE_CTERMID = 1;
-
-const int HAVE_CTERMID_R = 1;
-
-const int HAVE_CURSES_FILTER = 1;
-
-const int HAVE_CURSES_H = 1;
-
-const int HAVE_CURSES_HAS_KEY = 1;
-
-const int HAVE_CURSES_IMMEDOK = 1;
-
-const int HAVE_CURSES_IS_TERM_RESIZED = 1;
-
-const int HAVE_CURSES_RESIZETERM = 1;
-
-const int HAVE_CURSES_RESIZE_TERM = 1;
-
-const int HAVE_CURSES_SYNCOK = 1;
-
-const int HAVE_CURSES_TYPEAHEAD = 1;
-
-const int HAVE_CURSES_USE_ENV = 1;
-
-const int HAVE_CURSES_WCHGAT = 1;
-
-const int HAVE_DECL_ISFINITE = 1;
-
-const int HAVE_DECL_ISINF = 1;
-
-const int HAVE_DECL_ISNAN = 1;
-
-const int HAVE_DECL_RTLD_DEEPBIND = 0;
-
-const int HAVE_DECL_RTLD_GLOBAL = 1;
-
-const int HAVE_DECL_RTLD_LAZY = 1;
-
-const int HAVE_DECL_RTLD_LOCAL = 1;
-
-const int HAVE_DECL_RTLD_MEMBER = 0;
-
-const int HAVE_DECL_RTLD_NODELETE = 1;
-
-const int HAVE_DECL_RTLD_NOLOAD = 1;
-
-const int HAVE_DECL_RTLD_NOW = 1;
-
-const int HAVE_DEVICE_MACROS = 1;
-
-const int HAVE_DEV_PTMX = 1;
-
-const int HAVE_DIRENT_D_TYPE = 1;
-
-const int HAVE_DIRENT_H = 1;
-
-const int HAVE_DIRFD = 1;
-
-const int HAVE_DLFCN_H = 1;
-
-const int HAVE_DLOPEN = 1;
-
-const int HAVE_DUP2 = 1;
-
-const int HAVE_DYNAMIC_LOADING = 1;
-
-const int HAVE_ERF = 1;
-
-const int HAVE_ERFC = 1;
-
-const int HAVE_ERRNO_H = 1;
-
-const int HAVE_EXECV = 1;
-
-const int HAVE_EXPM1 = 1;
-
-const int HAVE_FACCESSAT = 1;
-
-const int HAVE_FCHDIR = 1;
-
-const int HAVE_FCHMOD = 1;
-
-const int HAVE_FCHMODAT = 1;
-
-const int HAVE_FCHOWN = 1;
-
-const int HAVE_FCHOWNAT = 1;
-
-const int HAVE_FCNTL_H = 1;
-
-const int HAVE_FDOPENDIR = 1;
-
-const int HAVE_FINITE = 1;
-
-const int HAVE_FLOCK = 1;
-
-const int HAVE_FORK = 1;
-
-const int HAVE_FORKPTY = 1;
-
-const int HAVE_FPATHCONF = 1;
-
-const int HAVE_FSEEKO = 1;
-
-const int HAVE_FSTATAT = 1;
-
-const int HAVE_FSTATVFS = 1;
-
-const int HAVE_FSYNC = 1;
-
-const int HAVE_FTELLO = 1;
-
-const int HAVE_FTIME = 1;
-
-const int HAVE_FTRUNCATE = 1;
-
-const int HAVE_FUTIMENS = 1;
-
-const int HAVE_FUTIMES = 1;
-
-const int HAVE_GAI_STRERROR = 1;
-
-const int HAVE_GAMMA = 1;
-
-const int HAVE_GCC_ASM_FOR_X64 = 1;
-
-const int HAVE_GCC_UINT128_T = 1;
-
-const int HAVE_GETADDRINFO = 1;
-
-const int HAVE_GETC_UNLOCKED = 1;
-
-const int HAVE_GETENTROPY = 1;
-
-const int HAVE_GETGRGID_R = 1;
-
-const int HAVE_GETGRNAM_R = 1;
-
-const int HAVE_GETGROUPLIST = 1;
-
-const int HAVE_GETGROUPS = 1;
-
-const int HAVE_GETHOSTBYNAME = 1;
-
-const int HAVE_GETITIMER = 1;
-
-const int HAVE_GETLOADAVG = 1;
-
-const int HAVE_GETLOGIN = 1;
-
-const int HAVE_GETNAMEINFO = 1;
-
-const int HAVE_GETPAGESIZE = 1;
-
-const int HAVE_GETPEERNAME = 1;
-
-const int HAVE_GETPGID = 1;
-
-const int HAVE_GETPGRP = 1;
-
-const int HAVE_GETPID = 1;
-
-const int HAVE_GETPRIORITY = 1;
-
-const int HAVE_GETPWENT = 1;
-
-const int HAVE_GETPWNAM_R = 1;
-
-const int HAVE_GETPWUID_R = 1;
-
-const int HAVE_GETSID = 1;
-
-const int HAVE_GETTIMEOFDAY = 1;
-
-const int HAVE_GETWD = 1;
-
-const int HAVE_GRP_H = 1;
-
-const int HAVE_HSTRERROR = 1;
-
-const int HAVE_HYPOT = 1;
-
-const int HAVE_IF_NAMEINDEX = 1;
-
-const int HAVE_INET_ATON = 1;
-
-const int HAVE_INET_PTON = 1;
-
-const int HAVE_INITGROUPS = 1;
-
-const int HAVE_INTTYPES_H = 1;
-
-const int HAVE_KILL = 1;
-
-const int HAVE_KILLPG = 1;
-
-const int HAVE_KQUEUE = 1;
-
-const int HAVE_LANGINFO_H = 1;
-
-const int HAVE_LCHFLAGS = 1;
-
-const int HAVE_LCHMOD = 1;
-
-const int HAVE_LCHOWN = 1;
-
-const int HAVE_LGAMMA = 1;
-
-const int HAVE_LIBDL = 1;
-
-const int HAVE_LIBREADLINE = 1;
-
-const int HAVE_LINK = 1;
-
-const int HAVE_LINKAT = 1;
-
-const int HAVE_LOCKF = 1;
-
-const int HAVE_LOG1P = 1;
-
-const int HAVE_LOG2 = 1;
-
-const int HAVE_LONG_DOUBLE = 1;
-
-const int HAVE_LSTAT = 1;
-
-const int HAVE_LUTIMES = 1;
-
-const int HAVE_MADVISE = 1;
-
-const int HAVE_MAKEDEV = 1;
-
-const int HAVE_MBRTOWC = 1;
-
-const int HAVE_MEMORY_H = 1;
-
-const int HAVE_MKDIRAT = 1;
-
-const int HAVE_MKFIFO = 1;
-
-const int HAVE_MKNOD = 1;
-
-const int HAVE_MKTIME = 1;
-
-const int HAVE_MMAP = 1;
-
-const int HAVE_NCURSES_H = 1;
-
-const int HAVE_NET_IF_H = 1;
-
-const int HAVE_NICE = 1;
-
-const int HAVE_OPENAT = 1;
-
-const int HAVE_OPENPTY = 1;
-
-const int HAVE_PATHCONF = 1;
-
-const int HAVE_PAUSE = 1;
-
-const int HAVE_POLL = 1;
-
-const int HAVE_POLL_H = 1;
-
-const int HAVE_POSIX_SPAWN = 1;
-
-const int HAVE_POSIX_SPAWNP = 1;
-
-const int HAVE_PREAD = 1;
-
-const int HAVE_PROTOTYPES = 1;
-
-const int HAVE_PTHREAD_H = 1;
-
-const int HAVE_PTHREAD_KILL = 1;
-
-const int HAVE_PTHREAD_SIGMASK = 1;
-
-const int HAVE_PUTENV = 1;
-
-const int HAVE_PWRITE = 1;
-
-const int HAVE_READLINK = 1;
-
-const int HAVE_READLINKAT = 1;
-
-const int HAVE_READV = 1;
-
-const int HAVE_REALPATH = 1;
-
-const int HAVE_RENAMEAT = 1;
-
-const int HAVE_RL_APPEND_HISTORY = 1;
-
-const int HAVE_RL_CATCH_SIGNAL = 1;
-
-const int HAVE_RL_COMPLETION_APPEND_CHARACTER = 1;
-
-const int HAVE_RL_COMPLETION_DISPLAY_MATCHES_HOOK = 1;
-
-const int HAVE_RL_COMPLETION_MATCHES = 1;
-
-const int HAVE_RL_COMPLETION_SUPPRESS_APPEND = 1;
-
-const int HAVE_RL_PRE_INPUT_HOOK = 1;
-
-const int HAVE_RL_RESIZE_TERMINAL = 1;
-
-const int HAVE_ROUND = 1;
-
-const int HAVE_SCHED_GET_PRIORITY_MAX = 1;
-
-const int HAVE_SCHED_H = 1;
-
-const int HAVE_SEM_GETVALUE = 1;
-
-const int HAVE_SEM_OPEN = 1;
-
-const int HAVE_SEM_UNLINK = 1;
-
-const int HAVE_SENDFILE = 1;
-
-const int HAVE_SETEGID = 1;
-
-const int HAVE_SETEUID = 1;
-
-const int HAVE_SETGID = 1;
-
-const int HAVE_SETGROUPS = 1;
-
-const int HAVE_SETHOSTNAME = 1;
-
-const int HAVE_SETITIMER = 1;
-
-const int HAVE_SETLOCALE = 1;
-
-const int HAVE_SETPGID = 1;
-
-const int HAVE_SETPGRP = 1;
-
-const int HAVE_SETPRIORITY = 1;
-
-const int HAVE_SETREGID = 1;
-
-const int HAVE_SETREUID = 1;
-
-const int HAVE_SETSID = 1;
-
-const int HAVE_SETUID = 1;
-
-const int HAVE_SETVBUF = 1;
-
-const int HAVE_SHM_OPEN = 1;
-
-const int HAVE_SHM_UNLINK = 1;
-
-const int HAVE_SIGACTION = 1;
-
-const int HAVE_SIGALTSTACK = 1;
-
-const int HAVE_SIGFILLSET = 1;
-
-const int HAVE_SIGINFO_T_SI_BAND = 1;
-
-const int HAVE_SIGINTERRUPT = 1;
-
-const int HAVE_SIGNAL_H = 1;
-
-const int HAVE_SIGPENDING = 1;
-
-const int HAVE_SIGRELSE = 1;
-
-const int HAVE_SIGWAIT = 1;
-
-const int HAVE_SNPRINTF = 1;
-
-const int HAVE_SOCKADDR_SA_LEN = 1;
-
-const int HAVE_SOCKADDR_STORAGE = 1;
-
-const int HAVE_SOCKETPAIR = 1;
-
-const int HAVE_SPAWN_H = 1;
-
-const int HAVE_SSIZE_T = 1;
-
-const int HAVE_STATVFS = 1;
-
-const int HAVE_STAT_TV_NSEC2 = 1;
-
-const int HAVE_STDARG_PROTOTYPES = 1;
-
-const int HAVE_STDINT_H = 1;
-
-const int HAVE_STDLIB_H = 1;
-
-const int HAVE_STD_ATOMIC = 1;
-
-const int HAVE_STRDUP = 1;
-
-const int HAVE_STRFTIME = 1;
-
-const int HAVE_STRINGS_H = 1;
-
-const int HAVE_STRING_H = 1;
-
-const int HAVE_STRLCPY = 1;
-
-const int HAVE_STRSIGNAL = 1;
-
-const int HAVE_STRUCT_PASSWD_PW_GECOS = 1;
-
-const int HAVE_STRUCT_PASSWD_PW_PASSWD = 1;
-
-const int HAVE_STRUCT_STAT_ST_BIRTHTIME = 1;
-
-const int HAVE_STRUCT_STAT_ST_BLKSIZE = 1;
-
-const int HAVE_STRUCT_STAT_ST_BLOCKS = 1;
-
-const int HAVE_STRUCT_STAT_ST_FLAGS = 1;
-
-const int HAVE_STRUCT_STAT_ST_GEN = 1;
-
-const int HAVE_STRUCT_STAT_ST_RDEV = 1;
-
-const int HAVE_STRUCT_TM_TM_ZONE = 1;
-
-const int HAVE_SYMLINK = 1;
-
-const int HAVE_SYMLINKAT = 1;
-
-const int HAVE_SYNC = 1;
-
-const int HAVE_SYSCONF = 1;
-
-const int HAVE_SYSEXITS_H = 1;
-
-const int HAVE_SYS_EVENT_H = 1;
-
-const int HAVE_SYS_FILE_H = 1;
-
-const int HAVE_SYS_IOCTL_H = 1;
-
-const int HAVE_SYS_KERN_CONTROL_H = 1;
-
-const int HAVE_SYS_LOCK_H = 1;
-
-const int HAVE_SYS_MMAN_H = 1;
-
-const int HAVE_SYS_PARAM_H = 1;
-
-const int HAVE_SYS_POLL_H = 1;
-
-const int HAVE_SYS_RANDOM_H = 1;
-
-const int HAVE_SYS_RESOURCE_H = 1;
-
-const int HAVE_SYS_SELECT_H = 1;
-
-const int HAVE_SYS_SOCKET_H = 1;
-
-const int HAVE_SYS_STATVFS_H = 1;
-
-const int HAVE_SYS_STAT_H = 1;
-
-const int HAVE_SYS_SYSCALL_H = 1;
-
-const int HAVE_SYS_SYS_DOMAIN_H = 1;
-
-const int HAVE_SYS_TIMES_H = 1;
-
-const int HAVE_SYS_TIME_H = 1;
-
-const int HAVE_SYS_TYPES_H = 1;
-
-const int HAVE_SYS_UIO_H = 1;
-
-const int HAVE_SYS_UN_H = 1;
-
-const int HAVE_SYS_UTSNAME_H = 1;
-
-const int HAVE_SYS_WAIT_H = 1;
-
-const int HAVE_SYS_XATTR_H = 1;
-
-const int HAVE_TCGETPGRP = 1;
-
-const int HAVE_TCSETPGRP = 1;
-
-const int HAVE_TEMPNAM = 1;
-
-const int HAVE_TERMIOS_H = 1;
-
-const int HAVE_TERM_H = 1;
-
-const int HAVE_TGAMMA = 1;
-
-const int HAVE_TIMEGM = 1;
-
-const int HAVE_TIMES = 1;
-
-const int HAVE_TMPFILE = 1;
-
-const int HAVE_TMPNAM = 1;
-
-const int HAVE_TM_ZONE = 1;
-
-const int HAVE_TRUNCATE = 1;
-
-const int HAVE_UNAME = 1;
-
-const int HAVE_UNISTD_H = 1;
-
-const int HAVE_UNLINKAT = 1;
-
-const int HAVE_UNSETENV = 1;
-
-const int HAVE_UTIL_H = 1;
-
-const int HAVE_UTIMENSAT = 1;
-
-const int HAVE_UTIMES = 1;
-
-const int HAVE_UTIME_H = 1;
-
-const int HAVE_UUID_UUID_H = 1;
-
-const int HAVE_WAIT3 = 1;
-
-const int HAVE_WAIT4 = 1;
-
-const int HAVE_WAITID = 1;
-
-const int HAVE_WAITPID = 1;
-
-const int HAVE_WCHAR_H = 1;
-
-const int HAVE_WCSCOLL = 1;
-
-const int HAVE_WCSFTIME = 1;
-
-const int HAVE_WCSXFRM = 1;
-
-const int HAVE_WMEMCMP = 1;
-
-const int HAVE_WORKING_TZSET = 1;
-
-const int HAVE_WRITEV = 1;
-
-const int HAVE_X509_VERIFY_PARAM_SET1_HOST = 1;
-
-const int HAVE_ZLIB_COPY = 1;
-
-const int MVWDELCH_IS_EXPRESSION = 1;
-
-const int PTHREAD_SYSTEM_SCHED_SUPPORTED = 1;
-
-const int PY_COERCE_C_LOCALE = 1;
-
-const String PY_FORMAT_SIZE_T = 'l';
-
-const int PY_SSL_DEFAULT_CIPHERS = 1;
-
-const int SIZEOF_DOUBLE = 8;
-
-const int SIZEOF_FLOAT = 4;
-
-const int SIZEOF_FPOS_T = 8;
-
-const int SIZEOF_INT = 4;
-
-const int SIZEOF_LONG = 8;
-
-const int SIZEOF_LONG_DOUBLE = 16;
-
-const int SIZEOF_LONG_LONG = 8;
-
-const int SIZEOF_OFF_T = 8;
-
-const int SIZEOF_PID_T = 4;
-
-const int SIZEOF_PTHREAD_KEY_T = 8;
-
-const int SIZEOF_PTHREAD_T = 8;
-
-const int SIZEOF_SHORT = 2;
-
-const int SIZEOF_SIZE_T = 8;
-
-const int SIZEOF_TIME_T = 8;
-
-const int SIZEOF_UINTPTR_T = 8;
-
-const int SIZEOF_VOID_P = 8;
-
-const int SIZEOF_WCHAR_T = 4;
-
-const int SIZEOF__BOOL = 1;
-
-const int STDC_HEADERS = 1;
-
-const int SYS_SELECT_WITH_SYS_TIME = 1;
-
-const int TIME_WITH_SYS_TIME = 1;
-
-const int _ALL_SOURCE = 1;
-
-const int _GNU_SOURCE = 1;
-
-const int _POSIX_PTHREAD_SEMANTICS = 1;
-
-const int _TANDEM_SOURCE = 1;
-
-const int __EXTENSIONS__ = 1;
-
-const int WINDOW_HAS_FLAGS = 1;
-
-const int WITH_DECIMAL_CONTEXTVAR = 1;
-
-const int WITH_DOC_STRINGS = 1;
-
-const int WITH_DTRACE = 1;
-
-const int WITH_DYLD = 1;
-
-const int WITH_NEXT_FRAMEWORK = 1;
-
-const int WITH_PYMALLOC = 1;
-
-const int _DARWIN_C_SOURCE = 1;
-
-const int _FILE_OFFSET_BITS = 64;
-
-const int _LARGEFILE_SOURCE = 1;
-
-const int _NETBSD_SOURCE = 1;
-
-const String _PYTHONFRAMEWORK = 'Python';
-
-const int _REENTRANT = 1;
-
-const int __BSD_VISIBLE = 1;
-
-const int VA_LIST_IS_ARRAY = 1;
+const int PY_VERSION_HEX = 50856176;
 
 const int HAVE_LONG_LONG = 1;
 
@@ -19654,6 +21626,8 @@ const int PY_SIZE_MAX = -1;
 const int PY_SSIZE_T_MAX = 9223372036854775807;
 
 const int PY_SSIZE_T_MIN = -9223372036854775808;
+
+const int HAVE_PY_SET_53BIT_PRECISION = 1;
 
 const int PY_BIG_ENDIAN = 0;
 
@@ -20031,27 +22005,27 @@ const int CO_ITERABLE_COROUTINE = 256;
 
 const int CO_ASYNC_GENERATOR = 512;
 
-const int CO_FUTURE_DIVISION = 131072;
+const int CO_FUTURE_DIVISION = 8192;
 
-const int CO_FUTURE_ABSOLUTE_IMPORT = 262144;
+const int CO_FUTURE_ABSOLUTE_IMPORT = 16384;
 
-const int CO_FUTURE_WITH_STATEMENT = 524288;
+const int CO_FUTURE_WITH_STATEMENT = 32768;
 
-const int CO_FUTURE_PRINT_FUNCTION = 1048576;
+const int CO_FUTURE_PRINT_FUNCTION = 65536;
 
-const int CO_FUTURE_UNICODE_LITERALS = 2097152;
+const int CO_FUTURE_UNICODE_LITERALS = 131072;
 
-const int CO_FUTURE_BARRY_AS_BDFL = 4194304;
+const int CO_FUTURE_BARRY_AS_BDFL = 262144;
 
-const int CO_FUTURE_GENERATOR_STOP = 8388608;
+const int CO_FUTURE_GENERATOR_STOP = 524288;
 
-const int CO_FUTURE_ANNOTATIONS = 16777216;
+const int CO_FUTURE_ANNOTATIONS = 1048576;
 
 const int CO_CELL_NOT_AN_ARG = -1;
 
 const int CO_MAXBLOCKS = 20;
 
-const int PyCF_MASK = 33423360;
+const int PyCF_MASK = 2088960;
 
 const int PyCF_MASK_OBSOLETE = 16;
 
@@ -20066,8 +22040,6 @@ const int PyCF_IGNORE_COOKIE = 2048;
 const int PyCF_TYPE_COMMENTS = 4096;
 
 const int PyCF_ALLOW_TOP_LEVEL_AWAIT = 8192;
-
-const int PyCF_COMPILE_MASK = 13824;
 
 const String FUTURE_NESTED_SCOPES = 'nested_scopes';
 
@@ -20141,9 +22113,21 @@ const int Py_DTST_INFINITE = 1;
 
 const int Py_DTST_NAN = 2;
 
-const int _PY_READ_MAX = 2147483647;
+const int _PY_READ_MAX = 9223372036854775807;
 
-const int _PY_WRITE_MAX = 2147483647;
+const int _PY_WRITE_MAX = 9223372036854775807;
+
+typedef _c_Py_get_387controlword = ffi.Uint16 Function();
+
+typedef _dart_Py_get_387controlword = int Function();
+
+typedef _c_Py_set_387controlword = ffi.Void Function(
+  ffi.Uint16 arg0,
+);
+
+typedef _dart_Py_set_387controlword = void Function(
+  int arg0,
+);
 
 typedef _c_PyMem_Malloc = ffi.Pointer<ffi.Void> Function(
   ffi.Uint64 size,
@@ -20501,64 +22485,12 @@ typedef _dart_PyTraceMalloc_NewReference = int Function(
   ffi.Pointer<PyObject> op,
 );
 
-typedef _c_Py_NewReference = ffi.Void Function(
-  ffi.Pointer<PyObject> op,
-);
-
-typedef _dart_Py_NewReference = void Function(
-  ffi.Pointer<PyObject> op,
-);
-
-typedef _c_Py_ForgetReference = ffi.Void Function(
-  ffi.Pointer<PyObject> op,
-);
-
-typedef _dart_Py_ForgetReference = void Function(
-  ffi.Pointer<PyObject> op,
-);
-
 typedef _c_Py_Dealloc = ffi.Void Function(
   ffi.Pointer<PyObject> arg0,
 );
 
 typedef _dart_Py_Dealloc = void Function(
   ffi.Pointer<PyObject> arg0,
-);
-
-typedef _c_Py_INCREF = ffi.Void Function(
-  ffi.Pointer<PyObject> op,
-);
-
-typedef _dart_Py_INCREF = void Function(
-  ffi.Pointer<PyObject> op,
-);
-
-typedef _c_Py_DECREF = ffi.Void Function(
-  ffi.Pointer<ffi.Int8> filename,
-  ffi.Int32 lineno,
-  ffi.Pointer<PyObject> op,
-);
-
-typedef _dart_Py_DECREF = void Function(
-  ffi.Pointer<ffi.Int8> filename,
-  int lineno,
-  ffi.Pointer<PyObject> op,
-);
-
-typedef _c_Py_XINCREF = ffi.Void Function(
-  ffi.Pointer<PyObject> op,
-);
-
-typedef _dart_Py_XINCREF = void Function(
-  ffi.Pointer<PyObject> op,
-);
-
-typedef _c_Py_XDECREF = ffi.Void Function(
-  ffi.Pointer<PyObject> op,
-);
-
-typedef _dart_Py_XDECREF = void Function(
-  ffi.Pointer<PyObject> op,
 );
 
 typedef _c_Py_IncRef = ffi.Void Function(
@@ -20951,28 +22883,6 @@ typedef _c_PyObject_NewVar = ffi.Pointer<PyVarObject> Function(
 typedef _dart_PyObject_NewVar = ffi.Pointer<PyVarObject> Function(
   ffi.Pointer<_typeobject> arg0,
   int arg1,
-);
-
-typedef _c_PyObject_INIT = ffi.Pointer<PyObject> Function(
-  ffi.Pointer<PyObject> op,
-  ffi.Pointer<_typeobject> typeobj,
-);
-
-typedef _dart_PyObject_INIT = ffi.Pointer<PyObject> Function(
-  ffi.Pointer<PyObject> op,
-  ffi.Pointer<_typeobject> typeobj,
-);
-
-typedef _c_PyObject_INIT_VAR = ffi.Pointer<PyVarObject> Function(
-  ffi.Pointer<PyVarObject> op,
-  ffi.Pointer<_typeobject> typeobj,
-  ffi.Int64 size,
-);
-
-typedef _dart_PyObject_INIT_VAR = ffi.Pointer<PyVarObject> Function(
-  ffi.Pointer<PyVarObject> op,
-  ffi.Pointer<_typeobject> typeobj,
-  int size,
 );
 
 typedef _c_PyGC_Collect = ffi.Int64 Function();
@@ -24343,17 +26253,17 @@ typedef _c_PyThread_init_thread = ffi.Void Function();
 
 typedef _dart_PyThread_init_thread = void Function();
 
-typedef _typedefC_8 = ffi.Void Function(
+typedef _typedefC_4 = ffi.Void Function(
   ffi.Pointer<ffi.Void>,
 );
 
 typedef _c_PyThread_start_new_thread = ffi.Uint64 Function(
-  ffi.Pointer<ffi.NativeFunction<_typedefC_8>> arg0,
+  ffi.Pointer<ffi.NativeFunction<_typedefC_4>> arg0,
   ffi.Pointer<ffi.Void> arg1,
 );
 
 typedef _dart_PyThread_start_new_thread = int Function(
-  ffi.Pointer<ffi.NativeFunction<_typedefC_8>> arg0,
+  ffi.Pointer<ffi.NativeFunction<_typedefC_4>> arg0,
   ffi.Pointer<ffi.Void> arg1,
 );
 
@@ -27219,9 +29129,9 @@ typedef _dart_PyOS_Readline = ffi.Pointer<ffi.Int8> Function(
   ffi.Pointer<ffi.Int8> arg2,
 );
 
-typedef _typedefC_10 = ffi.Int32 Function();
+typedef _typedefC_6 = ffi.Int32 Function();
 
-typedef _typedefC_12 = ffi.Pointer<ffi.Int8> Function(
+typedef _typedefC_7 = ffi.Pointer<ffi.Int8> Function(
   ffi.Pointer<FILE>,
   ffi.Pointer<FILE>,
   ffi.Pointer<ffi.Int8>,
@@ -27263,14 +29173,14 @@ typedef _dart_Py_EndInterpreter = void Function(
   ffi.Pointer<_ts> arg0,
 );
 
-typedef _typedefC_13 = ffi.Void Function();
+typedef _typedefC_8 = ffi.Void Function();
 
 typedef _c_Py_AtExit = ffi.Int32 Function(
-  ffi.Pointer<ffi.NativeFunction<_typedefC_13>> func,
+  ffi.Pointer<ffi.NativeFunction<_typedefC_8>> func,
 );
 
 typedef _dart_Py_AtExit = int Function(
-  ffi.Pointer<ffi.NativeFunction<_typedefC_13>> func,
+  ffi.Pointer<ffi.NativeFunction<_typedefC_8>> func,
 );
 
 typedef _c_Py_Exit = ffi.Void Function(
@@ -27524,17 +29434,17 @@ typedef _dart_PyEval_MergeCompilerFlags = int Function(
   ffi.Pointer<PyCompilerFlags> cf,
 );
 
-typedef _typedefC_14 = ffi.Int32 Function(
+typedef _typedefC_9 = ffi.Int32 Function(
   ffi.Pointer<ffi.Void>,
 );
 
 typedef _c_Py_AddPendingCall = ffi.Int32 Function(
-  ffi.Pointer<ffi.NativeFunction<_typedefC_14>> func,
+  ffi.Pointer<ffi.NativeFunction<_typedefC_9>> func,
   ffi.Pointer<ffi.Void> arg,
 );
 
 typedef _dart_Py_AddPendingCall = int Function(
-  ffi.Pointer<ffi.NativeFunction<_typedefC_14>> func,
+  ffi.Pointer<ffi.NativeFunction<_typedefC_9>> func,
   ffi.Pointer<ffi.Void> arg,
 );
 
@@ -28158,16 +30068,16 @@ typedef _dart_PyImport_ExtendInittab = int Function(
   ffi.Pointer<_inittab> newtab,
 );
 
-typedef _typedefC_16 = ffi.Pointer<PyObject> Function();
+typedef _typedefC_11 = ffi.Pointer<PyObject> Function();
 
 typedef _c_PyImport_AppendInittab = ffi.Int32 Function(
   ffi.Pointer<ffi.Int8> name,
-  ffi.Pointer<ffi.NativeFunction<_typedefC_16>> initfunc,
+  ffi.Pointer<ffi.NativeFunction<_typedefC_11>> initfunc,
 );
 
 typedef _dart_PyImport_AppendInittab = int Function(
   ffi.Pointer<ffi.Int8> name,
-  ffi.Pointer<ffi.NativeFunction<_typedefC_16>> initfunc,
+  ffi.Pointer<ffi.NativeFunction<_typedefC_11>> initfunc,
 );
 
 typedef _c_PyObject_Call = ffi.Pointer<PyObject> Function(
@@ -29188,7 +31098,7 @@ typedef _dart_PyOS_double_to_string = ffi.Pointer<ffi.Int8> Function(
   ffi.Pointer<ffi.Int32> type,
 );
 
-typedef _typedefC_17 = ffi.Pointer<PyObject> Function(
+typedef _typedefC_12 = ffi.Pointer<PyObject> Function(
   ffi.Pointer<ffi.Int8>,
   ffi.Int64,
   ffi.Pointer<ffi.Void>,
@@ -29201,7 +31111,7 @@ typedef _c_Py_string_to_number_with_underscores = ffi.Pointer<PyObject>
   ffi.Pointer<ffi.Int8> what,
   ffi.Pointer<PyObject> obj,
   ffi.Pointer<ffi.Void> arg,
-  ffi.Pointer<ffi.NativeFunction<_typedefC_17>> innerfunc,
+  ffi.Pointer<ffi.NativeFunction<_typedefC_12>> innerfunc,
 );
 
 typedef _dart_Py_string_to_number_with_underscores = ffi.Pointer<PyObject>
@@ -29211,7 +31121,7 @@ typedef _dart_Py_string_to_number_with_underscores = ffi.Pointer<PyObject>
   ffi.Pointer<ffi.Int8> what,
   ffi.Pointer<PyObject> obj,
   ffi.Pointer<ffi.Void> arg,
-  ffi.Pointer<ffi.NativeFunction<_typedefC_17>> innerfunc,
+  ffi.Pointer<ffi.NativeFunction<_typedefC_12>> innerfunc,
 );
 
 typedef _c_Py_parse_inf_or_nan = ffi.Double Function(
@@ -29687,28 +31597,6 @@ typedef setter = ffi.Int32 Function(
   ffi.Pointer<ffi.Void>,
 );
 
-typedef _typedefC_1 = ffi.Int32 Function(
-  ffi.Pointer<ffi.Void>,
-);
-
-typedef _typedefC_2 = ffi.Int32 Function(
-  ffi.Pointer<ffi.Void>,
-  ffi.Pointer<ffi.Int8>,
-  ffi.Int32,
-);
-
-typedef _typedefC_3 = ffi.Int64 Function(
-  ffi.Pointer<ffi.Void>,
-  ffi.Int64,
-  ffi.Int32,
-);
-
-typedef _typedefC_4 = ffi.Int32 Function(
-  ffi.Pointer<ffi.Void>,
-  ffi.Pointer<ffi.Int8>,
-  ffi.Int32,
-);
-
 typedef destructor = ffi.Void Function(
   ffi.Pointer<PyObject>,
 );
@@ -29804,18 +31692,22 @@ typedef vectorcallfunc = ffi.Pointer<PyObject> Function(
   ffi.Pointer<PyObject>,
 );
 
-typedef _typedefC_5 = ffi.Int32 Function(
+typedef _typedefC_1 = ffi.Int32 Function(
   ffi.Pointer<PyObject>,
   ffi.Pointer<FILE>,
   ffi.Int32,
 );
 
-typedef _typedefC_6 = ffi.Int64 Function(
+typedef _typedefC_2 = ffi.Int64 Function(
   ffi.Pointer<ffi.Void>,
   ffi.Int64,
 );
 
-typedef _typedefC_7 = ffi.Pointer<PyObject> Function();
+typedef _typedefC_3 = ffi.Pointer<PyObject> Function();
+
+typedef _typedefC_5 = ffi.Void Function(
+  ffi.Pointer<ffi.Void>,
+);
 
 typedef wrapperfunc = ffi.Pointer<PyObject> Function(
   ffi.Pointer<PyObject>,
@@ -29823,4 +31715,4 @@ typedef wrapperfunc = ffi.Pointer<PyObject> Function(
   ffi.Pointer<ffi.Void>,
 );
 
-typedef _typedefC_15 = ffi.Pointer<PyObject> Function();
+typedef _typedefC_10 = ffi.Pointer<PyObject> Function();

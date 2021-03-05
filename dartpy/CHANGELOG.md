@@ -1,3 +1,3 @@
-## 1.0.0
+## 0.1.0
 
-- Initial version, created by Stagehand
+- Initial version, basics working on Python3.8
