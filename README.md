@@ -1,10 +1,15 @@
 ## Usage
 
-A simple usage example:
-
 Darpy is a library that allows dart to call out to python code
+by using the [Python C-API embedding](https://docs.python.org/3/c-api/index.html#c-api-index) and `dart:ffi`.
+As such it is a fairly low level interface where you have to manage reference counts of python objects to help the python garbage collector.
+
+However, there are a few high level functions that I've provided to automatically marshal the arguments to python and back and manage the reference counts for you.
+
+Here are a few examples:
 
 For a simple python script inline you can do the following:
+(Uses the low level C-API that is wrapped by `dart:ffi`).
 ```dart
 void main(List<String> args) {
  dartpyc.Py_Initialize();
@@ -20,6 +25,7 @@ void main(List<String> args) {
 ```
 
 For a more complex script that you don't want inline you can do this:
+(Uses a few higher level helper methods)
 ```dart
 void main() {
   // initializes the python runtime
@@ -44,7 +50,11 @@ void main() {
 }
 ```
 
-Feel free to contribute! Not all objects are easily marshalled back and forth currently just supporting basic objects.
+Feel free to contribute! This is a best effort project that I develop in my spare time. 
+
+### Limitations
+
+Not all objects are automatically marshalled back and forth, currently just supporting basic objects (int, double, String, num).
 
 I'm working on an annotation and code generation library so that you can just annotate and call functions like so:
 ```dart
