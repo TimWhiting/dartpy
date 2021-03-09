@@ -54,6 +54,20 @@ Feel free to contribute! This is a best effort project that I develop in my spar
 
 ### Limitations
 
+This library assumes that you have the python dynamic library in the following locations:
+- (MacOS) /usr/local/Frameworks/Python.framework/Versions/3.8/lib/libpython3.8.dylib
+- (Linux) /usr/lib/x86_64-linux-gnu/libpython3.8.so
+- (Windows) -- I don't know the default location, please submit a pull request!
+
+To override this default location, put the following at the beginning of your script:
+```dart
+void main() {
+  pyLibLocation = '/path/to/your/dynamic_library';
+  // The rest of your code...
+}
+```
+Eventually, maybe I will create a flutter package that bundles the dynamic library in the assets for each of the platforms, but currently I'm not doing that.
+
 Not all objects are automatically marshalled back and forth, currently just supporting basic objects (int, double, String, num).
 
 I'm working on an annotation and code generation library so that you can just annotate and call functions like so:
