@@ -2,14 +2,18 @@ name: gendartpy_example
 description: An example usage of gendartpy
 
 environment:
-  sdk: ">=2.9.0-1 <3.0.0"
+  sdk: ">=2.12.0 <3.0.0"
 
 dependencies:
-  dartpy:
-    path: ../../dartpy
+  dartpy: any
 
 dev_dependencies:
+  gen_dartpy: any
+  test: ^1.16.0
+  build_runner: any
+
+dependency_overrides:
   gen_dartpy:
     path: ../
-  test: ^1.6.0
-  build_runner: any
+  dartpy:
+    path: ../../dartpy

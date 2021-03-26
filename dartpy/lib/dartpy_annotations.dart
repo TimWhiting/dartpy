@@ -6,10 +6,15 @@ part 'dartpy_annotations.freezed.dart';
 ///
 /// Work in progress
 class PyFunction {
+  /// The name of the python module the function is contained within
   final String module;
-  final String name;
 
-  const PyFunction({required this.name, required this.module});
+  /// The name of the python function
+  ///
+  /// Defaults to the name of the dart function if null
+  final String? name;
+
+  const PyFunction({required this.module, this.name});
 }
 
 /// Annotation for a dart function to automatically create the python bindings

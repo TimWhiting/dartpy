@@ -4,6 +4,7 @@
 import 'dart:ffi' as ffi;
 
 /// Bindings to Python C interface
+// ignore_for_file: unused_field, unused_element
 class DartPyC {
   /// Holds the symbol lookup function.
   final ffi.Pointer<T> Function<T extends ffi.NativeType>(String symbolName)

@@ -23,21 +23,24 @@ class DartpyFunctionGenerator extends GeneratorForAnnotation<PyFunction> {
     final funcName = pf.name ?? e.name;
 
     return '''
-${e.documentationComment == null ? '/// Calls the python function ' + funcName : e.documentationComment.split('\n').map((l) => '/// ' + l).join('\n')}
-${e.returnType.getDisplayString(withNullability: false)} ${redirectedName}(${e.parameters.map((p) => p.getDisplayString(withNullability: false)).join(',')}){${createWrapperFor(e, pf)}}''';
+${e.documentationComment == null ? '/// Calls the python function ' + funcName : e.documentationComment!.split('\n').map((l) => '/// ' + l).join('\n')}
+${e.returnType.getDisplayString(withNullability: true)} $redirectedName(${e.parameters.map((p) => p.getDisplayString(withNullability: true)).join(',')}){${createWrapperFor(e, pf)}}''';
   }
 
   String createWrapperFor(FunctionElement e, PyFunction func) {
     final parameters = e.parameters;
     final paramConversion = parameters.map((p) => '''
+arg = null;
 try {
   arg = ${convertParameter(p)}(${p.name});
   dartpyc.PyTuple_SetItem(pArgs, ${parameters.indexOf(p)}, arg);
 } on DartPyException catch (e) {
-  dartpyc.Py_DecRef(arg);
+  if (arg != null){
+    dartpyc.Py_DecRef(arg);
+  }
   dartpyc.Py_DecRef(pArgs);
   throw DartPyException(
-      'Failed while converting argument \${arg} with error \$e');
+      'Failed while converting argument \$arg with error \$e');
 }''').join('\n');
 
     return '''
@@ -47,7 +50,7 @@ final pArgs = dartpyc.PyTuple_New(${parameters.length});
 if (pArgs == nullptr) {
   throw DartPyException('Creating argument tuple failed');
 }
-Pointer<PyObject> arg;
+Pointer<PyObject>? arg;
 $paramConversion
 final result = dartpyc.PyObject_CallObject(pFunc.pyFunctionObject, pArgs);
 dartpyc.Py_DecRef(pArgs);

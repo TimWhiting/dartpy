@@ -14,24 +14,30 @@ int pymultiply(int a, int b) {
   if (pArgs == nullptr) {
     throw DartPyException('Creating argument tuple failed');
   }
-  Pointer<PyObject> arg;
+  Pointer<PyObject>? arg;
+  arg = null;
   try {
     arg = pyConvertInt(a);
     dartpyc.PyTuple_SetItem(pArgs, 0, arg);
   } on DartPyException catch (e) {
-    dartpyc.Py_DecRef(arg);
+    if (arg != null) {
+      dartpyc.Py_DecRef(arg);
+    }
     dartpyc.Py_DecRef(pArgs);
     throw DartPyException(
-        'Failed while converting argument ${arg} with error $e');
+        'Failed while converting argument $arg with error $e');
   }
+  arg = null;
   try {
     arg = pyConvertInt(b);
     dartpyc.PyTuple_SetItem(pArgs, 1, arg);
   } on DartPyException catch (e) {
-    dartpyc.Py_DecRef(arg);
+    if (arg != null) {
+      dartpyc.Py_DecRef(arg);
+    }
     dartpyc.Py_DecRef(pArgs);
     throw DartPyException(
-        'Failed while converting argument ${arg} with error $e');
+        'Failed while converting argument $arg with error $e');
   }
   final result = dartpyc.PyObject_CallObject(pFunc.pyFunctionObject, pArgs);
   dartpyc.Py_DecRef(pArgs);
@@ -46,24 +52,30 @@ double pymultiplydouble(double a, double b) {
   if (pArgs == nullptr) {
     throw DartPyException('Creating argument tuple failed');
   }
-  Pointer<PyObject> arg;
+  Pointer<PyObject>? arg;
+  arg = null;
   try {
     arg = pyConvertDouble(a);
     dartpyc.PyTuple_SetItem(pArgs, 0, arg);
   } on DartPyException catch (e) {
-    dartpyc.Py_DecRef(arg);
+    if (arg != null) {
+      dartpyc.Py_DecRef(arg);
+    }
     dartpyc.Py_DecRef(pArgs);
     throw DartPyException(
-        'Failed while converting argument ${arg} with error $e');
+        'Failed while converting argument $arg with error $e');
   }
+  arg = null;
   try {
     arg = pyConvertDouble(b);
     dartpyc.PyTuple_SetItem(pArgs, 1, arg);
   } on DartPyException catch (e) {
-    dartpyc.Py_DecRef(arg);
+    if (arg != null) {
+      dartpyc.Py_DecRef(arg);
+    }
     dartpyc.Py_DecRef(pArgs);
     throw DartPyException(
-        'Failed while converting argument ${arg} with error $e');
+        'Failed while converting argument $arg with error $e');
   }
   final result = dartpyc.PyObject_CallObject(pFunc.pyFunctionObject, pArgs);
   dartpyc.Py_DecRef(pArgs);
@@ -78,24 +90,30 @@ num pymultiplynum(num a, num b) {
   if (pArgs == nullptr) {
     throw DartPyException('Creating argument tuple failed');
   }
-  Pointer<PyObject> arg;
+  Pointer<PyObject>? arg;
+  arg = null;
   try {
     arg = pyConvertNum(a);
     dartpyc.PyTuple_SetItem(pArgs, 0, arg);
   } on DartPyException catch (e) {
-    dartpyc.Py_DecRef(arg);
+    if (arg != null) {
+      dartpyc.Py_DecRef(arg);
+    }
     dartpyc.Py_DecRef(pArgs);
     throw DartPyException(
-        'Failed while converting argument ${arg} with error $e');
+        'Failed while converting argument $arg with error $e');
   }
+  arg = null;
   try {
     arg = pyConvertNum(b);
     dartpyc.PyTuple_SetItem(pArgs, 1, arg);
   } on DartPyException catch (e) {
-    dartpyc.Py_DecRef(arg);
+    if (arg != null) {
+      dartpyc.Py_DecRef(arg);
+    }
     dartpyc.Py_DecRef(pArgs);
     throw DartPyException(
-        'Failed while converting argument ${arg} with error $e');
+        'Failed while converting argument $arg with error $e');
   }
   final result = dartpyc.PyObject_CallObject(pFunc.pyFunctionObject, pArgs);
   dartpyc.Py_DecRef(pArgs);
