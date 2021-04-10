@@ -37,6 +37,7 @@ Pointer<PyObject> pyConvertDynamic(Object? o) {
 Object? pyConvertBackDynamic(Pointer<PyObject> result) {
   if (result == nullptr) {
     if (pyErrOccurred()) {
+      dartpyc.PyErr_Print();
       throw UnimplementedError('Python error occurred');
     }
     return null;
