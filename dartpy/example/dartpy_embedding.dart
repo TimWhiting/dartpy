@@ -8,7 +8,7 @@ void main(List<String> args) {
   pyStart();
   try {
     // imports a python module
-    final pyModule = pyimport(args[0]);
+    final pyModule = pyImport(args[0]);
     // gets a function within that module
     final pFunc = pyModule.getFunction(args[1]);
     // calls the function and gets the result

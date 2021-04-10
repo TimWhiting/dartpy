@@ -30,7 +30,7 @@ void main(List<String> args) {
     dartpyc.PyImport_AppendInittab(moduleName, Pointer.fromFunction(initFunc));
     pyStart();
     // imports a python module
-    final pyModule = pyimport('custom');
+    final pyModule = pyImport('custom');
     // gets a function within that module
     final pFunc = pyModule.getFunction('multiply');
     // calls the function and gets the result

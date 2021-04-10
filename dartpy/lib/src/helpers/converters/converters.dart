@@ -20,9 +20,9 @@ Pointer<PyObject> pyConvertDynamic(Object? o) {
       return dartpyc.Py_False;
     }
   } else if (o is int) {
-    return pyConvertInt(o);
+    return o.asPyInt;
   } else if (o is double) {
-    return pyConvertDouble(o);
+    return o.asPyFloat;
   } else if (o is String) {
     throw UnimplementedError();
   } else if (o is List) {
@@ -46,7 +46,7 @@ Object? pyConvertBackDynamic(Pointer<PyObject> result) {
   if (result == dartpyc.Py_None) {
     dartpyc.Py_DecRef(result);
     return null;
-  } else if (pyIsBool(result)) {
+  } else if (result.isBool) {
     if (result == dartpyc.Py_True) {
       dartpyc.Py_DecRef(result);
       return true;

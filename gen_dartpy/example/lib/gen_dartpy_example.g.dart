@@ -8,7 +8,7 @@ part of 'gen_dartpy_example.dart';
 
 /// Calls the python function multiply
 int pymultiply(int a, int b) {
-  final pyModule = pyimport('multiply');
+  final pyModule = pyImport('multiply');
   final pFunc = pyModule.getFunction('multiply');
   final pArgs = dartpyc.PyTuple_New(2);
   if (pArgs == nullptr) {
@@ -17,7 +17,7 @@ int pymultiply(int a, int b) {
   Pointer<PyObject>? arg;
   arg = null;
   try {
-    arg = pyConvertInt(a);
+    arg = a.asPyInt;
     dartpyc.PyTuple_SetItem(pArgs, 0, arg);
   } on DartPyException catch (e) {
     if (arg != null) {
@@ -29,7 +29,7 @@ int pymultiply(int a, int b) {
   }
   arg = null;
   try {
-    arg = pyConvertInt(b);
+    arg = b.asPyInt;
     dartpyc.PyTuple_SetItem(pArgs, 1, arg);
   } on DartPyException catch (e) {
     if (arg != null) {
@@ -41,12 +41,12 @@ int pymultiply(int a, int b) {
   }
   final result = dartpyc.PyObject_CallObject(pFunc.pyFunctionObject, pArgs);
   dartpyc.Py_DecRef(pArgs);
-  return pyConvertBackInt(result);
+  return result.asInt;
 }
 
 /// Calls the python function multiply
 double pymultiplydouble(double a, double b) {
-  final pyModule = pyimport('multiply');
+  final pyModule = pyImport('multiply');
   final pFunc = pyModule.getFunction('multiply');
   final pArgs = dartpyc.PyTuple_New(2);
   if (pArgs == nullptr) {
@@ -55,7 +55,7 @@ double pymultiplydouble(double a, double b) {
   Pointer<PyObject>? arg;
   arg = null;
   try {
-    arg = pyConvertDouble(a);
+    arg = a.asPyFloat;
     dartpyc.PyTuple_SetItem(pArgs, 0, arg);
   } on DartPyException catch (e) {
     if (arg != null) {
@@ -67,7 +67,7 @@ double pymultiplydouble(double a, double b) {
   }
   arg = null;
   try {
-    arg = pyConvertDouble(b);
+    arg = b.asPyFloat;
     dartpyc.PyTuple_SetItem(pArgs, 1, arg);
   } on DartPyException catch (e) {
     if (arg != null) {
@@ -79,12 +79,12 @@ double pymultiplydouble(double a, double b) {
   }
   final result = dartpyc.PyObject_CallObject(pFunc.pyFunctionObject, pArgs);
   dartpyc.Py_DecRef(pArgs);
-  return pyConvertBackDouble(result);
+  return result.asDouble;
 }
 
 /// Calls the python function multiply
 num pymultiplynum(num a, num b) {
-  final pyModule = pyimport('multiply');
+  final pyModule = pyImport('multiply');
   final pFunc = pyModule.getFunction('multiply');
   final pArgs = dartpyc.PyTuple_New(2);
   if (pArgs == nullptr) {
@@ -93,7 +93,7 @@ num pymultiplynum(num a, num b) {
   Pointer<PyObject>? arg;
   arg = null;
   try {
-    arg = pyConvertNum(a);
+    arg = a.asPyNum;
     dartpyc.PyTuple_SetItem(pArgs, 0, arg);
   } on DartPyException catch (e) {
     if (arg != null) {
@@ -105,7 +105,7 @@ num pymultiplynum(num a, num b) {
   }
   arg = null;
   try {
-    arg = pyConvertNum(b);
+    arg = b.asPyNum;
     dartpyc.PyTuple_SetItem(pArgs, 1, arg);
   } on DartPyException catch (e) {
     if (arg != null) {
@@ -117,5 +117,5 @@ num pymultiplynum(num a, num b) {
   }
   final result = dartpyc.PyObject_CallObject(pFunc.pyFunctionObject, pArgs);
   dartpyc.Py_DecRef(pArgs);
-  return pyConvertBackNum(result);
+  return result.asNum;
 }

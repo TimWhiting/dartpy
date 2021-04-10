@@ -53,7 +53,7 @@ void pyCleanup() {
 final _moduleMap = <String, DartPyModule>{};
 
 /// Loads a python module
-DartPyModule pyimport(String module) {
+DartPyModule pyImport(String module) {
   _ensureInitialized();
   if (_moduleMap.containsKey(module)) {
     return _moduleMap[module]!;
@@ -90,7 +90,7 @@ class DartPyModule {
         dartpyc.PyObject_GetAttrString(_moduleRef, funcName.cast<Int8>());
     malloc.free(funcName);
     if (pFunc != nullptr) {
-      if (pyIsCallable(pFunc)) {
+      if (pFunc.isCallable) {
         _functions[name] = DartPyFunction(pFunc);
         return _functions[name]!;
       } else {

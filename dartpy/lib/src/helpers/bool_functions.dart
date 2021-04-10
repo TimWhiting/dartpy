@@ -4,14 +4,12 @@ import 'package:dartpy/src/ffi/gen.dart';
 
 import '../dartpy_base.dart';
 
-/// Checks whether [object] is callable
-bool pyIsCallable(Pointer<PyObject> object) {
-  return dartpyc.PyCallable_Check(object) != 0;
-}
+extension IsType on Pointer<PyObject> {
+  /// Checks whether [object] is a boolean
+  bool get isBool => this == dartpyc.Py_True || this == dartpyc.Py_False;
 
-/// Checks whether [object] is a boolean
-bool pyIsBool(Pointer<PyObject> object) {
-  return object == dartpyc.Py_True || object == dartpyc.Py_False;
+  /// Checks whether [object] is callable
+  bool get isCallable => dartpyc.PyCallable_Check(this) != 0;
 }
 
 // bool pyIsInt(Pointer<PyObject> object) {
@@ -19,12 +17,7 @@ bool pyIsBool(Pointer<PyObject> object) {
 // }
 
 /// Checks whether an exception occured in python
-bool pyErrOccurred() {
-  return dartpyc.PyErr_Occurred() != nullptr;
-}
+bool pyErrOccurred() => dartpyc.PyErr_Occurred() != nullptr;
 
 /// Checks whether the python runtime was initialized
-bool get pyInitialized {
-  final inited = dartpyc.Py_IsInitialized();
-  return inited != 0;
-}
+bool get pyInitialized => dartpyc.Py_IsInitialized() != 0;

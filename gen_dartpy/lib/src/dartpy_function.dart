@@ -32,7 +32,7 @@ ${e.returnType.getDisplayString(withNullability: true)} $redirectedName(${e.para
     final paramConversion = parameters.map((p) => '''
 arg = null;
 try {
-  arg = ${convertParameter(p)}(${p.name});
+  arg = ${p.name}.${convertParameter(p)};
   dartpyc.PyTuple_SetItem(pArgs, ${parameters.indexOf(p)}, arg);
 } on DartPyException catch (e) {
   if (arg != null){
@@ -44,7 +44,7 @@ try {
 }''').join('\n');
 
     return '''
-final pyModule = pyimport('${func.module}');
+final pyModule = pyImport('${func.module}');
 final pFunc = pyModule.getFunction('${func.name ?? e.name}');
 final pArgs = dartpyc.PyTuple_New(${parameters.length});
 if (pArgs == nullptr) {
@@ -54,19 +54,19 @@ Pointer<PyObject>? arg;
 $paramConversion
 final result = dartpyc.PyObject_CallObject(pFunc.pyFunctionObject, pArgs);
 dartpyc.Py_DecRef(pArgs);
-return ${convertReturnType(e.returnType)};''';
+return result.${convertReturnType(e.returnType)};''';
   }
 
   String convertParameter(ParameterElement p) {
     final pType = p.type;
     if (pType.isDartCoreInt) {
-      return 'pyConvertInt';
+      return 'asPyInt';
     }
     if (pType.isDartCoreDouble) {
-      return 'pyConvertDouble';
+      return 'asPyFloat';
     }
     if (pType.isDartCoreNum) {
-      return 'pyConvertNum';
+      return 'asPyNum';
     }
     throw UnimplementedError(
         'Converting $pType failed, type is not implemented');
@@ -77,13 +77,13 @@ return ${convertReturnType(e.returnType)};''';
       return '';
     }
     if (returnType.isDartCoreInt) {
-      return 'pyConvertBackInt(result)';
+      return 'asInt';
     }
     if (returnType.isDartCoreDouble) {
-      return 'pyConvertBackDouble(result)';
+      return 'asDouble';
     }
     if (returnType.isDartCoreNum) {
-      return 'pyConvertBackNum(result)';
+      return 'asNum';
     }
     return 'null';
   }
