@@ -111,6 +111,15 @@ class DartPyModule {
     _functions.clear();
     dartpyc.Py_DecRef(_moduleRef);
   }
+
+  @override
+  dynamic noSuchMethod(Invocation inv) {
+    final invokeMethod = inv.memberName.toString();
+    // inv.memberName is a Symbol and the toString() == Symbol("foo")
+    return getFunction(
+            invokeMethod.substring('Symbol("'.length, invokeMethod.length - 2))
+        .call(inv.positionalArguments.cast<Object?>());
+  }
 }
 
 /// A dart representation of a python function
@@ -137,7 +146,7 @@ class DartPyFunction {
 
 extension CallablePyObjectList on DartPyFunction {
   /// Calls the python function with dart args marshalled back and forth
-  Object call(List<Object> args) {
+  Object call(List<Object?> args) {
     final pArgs = dartpyc.PyTuple_New(args.length);
     if (pArgs == nullptr) {
       throw DartPyException('Creating argument tuple failed');

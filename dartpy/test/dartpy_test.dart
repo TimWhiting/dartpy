@@ -27,4 +27,15 @@ void main() {
     final func = mod.getFunction('string_test');
     expect(func(['Hello, ', 'World!']), 'Hello, World!');
   });
+
+  test('Dynamic', () {
+    final dyn = mod as dynamic;
+    expect(dyn.int_test(1, 2), 3);
+    expect(dyn.float_test(1, 2), 3);
+    expect(dyn.num_test(1.0, 2.0), 3.0);
+    expect(dyn.num_test(1, 2.0), 3.0);
+    expect(dyn.num_test(1.0, 2), 3.0);
+    expect(dyn.num_test(1, 2), 3);
+    expect(dyn.string_test('Hello, ', 'World!'), 'Hello, World!');
+  });
 }
