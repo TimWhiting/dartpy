@@ -37,5 +37,14 @@ void main() {
     expect(dyn.num_test(1.0, 2), 3.0);
     expect(dyn.num_test(1, 2), 3);
     expect(dyn.string_test('Hello, ', 'World!'), 'Hello, World!');
+    expect(
+        () => dyn.no_such_method('Random argument'),
+        throwsA(
+          isA<DartPyException>().having(
+            (e) => e.message,
+            'message',
+            'Function no_such_method not found in module dartpy_test',
+          ),
+        ));
   });
 }
