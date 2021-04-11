@@ -142,14 +142,15 @@ extension CallablePyObjectList on DartPyFunction {
     if (pArgs == nullptr) {
       throw DartPyException('Creating argument tuple failed');
     }
+    final pyObjs = <PyObjAllocated>[];
     for (var i = 0; i < args.length; i++) {
-      Pointer<PyObject>? arg;
+      PyObjAllocated? arg;
       try {
         arg = pyConvertDynamic(args[i]);
-        dartpyc.PyTuple_SetItem(pArgs, i, arg);
+        dartpyc.PyTuple_SetItem(pArgs, i, arg.pyObj);
       } on DartPyException catch (e) {
         if (arg != null) {
-          dartpyc.Py_DecRef(arg);
+          dartpyc.Py_DecRef(arg.pyObj);
         }
         dartpyc.Py_DecRef(pArgs);
         throw DartPyException(
@@ -157,6 +158,7 @@ extension CallablePyObjectList on DartPyFunction {
       }
     }
     final result = dartpyc.PyObject_CallObject(_function, pArgs);
+    pyObjs.forEach((p) => p.dealloc());
     dartpyc.Py_DecRef(pArgs);
     return pyConvertBackDynamic(result)!;
   }

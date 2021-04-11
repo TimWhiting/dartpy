@@ -10,21 +10,21 @@ import '../bool_functions.dart';
 ///
 /// The caller of this function takes ownership of the python object
 /// and must call Py_DecRef after they are done with it.
-Pointer<PyObject> pyConvertDynamic(Object? o) {
+PyObjAllocated pyConvertDynamic(Object? o) {
   if (o == null) {
-    return dartpyc.Py_None;
+    return PyObjAllocated.noAllocation(dartpyc.Py_None);
   } else if (o is bool) {
     if (o) {
-      return dartpyc.Py_True;
+      return PyObjAllocated.noAllocation(dartpyc.Py_True);
     } else {
-      return dartpyc.Py_False;
+      return PyObjAllocated.noAllocation(dartpyc.Py_False);
     }
   } else if (o is int) {
-    return o.asPyInt;
+    return PyObjAllocated.noAllocation(o.asPyInt);
   } else if (o is double) {
-    return o.asPyFloat;
+    return PyObjAllocated.noAllocation(o.asPyFloat);
   } else if (o is String) {
-    throw UnimplementedError();
+    return o.asPyBytes();
   } else if (o is List) {
     throw UnimplementedError();
   } else if (o is Map) {
@@ -54,11 +54,21 @@ Object? pyConvertBackDynamic(Pointer<PyObject> result) {
     dartpyc.Py_DecRef(result);
     return false;
   } else {
-    final res = dartpyc.PyLong_AsLong(result);
-    if (!pyErrOccurred()) {
+    try {
+      final res = result.asNum;
       dartpyc.Py_DecRef(result);
       return res;
+    } on DartPyException catch (_) {
+      dartpyc.PyErr_Clear();
+      try {
+        final res = result.asString;
+        dartpyc.Py_DecRef(result);
+        return res;
+      } on DartPyException catch (_) {
+        dartpyc.PyErr_Clear();
+        throw DartPyException(
+            'Could not figure out the type of the object to convert back to: not a known primitive');
+      }
     }
   }
-  throw UnimplementedError();
 }
