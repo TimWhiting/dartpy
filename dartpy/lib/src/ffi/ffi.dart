@@ -15,6 +15,8 @@ final _pyLib = pyLibLocation != null
         ? ffi.DynamicLibrary.open(_findLinux())
         : io.Platform.isMacOS
             ? ffi.DynamicLibrary.open(_findMacos())
+            : io.Platform.isWindows
+            ? ffi.DynamicLibrary.open(_findWindow())
             : throw UnimplementedError('${io.Platform} not supported');
 
 String _findLinux() {
@@ -37,6 +39,26 @@ String _findMacos() {
   }
   throw UnimplementedError(
       'Macos python version not found, searched for Python 3.8 and 3.9, set pyLibLocation for custom install location');
+}
+
+String _findWindow() {
+  Map env = Platform.environment;
+  String username = env["USERNAME"];
+  if (Directory(
+          'C:\\Users\\$username\\AppData\\Local\\Programs\\Python\\Python39\\python39.dll')
+
+      .existsSync()) 
+      {
+    return 'C:\\Users\\$username\\AppData\\Local\\Programs\\Python\\Python39\\python39.dll';
+  }else if(Directory(
+          'C:\\Users\\$username\\AppData\\Local\\Programs\\Python\\Python38\\python38.dll')
+      .existsSync()) {
+    return 'C:\\Users\\$username\\AppData\\Local\\Programs\\Python\\Python38\\python38.dll';
+
+      }
+  throw UnimplementedError(
+    'Window python version not found, searched for Python 3.8 and 3.9, set pyLibLocation for custom install location'
+  )
 }
 
 DartPyC? _dartpyc;

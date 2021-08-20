@@ -59,15 +59,14 @@ This library assumes that you have the python dynamic library in the following l
 - (Linux) /usr/lib/x86_64-linux-gnu/libpython3.8.so
 - (Windows)
 
-       ```
-     
-
+```        
           Map env = Platform.environment;
-            String username =env["USERNAME"];
+          String username =env["USERNAME"];
           
           pyLibLocation =
               'C:\\Users\\$username\\AppData\\Local\\Programs\\Python\\Python39\\python39.dll';
-        }```
+        
+```
  - (android) wether can i use python from termux ,need to research;
 
 To override this default location, put the following at the beginning of your script:
