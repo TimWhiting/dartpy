@@ -57,7 +57,18 @@ Feel free to contribute! This is a best effort project that I develop in my spar
 This library assumes that you have the python dynamic library in the following locations:
 - (MacOS) /usr/local/Frameworks/Python.framework/Versions/3.8/lib/libpython3.8.dylib
 - (Linux) /usr/lib/x86_64-linux-gnu/libpython3.8.so
-- (Windows) -- I don't know the default location, please submit a pull request!
+- (Windows)
+
+       ```
+     
+
+          Map env = Platform.environment;
+            String username =env["USERNAME"];
+          
+          pyLibLocation =
+              'C:\\Users\\$username\\AppData\\Local\\Programs\\Python\\Python39\\python39.dll';
+        }```
+ - (android) wether can i use python from termux ,need to research;
 
 To override this default location, put the following at the beginning of your script:
 ```dart
