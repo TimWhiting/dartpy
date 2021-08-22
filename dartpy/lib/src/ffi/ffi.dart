@@ -16,7 +16,7 @@ final _pyLib = pyLibLocation != null
         : io.Platform.isMacOS
             ? ffi.DynamicLibrary.open(_findMacos())
             : io.Platform.isWindows
-            ? ffi.DynamicLibrary.open(_findWindow())
+            ? ffi.DynamicLibrary.open(_findWindows())
             : throw UnimplementedError('${io.Platform} not supported');
 
 String _findLinux() {
@@ -41,7 +41,7 @@ String _findMacos() {
       'Macos python version not found, searched for Python 3.8 and 3.9, set pyLibLocation for custom install location');
 }
 
-String _findWindow() {
+String _findWindows() {
   Map env = Platform.environment;
   String username = env["USERNAME"];
   if (Directory(
