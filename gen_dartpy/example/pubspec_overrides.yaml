@@ -1,0 +1,5 @@
+dependency_overrides:
+  dartpy:
+    path: ../../dartpy
+  gen_dartpy:
+    path: ../

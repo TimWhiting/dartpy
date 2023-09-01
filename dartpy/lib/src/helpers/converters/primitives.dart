@@ -30,7 +30,7 @@ extension PyString on String {
   PythonString asPyBytes() {
     final allocated = toNativeUtf8();
     return PythonString(
-        dartpyc.PyBytes_FromString(allocated.cast<Int8>()), allocated);
+        dartpyc.PyBytes_FromString(allocated.cast<Char>()), allocated);
   }
 }
 

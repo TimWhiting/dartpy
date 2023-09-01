@@ -1,6 +1,6 @@
 ## Usage
 
-Darpy is a library that allows dart to call out to python code
+Dartpy is a library that allows dart to call out to python code
 by using the [Python C-API embedding](https://docs.python.org/3/c-api/index.html#c-api-index) and `dart:ffi`.
 As such it is a fairly low level interface where you have to manage reference counts of python objects to help the python garbage collector.
 

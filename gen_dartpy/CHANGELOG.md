@@ -1,3 +1,3 @@
-## 1.0.0
+## 0.0.1
 
-- Initial version, created by Stagehand
+- Initial version, minimal support for generating basic bindings for basic types

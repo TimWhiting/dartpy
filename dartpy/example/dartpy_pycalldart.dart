@@ -11,9 +11,9 @@ void main(List<String> args) {
       '/usr/local/Frameworks/Python.framework/Versions/3.9/lib/libpython3.9.dylib';
 
   try {
-    final moduleName = 'dartmod'.toNativeUtf8().cast<Int8>();
-    final methodName = 'calledFromPython'.toNativeUtf8().cast<Int8>();
-    final docString = 'Doc'.toNativeUtf8().cast<Int8>();
+    final moduleName = 'dartmod'.toNativeUtf8().cast<Char>();
+    final methodName = 'calledFromPython'.toNativeUtf8().cast<Char>();
+    final docString = 'Doc'.toNativeUtf8().cast<Char>();
     final moduleMethods =
         calloc.allocate<PyMethodDef>(sizeOf<PyMethodDef>() * 2);
     moduleMethods.ref.ml_name = methodName;
