@@ -7,11 +7,11 @@ environment:
   sdk: '>=3.0.0 <4.0.0'
 
 dependencies:
-  analyzer: ^6.2.0
+  analyzer: ^6.6.0
   build: ^2.4.1
-  source_gen: ^1.4.0
-  dartpy: ^0.0.2
+  source_gen: ^1.5.0
+  dartpy: ^0.0.3
 
 dev_dependencies:
   pedantic: ^1.11.1
-  test: ^1.24.6
+  test: ^1.25.7

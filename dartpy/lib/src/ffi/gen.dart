@@ -37,6 +37,22 @@ class DartPyC {
   late final _PyMem_Malloc =
       _PyMem_MallocPtr.asFunction<ffi.Pointer<ffi.Void> Function(int)>();
 
+  ffi.Pointer<ffi.Void> PyMem_Calloc(
+    int nelem,
+    int elsize,
+  ) {
+    return _PyMem_Calloc(
+      nelem,
+      elsize,
+    );
+  }
+
+  late final _PyMem_CallocPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<ffi.Void> Function(ffi.Size, ffi.Size)>>('PyMem_Calloc');
+  late final _PyMem_Calloc =
+      _PyMem_CallocPtr.asFunction<ffi.Pointer<ffi.Void> Function(int, int)>();
+
   ffi.Pointer<ffi.Void> PyMem_Realloc(
     ffi.Pointer<ffi.Void> ptr,
     int new_size,
@@ -68,10 +84,407 @@ class DartPyC {
   late final _PyMem_Free =
       _PyMem_FreePtr.asFunction<void Function(ffi.Pointer<ffi.Void>)>();
 
-  late final ffi.Pointer<_PyTraceMalloc_Config> _Py_tracemalloc_config =
-      _lookup<_PyTraceMalloc_Config>('_Py_tracemalloc_config');
+  ffi.Pointer<ffi.Void> PyMem_RawMalloc(
+    int size,
+  ) {
+    return _PyMem_RawMalloc(
+      size,
+    );
+  }
 
-  _PyTraceMalloc_Config get Py_tracemalloc_config => _Py_tracemalloc_config.ref;
+  late final _PyMem_RawMallocPtr =
+      _lookup<ffi.NativeFunction<ffi.Pointer<ffi.Void> Function(ffi.Size)>>(
+          'PyMem_RawMalloc');
+  late final _PyMem_RawMalloc =
+      _PyMem_RawMallocPtr.asFunction<ffi.Pointer<ffi.Void> Function(int)>();
+
+  ffi.Pointer<ffi.Void> PyMem_RawCalloc(
+    int nelem,
+    int elsize,
+  ) {
+    return _PyMem_RawCalloc(
+      nelem,
+      elsize,
+    );
+  }
+
+  late final _PyMem_RawCallocPtr = _lookup<
+          ffi
+          .NativeFunction<ffi.Pointer<ffi.Void> Function(ffi.Size, ffi.Size)>>(
+      'PyMem_RawCalloc');
+  late final _PyMem_RawCalloc = _PyMem_RawCallocPtr.asFunction<
+      ffi.Pointer<ffi.Void> Function(int, int)>();
+
+  ffi.Pointer<ffi.Void> PyMem_RawRealloc(
+    ffi.Pointer<ffi.Void> ptr,
+    int new_size,
+  ) {
+    return _PyMem_RawRealloc(
+      ptr,
+      new_size,
+    );
+  }
+
+  late final _PyMem_RawReallocPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<ffi.Void> Function(
+              ffi.Pointer<ffi.Void>, ffi.Size)>>('PyMem_RawRealloc');
+  late final _PyMem_RawRealloc = _PyMem_RawReallocPtr.asFunction<
+      ffi.Pointer<ffi.Void> Function(ffi.Pointer<ffi.Void>, int)>();
+
+  void PyMem_RawFree(
+    ffi.Pointer<ffi.Void> ptr,
+  ) {
+    return _PyMem_RawFree(
+      ptr,
+    );
+  }
+
+  late final _PyMem_RawFreePtr =
+      _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ffi.Void>)>>(
+          'PyMem_RawFree');
+  late final _PyMem_RawFree =
+      _PyMem_RawFreePtr.asFunction<void Function(ffi.Pointer<ffi.Void>)>();
+
+  ffi.Pointer<ffi.Char> PyMem_GetCurrentAllocatorName() {
+    return _PyMem_GetCurrentAllocatorName();
+  }
+
+  late final _PyMem_GetCurrentAllocatorNamePtr =
+      _lookup<ffi.NativeFunction<ffi.Pointer<ffi.Char> Function()>>(
+          '_PyMem_GetCurrentAllocatorName');
+  late final _PyMem_GetCurrentAllocatorName = _PyMem_GetCurrentAllocatorNamePtr
+      .asFunction<ffi.Pointer<ffi.Char> Function()>();
+
+  ffi.Pointer<ffi.Char> PyMem_RawStrdup(
+    ffi.Pointer<ffi.Char> str,
+  ) {
+    return _PyMem_RawStrdup(
+      str,
+    );
+  }
+
+  late final _PyMem_RawStrdupPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<ffi.Char> Function(
+              ffi.Pointer<ffi.Char>)>>('_PyMem_RawStrdup');
+  late final _PyMem_RawStrdup = _PyMem_RawStrdupPtr.asFunction<
+      ffi.Pointer<ffi.Char> Function(ffi.Pointer<ffi.Char>)>();
+
+  ffi.Pointer<ffi.Char> PyMem_Strdup(
+    ffi.Pointer<ffi.Char> str,
+  ) {
+    return _PyMem_Strdup(
+      str,
+    );
+  }
+
+  late final _PyMem_StrdupPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<ffi.Char> Function(
+              ffi.Pointer<ffi.Char>)>>('_PyMem_Strdup');
+  late final _PyMem_Strdup = _PyMem_StrdupPtr.asFunction<
+      ffi.Pointer<ffi.Char> Function(ffi.Pointer<ffi.Char>)>();
+
+  ffi.Pointer<ffi.WChar> PyMem_RawWcsdup(
+    ffi.Pointer<ffi.WChar> str,
+  ) {
+    return _PyMem_RawWcsdup(
+      str,
+    );
+  }
+
+  late final _PyMem_RawWcsdupPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<ffi.WChar> Function(
+              ffi.Pointer<ffi.WChar>)>>('_PyMem_RawWcsdup');
+  late final _PyMem_RawWcsdup = _PyMem_RawWcsdupPtr.asFunction<
+      ffi.Pointer<ffi.WChar> Function(ffi.Pointer<ffi.WChar>)>();
+
+  void PyMem_GetAllocator(
+    int domain,
+    ffi.Pointer<PyMemAllocatorEx> allocator,
+  ) {
+    return _PyMem_GetAllocator(
+      domain,
+      allocator,
+    );
+  }
+
+  late final _PyMem_GetAllocatorPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Void Function(
+              ffi.Int32, ffi.Pointer<PyMemAllocatorEx>)>>('PyMem_GetAllocator');
+  late final _PyMem_GetAllocator = _PyMem_GetAllocatorPtr.asFunction<
+      void Function(int, ffi.Pointer<PyMemAllocatorEx>)>();
+
+  void PyMem_SetAllocator(
+    int domain,
+    ffi.Pointer<PyMemAllocatorEx> allocator,
+  ) {
+    return _PyMem_SetAllocator(
+      domain,
+      allocator,
+    );
+  }
+
+  late final _PyMem_SetAllocatorPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Void Function(
+              ffi.Int32, ffi.Pointer<PyMemAllocatorEx>)>>('PyMem_SetAllocator');
+  late final _PyMem_SetAllocator = _PyMem_SetAllocatorPtr.asFunction<
+      void Function(int, ffi.Pointer<PyMemAllocatorEx>)>();
+
+  void PyMem_SetupDebugHooks() {
+    return _PyMem_SetupDebugHooks();
+  }
+
+  late final _PyMem_SetupDebugHooksPtr =
+      _lookup<ffi.NativeFunction<ffi.Void Function()>>('PyMem_SetupDebugHooks');
+  late final _PyMem_SetupDebugHooks =
+      _PyMem_SetupDebugHooksPtr.asFunction<void Function()>();
+
+  int PyObject_CheckBuffer(
+    ffi.Pointer<PyObject> obj,
+  ) {
+    return _PyObject_CheckBuffer(
+      obj,
+    );
+  }
+
+  late final _PyObject_CheckBufferPtr =
+      _lookup<ffi.NativeFunction<ffi.Int Function(ffi.Pointer<PyObject>)>>(
+          'PyObject_CheckBuffer');
+  late final _PyObject_CheckBuffer = _PyObject_CheckBufferPtr.asFunction<
+      int Function(ffi.Pointer<PyObject>)>();
+
+  int PyObject_GetBuffer(
+    ffi.Pointer<PyObject> obj,
+    ffi.Pointer<Py_buffer> view,
+    int flags,
+  ) {
+    return _PyObject_GetBuffer(
+      obj,
+      view,
+      flags,
+    );
+  }
+
+  late final _PyObject_GetBufferPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int Function(ffi.Pointer<PyObject>, ffi.Pointer<Py_buffer>,
+              ffi.Int)>>('PyObject_GetBuffer');
+  late final _PyObject_GetBuffer = _PyObject_GetBufferPtr.asFunction<
+      int Function(ffi.Pointer<PyObject>, ffi.Pointer<Py_buffer>, int)>();
+
+  ffi.Pointer<ffi.Void> PyBuffer_GetPointer(
+    ffi.Pointer<Py_buffer> view,
+    ffi.Pointer<Py_ssize_t> indices,
+  ) {
+    return _PyBuffer_GetPointer(
+      view,
+      indices,
+    );
+  }
+
+  late final _PyBuffer_GetPointerPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<ffi.Void> Function(ffi.Pointer<Py_buffer>,
+              ffi.Pointer<Py_ssize_t>)>>('PyBuffer_GetPointer');
+  late final _PyBuffer_GetPointer = _PyBuffer_GetPointerPtr.asFunction<
+      ffi.Pointer<ffi.Void> Function(
+          ffi.Pointer<Py_buffer>, ffi.Pointer<Py_ssize_t>)>();
+
+  int PyBuffer_SizeFromFormat(
+    ffi.Pointer<ffi.Char> format,
+  ) {
+    return _PyBuffer_SizeFromFormat(
+      format,
+    );
+  }
+
+  late final _PyBuffer_SizeFromFormatPtr =
+      _lookup<ffi.NativeFunction<Py_ssize_t Function(ffi.Pointer<ffi.Char>)>>(
+          'PyBuffer_SizeFromFormat');
+  late final _PyBuffer_SizeFromFormat = _PyBuffer_SizeFromFormatPtr.asFunction<
+      int Function(ffi.Pointer<ffi.Char>)>();
+
+  int PyBuffer_ToContiguous(
+    ffi.Pointer<ffi.Void> buf,
+    ffi.Pointer<Py_buffer> view,
+    int len,
+    int order,
+  ) {
+    return _PyBuffer_ToContiguous(
+      buf,
+      view,
+      len,
+      order,
+    );
+  }
+
+  late final _PyBuffer_ToContiguousPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int Function(ffi.Pointer<ffi.Void>, ffi.Pointer<Py_buffer>,
+              Py_ssize_t, ffi.Char)>>('PyBuffer_ToContiguous');
+  late final _PyBuffer_ToContiguous = _PyBuffer_ToContiguousPtr.asFunction<
+      int Function(ffi.Pointer<ffi.Void>, ffi.Pointer<Py_buffer>, int, int)>();
+
+  int PyBuffer_FromContiguous(
+    ffi.Pointer<Py_buffer> view,
+    ffi.Pointer<ffi.Void> buf,
+    int len,
+    int order,
+  ) {
+    return _PyBuffer_FromContiguous(
+      view,
+      buf,
+      len,
+      order,
+    );
+  }
+
+  late final _PyBuffer_FromContiguousPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int Function(ffi.Pointer<Py_buffer>, ffi.Pointer<ffi.Void>,
+              Py_ssize_t, ffi.Char)>>('PyBuffer_FromContiguous');
+  late final _PyBuffer_FromContiguous = _PyBuffer_FromContiguousPtr.asFunction<
+      int Function(ffi.Pointer<Py_buffer>, ffi.Pointer<ffi.Void>, int, int)>();
+
+  int PyObject_CopyData(
+    ffi.Pointer<PyObject> dest,
+    ffi.Pointer<PyObject> src,
+  ) {
+    return _PyObject_CopyData(
+      dest,
+      src,
+    );
+  }
+
+  late final _PyObject_CopyDataPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int Function(ffi.Pointer<PyObject>,
+              ffi.Pointer<PyObject>)>>('PyObject_CopyData');
+  late final _PyObject_CopyData = _PyObject_CopyDataPtr.asFunction<
+      int Function(ffi.Pointer<PyObject>, ffi.Pointer<PyObject>)>();
+
+  int PyBuffer_IsContiguous(
+    ffi.Pointer<Py_buffer> view,
+    int fort,
+  ) {
+    return _PyBuffer_IsContiguous(
+      view,
+      fort,
+    );
+  }
+
+  late final _PyBuffer_IsContiguousPtr = _lookup<
+          ffi
+          .NativeFunction<ffi.Int Function(ffi.Pointer<Py_buffer>, ffi.Char)>>(
+      'PyBuffer_IsContiguous');
+  late final _PyBuffer_IsContiguous = _PyBuffer_IsContiguousPtr.asFunction<
+      int Function(ffi.Pointer<Py_buffer>, int)>();
+
+  void PyBuffer_FillContiguousStrides(
+    int ndims,
+    ffi.Pointer<Py_ssize_t> shape,
+    ffi.Pointer<Py_ssize_t> strides,
+    int itemsize,
+    int fort,
+  ) {
+    return _PyBuffer_FillContiguousStrides(
+      ndims,
+      shape,
+      strides,
+      itemsize,
+      fort,
+    );
+  }
+
+  late final _PyBuffer_FillContiguousStridesPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Void Function(
+              ffi.Int,
+              ffi.Pointer<Py_ssize_t>,
+              ffi.Pointer<Py_ssize_t>,
+              ffi.Int,
+              ffi.Char)>>('PyBuffer_FillContiguousStrides');
+  late final _PyBuffer_FillContiguousStrides =
+      _PyBuffer_FillContiguousStridesPtr.asFunction<
+          void Function(int, ffi.Pointer<Py_ssize_t>, ffi.Pointer<Py_ssize_t>,
+              int, int)>();
+
+  int PyBuffer_FillInfo(
+    ffi.Pointer<Py_buffer> view,
+    ffi.Pointer<PyObject> o,
+    ffi.Pointer<ffi.Void> buf,
+    int len,
+    int readonly,
+    int flags,
+  ) {
+    return _PyBuffer_FillInfo(
+      view,
+      o,
+      buf,
+      len,
+      readonly,
+      flags,
+    );
+  }
+
+  late final _PyBuffer_FillInfoPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int Function(
+              ffi.Pointer<Py_buffer>,
+              ffi.Pointer<PyObject>,
+              ffi.Pointer<ffi.Void>,
+              Py_ssize_t,
+              ffi.Int,
+              ffi.Int)>>('PyBuffer_FillInfo');
+  late final _PyBuffer_FillInfo = _PyBuffer_FillInfoPtr.asFunction<
+      int Function(ffi.Pointer<Py_buffer>, ffi.Pointer<PyObject>,
+          ffi.Pointer<ffi.Void>, int, int, int)>();
+
+  void PyBuffer_Release(
+    ffi.Pointer<Py_buffer> view,
+  ) {
+    return _PyBuffer_Release(
+      view,
+    );
+  }
+
+  late final _PyBuffer_ReleasePtr =
+      _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Pointer<Py_buffer>)>>(
+          'PyBuffer_Release');
+  late final _PyBuffer_Release =
+      _PyBuffer_ReleasePtr.asFunction<void Function(ffi.Pointer<Py_buffer>)>();
+
+  int Py_Is(
+    ffi.Pointer<PyObject> x,
+    ffi.Pointer<PyObject> y,
+  ) {
+    return _Py_Is(
+      x,
+      y,
+    );
+  }
+
+  late final _Py_IsPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int Function(
+              ffi.Pointer<PyObject>, ffi.Pointer<PyObject>)>>('Py_Is');
+  late final _Py_Is = _Py_IsPtr.asFunction<
+      int Function(ffi.Pointer<PyObject>, ffi.Pointer<PyObject>)>();
+
+  late final ffi.Pointer<PyTypeObject> _PyLong_Type =
+      _lookup<PyTypeObject>('PyLong_Type');
+
+  PyTypeObject get PyLong_Type => _PyLong_Type.ref;
+
+  late final ffi.Pointer<PyTypeObject> _PyBool_Type =
+      _lookup<PyTypeObject>('PyBool_Type');
+
+  PyTypeObject get PyBool_Type => _PyBool_Type.ref;
 
   ffi.Pointer<PyObject> PyType_FromSpec(
     ffi.Pointer<PyType_Spec> arg0,
@@ -108,7 +521,7 @@ class DartPyC {
               ffi.Pointer<PyType_Spec>, ffi.Pointer<PyObject>)>();
 
   ffi.Pointer<ffi.Void> PyType_GetSlot(
-    ffi.Pointer<_typeobject> arg0,
+    ffi.Pointer<PyTypeObject> arg0,
     int arg1,
   ) {
     return _PyType_GetSlot(
@@ -120,13 +533,156 @@ class DartPyC {
   late final _PyType_GetSlotPtr = _lookup<
       ffi.NativeFunction<
           ffi.Pointer<ffi.Void> Function(
-              ffi.Pointer<_typeobject>, ffi.Int)>>('PyType_GetSlot');
+              ffi.Pointer<PyTypeObject>, ffi.Int)>>('PyType_GetSlot');
   late final _PyType_GetSlot = _PyType_GetSlotPtr.asFunction<
-      ffi.Pointer<ffi.Void> Function(ffi.Pointer<_typeobject>, int)>();
+      ffi.Pointer<ffi.Void> Function(ffi.Pointer<PyTypeObject>, int)>();
+
+  ffi.Pointer<PyObject> PyType_FromModuleAndSpec(
+    ffi.Pointer<PyObject> arg0,
+    ffi.Pointer<PyType_Spec> arg1,
+    ffi.Pointer<PyObject> arg2,
+  ) {
+    return _PyType_FromModuleAndSpec(
+      arg0,
+      arg1,
+      arg2,
+    );
+  }
+
+  late final _PyType_FromModuleAndSpecPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<PyObject> Function(
+              ffi.Pointer<PyObject>,
+              ffi.Pointer<PyType_Spec>,
+              ffi.Pointer<PyObject>)>>('PyType_FromModuleAndSpec');
+  late final _PyType_FromModuleAndSpec =
+      _PyType_FromModuleAndSpecPtr.asFunction<
+          ffi.Pointer<PyObject> Function(ffi.Pointer<PyObject>,
+              ffi.Pointer<PyType_Spec>, ffi.Pointer<PyObject>)>();
+
+  ffi.Pointer<PyObject> PyType_GetModule(
+    ffi.Pointer<PyTypeObject> arg0,
+  ) {
+    return _PyType_GetModule(
+      arg0,
+    );
+  }
+
+  late final _PyType_GetModulePtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<PyObject> Function(
+              ffi.Pointer<PyTypeObject>)>>('PyType_GetModule');
+  late final _PyType_GetModule = _PyType_GetModulePtr.asFunction<
+      ffi.Pointer<PyObject> Function(ffi.Pointer<PyTypeObject>)>();
+
+  ffi.Pointer<ffi.Void> PyType_GetModuleState(
+    ffi.Pointer<PyTypeObject> arg0,
+  ) {
+    return _PyType_GetModuleState(
+      arg0,
+    );
+  }
+
+  late final _PyType_GetModuleStatePtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<ffi.Void> Function(
+              ffi.Pointer<PyTypeObject>)>>('PyType_GetModuleState');
+  late final _PyType_GetModuleState = _PyType_GetModuleStatePtr.asFunction<
+      ffi.Pointer<ffi.Void> Function(ffi.Pointer<PyTypeObject>)>();
+
+  ffi.Pointer<PyObject> PyType_GetName(
+    ffi.Pointer<PyTypeObject> arg0,
+  ) {
+    return _PyType_GetName(
+      arg0,
+    );
+  }
+
+  late final _PyType_GetNamePtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<PyObject> Function(
+              ffi.Pointer<PyTypeObject>)>>('PyType_GetName');
+  late final _PyType_GetName = _PyType_GetNamePtr.asFunction<
+      ffi.Pointer<PyObject> Function(ffi.Pointer<PyTypeObject>)>();
+
+  ffi.Pointer<PyObject> PyType_GetQualName(
+    ffi.Pointer<PyTypeObject> arg0,
+  ) {
+    return _PyType_GetQualName(
+      arg0,
+    );
+  }
+
+  late final _PyType_GetQualNamePtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<PyObject> Function(
+              ffi.Pointer<PyTypeObject>)>>('PyType_GetQualName');
+  late final _PyType_GetQualName = _PyType_GetQualNamePtr.asFunction<
+      ffi.Pointer<PyObject> Function(ffi.Pointer<PyTypeObject>)>();
+
+  ffi.Pointer<PyObject> PyType_FromMetaclass(
+    ffi.Pointer<PyTypeObject> arg0,
+    ffi.Pointer<PyObject> arg1,
+    ffi.Pointer<PyType_Spec> arg2,
+    ffi.Pointer<PyObject> arg3,
+  ) {
+    return _PyType_FromMetaclass(
+      arg0,
+      arg1,
+      arg2,
+      arg3,
+    );
+  }
+
+  late final _PyType_FromMetaclassPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<PyObject> Function(
+              ffi.Pointer<PyTypeObject>,
+              ffi.Pointer<PyObject>,
+              ffi.Pointer<PyType_Spec>,
+              ffi.Pointer<PyObject>)>>('PyType_FromMetaclass');
+  late final _PyType_FromMetaclass = _PyType_FromMetaclassPtr.asFunction<
+      ffi.Pointer<PyObject> Function(
+          ffi.Pointer<PyTypeObject>,
+          ffi.Pointer<PyObject>,
+          ffi.Pointer<PyType_Spec>,
+          ffi.Pointer<PyObject>)>();
+
+  ffi.Pointer<ffi.Void> PyObject_GetTypeData(
+    ffi.Pointer<PyObject> obj,
+    ffi.Pointer<PyTypeObject> cls,
+  ) {
+    return _PyObject_GetTypeData(
+      obj,
+      cls,
+    );
+  }
+
+  late final _PyObject_GetTypeDataPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<ffi.Void> Function(ffi.Pointer<PyObject>,
+              ffi.Pointer<PyTypeObject>)>>('PyObject_GetTypeData');
+  late final _PyObject_GetTypeData = _PyObject_GetTypeDataPtr.asFunction<
+      ffi.Pointer<ffi.Void> Function(
+          ffi.Pointer<PyObject>, ffi.Pointer<PyTypeObject>)>();
+
+  int PyType_GetTypeDataSize(
+    ffi.Pointer<PyTypeObject> cls,
+  ) {
+    return _PyType_GetTypeDataSize(
+      cls,
+    );
+  }
+
+  late final _PyType_GetTypeDataSizePtr = _lookup<
+          ffi.NativeFunction<Py_ssize_t Function(ffi.Pointer<PyTypeObject>)>>(
+      'PyType_GetTypeDataSize');
+  late final _PyType_GetTypeDataSize = _PyType_GetTypeDataSizePtr.asFunction<
+      int Function(ffi.Pointer<PyTypeObject>)>();
 
   int PyType_IsSubtype(
-    ffi.Pointer<_typeobject> arg0,
-    ffi.Pointer<_typeobject> arg1,
+    ffi.Pointer<PyTypeObject> arg0,
+    ffi.Pointer<PyTypeObject> arg1,
   ) {
     return _PyType_IsSubtype(
       arg0,
@@ -136,28 +692,28 @@ class DartPyC {
 
   late final _PyType_IsSubtypePtr = _lookup<
       ffi.NativeFunction<
-          ffi.Int Function(ffi.Pointer<_typeobject>,
-              ffi.Pointer<_typeobject>)>>('PyType_IsSubtype');
+          ffi.Int Function(ffi.Pointer<PyTypeObject>,
+              ffi.Pointer<PyTypeObject>)>>('PyType_IsSubtype');
   late final _PyType_IsSubtype = _PyType_IsSubtypePtr.asFunction<
-      int Function(ffi.Pointer<_typeobject>, ffi.Pointer<_typeobject>)>();
+      int Function(ffi.Pointer<PyTypeObject>, ffi.Pointer<PyTypeObject>)>();
 
-  late final ffi.Pointer<_typeobject> _PyType_Type =
-      _lookup<_typeobject>('PyType_Type');
+  late final ffi.Pointer<PyTypeObject> _PyType_Type =
+      _lookup<PyTypeObject>('PyType_Type');
 
-  _typeobject get PyType_Type => _PyType_Type.ref;
+  PyTypeObject get PyType_Type => _PyType_Type.ref;
 
-  late final ffi.Pointer<_typeobject> _PyBaseObject_Type =
-      _lookup<_typeobject>('PyBaseObject_Type');
+  late final ffi.Pointer<PyTypeObject> _PyBaseObject_Type =
+      _lookup<PyTypeObject>('PyBaseObject_Type');
 
-  _typeobject get PyBaseObject_Type => _PyBaseObject_Type.ref;
+  PyTypeObject get PyBaseObject_Type => _PyBaseObject_Type.ref;
 
-  late final ffi.Pointer<_typeobject> _PySuper_Type =
-      _lookup<_typeobject>('PySuper_Type');
+  late final ffi.Pointer<PyTypeObject> _PySuper_Type =
+      _lookup<PyTypeObject>('PySuper_Type');
 
-  _typeobject get PySuper_Type => _PySuper_Type.ref;
+  PyTypeObject get PySuper_Type => _PySuper_Type.ref;
 
   int PyType_GetFlags(
-    ffi.Pointer<_typeobject> arg0,
+    ffi.Pointer<PyTypeObject> arg0,
   ) {
     return _PyType_GetFlags(
       arg0,
@@ -165,14 +721,14 @@ class DartPyC {
   }
 
   late final _PyType_GetFlagsPtr = _lookup<
-          ffi
-          .NativeFunction<ffi.UnsignedLong Function(ffi.Pointer<_typeobject>)>>(
-      'PyType_GetFlags');
+      ffi.NativeFunction<
+          ffi.UnsignedLong Function(
+              ffi.Pointer<PyTypeObject>)>>('PyType_GetFlags');
   late final _PyType_GetFlags =
-      _PyType_GetFlagsPtr.asFunction<int Function(ffi.Pointer<_typeobject>)>();
+      _PyType_GetFlagsPtr.asFunction<int Function(ffi.Pointer<PyTypeObject>)>();
 
   int PyType_Ready(
-    ffi.Pointer<_typeobject> arg0,
+    ffi.Pointer<PyTypeObject> arg0,
   ) {
     return _PyType_Ready(
       arg0,
@@ -180,13 +736,13 @@ class DartPyC {
   }
 
   late final _PyType_ReadyPtr =
-      _lookup<ffi.NativeFunction<ffi.Int Function(ffi.Pointer<_typeobject>)>>(
+      _lookup<ffi.NativeFunction<ffi.Int Function(ffi.Pointer<PyTypeObject>)>>(
           'PyType_Ready');
   late final _PyType_Ready =
-      _PyType_ReadyPtr.asFunction<int Function(ffi.Pointer<_typeobject>)>();
+      _PyType_ReadyPtr.asFunction<int Function(ffi.Pointer<PyTypeObject>)>();
 
   ffi.Pointer<PyObject> PyType_GenericAlloc(
-    ffi.Pointer<_typeobject> arg0,
+    ffi.Pointer<PyTypeObject> arg0,
     int arg1,
   ) {
     return _PyType_GenericAlloc(
@@ -198,12 +754,12 @@ class DartPyC {
   late final _PyType_GenericAllocPtr = _lookup<
       ffi.NativeFunction<
           ffi.Pointer<PyObject> Function(
-              ffi.Pointer<_typeobject>, Py_ssize_t)>>('PyType_GenericAlloc');
+              ffi.Pointer<PyTypeObject>, Py_ssize_t)>>('PyType_GenericAlloc');
   late final _PyType_GenericAlloc = _PyType_GenericAllocPtr.asFunction<
-      ffi.Pointer<PyObject> Function(ffi.Pointer<_typeobject>, int)>();
+      ffi.Pointer<PyObject> Function(ffi.Pointer<PyTypeObject>, int)>();
 
   ffi.Pointer<PyObject> PyType_GenericNew(
-    ffi.Pointer<_typeobject> arg0,
+    ffi.Pointer<PyTypeObject> arg0,
     ffi.Pointer<PyObject> arg1,
     ffi.Pointer<PyObject> arg2,
   ) {
@@ -217,11 +773,11 @@ class DartPyC {
   late final _PyType_GenericNewPtr = _lookup<
       ffi.NativeFunction<
           ffi.Pointer<PyObject> Function(
-              ffi.Pointer<_typeobject>,
+              ffi.Pointer<PyTypeObject>,
               ffi.Pointer<PyObject>,
               ffi.Pointer<PyObject>)>>('PyType_GenericNew');
   late final _PyType_GenericNew = _PyType_GenericNewPtr.asFunction<
-      ffi.Pointer<PyObject> Function(ffi.Pointer<_typeobject>,
+      ffi.Pointer<PyObject> Function(ffi.Pointer<PyTypeObject>,
           ffi.Pointer<PyObject>, ffi.Pointer<PyObject>)>();
 
   int PyType_ClearCache() {
@@ -235,7 +791,7 @@ class DartPyC {
       _PyType_ClearCachePtr.asFunction<int Function()>();
 
   void PyType_Modified(
-    ffi.Pointer<_typeobject> arg0,
+    ffi.Pointer<PyTypeObject> arg0,
   ) {
     return _PyType_Modified(
       arg0,
@@ -243,10 +799,10 @@ class DartPyC {
   }
 
   late final _PyType_ModifiedPtr =
-      _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Pointer<_typeobject>)>>(
+      _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Pointer<PyTypeObject>)>>(
           'PyType_Modified');
-  late final _PyType_Modified =
-      _PyType_ModifiedPtr.asFunction<void Function(ffi.Pointer<_typeobject>)>();
+  late final _PyType_Modified = _PyType_ModifiedPtr.asFunction<
+      void Function(ffi.Pointer<PyTypeObject>)>();
 
   ffi.Pointer<PyObject> PyObject_Repr(
     ffi.Pointer<PyObject> arg0,
@@ -630,6 +1186,21 @@ class DartPyC {
   late final _PyObject_Dir = _PyObject_DirPtr.asFunction<
       ffi.Pointer<PyObject> Function(ffi.Pointer<PyObject>)>();
 
+  ffi.Pointer<PyObject> PyObject_GetState(
+    ffi.Pointer<PyObject> arg0,
+  ) {
+    return _PyObject_GetState(
+      arg0,
+    );
+  }
+
+  late final _PyObject_GetStatePtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<PyObject> Function(
+              ffi.Pointer<PyObject>)>>('_PyObject_GetState');
+  late final _PyObject_GetState = _PyObject_GetStatePtr.asFunction<
+      ffi.Pointer<PyObject> Function(ffi.Pointer<PyObject>)>();
+
   int Py_ReprEnter(
     ffi.Pointer<PyObject> arg0,
   ) {
@@ -657,20 +1228,6 @@ class DartPyC {
           'Py_ReprLeave');
   late final _Py_ReprLeave =
       _Py_ReprLeavePtr.asFunction<void Function(ffi.Pointer<PyObject>)>();
-
-  int PyTraceMalloc_NewReference(
-    ffi.Pointer<PyObject> op,
-  ) {
-    return _PyTraceMalloc_NewReference(
-      op,
-    );
-  }
-
-  late final _PyTraceMalloc_NewReferencePtr =
-      _lookup<ffi.NativeFunction<ffi.Int Function(ffi.Pointer<PyObject>)>>(
-          '_PyTraceMalloc_NewReference');
-  late final _PyTraceMalloc_NewReference = _PyTraceMalloc_NewReferencePtr
-      .asFunction<int Function(ffi.Pointer<PyObject>)>();
 
   void Py_Dealloc(
     ffi.Pointer<PyObject> arg0,
@@ -714,535 +1271,844 @@ class DartPyC {
   late final _Py_DecRef =
       _Py_DecRefPtr.asFunction<void Function(ffi.Pointer<PyObject>)>();
 
+  void Py_IncRef1(
+    ffi.Pointer<PyObject> arg0,
+  ) {
+    return _Py_IncRef1(
+      arg0,
+    );
+  }
+
+  late final _Py_IncRef1Ptr =
+      _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Pointer<PyObject>)>>(
+          '_Py_IncRef');
+  late final _Py_IncRef1 =
+      _Py_IncRef1Ptr.asFunction<void Function(ffi.Pointer<PyObject>)>();
+
+  void Py_DecRef1(
+    ffi.Pointer<PyObject> arg0,
+  ) {
+    return _Py_DecRef1(
+      arg0,
+    );
+  }
+
+  late final _Py_DecRef1Ptr =
+      _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Pointer<PyObject>)>>(
+          '_Py_DecRef');
+  late final _Py_DecRef1 =
+      _Py_DecRef1Ptr.asFunction<void Function(ffi.Pointer<PyObject>)>();
+
+  ffi.Pointer<PyObject> Py_NewRef(
+    ffi.Pointer<PyObject> obj,
+  ) {
+    return _Py_NewRef(
+      obj,
+    );
+  }
+
+  late final _Py_NewRefPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<PyObject> Function(ffi.Pointer<PyObject>)>>('Py_NewRef');
+  late final _Py_NewRef = _Py_NewRefPtr.asFunction<
+      ffi.Pointer<PyObject> Function(ffi.Pointer<PyObject>)>();
+
+  ffi.Pointer<PyObject> Py_XNewRef(
+    ffi.Pointer<PyObject> obj,
+  ) {
+    return _Py_XNewRef(
+      obj,
+    );
+  }
+
+  late final _Py_XNewRefPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<PyObject> Function(ffi.Pointer<PyObject>)>>('Py_XNewRef');
+  late final _Py_XNewRef = _Py_XNewRefPtr.asFunction<
+      ffi.Pointer<PyObject> Function(ffi.Pointer<PyObject>)>();
+
   late final ffi.Pointer<PyObject> _Py_NoneStruct =
       _lookup<PyObject>('_Py_NoneStruct');
 
   PyObject get Py_NoneStruct => _Py_NoneStruct.ref;
+
+  int Py_IsNone(
+    ffi.Pointer<PyObject> x,
+  ) {
+    return _Py_IsNone(
+      x,
+    );
+  }
+
+  late final _Py_IsNonePtr =
+      _lookup<ffi.NativeFunction<ffi.Int Function(ffi.Pointer<PyObject>)>>(
+          'Py_IsNone');
+  late final _Py_IsNone =
+      _Py_IsNonePtr.asFunction<int Function(ffi.Pointer<PyObject>)>();
 
   late final ffi.Pointer<PyObject> _Py_NotImplementedStruct =
       _lookup<PyObject>('_Py_NotImplementedStruct');
 
   PyObject get Py_NotImplementedStruct => _Py_NotImplementedStruct.ref;
 
-  void PyTrash_thread_deposit_object(
-    ffi.Pointer<PyObject> arg0,
+  void Py_NewReference(
+    ffi.Pointer<PyObject> op,
   ) {
-    return _PyTrash_thread_deposit_object(
+    return _Py_NewReference(
+      op,
+    );
+  }
+
+  late final _Py_NewReferencePtr =
+      _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Pointer<PyObject>)>>(
+          '_Py_NewReference');
+  late final _Py_NewReference =
+      _Py_NewReferencePtr.asFunction<void Function(ffi.Pointer<PyObject>)>();
+
+  void Py_NewReferenceNoTotal(
+    ffi.Pointer<PyObject> op,
+  ) {
+    return _Py_NewReferenceNoTotal(
+      op,
+    );
+  }
+
+  late final _Py_NewReferenceNoTotalPtr =
+      _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Pointer<PyObject>)>>(
+          '_Py_NewReferenceNoTotal');
+  late final _Py_NewReferenceNoTotal = _Py_NewReferenceNoTotalPtr.asFunction<
+      void Function(ffi.Pointer<PyObject>)>();
+
+  ffi.Pointer<ffi.Char> PyType_Name(
+    ffi.Pointer<PyTypeObject> arg0,
+  ) {
+    return _PyType_Name(
       arg0,
     );
   }
 
-  late final _PyTrash_thread_deposit_objectPtr =
-      _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Pointer<PyObject>)>>(
-          '_PyTrash_thread_deposit_object');
-  late final _PyTrash_thread_deposit_object = _PyTrash_thread_deposit_objectPtr
-      .asFunction<void Function(ffi.Pointer<PyObject>)>();
+  late final _PyType_NamePtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<ffi.Char> Function(
+              ffi.Pointer<PyTypeObject>)>>('_PyType_Name');
+  late final _PyType_Name = _PyType_NamePtr.asFunction<
+      ffi.Pointer<ffi.Char> Function(ffi.Pointer<PyTypeObject>)>();
 
-  void PyTrash_thread_destroy_chain() {
-    return _PyTrash_thread_destroy_chain();
-  }
-
-  late final _PyTrash_thread_destroy_chainPtr =
-      _lookup<ffi.NativeFunction<ffi.Void Function()>>(
-          '_PyTrash_thread_destroy_chain');
-  late final _PyTrash_thread_destroy_chain =
-      _PyTrash_thread_destroy_chainPtr.asFunction<void Function()>();
-
-  ffi.Pointer<PyObject> PyLong_FromTime_t(
-    int sec,
+  ffi.Pointer<PyObject> PyType_Lookup(
+    ffi.Pointer<PyTypeObject> arg0,
+    ffi.Pointer<PyObject> arg1,
   ) {
-    return _PyLong_FromTime_t(
-      sec,
+    return _PyType_Lookup(
+      arg0,
+      arg1,
     );
   }
 
-  late final _PyLong_FromTime_tPtr =
-      _lookup<ffi.NativeFunction<ffi.Pointer<PyObject> Function(time_t)>>(
-          '_PyLong_FromTime_t');
-  late final _PyLong_FromTime_t =
-      _PyLong_FromTime_tPtr.asFunction<ffi.Pointer<PyObject> Function(int)>();
+  late final _PyType_LookupPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<PyObject> Function(ffi.Pointer<PyTypeObject>,
+              ffi.Pointer<PyObject>)>>('_PyType_Lookup');
+  late final _PyType_Lookup = _PyType_LookupPtr.asFunction<
+      ffi.Pointer<PyObject> Function(
+          ffi.Pointer<PyTypeObject>, ffi.Pointer<PyObject>)>();
 
-  int PyLong_AsTime_t(
-    ffi.Pointer<PyObject> obj,
+  ffi.Pointer<PyObject> PyType_LookupId(
+    ffi.Pointer<PyTypeObject> arg0,
+    ffi.Pointer<_Py_Identifier> arg1,
   ) {
-    return _PyLong_AsTime_t(
-      obj,
+    return _PyType_LookupId(
+      arg0,
+      arg1,
     );
   }
 
-  late final _PyLong_AsTime_tPtr =
-      _lookup<ffi.NativeFunction<time_t Function(ffi.Pointer<PyObject>)>>(
-          '_PyLong_AsTime_t');
-  late final _PyLong_AsTime_t =
-      _PyLong_AsTime_tPtr.asFunction<int Function(ffi.Pointer<PyObject>)>();
+  late final _PyType_LookupIdPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<PyObject> Function(ffi.Pointer<PyTypeObject>,
+              ffi.Pointer<_Py_Identifier>)>>('_PyType_LookupId');
+  late final _PyType_LookupId = _PyType_LookupIdPtr.asFunction<
+      ffi.Pointer<PyObject> Function(
+          ffi.Pointer<PyTypeObject>, ffi.Pointer<_Py_Identifier>)>();
 
-  int PyTime_ObjectToTime_t(
-    ffi.Pointer<PyObject> obj,
-    ffi.Pointer<time_t> sec,
+  ffi.Pointer<PyObject> PyObject_LookupSpecialId(
+    ffi.Pointer<PyObject> arg0,
+    ffi.Pointer<_Py_Identifier> arg1,
+  ) {
+    return _PyObject_LookupSpecialId(
+      arg0,
+      arg1,
+    );
+  }
+
+  late final _PyObject_LookupSpecialIdPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<PyObject> Function(ffi.Pointer<PyObject>,
+              ffi.Pointer<_Py_Identifier>)>>('_PyObject_LookupSpecialId');
+  late final _PyObject_LookupSpecialId =
+      _PyObject_LookupSpecialIdPtr.asFunction<
+          ffi.Pointer<PyObject> Function(
+              ffi.Pointer<PyObject>, ffi.Pointer<_Py_Identifier>)>();
+
+  ffi.Pointer<PyTypeObject> PyType_CalculateMetaclass(
+    ffi.Pointer<PyTypeObject> arg0,
+    ffi.Pointer<PyObject> arg1,
+  ) {
+    return _PyType_CalculateMetaclass(
+      arg0,
+      arg1,
+    );
+  }
+
+  late final _PyType_CalculateMetaclassPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<PyTypeObject> Function(ffi.Pointer<PyTypeObject>,
+              ffi.Pointer<PyObject>)>>('_PyType_CalculateMetaclass');
+  late final _PyType_CalculateMetaclass =
+      _PyType_CalculateMetaclassPtr.asFunction<
+          ffi.Pointer<PyTypeObject> Function(
+              ffi.Pointer<PyTypeObject>, ffi.Pointer<PyObject>)>();
+
+  ffi.Pointer<PyObject> PyType_GetDocFromInternalDoc(
+    ffi.Pointer<ffi.Char> arg0,
+    ffi.Pointer<ffi.Char> arg1,
+  ) {
+    return _PyType_GetDocFromInternalDoc(
+      arg0,
+      arg1,
+    );
+  }
+
+  late final _PyType_GetDocFromInternalDocPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<PyObject> Function(ffi.Pointer<ffi.Char>,
+              ffi.Pointer<ffi.Char>)>>('_PyType_GetDocFromInternalDoc');
+  late final _PyType_GetDocFromInternalDoc =
+      _PyType_GetDocFromInternalDocPtr.asFunction<
+          ffi.Pointer<PyObject> Function(
+              ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Char>)>();
+
+  ffi.Pointer<PyObject> PyType_GetTextSignatureFromInternalDoc(
+    ffi.Pointer<ffi.Char> arg0,
+    ffi.Pointer<ffi.Char> arg1,
+  ) {
+    return _PyType_GetTextSignatureFromInternalDoc(
+      arg0,
+      arg1,
+    );
+  }
+
+  late final _PyType_GetTextSignatureFromInternalDocPtr = _lookup<
+          ffi.NativeFunction<
+              ffi.Pointer<PyObject> Function(
+                  ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Char>)>>(
+      '_PyType_GetTextSignatureFromInternalDoc');
+  late final _PyType_GetTextSignatureFromInternalDoc =
+      _PyType_GetTextSignatureFromInternalDocPtr.asFunction<
+          ffi.Pointer<PyObject> Function(
+              ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Char>)>();
+
+  ffi.Pointer<PyObject> PyType_GetModuleByDef(
+    ffi.Pointer<PyTypeObject> arg0,
+    ffi.Pointer<PyModuleDef> arg1,
+  ) {
+    return _PyType_GetModuleByDef(
+      arg0,
+      arg1,
+    );
+  }
+
+  late final _PyType_GetModuleByDefPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<PyObject> Function(ffi.Pointer<PyTypeObject>,
+              ffi.Pointer<PyModuleDef>)>>('PyType_GetModuleByDef');
+  late final _PyType_GetModuleByDef = _PyType_GetModuleByDefPtr.asFunction<
+      ffi.Pointer<PyObject> Function(
+          ffi.Pointer<PyTypeObject>, ffi.Pointer<PyModuleDef>)>();
+
+  ffi.Pointer<PyObject> PyType_GetDict(
+    ffi.Pointer<PyTypeObject> arg0,
+  ) {
+    return _PyType_GetDict(
+      arg0,
+    );
+  }
+
+  late final _PyType_GetDictPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<PyObject> Function(
+              ffi.Pointer<PyTypeObject>)>>('PyType_GetDict');
+  late final _PyType_GetDict = _PyType_GetDictPtr.asFunction<
+      ffi.Pointer<PyObject> Function(ffi.Pointer<PyTypeObject>)>();
+
+  int PyObject_Print(
+    ffi.Pointer<PyObject> arg0,
+    ffi.Pointer<FILE> arg1,
     int arg2,
   ) {
-    return _PyTime_ObjectToTime_t(
-      obj,
-      sec,
+    return _PyObject_Print(
+      arg0,
+      arg1,
       arg2,
     );
   }
 
-  late final _PyTime_ObjectToTime_tPtr = _lookup<
+  late final _PyObject_PrintPtr = _lookup<
       ffi.NativeFunction<
-          ffi.Int Function(ffi.Pointer<PyObject>, ffi.Pointer<time_t>,
-              ffi.Int32)>>('_PyTime_ObjectToTime_t');
-  late final _PyTime_ObjectToTime_t = _PyTime_ObjectToTime_tPtr.asFunction<
-      int Function(ffi.Pointer<PyObject>, ffi.Pointer<time_t>, int)>();
+          ffi.Int Function(ffi.Pointer<PyObject>, ffi.Pointer<FILE>,
+              ffi.Int)>>('PyObject_Print');
+  late final _PyObject_Print = _PyObject_PrintPtr.asFunction<
+      int Function(ffi.Pointer<PyObject>, ffi.Pointer<FILE>, int)>();
 
-  int PyTime_ObjectToTimeval(
+  void Py_BreakPoint() {
+    return _Py_BreakPoint();
+  }
+
+  late final _Py_BreakPointPtr =
+      _lookup<ffi.NativeFunction<ffi.Void Function()>>('_Py_BreakPoint');
+  late final _Py_BreakPoint = _Py_BreakPointPtr.asFunction<void Function()>();
+
+  void PyObject_Dump(
+    ffi.Pointer<PyObject> arg0,
+  ) {
+    return _PyObject_Dump(
+      arg0,
+    );
+  }
+
+  late final _PyObject_DumpPtr =
+      _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Pointer<PyObject>)>>(
+          '_PyObject_Dump');
+  late final _PyObject_Dump =
+      _PyObject_DumpPtr.asFunction<void Function(ffi.Pointer<PyObject>)>();
+
+  int PyObject_IsFreed(
+    ffi.Pointer<PyObject> arg0,
+  ) {
+    return _PyObject_IsFreed(
+      arg0,
+    );
+  }
+
+  late final _PyObject_IsFreedPtr =
+      _lookup<ffi.NativeFunction<ffi.Int Function(ffi.Pointer<PyObject>)>>(
+          '_PyObject_IsFreed');
+  late final _PyObject_IsFreed =
+      _PyObject_IsFreedPtr.asFunction<int Function(ffi.Pointer<PyObject>)>();
+
+  int PyObject_IsAbstract(
+    ffi.Pointer<PyObject> arg0,
+  ) {
+    return _PyObject_IsAbstract(
+      arg0,
+    );
+  }
+
+  late final _PyObject_IsAbstractPtr =
+      _lookup<ffi.NativeFunction<ffi.Int Function(ffi.Pointer<PyObject>)>>(
+          '_PyObject_IsAbstract');
+  late final _PyObject_IsAbstract =
+      _PyObject_IsAbstractPtr.asFunction<int Function(ffi.Pointer<PyObject>)>();
+
+  ffi.Pointer<PyObject> PyObject_GetAttrId(
+    ffi.Pointer<PyObject> arg0,
+    ffi.Pointer<_Py_Identifier> arg1,
+  ) {
+    return _PyObject_GetAttrId(
+      arg0,
+      arg1,
+    );
+  }
+
+  late final _PyObject_GetAttrIdPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<PyObject> Function(ffi.Pointer<PyObject>,
+              ffi.Pointer<_Py_Identifier>)>>('_PyObject_GetAttrId');
+  late final _PyObject_GetAttrId = _PyObject_GetAttrIdPtr.asFunction<
+      ffi.Pointer<PyObject> Function(
+          ffi.Pointer<PyObject>, ffi.Pointer<_Py_Identifier>)>();
+
+  int PyObject_SetAttrId(
+    ffi.Pointer<PyObject> arg0,
+    ffi.Pointer<_Py_Identifier> arg1,
+    ffi.Pointer<PyObject> arg2,
+  ) {
+    return _PyObject_SetAttrId(
+      arg0,
+      arg1,
+      arg2,
+    );
+  }
+
+  late final _PyObject_SetAttrIdPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int Function(ffi.Pointer<PyObject>, ffi.Pointer<_Py_Identifier>,
+              ffi.Pointer<PyObject>)>>('_PyObject_SetAttrId');
+  late final _PyObject_SetAttrId = _PyObject_SetAttrIdPtr.asFunction<
+      int Function(ffi.Pointer<PyObject>, ffi.Pointer<_Py_Identifier>,
+          ffi.Pointer<PyObject>)>();
+
+  int PyObject_LookupAttr(
+    ffi.Pointer<PyObject> arg0,
+    ffi.Pointer<PyObject> arg1,
+    ffi.Pointer<ffi.Pointer<PyObject>> arg2,
+  ) {
+    return _PyObject_LookupAttr(
+      arg0,
+      arg1,
+      arg2,
+    );
+  }
+
+  late final _PyObject_LookupAttrPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int Function(ffi.Pointer<PyObject>, ffi.Pointer<PyObject>,
+              ffi.Pointer<ffi.Pointer<PyObject>>)>>('_PyObject_LookupAttr');
+  late final _PyObject_LookupAttr = _PyObject_LookupAttrPtr.asFunction<
+      int Function(ffi.Pointer<PyObject>, ffi.Pointer<PyObject>,
+          ffi.Pointer<ffi.Pointer<PyObject>>)>();
+
+  int PyObject_LookupAttrId(
+    ffi.Pointer<PyObject> arg0,
+    ffi.Pointer<_Py_Identifier> arg1,
+    ffi.Pointer<ffi.Pointer<PyObject>> arg2,
+  ) {
+    return _PyObject_LookupAttrId(
+      arg0,
+      arg1,
+      arg2,
+    );
+  }
+
+  late final _PyObject_LookupAttrIdPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int Function(ffi.Pointer<PyObject>, ffi.Pointer<_Py_Identifier>,
+              ffi.Pointer<ffi.Pointer<PyObject>>)>>('_PyObject_LookupAttrId');
+  late final _PyObject_LookupAttrId = _PyObject_LookupAttrIdPtr.asFunction<
+      int Function(ffi.Pointer<PyObject>, ffi.Pointer<_Py_Identifier>,
+          ffi.Pointer<ffi.Pointer<PyObject>>)>();
+
+  int PyObject_GetMethod(
     ffi.Pointer<PyObject> obj,
-    ffi.Pointer<time_t> sec,
-    ffi.Pointer<ffi.Long> usec,
+    ffi.Pointer<PyObject> name,
+    ffi.Pointer<ffi.Pointer<PyObject>> method,
+  ) {
+    return _PyObject_GetMethod(
+      obj,
+      name,
+      method,
+    );
+  }
+
+  late final _PyObject_GetMethodPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int Function(ffi.Pointer<PyObject>, ffi.Pointer<PyObject>,
+              ffi.Pointer<ffi.Pointer<PyObject>>)>>('_PyObject_GetMethod');
+  late final _PyObject_GetMethod = _PyObject_GetMethodPtr.asFunction<
+      int Function(ffi.Pointer<PyObject>, ffi.Pointer<PyObject>,
+          ffi.Pointer<ffi.Pointer<PyObject>>)>();
+
+  ffi.Pointer<ffi.Pointer<PyObject>> PyObject_GetDictPtr(
+    ffi.Pointer<PyObject> arg0,
+  ) {
+    return _PyObject_GetDictPtr(
+      arg0,
+    );
+  }
+
+  late final _PyObject_GetDictPtrPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<ffi.Pointer<PyObject>> Function(
+              ffi.Pointer<PyObject>)>>('_PyObject_GetDictPtr');
+  late final _PyObject_GetDictPtr = _PyObject_GetDictPtrPtr.asFunction<
+      ffi.Pointer<ffi.Pointer<PyObject>> Function(ffi.Pointer<PyObject>)>();
+
+  ffi.Pointer<PyObject> PyObject_NextNotImplemented(
+    ffi.Pointer<PyObject> arg0,
+  ) {
+    return _PyObject_NextNotImplemented(
+      arg0,
+    );
+  }
+
+  late final _PyObject_NextNotImplementedPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<PyObject> Function(
+              ffi.Pointer<PyObject>)>>('_PyObject_NextNotImplemented');
+  late final _PyObject_NextNotImplemented = _PyObject_NextNotImplementedPtr
+      .asFunction<ffi.Pointer<PyObject> Function(ffi.Pointer<PyObject>)>();
+
+  void PyObject_CallFinalizer(
+    ffi.Pointer<PyObject> arg0,
+  ) {
+    return _PyObject_CallFinalizer(
+      arg0,
+    );
+  }
+
+  late final _PyObject_CallFinalizerPtr =
+      _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Pointer<PyObject>)>>(
+          'PyObject_CallFinalizer');
+  late final _PyObject_CallFinalizer = _PyObject_CallFinalizerPtr.asFunction<
+      void Function(ffi.Pointer<PyObject>)>();
+
+  int PyObject_CallFinalizerFromDealloc(
+    ffi.Pointer<PyObject> arg0,
+  ) {
+    return _PyObject_CallFinalizerFromDealloc(
+      arg0,
+    );
+  }
+
+  late final _PyObject_CallFinalizerFromDeallocPtr =
+      _lookup<ffi.NativeFunction<ffi.Int Function(ffi.Pointer<PyObject>)>>(
+          'PyObject_CallFinalizerFromDealloc');
+  late final _PyObject_CallFinalizerFromDealloc =
+      _PyObject_CallFinalizerFromDeallocPtr.asFunction<
+          int Function(ffi.Pointer<PyObject>)>();
+
+  ffi.Pointer<PyObject> PyObject_GenericGetAttrWithDict(
+    ffi.Pointer<PyObject> arg0,
+    ffi.Pointer<PyObject> arg1,
+    ffi.Pointer<PyObject> arg2,
     int arg3,
   ) {
-    return _PyTime_ObjectToTimeval(
-      obj,
-      sec,
-      usec,
+    return _PyObject_GenericGetAttrWithDict(
+      arg0,
+      arg1,
+      arg2,
       arg3,
     );
   }
 
-  late final _PyTime_ObjectToTimevalPtr = _lookup<
+  late final _PyObject_GenericGetAttrWithDictPtr = _lookup<
       ffi.NativeFunction<
-          ffi.Int Function(ffi.Pointer<PyObject>, ffi.Pointer<time_t>,
-              ffi.Pointer<ffi.Long>, ffi.Int32)>>('_PyTime_ObjectToTimeval');
-  late final _PyTime_ObjectToTimeval = _PyTime_ObjectToTimevalPtr.asFunction<
-      int Function(ffi.Pointer<PyObject>, ffi.Pointer<time_t>,
-          ffi.Pointer<ffi.Long>, int)>();
+          ffi.Pointer<PyObject> Function(
+              ffi.Pointer<PyObject>,
+              ffi.Pointer<PyObject>,
+              ffi.Pointer<PyObject>,
+              ffi.Int)>>('_PyObject_GenericGetAttrWithDict');
+  late final _PyObject_GenericGetAttrWithDict =
+      _PyObject_GenericGetAttrWithDictPtr.asFunction<
+          ffi.Pointer<PyObject> Function(ffi.Pointer<PyObject>,
+              ffi.Pointer<PyObject>, ffi.Pointer<PyObject>, int)>();
 
-  int PyTime_ObjectToTimespec(
-    ffi.Pointer<PyObject> obj,
-    ffi.Pointer<time_t> sec,
-    ffi.Pointer<ffi.Long> nsec,
-    int arg3,
+  int PyObject_GenericSetAttrWithDict(
+    ffi.Pointer<PyObject> arg0,
+    ffi.Pointer<PyObject> arg1,
+    ffi.Pointer<PyObject> arg2,
+    ffi.Pointer<PyObject> arg3,
   ) {
-    return _PyTime_ObjectToTimespec(
-      obj,
-      sec,
-      nsec,
+    return _PyObject_GenericSetAttrWithDict(
+      arg0,
+      arg1,
+      arg2,
       arg3,
     );
   }
 
-  late final _PyTime_ObjectToTimespecPtr = _lookup<
+  late final _PyObject_GenericSetAttrWithDictPtr = _lookup<
       ffi.NativeFunction<
-          ffi.Int Function(ffi.Pointer<PyObject>, ffi.Pointer<time_t>,
-              ffi.Pointer<ffi.Long>, ffi.Int32)>>('_PyTime_ObjectToTimespec');
-  late final _PyTime_ObjectToTimespec = _PyTime_ObjectToTimespecPtr.asFunction<
-      int Function(ffi.Pointer<PyObject>, ffi.Pointer<time_t>,
-          ffi.Pointer<ffi.Long>, int)>();
+          ffi.Int Function(
+              ffi.Pointer<PyObject>,
+              ffi.Pointer<PyObject>,
+              ffi.Pointer<PyObject>,
+              ffi.Pointer<PyObject>)>>('_PyObject_GenericSetAttrWithDict');
+  late final _PyObject_GenericSetAttrWithDict =
+      _PyObject_GenericSetAttrWithDictPtr.asFunction<
+          int Function(ffi.Pointer<PyObject>, ffi.Pointer<PyObject>,
+              ffi.Pointer<PyObject>, ffi.Pointer<PyObject>)>();
 
-  int PyTime_FromSeconds(
-    int seconds,
+  ffi.Pointer<PyObject> PyObject_FunctionStr(
+    ffi.Pointer<PyObject> arg0,
   ) {
-    return _PyTime_FromSeconds(
-      seconds,
+    return _PyObject_FunctionStr(
+      arg0,
     );
   }
 
-  late final _PyTime_FromSecondsPtr =
-      _lookup<ffi.NativeFunction<_PyTime_t Function(ffi.Int)>>(
-          '_PyTime_FromSeconds');
-  late final _PyTime_FromSeconds =
-      _PyTime_FromSecondsPtr.asFunction<int Function(int)>();
+  late final _PyObject_FunctionStrPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<PyObject> Function(
+              ffi.Pointer<PyObject>)>>('_PyObject_FunctionStr');
+  late final _PyObject_FunctionStr = _PyObject_FunctionStrPtr.asFunction<
+      ffi.Pointer<PyObject> Function(ffi.Pointer<PyObject>)>();
 
-  int PyTime_FromNanoseconds(
-    int ns,
+  late final ffi.Pointer<PyTypeObject> _PyNone_Type =
+      _lookup<PyTypeObject>('_PyNone_Type');
+
+  PyTypeObject get PyNone_Type => _PyNone_Type.ref;
+
+  late final ffi.Pointer<PyTypeObject> _PyNotImplemented_Type =
+      _lookup<PyTypeObject>('_PyNotImplemented_Type');
+
+  PyTypeObject get PyNotImplemented_Type => _PyNotImplemented_Type.ref;
+
+  late final ffi.Pointer<ffi.Pointer<ffi.Int>> _Py_SwappedOp =
+      _lookup<ffi.Pointer<ffi.Int>>('_Py_SwappedOp');
+
+  ffi.Pointer<ffi.Int> get Py_SwappedOp => _Py_SwappedOp.value;
+
+  set Py_SwappedOp(ffi.Pointer<ffi.Int> value) => _Py_SwappedOp.value = value;
+
+  void PyDebugAllocatorStats(
+    ffi.Pointer<FILE> out,
+    ffi.Pointer<ffi.Char> block_name,
+    int num_blocks,
+    int sizeof_block,
   ) {
-    return _PyTime_FromNanoseconds(
-      ns,
+    return _PyDebugAllocatorStats(
+      out,
+      block_name,
+      num_blocks,
+      sizeof_block,
     );
   }
 
-  late final _PyTime_FromNanosecondsPtr =
-      _lookup<ffi.NativeFunction<_PyTime_t Function(_PyTime_t)>>(
-          '_PyTime_FromNanoseconds');
-  late final _PyTime_FromNanoseconds =
-      _PyTime_FromNanosecondsPtr.asFunction<int Function(int)>();
+  late final _PyDebugAllocatorStatsPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Void Function(ffi.Pointer<FILE>, ffi.Pointer<ffi.Char>, ffi.Int,
+              ffi.Size)>>('_PyDebugAllocatorStats');
+  late final _PyDebugAllocatorStats = _PyDebugAllocatorStatsPtr.asFunction<
+      void Function(ffi.Pointer<FILE>, ffi.Pointer<ffi.Char>, int, int)>();
 
-  int PyTime_FromNanosecondsObject(
-    ffi.Pointer<_PyTime_t> t,
+  void PyObject_DebugTypeStats(
+    ffi.Pointer<FILE> out,
+  ) {
+    return _PyObject_DebugTypeStats(
+      out,
+    );
+  }
+
+  late final _PyObject_DebugTypeStatsPtr =
+      _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Pointer<FILE>)>>(
+          '_PyObject_DebugTypeStats');
+  late final _PyObject_DebugTypeStats = _PyObject_DebugTypeStatsPtr.asFunction<
+      void Function(ffi.Pointer<FILE>)>();
+
+  void PyObject_AssertFailed(
     ffi.Pointer<PyObject> obj,
+    ffi.Pointer<ffi.Char> expr,
+    ffi.Pointer<ffi.Char> msg,
+    ffi.Pointer<ffi.Char> file,
+    int line,
+    ffi.Pointer<ffi.Char> function,
   ) {
-    return _PyTime_FromNanosecondsObject(
-      t,
+    return _PyObject_AssertFailed(
       obj,
+      expr,
+      msg,
+      file,
+      line,
+      function,
     );
   }
 
-  late final _PyTime_FromNanosecondsObjectPtr = _lookup<
+  late final _PyObject_AssertFailedPtr = _lookup<
       ffi.NativeFunction<
-          ffi.Int Function(ffi.Pointer<_PyTime_t>,
-              ffi.Pointer<PyObject>)>>('_PyTime_FromNanosecondsObject');
-  late final _PyTime_FromNanosecondsObject =
-      _PyTime_FromNanosecondsObjectPtr.asFunction<
-          int Function(ffi.Pointer<_PyTime_t>, ffi.Pointer<PyObject>)>();
+          ffi.Void Function(
+              ffi.Pointer<PyObject>,
+              ffi.Pointer<ffi.Char>,
+              ffi.Pointer<ffi.Char>,
+              ffi.Pointer<ffi.Char>,
+              ffi.Int,
+              ffi.Pointer<ffi.Char>)>>('_PyObject_AssertFailed');
+  late final _PyObject_AssertFailed = _PyObject_AssertFailedPtr.asFunction<
+      void Function(
+          ffi.Pointer<PyObject>,
+          ffi.Pointer<ffi.Char>,
+          ffi.Pointer<ffi.Char>,
+          ffi.Pointer<ffi.Char>,
+          int,
+          ffi.Pointer<ffi.Char>)>();
 
-  int PyTime_FromSecondsObject(
-    ffi.Pointer<_PyTime_t> t,
-    ffi.Pointer<PyObject> obj,
-    int round,
+  int PyObject_CheckConsistency(
+    ffi.Pointer<PyObject> op,
+    int check_content,
   ) {
-    return _PyTime_FromSecondsObject(
-      t,
-      obj,
-      round,
+    return _PyObject_CheckConsistency(
+      op,
+      check_content,
     );
   }
 
-  late final _PyTime_FromSecondsObjectPtr = _lookup<
+  late final _PyObject_CheckConsistencyPtr = _lookup<
+          ffi.NativeFunction<ffi.Int Function(ffi.Pointer<PyObject>, ffi.Int)>>(
+      '_PyObject_CheckConsistency');
+  late final _PyObject_CheckConsistency = _PyObject_CheckConsistencyPtr
+      .asFunction<int Function(ffi.Pointer<PyObject>, int)>();
+
+  int PyTrash_begin(
+    ffi.Pointer<PyThreadState> tstate,
+    ffi.Pointer<PyObject> op,
+  ) {
+    return _PyTrash_begin(
+      tstate,
+      op,
+    );
+  }
+
+  late final _PyTrash_beginPtr = _lookup<
       ffi.NativeFunction<
-          ffi.Int Function(ffi.Pointer<_PyTime_t>, ffi.Pointer<PyObject>,
-              ffi.Int32)>>('_PyTime_FromSecondsObject');
-  late final _PyTime_FromSecondsObject =
-      _PyTime_FromSecondsObjectPtr.asFunction<
-          int Function(ffi.Pointer<_PyTime_t>, ffi.Pointer<PyObject>, int)>();
+          ffi.Int Function(ffi.Pointer<PyThreadState>,
+              ffi.Pointer<PyObject>)>>('_PyTrash_begin');
+  late final _PyTrash_begin = _PyTrash_beginPtr.asFunction<
+      int Function(ffi.Pointer<PyThreadState>, ffi.Pointer<PyObject>)>();
 
-  int PyTime_FromMillisecondsObject(
-    ffi.Pointer<_PyTime_t> t,
-    ffi.Pointer<PyObject> obj,
-    int round,
+  void PyTrash_end(
+    ffi.Pointer<PyThreadState> tstate,
   ) {
-    return _PyTime_FromMillisecondsObject(
-      t,
-      obj,
-      round,
+    return _PyTrash_end(
+      tstate,
     );
   }
 
-  late final _PyTime_FromMillisecondsObjectPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Int Function(ffi.Pointer<_PyTime_t>, ffi.Pointer<PyObject>,
-              ffi.Int32)>>('_PyTime_FromMillisecondsObject');
-  late final _PyTime_FromMillisecondsObject =
-      _PyTime_FromMillisecondsObjectPtr.asFunction<
-          int Function(ffi.Pointer<_PyTime_t>, ffi.Pointer<PyObject>, int)>();
+  late final _PyTrash_endPtr = _lookup<
+          ffi.NativeFunction<ffi.Void Function(ffi.Pointer<PyThreadState>)>>(
+      '_PyTrash_end');
+  late final _PyTrash_end =
+      _PyTrash_endPtr.asFunction<void Function(ffi.Pointer<PyThreadState>)>();
 
-  double PyTime_AsSecondsDouble(
-    int t,
+  int PyTrash_cond(
+    ffi.Pointer<PyObject> op,
+    destructor dealloc,
   ) {
-    return _PyTime_AsSecondsDouble(
-      t,
+    return _PyTrash_cond(
+      op,
+      dealloc,
     );
   }
 
-  late final _PyTime_AsSecondsDoublePtr =
-      _lookup<ffi.NativeFunction<ffi.Double Function(_PyTime_t)>>(
-          '_PyTime_AsSecondsDouble');
-  late final _PyTime_AsSecondsDouble =
-      _PyTime_AsSecondsDoublePtr.asFunction<double Function(int)>();
-
-  int PyTime_AsMilliseconds(
-    int t,
-    int round,
-  ) {
-    return _PyTime_AsMilliseconds(
-      t,
-      round,
-    );
-  }
-
-  late final _PyTime_AsMillisecondsPtr =
-      _lookup<ffi.NativeFunction<_PyTime_t Function(_PyTime_t, ffi.Int32)>>(
-          '_PyTime_AsMilliseconds');
-  late final _PyTime_AsMilliseconds =
-      _PyTime_AsMillisecondsPtr.asFunction<int Function(int, int)>();
-
-  int PyTime_AsMicroseconds(
-    int t,
-    int round,
-  ) {
-    return _PyTime_AsMicroseconds(
-      t,
-      round,
-    );
-  }
-
-  late final _PyTime_AsMicrosecondsPtr =
-      _lookup<ffi.NativeFunction<_PyTime_t Function(_PyTime_t, ffi.Int32)>>(
-          '_PyTime_AsMicroseconds');
-  late final _PyTime_AsMicroseconds =
-      _PyTime_AsMicrosecondsPtr.asFunction<int Function(int, int)>();
-
-  ffi.Pointer<PyObject> PyTime_AsNanosecondsObject(
-    int t,
-  ) {
-    return _PyTime_AsNanosecondsObject(
-      t,
-    );
-  }
-
-  late final _PyTime_AsNanosecondsObjectPtr =
-      _lookup<ffi.NativeFunction<ffi.Pointer<PyObject> Function(_PyTime_t)>>(
-          '_PyTime_AsNanosecondsObject');
-  late final _PyTime_AsNanosecondsObject = _PyTime_AsNanosecondsObjectPtr
-      .asFunction<ffi.Pointer<PyObject> Function(int)>();
-
-  int PyTime_FromTimeval(
-    ffi.Pointer<_PyTime_t> tp,
-    ffi.Pointer<timeval> tv,
-  ) {
-    return _PyTime_FromTimeval(
-      tp,
-      tv,
-    );
-  }
-
-  late final _PyTime_FromTimevalPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Int Function(ffi.Pointer<_PyTime_t>,
-              ffi.Pointer<timeval>)>>('_PyTime_FromTimeval');
-  late final _PyTime_FromTimeval = _PyTime_FromTimevalPtr.asFunction<
-      int Function(ffi.Pointer<_PyTime_t>, ffi.Pointer<timeval>)>();
-
-  int PyTime_AsTimeval(
-    int t,
-    ffi.Pointer<timeval> tv,
-    int round,
-  ) {
-    return _PyTime_AsTimeval(
-      t,
-      tv,
-      round,
-    );
-  }
-
-  late final _PyTime_AsTimevalPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Int Function(_PyTime_t, ffi.Pointer<timeval>,
-              ffi.Int32)>>('_PyTime_AsTimeval');
-  late final _PyTime_AsTimeval = _PyTime_AsTimevalPtr.asFunction<
-      int Function(int, ffi.Pointer<timeval>, int)>();
-
-  int PyTime_AsTimeval_noraise(
-    int t,
-    ffi.Pointer<timeval> tv,
-    int round,
-  ) {
-    return _PyTime_AsTimeval_noraise(
-      t,
-      tv,
-      round,
-    );
-  }
-
-  late final _PyTime_AsTimeval_noraisePtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Int Function(_PyTime_t, ffi.Pointer<timeval>,
-              ffi.Int32)>>('_PyTime_AsTimeval_noraise');
-  late final _PyTime_AsTimeval_noraise = _PyTime_AsTimeval_noraisePtr
-      .asFunction<int Function(int, ffi.Pointer<timeval>, int)>();
-
-  int PyTime_AsTimevalTime_t(
-    int t,
-    ffi.Pointer<time_t> secs,
-    ffi.Pointer<ffi.Int> us,
-    int round,
-  ) {
-    return _PyTime_AsTimevalTime_t(
-      t,
-      secs,
-      us,
-      round,
-    );
-  }
-
-  late final _PyTime_AsTimevalTime_tPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Int Function(_PyTime_t, ffi.Pointer<time_t>, ffi.Pointer<ffi.Int>,
-              ffi.Int32)>>('_PyTime_AsTimevalTime_t');
-  late final _PyTime_AsTimevalTime_t = _PyTime_AsTimevalTime_tPtr.asFunction<
-      int Function(int, ffi.Pointer<time_t>, ffi.Pointer<ffi.Int>, int)>();
-
-  int PyTime_FromTimespec(
-    ffi.Pointer<_PyTime_t> tp,
-    ffi.Pointer<timespec> ts,
-  ) {
-    return _PyTime_FromTimespec(
-      tp,
-      ts,
-    );
-  }
-
-  late final _PyTime_FromTimespecPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Int Function(ffi.Pointer<_PyTime_t>,
-              ffi.Pointer<timespec>)>>('_PyTime_FromTimespec');
-  late final _PyTime_FromTimespec = _PyTime_FromTimespecPtr.asFunction<
-      int Function(ffi.Pointer<_PyTime_t>, ffi.Pointer<timespec>)>();
-
-  int PyTime_AsTimespec(
-    int t,
-    ffi.Pointer<timespec> ts,
-  ) {
-    return _PyTime_AsTimespec(
-      t,
-      ts,
-    );
-  }
-
-  late final _PyTime_AsTimespecPtr = _lookup<
+  late final _PyTrash_condPtr = _lookup<
           ffi
-          .NativeFunction<ffi.Int Function(_PyTime_t, ffi.Pointer<timespec>)>>(
-      '_PyTime_AsTimespec');
-  late final _PyTime_AsTimespec = _PyTime_AsTimespecPtr.asFunction<
-      int Function(int, ffi.Pointer<timespec>)>();
+          .NativeFunction<ffi.Int Function(ffi.Pointer<PyObject>, destructor)>>(
+      '_PyTrash_cond');
+  late final _PyTrash_cond = _PyTrash_condPtr.asFunction<
+      int Function(ffi.Pointer<PyObject>, destructor)>();
 
-  int PyTime_MulDiv(
-    int ticks,
-    int mul,
-    int div,
+  ffi.Pointer<ffi.Void> PyObject_GetItemData(
+    ffi.Pointer<PyObject> obj,
   ) {
-    return _PyTime_MulDiv(
-      ticks,
-      mul,
-      div,
+    return _PyObject_GetItemData(
+      obj,
     );
   }
 
-  late final _PyTime_MulDivPtr = _lookup<
-          ffi
-          .NativeFunction<_PyTime_t Function(_PyTime_t, _PyTime_t, _PyTime_t)>>(
-      '_PyTime_MulDiv');
-  late final _PyTime_MulDiv =
-      _PyTime_MulDivPtr.asFunction<int Function(int, int, int)>();
+  late final _PyObject_GetItemDataPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<ffi.Void> Function(
+              ffi.Pointer<PyObject>)>>('PyObject_GetItemData');
+  late final _PyObject_GetItemData = _PyObject_GetItemDataPtr.asFunction<
+      ffi.Pointer<ffi.Void> Function(ffi.Pointer<PyObject>)>();
 
-  int PyTime_GetSystemClock() {
-    return _PyTime_GetSystemClock();
-  }
-
-  late final _PyTime_GetSystemClockPtr =
-      _lookup<ffi.NativeFunction<_PyTime_t Function()>>(
-          '_PyTime_GetSystemClock');
-  late final _PyTime_GetSystemClock =
-      _PyTime_GetSystemClockPtr.asFunction<int Function()>();
-
-  int PyTime_GetMonotonicClock() {
-    return _PyTime_GetMonotonicClock();
-  }
-
-  late final _PyTime_GetMonotonicClockPtr =
-      _lookup<ffi.NativeFunction<_PyTime_t Function()>>(
-          '_PyTime_GetMonotonicClock');
-  late final _PyTime_GetMonotonicClock =
-      _PyTime_GetMonotonicClockPtr.asFunction<int Function()>();
-
-  int PyTime_GetSystemClockWithInfo(
-    ffi.Pointer<_PyTime_t> t,
-    ffi.Pointer<_Py_clock_info_t> info,
+  int PyObject_VisitManagedDict(
+    ffi.Pointer<PyObject> obj,
+    visitproc visit,
+    ffi.Pointer<ffi.Void> arg,
   ) {
-    return _PyTime_GetSystemClockWithInfo(
-      t,
-      info,
+    return _PyObject_VisitManagedDict(
+      obj,
+      visit,
+      arg,
     );
   }
 
-  late final _PyTime_GetSystemClockWithInfoPtr = _lookup<
-          ffi.NativeFunction<
-              ffi.Int Function(
-                  ffi.Pointer<_PyTime_t>, ffi.Pointer<_Py_clock_info_t>)>>(
-      '_PyTime_GetSystemClockWithInfo');
-  late final _PyTime_GetSystemClockWithInfo =
-      _PyTime_GetSystemClockWithInfoPtr.asFunction<
+  late final _PyObject_VisitManagedDictPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int Function(ffi.Pointer<PyObject>, visitproc,
+              ffi.Pointer<ffi.Void>)>>('_PyObject_VisitManagedDict');
+  late final _PyObject_VisitManagedDict =
+      _PyObject_VisitManagedDictPtr.asFunction<
           int Function(
-              ffi.Pointer<_PyTime_t>, ffi.Pointer<_Py_clock_info_t>)>();
+              ffi.Pointer<PyObject>, visitproc, ffi.Pointer<ffi.Void>)>();
 
-  int PyTime_GetMonotonicClockWithInfo(
-    ffi.Pointer<_PyTime_t> t,
-    ffi.Pointer<_Py_clock_info_t> info,
+  void PyObject_ClearManagedDict(
+    ffi.Pointer<PyObject> obj,
   ) {
-    return _PyTime_GetMonotonicClockWithInfo(
-      t,
-      info,
+    return _PyObject_ClearManagedDict(
+      obj,
     );
   }
 
-  late final _PyTime_GetMonotonicClockWithInfoPtr = _lookup<
-          ffi.NativeFunction<
-              ffi.Int Function(
-                  ffi.Pointer<_PyTime_t>, ffi.Pointer<_Py_clock_info_t>)>>(
-      '_PyTime_GetMonotonicClockWithInfo');
-  late final _PyTime_GetMonotonicClockWithInfo =
-      _PyTime_GetMonotonicClockWithInfoPtr.asFunction<
-          int Function(
-              ffi.Pointer<_PyTime_t>, ffi.Pointer<_Py_clock_info_t>)>();
+  late final _PyObject_ClearManagedDictPtr =
+      _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Pointer<PyObject>)>>(
+          '_PyObject_ClearManagedDict');
+  late final _PyObject_ClearManagedDict = _PyObject_ClearManagedDictPtr
+      .asFunction<void Function(ffi.Pointer<PyObject>)>();
 
-  int PyTime_Init() {
-    return _PyTime_Init();
-  }
-
-  late final _PyTime_InitPtr =
-      _lookup<ffi.NativeFunction<ffi.Int Function()>>('_PyTime_Init');
-  late final _PyTime_Init = _PyTime_InitPtr.asFunction<int Function()>();
-
-  int PyTime_localtime(
-    int t,
-    ffi.Pointer<tm> tm,
+  int PyType_AddWatcher(
+    PyType_WatchCallback callback,
   ) {
-    return _PyTime_localtime(
-      t,
-      tm,
+    return _PyType_AddWatcher(
+      callback,
     );
   }
 
-  late final _PyTime_localtimePtr =
-      _lookup<ffi.NativeFunction<ffi.Int Function(time_t, ffi.Pointer<tm>)>>(
-          '_PyTime_localtime');
-  late final _PyTime_localtime =
-      _PyTime_localtimePtr.asFunction<int Function(int, ffi.Pointer<tm>)>();
+  late final _PyType_AddWatcherPtr =
+      _lookup<ffi.NativeFunction<ffi.Int Function(PyType_WatchCallback)>>(
+          'PyType_AddWatcher');
+  late final _PyType_AddWatcher =
+      _PyType_AddWatcherPtr.asFunction<int Function(PyType_WatchCallback)>();
 
-  int PyTime_gmtime(
-    int t,
-    ffi.Pointer<tm> tm,
+  int PyType_ClearWatcher(
+    int watcher_id,
   ) {
-    return _PyTime_gmtime(
-      t,
-      tm,
+    return _PyType_ClearWatcher(
+      watcher_id,
     );
   }
 
-  late final _PyTime_gmtimePtr =
-      _lookup<ffi.NativeFunction<ffi.Int Function(time_t, ffi.Pointer<tm>)>>(
-          '_PyTime_gmtime');
-  late final _PyTime_gmtime =
-      _PyTime_gmtimePtr.asFunction<int Function(int, ffi.Pointer<tm>)>();
+  late final _PyType_ClearWatcherPtr =
+      _lookup<ffi.NativeFunction<ffi.Int Function(ffi.Int)>>(
+          'PyType_ClearWatcher');
+  late final _PyType_ClearWatcher =
+      _PyType_ClearWatcherPtr.asFunction<int Function(int)>();
 
-  int PyTime_GetPerfCounter() {
-    return _PyTime_GetPerfCounter();
-  }
-
-  late final _PyTime_GetPerfCounterPtr =
-      _lookup<ffi.NativeFunction<_PyTime_t Function()>>(
-          '_PyTime_GetPerfCounter');
-  late final _PyTime_GetPerfCounter =
-      _PyTime_GetPerfCounterPtr.asFunction<int Function()>();
-
-  int PyTime_GetPerfCounterWithInfo(
-    ffi.Pointer<_PyTime_t> t,
-    ffi.Pointer<_Py_clock_info_t> info,
+  int PyType_Watch(
+    int watcher_id,
+    ffi.Pointer<PyObject> type,
   ) {
-    return _PyTime_GetPerfCounterWithInfo(
-      t,
-      info,
+    return _PyType_Watch(
+      watcher_id,
+      type,
     );
   }
 
-  late final _PyTime_GetPerfCounterWithInfoPtr = _lookup<
-          ffi.NativeFunction<
-              ffi.Int Function(
-                  ffi.Pointer<_PyTime_t>, ffi.Pointer<_Py_clock_info_t>)>>(
-      '_PyTime_GetPerfCounterWithInfo');
-  late final _PyTime_GetPerfCounterWithInfo =
-      _PyTime_GetPerfCounterWithInfoPtr.asFunction<
-          int Function(
-              ffi.Pointer<_PyTime_t>, ffi.Pointer<_Py_clock_info_t>)>();
+  late final _PyType_WatchPtr = _lookup<
+          ffi.NativeFunction<ffi.Int Function(ffi.Int, ffi.Pointer<PyObject>)>>(
+      'PyType_Watch');
+  late final _PyType_Watch =
+      _PyType_WatchPtr.asFunction<int Function(int, ffi.Pointer<PyObject>)>();
+
+  int PyType_Unwatch(
+    int watcher_id,
+    ffi.Pointer<PyObject> type,
+  ) {
+    return _PyType_Unwatch(
+      watcher_id,
+      type,
+    );
+  }
+
+  late final _PyType_UnwatchPtr = _lookup<
+          ffi.NativeFunction<ffi.Int Function(ffi.Int, ffi.Pointer<PyObject>)>>(
+      'PyType_Unwatch');
+  late final _PyType_Unwatch =
+      _PyType_UnwatchPtr.asFunction<int Function(int, ffi.Pointer<PyObject>)>();
+
+  int PyUnstable_Type_AssignVersionTag(
+    ffi.Pointer<PyTypeObject> type,
+  ) {
+    return _PyUnstable_Type_AssignVersionTag(
+      type,
+    );
+  }
+
+  late final _PyUnstable_Type_AssignVersionTagPtr =
+      _lookup<ffi.NativeFunction<ffi.Int Function(ffi.Pointer<PyTypeObject>)>>(
+          'PyUnstable_Type_AssignVersionTag');
+  late final _PyUnstable_Type_AssignVersionTag =
+      _PyUnstable_Type_AssignVersionTagPtr.asFunction<
+          int Function(ffi.Pointer<PyTypeObject>)>();
 
   ffi.Pointer<ffi.Void> PyObject_Malloc(
     int size,
@@ -1384,6 +2250,47 @@ class DartPyC {
       _lookup<ffi.NativeFunction<Py_ssize_t Function()>>('PyGC_Collect');
   late final _PyGC_Collect = _PyGC_CollectPtr.asFunction<int Function()>();
 
+  int PyGC_Enable() {
+    return _PyGC_Enable();
+  }
+
+  late final _PyGC_EnablePtr =
+      _lookup<ffi.NativeFunction<ffi.Int Function()>>('PyGC_Enable');
+  late final _PyGC_Enable = _PyGC_EnablePtr.asFunction<int Function()>();
+
+  int PyGC_Disable() {
+    return _PyGC_Disable();
+  }
+
+  late final _PyGC_DisablePtr =
+      _lookup<ffi.NativeFunction<ffi.Int Function()>>('PyGC_Disable');
+  late final _PyGC_Disable = _PyGC_DisablePtr.asFunction<int Function()>();
+
+  int PyGC_IsEnabled() {
+    return _PyGC_IsEnabled();
+  }
+
+  late final _PyGC_IsEnabledPtr =
+      _lookup<ffi.NativeFunction<ffi.Int Function()>>('PyGC_IsEnabled');
+  late final _PyGC_IsEnabled = _PyGC_IsEnabledPtr.asFunction<int Function()>();
+
+  void PyUnstable_GC_VisitObjects(
+    gcvisitobjects_t callback,
+    ffi.Pointer<ffi.Void> arg,
+  ) {
+    return _PyUnstable_GC_VisitObjects(
+      callback,
+      arg,
+    );
+  }
+
+  late final _PyUnstable_GC_VisitObjectsPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Void Function(gcvisitobjects_t,
+              ffi.Pointer<ffi.Void>)>>('PyUnstable_GC_VisitObjects');
+  late final _PyUnstable_GC_VisitObjects = _PyUnstable_GC_VisitObjectsPtr
+      .asFunction<void Function(gcvisitobjects_t, ffi.Pointer<ffi.Void>)>();
+
   ffi.Pointer<PyVarObject> PyObject_GC_Resize(
     ffi.Pointer<PyVarObject> arg0,
     int arg1,
@@ -1475,19 +2382,142 @@ class DartPyC {
   late final _PyObject_GC_Del =
       _PyObject_GC_DelPtr.asFunction<void Function(ffi.Pointer<ffi.Void>)>();
 
-  int Py_HashDouble(
-    double arg0,
+  int PyObject_GC_IsTracked(
+    ffi.Pointer<PyObject> arg0,
   ) {
-    return _Py_HashDouble(
+    return _PyObject_GC_IsTracked(
       arg0,
     );
   }
 
-  late final _Py_HashDoublePtr =
-      _lookup<ffi.NativeFunction<Py_hash_t Function(ffi.Double)>>(
-          '_Py_HashDouble');
-  late final _Py_HashDouble =
-      _Py_HashDoublePtr.asFunction<int Function(double)>();
+  late final _PyObject_GC_IsTrackedPtr =
+      _lookup<ffi.NativeFunction<ffi.Int Function(ffi.Pointer<PyObject>)>>(
+          'PyObject_GC_IsTracked');
+  late final _PyObject_GC_IsTracked = _PyObject_GC_IsTrackedPtr.asFunction<
+      int Function(ffi.Pointer<PyObject>)>();
+
+  int PyObject_GC_IsFinalized(
+    ffi.Pointer<PyObject> arg0,
+  ) {
+    return _PyObject_GC_IsFinalized(
+      arg0,
+    );
+  }
+
+  late final _PyObject_GC_IsFinalizedPtr =
+      _lookup<ffi.NativeFunction<ffi.Int Function(ffi.Pointer<PyObject>)>>(
+          'PyObject_GC_IsFinalized');
+  late final _PyObject_GC_IsFinalized = _PyObject_GC_IsFinalizedPtr.asFunction<
+      int Function(ffi.Pointer<PyObject>)>();
+
+  void PyObject_GetArenaAllocator(
+    ffi.Pointer<PyObjectArenaAllocator> allocator,
+  ) {
+    return _PyObject_GetArenaAllocator(
+      allocator,
+    );
+  }
+
+  late final _PyObject_GetArenaAllocatorPtr = _lookup<
+          ffi.NativeFunction<
+              ffi.Void Function(ffi.Pointer<PyObjectArenaAllocator>)>>(
+      'PyObject_GetArenaAllocator');
+  late final _PyObject_GetArenaAllocator = _PyObject_GetArenaAllocatorPtr
+      .asFunction<void Function(ffi.Pointer<PyObjectArenaAllocator>)>();
+
+  void PyObject_SetArenaAllocator(
+    ffi.Pointer<PyObjectArenaAllocator> allocator,
+  ) {
+    return _PyObject_SetArenaAllocator(
+      allocator,
+    );
+  }
+
+  late final _PyObject_SetArenaAllocatorPtr = _lookup<
+          ffi.NativeFunction<
+              ffi.Void Function(ffi.Pointer<PyObjectArenaAllocator>)>>(
+      'PyObject_SetArenaAllocator');
+  late final _PyObject_SetArenaAllocator = _PyObject_SetArenaAllocatorPtr
+      .asFunction<void Function(ffi.Pointer<PyObjectArenaAllocator>)>();
+
+  int PyObject_IS_GC(
+    ffi.Pointer<PyObject> obj,
+  ) {
+    return _PyObject_IS_GC(
+      obj,
+    );
+  }
+
+  late final _PyObject_IS_GCPtr =
+      _lookup<ffi.NativeFunction<ffi.Int Function(ffi.Pointer<PyObject>)>>(
+          'PyObject_IS_GC');
+  late final _PyObject_IS_GC =
+      _PyObject_IS_GCPtr.asFunction<int Function(ffi.Pointer<PyObject>)>();
+
+  int PyType_SUPPORTS_WEAKREFS(
+    ffi.Pointer<PyTypeObject> type,
+  ) {
+    return _PyType_SUPPORTS_WEAKREFS(
+      type,
+    );
+  }
+
+  late final _PyType_SUPPORTS_WEAKREFSPtr =
+      _lookup<ffi.NativeFunction<ffi.Int Function(ffi.Pointer<PyTypeObject>)>>(
+          'PyType_SUPPORTS_WEAKREFS');
+  late final _PyType_SUPPORTS_WEAKREFS = _PyType_SUPPORTS_WEAKREFSPtr
+      .asFunction<int Function(ffi.Pointer<PyTypeObject>)>();
+
+  ffi.Pointer<ffi.Pointer<PyObject>> PyObject_GET_WEAKREFS_LISTPTR(
+    ffi.Pointer<PyObject> op,
+  ) {
+    return _PyObject_GET_WEAKREFS_LISTPTR(
+      op,
+    );
+  }
+
+  late final _PyObject_GET_WEAKREFS_LISTPTRPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<ffi.Pointer<PyObject>> Function(
+              ffi.Pointer<PyObject>)>>('PyObject_GET_WEAKREFS_LISTPTR');
+  late final _PyObject_GET_WEAKREFS_LISTPTR =
+      _PyObject_GET_WEAKREFS_LISTPTRPtr.asFunction<
+          ffi.Pointer<ffi.Pointer<PyObject>> Function(ffi.Pointer<PyObject>)>();
+
+  ffi.Pointer<PyObject> PyUnstable_Object_GC_NewWithExtraData(
+    ffi.Pointer<PyTypeObject> arg0,
+    int arg1,
+  ) {
+    return _PyUnstable_Object_GC_NewWithExtraData(
+      arg0,
+      arg1,
+    );
+  }
+
+  late final _PyUnstable_Object_GC_NewWithExtraDataPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<PyObject> Function(ffi.Pointer<PyTypeObject>,
+              ffi.Size)>>('PyUnstable_Object_GC_NewWithExtraData');
+  late final _PyUnstable_Object_GC_NewWithExtraData =
+      _PyUnstable_Object_GC_NewWithExtraDataPtr.asFunction<
+          ffi.Pointer<PyObject> Function(ffi.Pointer<PyTypeObject>, int)>();
+
+  int Py_HashDouble(
+    ffi.Pointer<PyObject> arg0,
+    double arg1,
+  ) {
+    return _Py_HashDouble(
+      arg0,
+      arg1,
+    );
+  }
+
+  late final _Py_HashDoublePtr = _lookup<
+      ffi.NativeFunction<
+          Py_hash_t Function(
+              ffi.Pointer<PyObject>, ffi.Double)>>('_Py_HashDouble');
+  late final _Py_HashDouble = _Py_HashDoublePtr.asFunction<
+      int Function(ffi.Pointer<PyObject>, double)>();
 
   int Py_HashPointer(
     ffi.Pointer<ffi.Void> arg0,
@@ -1502,6 +2532,20 @@ class DartPyC {
           '_Py_HashPointer');
   late final _Py_HashPointer =
       _Py_HashPointerPtr.asFunction<int Function(ffi.Pointer<ffi.Void>)>();
+
+  int Py_HashPointerRaw(
+    ffi.Pointer<ffi.Void> arg0,
+  ) {
+    return _Py_HashPointerRaw(
+      arg0,
+    );
+  }
+
+  late final _Py_HashPointerRawPtr =
+      _lookup<ffi.NativeFunction<Py_hash_t Function(ffi.Pointer<ffi.Void>)>>(
+          '_Py_HashPointerRaw');
+  late final _Py_HashPointerRaw =
+      _Py_HashPointerRawPtr.asFunction<int Function(ffi.Pointer<ffi.Void>)>();
 
   int Py_HashBytes(
     ffi.Pointer<ffi.Void> arg0,
@@ -1644,6 +2688,20 @@ class DartPyC {
   int get Py_IsolatedFlag => _Py_IsolatedFlag.value;
 
   set Py_IsolatedFlag(int value) => _Py_IsolatedFlag.value = value;
+
+  ffi.Pointer<ffi.Char> Py_GETENV(
+    ffi.Pointer<ffi.Char> name,
+  ) {
+    return _Py_GETENV(
+      name,
+    );
+  }
+
+  late final _Py_GETENVPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<ffi.Char> Function(ffi.Pointer<ffi.Char>)>>('Py_GETENV');
+  late final _Py_GETENV = _Py_GETENVPtr.asFunction<
+      ffi.Pointer<ffi.Char> Function(ffi.Pointer<ffi.Char>)>();
 
   late final ffi.Pointer<PyTypeObject> _PyByteArray_Type =
       _lookup<PyTypeObject>('PyByteArray_Type');
@@ -1932,6 +2990,56 @@ class DartPyC {
       void Function(
           ffi.Pointer<ffi.Pointer<PyObject>>, ffi.Pointer<PyObject>)>();
 
+  ffi.Pointer<PyObject> PyBytes_DecodeEscape(
+    ffi.Pointer<ffi.Char> arg0,
+    int arg1,
+    ffi.Pointer<ffi.Char> arg2,
+    int arg3,
+    ffi.Pointer<ffi.Char> arg4,
+  ) {
+    return _PyBytes_DecodeEscape(
+      arg0,
+      arg1,
+      arg2,
+      arg3,
+      arg4,
+    );
+  }
+
+  late final _PyBytes_DecodeEscapePtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<PyObject> Function(
+              ffi.Pointer<ffi.Char>,
+              Py_ssize_t,
+              ffi.Pointer<ffi.Char>,
+              Py_ssize_t,
+              ffi.Pointer<ffi.Char>)>>('PyBytes_DecodeEscape');
+  late final _PyBytes_DecodeEscape = _PyBytes_DecodeEscapePtr.asFunction<
+      ffi.Pointer<PyObject> Function(ffi.Pointer<ffi.Char>, int,
+          ffi.Pointer<ffi.Char>, int, ffi.Pointer<ffi.Char>)>();
+
+  int PyBytes_AsStringAndSize(
+    ffi.Pointer<PyObject> obj,
+    ffi.Pointer<ffi.Pointer<ffi.Char>> s,
+    ffi.Pointer<Py_ssize_t> len,
+  ) {
+    return _PyBytes_AsStringAndSize(
+      obj,
+      s,
+      len,
+    );
+  }
+
+  late final _PyBytes_AsStringAndSizePtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int Function(
+              ffi.Pointer<PyObject>,
+              ffi.Pointer<ffi.Pointer<ffi.Char>>,
+              ffi.Pointer<Py_ssize_t>)>>('PyBytes_AsStringAndSize');
+  late final _PyBytes_AsStringAndSize = _PyBytes_AsStringAndSizePtr.asFunction<
+      int Function(ffi.Pointer<PyObject>, ffi.Pointer<ffi.Pointer<ffi.Char>>,
+          ffi.Pointer<Py_ssize_t>)>();
+
   int PyBytes_Resize(
     ffi.Pointer<ffi.Pointer<PyObject>> arg0,
     int arg1,
@@ -1988,49 +3096,17 @@ class DartPyC {
   late final _PyBytes_FromHex = _PyBytes_FromHexPtr.asFunction<
       ffi.Pointer<PyObject> Function(ffi.Pointer<PyObject>, int)>();
 
-  ffi.Pointer<PyObject> PyBytes_DecodeEscape(
-    ffi.Pointer<ffi.Char> arg0,
-    int arg1,
-    ffi.Pointer<ffi.Char> arg2,
-    int arg3,
-    ffi.Pointer<ffi.Char> arg4,
-  ) {
-    return _PyBytes_DecodeEscape(
-      arg0,
-      arg1,
-      arg2,
-      arg3,
-      arg4,
-    );
-  }
-
-  late final _PyBytes_DecodeEscapePtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<PyObject> Function(
-              ffi.Pointer<ffi.Char>,
-              Py_ssize_t,
-              ffi.Pointer<ffi.Char>,
-              Py_ssize_t,
-              ffi.Pointer<ffi.Char>)>>('PyBytes_DecodeEscape');
-  late final _PyBytes_DecodeEscape = _PyBytes_DecodeEscapePtr.asFunction<
-      ffi.Pointer<PyObject> Function(ffi.Pointer<ffi.Char>, int,
-          ffi.Pointer<ffi.Char>, int, ffi.Pointer<ffi.Char>)>();
-
   ffi.Pointer<PyObject> PyBytes_DecodeEscape1(
     ffi.Pointer<ffi.Char> arg0,
     int arg1,
     ffi.Pointer<ffi.Char> arg2,
-    int arg3,
-    ffi.Pointer<ffi.Char> arg4,
-    ffi.Pointer<ffi.Pointer<ffi.Char>> arg5,
+    ffi.Pointer<ffi.Pointer<ffi.Char>> arg3,
   ) {
     return _PyBytes_DecodeEscape1(
       arg0,
       arg1,
       arg2,
       arg3,
-      arg4,
-      arg5,
     );
   }
 
@@ -2040,17 +3116,10 @@ class DartPyC {
               ffi.Pointer<ffi.Char>,
               Py_ssize_t,
               ffi.Pointer<ffi.Char>,
-              Py_ssize_t,
-              ffi.Pointer<ffi.Char>,
               ffi.Pointer<ffi.Pointer<ffi.Char>>)>>('_PyBytes_DecodeEscape');
   late final _PyBytes_DecodeEscape1 = _PyBytes_DecodeEscape1Ptr.asFunction<
-      ffi.Pointer<PyObject> Function(
-          ffi.Pointer<ffi.Char>,
-          int,
-          ffi.Pointer<ffi.Char>,
-          int,
-          ffi.Pointer<ffi.Char>,
-          ffi.Pointer<ffi.Pointer<ffi.Char>>)>();
+      ffi.Pointer<PyObject> Function(ffi.Pointer<ffi.Char>, int,
+          ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Pointer<ffi.Char>>)>();
 
   ffi.Pointer<PyObject> PyBytes_Join(
     ffi.Pointer<PyObject> sep,
@@ -2069,92 +3138,6 @@ class DartPyC {
   late final _PyBytes_Join = _PyBytes_JoinPtr.asFunction<
       ffi.Pointer<PyObject> Function(
           ffi.Pointer<PyObject>, ffi.Pointer<PyObject>)>();
-
-  int PyBytes_AsStringAndSize(
-    ffi.Pointer<PyObject> obj,
-    ffi.Pointer<ffi.Pointer<ffi.Char>> s,
-    ffi.Pointer<Py_ssize_t> len,
-  ) {
-    return _PyBytes_AsStringAndSize(
-      obj,
-      s,
-      len,
-    );
-  }
-
-  late final _PyBytes_AsStringAndSizePtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Int Function(
-              ffi.Pointer<PyObject>,
-              ffi.Pointer<ffi.Pointer<ffi.Char>>,
-              ffi.Pointer<Py_ssize_t>)>>('PyBytes_AsStringAndSize');
-  late final _PyBytes_AsStringAndSize = _PyBytes_AsStringAndSizePtr.asFunction<
-      int Function(ffi.Pointer<PyObject>, ffi.Pointer<ffi.Pointer<ffi.Char>>,
-          ffi.Pointer<Py_ssize_t>)>();
-
-  int PyBytes_InsertThousandsGroupingLocale(
-    ffi.Pointer<ffi.Char> buffer,
-    int n_buffer,
-    ffi.Pointer<ffi.Char> digits,
-    int n_digits,
-    int min_width,
-  ) {
-    return _PyBytes_InsertThousandsGroupingLocale(
-      buffer,
-      n_buffer,
-      digits,
-      n_digits,
-      min_width,
-    );
-  }
-
-  late final _PyBytes_InsertThousandsGroupingLocalePtr = _lookup<
-      ffi.NativeFunction<
-          Py_ssize_t Function(
-              ffi.Pointer<ffi.Char>,
-              Py_ssize_t,
-              ffi.Pointer<ffi.Char>,
-              Py_ssize_t,
-              Py_ssize_t)>>('_PyBytes_InsertThousandsGroupingLocale');
-  late final _PyBytes_InsertThousandsGroupingLocale =
-      _PyBytes_InsertThousandsGroupingLocalePtr.asFunction<
-          int Function(
-              ffi.Pointer<ffi.Char>, int, ffi.Pointer<ffi.Char>, int, int)>();
-
-  int PyBytes_InsertThousandsGrouping(
-    ffi.Pointer<ffi.Char> buffer,
-    int n_buffer,
-    ffi.Pointer<ffi.Char> digits,
-    int n_digits,
-    int min_width,
-    ffi.Pointer<ffi.Char> grouping,
-    ffi.Pointer<ffi.Char> thousands_sep,
-  ) {
-    return _PyBytes_InsertThousandsGrouping(
-      buffer,
-      n_buffer,
-      digits,
-      n_digits,
-      min_width,
-      grouping,
-      thousands_sep,
-    );
-  }
-
-  late final _PyBytes_InsertThousandsGroupingPtr = _lookup<
-      ffi.NativeFunction<
-          Py_ssize_t Function(
-              ffi.Pointer<ffi.Char>,
-              Py_ssize_t,
-              ffi.Pointer<ffi.Char>,
-              Py_ssize_t,
-              Py_ssize_t,
-              ffi.Pointer<ffi.Char>,
-              ffi.Pointer<ffi.Char>)>>('_PyBytes_InsertThousandsGrouping');
-  late final _PyBytes_InsertThousandsGrouping =
-      _PyBytes_InsertThousandsGroupingPtr.asFunction<
-          int Function(ffi.Pointer<ffi.Char>, int, ffi.Pointer<ffi.Char>, int,
-              int, ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Char>)>();
 
   void PyBytesWriter_Init(
     ffi.Pointer<_PyBytesWriter> writer,
@@ -2397,20 +3380,6 @@ class DartPyC {
   late final _PyUnicode_GetLength =
       _PyUnicode_GetLengthPtr.asFunction<int Function(ffi.Pointer<PyObject>)>();
 
-  int PyUnicode_GetSize(
-    ffi.Pointer<PyObject> unicode,
-  ) {
-    return _PyUnicode_GetSize(
-      unicode,
-    );
-  }
-
-  late final _PyUnicode_GetSizePtr =
-      _lookup<ffi.NativeFunction<Py_ssize_t Function(ffi.Pointer<PyObject>)>>(
-          'PyUnicode_GetSize');
-  late final _PyUnicode_GetSize =
-      _PyUnicode_GetSizePtr.asFunction<int Function(ffi.Pointer<PyObject>)>();
-
   int PyUnicode_ReadChar(
     ffi.Pointer<PyObject> unicode,
     int index,
@@ -2550,21 +3519,6 @@ class DartPyC {
   late final _PyUnicode_InternInPlace = _PyUnicode_InternInPlacePtr.asFunction<
       void Function(ffi.Pointer<ffi.Pointer<PyObject>>)>();
 
-  void PyUnicode_InternImmortal(
-    ffi.Pointer<ffi.Pointer<PyObject>> arg0,
-  ) {
-    return _PyUnicode_InternImmortal(
-      arg0,
-    );
-  }
-
-  late final _PyUnicode_InternImmortalPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Void Function(
-              ffi.Pointer<ffi.Pointer<PyObject>>)>>('PyUnicode_InternImmortal');
-  late final _PyUnicode_InternImmortal = _PyUnicode_InternImmortalPtr
-      .asFunction<void Function(ffi.Pointer<ffi.Pointer<PyObject>>)>();
-
   ffi.Pointer<PyObject> PyUnicode_InternFromString(
     ffi.Pointer<ffi.Char> u,
   ) {
@@ -2648,16 +3602,6 @@ class DartPyC {
           'PyUnicode_FromOrdinal');
   late final _PyUnicode_FromOrdinal = _PyUnicode_FromOrdinalPtr.asFunction<
       ffi.Pointer<PyObject> Function(int)>();
-
-  int PyUnicode_ClearFreeList() {
-    return _PyUnicode_ClearFreeList();
-  }
-
-  late final _PyUnicode_ClearFreeListPtr =
-      _lookup<ffi.NativeFunction<ffi.Int Function()>>(
-          'PyUnicode_ClearFreeList');
-  late final _PyUnicode_ClearFreeList =
-      _PyUnicode_ClearFreeListPtr.asFunction<int Function()>();
 
   ffi.Pointer<ffi.Char> PyUnicode_GetDefaultEncoding() {
     return _PyUnicode_GetDefaultEncoding();
@@ -2930,6 +3874,24 @@ class DartPyC {
               ffi.Pointer<PyObject>)>>('PyUnicode_AsUTF8String');
   late final _PyUnicode_AsUTF8String = _PyUnicode_AsUTF8StringPtr.asFunction<
       ffi.Pointer<PyObject> Function(ffi.Pointer<PyObject>)>();
+
+  ffi.Pointer<ffi.Char> PyUnicode_AsUTF8AndSize(
+    ffi.Pointer<PyObject> unicode,
+    ffi.Pointer<Py_ssize_t> size,
+  ) {
+    return _PyUnicode_AsUTF8AndSize(
+      unicode,
+      size,
+    );
+  }
+
+  late final _PyUnicode_AsUTF8AndSizePtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<ffi.Char> Function(ffi.Pointer<PyObject>,
+              ffi.Pointer<Py_ssize_t>)>>('PyUnicode_AsUTF8AndSize');
+  late final _PyUnicode_AsUTF8AndSize = _PyUnicode_AsUTF8AndSizePtr.asFunction<
+      ffi.Pointer<ffi.Char> Function(
+          ffi.Pointer<PyObject>, ffi.Pointer<Py_ssize_t>)>();
 
   ffi.Pointer<PyObject> PyUnicode_DecodeUTF32(
     ffi.Pointer<ffi.Char> string,
@@ -3812,1165 +4774,399 @@ class DartPyC {
   late final _PyUnicode_IsIdentifier = _PyUnicode_IsIdentifierPtr.asFunction<
       int Function(ffi.Pointer<PyObject>)>();
 
-  late final ffi.Pointer<PyTypeObject> _PyLong_Type =
-      _lookup<PyTypeObject>('PyLong_Type');
-
-  PyTypeObject get PyLong_Type => _PyLong_Type.ref;
-
-  ffi.Pointer<PyObject> PyLong_FromLong(
-    int arg0,
+  int PyUnicode_CheckConsistency(
+    ffi.Pointer<PyObject> op,
+    int check_content,
   ) {
-    return _PyLong_FromLong(
-      arg0,
+    return _PyUnicode_CheckConsistency(
+      op,
+      check_content,
     );
   }
 
-  late final _PyLong_FromLongPtr =
-      _lookup<ffi.NativeFunction<ffi.Pointer<PyObject> Function(ffi.Long)>>(
-          'PyLong_FromLong');
-  late final _PyLong_FromLong =
-      _PyLong_FromLongPtr.asFunction<ffi.Pointer<PyObject> Function(int)>();
+  late final _PyUnicode_CheckConsistencyPtr = _lookup<
+          ffi.NativeFunction<ffi.Int Function(ffi.Pointer<PyObject>, ffi.Int)>>(
+      '_PyUnicode_CheckConsistency');
+  late final _PyUnicode_CheckConsistency = _PyUnicode_CheckConsistencyPtr
+      .asFunction<int Function(ffi.Pointer<PyObject>, int)>();
 
-  ffi.Pointer<PyObject> PyLong_FromUnsignedLong(
-    int arg0,
+  ffi.Pointer<PyObject> PyUnicode_New(
+    int size,
+    int maxchar,
   ) {
-    return _PyLong_FromUnsignedLong(
-      arg0,
+    return _PyUnicode_New(
+      size,
+      maxchar,
     );
   }
 
-  late final _PyLong_FromUnsignedLongPtr = _lookup<
-          ffi.NativeFunction<ffi.Pointer<PyObject> Function(ffi.UnsignedLong)>>(
-      'PyLong_FromUnsignedLong');
-  late final _PyLong_FromUnsignedLong = _PyLong_FromUnsignedLongPtr.asFunction<
-      ffi.Pointer<PyObject> Function(int)>();
+  late final _PyUnicode_NewPtr = _lookup<
+          ffi
+          .NativeFunction<ffi.Pointer<PyObject> Function(Py_ssize_t, Py_UCS4)>>(
+      'PyUnicode_New');
+  late final _PyUnicode_New =
+      _PyUnicode_NewPtr.asFunction<ffi.Pointer<PyObject> Function(int, int)>();
 
-  ffi.Pointer<PyObject> PyLong_FromSize_t(
-    int arg0,
+  ffi.Pointer<PyObject> PyUnicode_Copy(
+    ffi.Pointer<PyObject> unicode,
   ) {
-    return _PyLong_FromSize_t(
-      arg0,
+    return _PyUnicode_Copy(
+      unicode,
     );
   }
 
-  late final _PyLong_FromSize_tPtr =
-      _lookup<ffi.NativeFunction<ffi.Pointer<PyObject> Function(ffi.Size)>>(
-          'PyLong_FromSize_t');
-  late final _PyLong_FromSize_t =
-      _PyLong_FromSize_tPtr.asFunction<ffi.Pointer<PyObject> Function(int)>();
-
-  ffi.Pointer<PyObject> PyLong_FromSsize_t(
-    int arg0,
-  ) {
-    return _PyLong_FromSsize_t(
-      arg0,
-    );
-  }
-
-  late final _PyLong_FromSsize_tPtr =
-      _lookup<ffi.NativeFunction<ffi.Pointer<PyObject> Function(Py_ssize_t)>>(
-          'PyLong_FromSsize_t');
-  late final _PyLong_FromSsize_t =
-      _PyLong_FromSsize_tPtr.asFunction<ffi.Pointer<PyObject> Function(int)>();
-
-  ffi.Pointer<PyObject> PyLong_FromDouble(
-    double arg0,
-  ) {
-    return _PyLong_FromDouble(
-      arg0,
-    );
-  }
-
-  late final _PyLong_FromDoublePtr =
-      _lookup<ffi.NativeFunction<ffi.Pointer<PyObject> Function(ffi.Double)>>(
-          'PyLong_FromDouble');
-  late final _PyLong_FromDouble = _PyLong_FromDoublePtr.asFunction<
-      ffi.Pointer<PyObject> Function(double)>();
-
-  int PyLong_AsLong(
-    ffi.Pointer<PyObject> arg0,
-  ) {
-    return _PyLong_AsLong(
-      arg0,
-    );
-  }
-
-  late final _PyLong_AsLongPtr =
-      _lookup<ffi.NativeFunction<ffi.Long Function(ffi.Pointer<PyObject>)>>(
-          'PyLong_AsLong');
-  late final _PyLong_AsLong =
-      _PyLong_AsLongPtr.asFunction<int Function(ffi.Pointer<PyObject>)>();
-
-  int PyLong_AsLongAndOverflow(
-    ffi.Pointer<PyObject> arg0,
-    ffi.Pointer<ffi.Int> arg1,
-  ) {
-    return _PyLong_AsLongAndOverflow(
-      arg0,
-      arg1,
-    );
-  }
-
-  late final _PyLong_AsLongAndOverflowPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Long Function(ffi.Pointer<PyObject>,
-              ffi.Pointer<ffi.Int>)>>('PyLong_AsLongAndOverflow');
-  late final _PyLong_AsLongAndOverflow = _PyLong_AsLongAndOverflowPtr
-      .asFunction<int Function(ffi.Pointer<PyObject>, ffi.Pointer<ffi.Int>)>();
-
-  int PyLong_AsSsize_t(
-    ffi.Pointer<PyObject> arg0,
-  ) {
-    return _PyLong_AsSsize_t(
-      arg0,
-    );
-  }
-
-  late final _PyLong_AsSsize_tPtr =
-      _lookup<ffi.NativeFunction<Py_ssize_t Function(ffi.Pointer<PyObject>)>>(
-          'PyLong_AsSsize_t');
-  late final _PyLong_AsSsize_t =
-      _PyLong_AsSsize_tPtr.asFunction<int Function(ffi.Pointer<PyObject>)>();
-
-  int PyLong_AsSize_t(
-    ffi.Pointer<PyObject> arg0,
-  ) {
-    return _PyLong_AsSize_t(
-      arg0,
-    );
-  }
-
-  late final _PyLong_AsSize_tPtr =
-      _lookup<ffi.NativeFunction<ffi.Size Function(ffi.Pointer<PyObject>)>>(
-          'PyLong_AsSize_t');
-  late final _PyLong_AsSize_t =
-      _PyLong_AsSize_tPtr.asFunction<int Function(ffi.Pointer<PyObject>)>();
-
-  int PyLong_AsUnsignedLong(
-    ffi.Pointer<PyObject> arg0,
-  ) {
-    return _PyLong_AsUnsignedLong(
-      arg0,
-    );
-  }
-
-  late final _PyLong_AsUnsignedLongPtr = _lookup<
-          ffi.NativeFunction<ffi.UnsignedLong Function(ffi.Pointer<PyObject>)>>(
-      'PyLong_AsUnsignedLong');
-  late final _PyLong_AsUnsignedLong = _PyLong_AsUnsignedLongPtr.asFunction<
-      int Function(ffi.Pointer<PyObject>)>();
-
-  int PyLong_AsUnsignedLongMask(
-    ffi.Pointer<PyObject> arg0,
-  ) {
-    return _PyLong_AsUnsignedLongMask(
-      arg0,
-    );
-  }
-
-  late final _PyLong_AsUnsignedLongMaskPtr = _lookup<
-          ffi.NativeFunction<ffi.UnsignedLong Function(ffi.Pointer<PyObject>)>>(
-      'PyLong_AsUnsignedLongMask');
-  late final _PyLong_AsUnsignedLongMask = _PyLong_AsUnsignedLongMaskPtr
-      .asFunction<int Function(ffi.Pointer<PyObject>)>();
-
-  int PyLong_AsInt(
-    ffi.Pointer<PyObject> arg0,
-  ) {
-    return _PyLong_AsInt(
-      arg0,
-    );
-  }
-
-  late final _PyLong_AsIntPtr =
-      _lookup<ffi.NativeFunction<ffi.Int Function(ffi.Pointer<PyObject>)>>(
-          '_PyLong_AsInt');
-  late final _PyLong_AsInt =
-      _PyLong_AsIntPtr.asFunction<int Function(ffi.Pointer<PyObject>)>();
-
-  ffi.Pointer<PyObject> PyLong_GetInfo() {
-    return _PyLong_GetInfo();
-  }
-
-  late final _PyLong_GetInfoPtr =
-      _lookup<ffi.NativeFunction<ffi.Pointer<PyObject> Function()>>(
-          'PyLong_GetInfo');
-  late final _PyLong_GetInfo =
-      _PyLong_GetInfoPtr.asFunction<ffi.Pointer<PyObject> Function()>();
-
-  int PyLong_UnsignedShort_Converter(
-    ffi.Pointer<PyObject> arg0,
-    ffi.Pointer<ffi.Void> arg1,
-  ) {
-    return _PyLong_UnsignedShort_Converter(
-      arg0,
-      arg1,
-    );
-  }
-
-  late final _PyLong_UnsignedShort_ConverterPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Int Function(ffi.Pointer<PyObject>,
-              ffi.Pointer<ffi.Void>)>>('_PyLong_UnsignedShort_Converter');
-  late final _PyLong_UnsignedShort_Converter =
-      _PyLong_UnsignedShort_ConverterPtr.asFunction<
-          int Function(ffi.Pointer<PyObject>, ffi.Pointer<ffi.Void>)>();
-
-  int PyLong_UnsignedInt_Converter(
-    ffi.Pointer<PyObject> arg0,
-    ffi.Pointer<ffi.Void> arg1,
-  ) {
-    return _PyLong_UnsignedInt_Converter(
-      arg0,
-      arg1,
-    );
-  }
-
-  late final _PyLong_UnsignedInt_ConverterPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Int Function(ffi.Pointer<PyObject>,
-              ffi.Pointer<ffi.Void>)>>('_PyLong_UnsignedInt_Converter');
-  late final _PyLong_UnsignedInt_Converter = _PyLong_UnsignedInt_ConverterPtr
-      .asFunction<int Function(ffi.Pointer<PyObject>, ffi.Pointer<ffi.Void>)>();
-
-  int PyLong_UnsignedLong_Converter(
-    ffi.Pointer<PyObject> arg0,
-    ffi.Pointer<ffi.Void> arg1,
-  ) {
-    return _PyLong_UnsignedLong_Converter(
-      arg0,
-      arg1,
-    );
-  }
-
-  late final _PyLong_UnsignedLong_ConverterPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Int Function(ffi.Pointer<PyObject>,
-              ffi.Pointer<ffi.Void>)>>('_PyLong_UnsignedLong_Converter');
-  late final _PyLong_UnsignedLong_Converter = _PyLong_UnsignedLong_ConverterPtr
-      .asFunction<int Function(ffi.Pointer<PyObject>, ffi.Pointer<ffi.Void>)>();
-
-  int PyLong_UnsignedLongLong_Converter(
-    ffi.Pointer<PyObject> arg0,
-    ffi.Pointer<ffi.Void> arg1,
-  ) {
-    return _PyLong_UnsignedLongLong_Converter(
-      arg0,
-      arg1,
-    );
-  }
-
-  late final _PyLong_UnsignedLongLong_ConverterPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Int Function(ffi.Pointer<PyObject>,
-              ffi.Pointer<ffi.Void>)>>('_PyLong_UnsignedLongLong_Converter');
-  late final _PyLong_UnsignedLongLong_Converter =
-      _PyLong_UnsignedLongLong_ConverterPtr.asFunction<
-          int Function(ffi.Pointer<PyObject>, ffi.Pointer<ffi.Void>)>();
-
-  int PyLong_Size_t_Converter(
-    ffi.Pointer<PyObject> arg0,
-    ffi.Pointer<ffi.Void> arg1,
-  ) {
-    return _PyLong_Size_t_Converter(
-      arg0,
-      arg1,
-    );
-  }
-
-  late final _PyLong_Size_t_ConverterPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Int Function(ffi.Pointer<PyObject>,
-              ffi.Pointer<ffi.Void>)>>('_PyLong_Size_t_Converter');
-  late final _PyLong_Size_t_Converter = _PyLong_Size_t_ConverterPtr.asFunction<
-      int Function(ffi.Pointer<PyObject>, ffi.Pointer<ffi.Void>)>();
-
-  late final ffi.Pointer<ffi.Pointer<ffi.UnsignedChar>> _PyLong_DigitValue =
-      _lookup<ffi.Pointer<ffi.UnsignedChar>>('_PyLong_DigitValue');
-
-  ffi.Pointer<ffi.UnsignedChar> get PyLong_DigitValue =>
-      _PyLong_DigitValue.value;
-
-  set PyLong_DigitValue(ffi.Pointer<ffi.UnsignedChar> value) =>
-      _PyLong_DigitValue.value = value;
-
-  double PyLong_Frexp(
-    ffi.Pointer<PyLongObject> a,
-    ffi.Pointer<Py_ssize_t> e,
-  ) {
-    return _PyLong_Frexp(
-      a,
-      e,
-    );
-  }
-
-  late final _PyLong_FrexpPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Double Function(ffi.Pointer<PyLongObject>,
-              ffi.Pointer<Py_ssize_t>)>>('_PyLong_Frexp');
-  late final _PyLong_Frexp = _PyLong_FrexpPtr.asFunction<
-      double Function(ffi.Pointer<PyLongObject>, ffi.Pointer<Py_ssize_t>)>();
-
-  double PyLong_AsDouble(
-    ffi.Pointer<PyObject> arg0,
-  ) {
-    return _PyLong_AsDouble(
-      arg0,
-    );
-  }
-
-  late final _PyLong_AsDoublePtr =
-      _lookup<ffi.NativeFunction<ffi.Double Function(ffi.Pointer<PyObject>)>>(
-          'PyLong_AsDouble');
-  late final _PyLong_AsDouble =
-      _PyLong_AsDoublePtr.asFunction<double Function(ffi.Pointer<PyObject>)>();
-
-  ffi.Pointer<PyObject> PyLong_FromVoidPtr(
-    ffi.Pointer<ffi.Void> arg0,
-  ) {
-    return _PyLong_FromVoidPtr(
-      arg0,
-    );
-  }
-
-  late final _PyLong_FromVoidPtrPtr = _lookup<
+  late final _PyUnicode_CopyPtr = _lookup<
       ffi.NativeFunction<
           ffi.Pointer<PyObject> Function(
-              ffi.Pointer<ffi.Void>)>>('PyLong_FromVoidPtr');
-  late final _PyLong_FromVoidPtr = _PyLong_FromVoidPtrPtr.asFunction<
-      ffi.Pointer<PyObject> Function(ffi.Pointer<ffi.Void>)>();
-
-  ffi.Pointer<ffi.Void> PyLong_AsVoidPtr(
-    ffi.Pointer<PyObject> arg0,
-  ) {
-    return _PyLong_AsVoidPtr(
-      arg0,
-    );
-  }
-
-  late final _PyLong_AsVoidPtrPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<ffi.Void> Function(
-              ffi.Pointer<PyObject>)>>('PyLong_AsVoidPtr');
-  late final _PyLong_AsVoidPtr = _PyLong_AsVoidPtrPtr.asFunction<
-      ffi.Pointer<ffi.Void> Function(ffi.Pointer<PyObject>)>();
-
-  ffi.Pointer<PyObject> PyLong_FromLongLong(
-    int arg0,
-  ) {
-    return _PyLong_FromLongLong(
-      arg0,
-    );
-  }
-
-  late final _PyLong_FromLongLongPtr =
-      _lookup<ffi.NativeFunction<ffi.Pointer<PyObject> Function(ffi.LongLong)>>(
-          'PyLong_FromLongLong');
-  late final _PyLong_FromLongLong =
-      _PyLong_FromLongLongPtr.asFunction<ffi.Pointer<PyObject> Function(int)>();
-
-  ffi.Pointer<PyObject> PyLong_FromUnsignedLongLong(
-    int arg0,
-  ) {
-    return _PyLong_FromUnsignedLongLong(
-      arg0,
-    );
-  }
-
-  late final _PyLong_FromUnsignedLongLongPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<PyObject> Function(
-              ffi.UnsignedLongLong)>>('PyLong_FromUnsignedLongLong');
-  late final _PyLong_FromUnsignedLongLong = _PyLong_FromUnsignedLongLongPtr
-      .asFunction<ffi.Pointer<PyObject> Function(int)>();
-
-  int PyLong_AsLongLong(
-    ffi.Pointer<PyObject> arg0,
-  ) {
-    return _PyLong_AsLongLong(
-      arg0,
-    );
-  }
-
-  late final _PyLong_AsLongLongPtr =
-      _lookup<ffi.NativeFunction<ffi.LongLong Function(ffi.Pointer<PyObject>)>>(
-          'PyLong_AsLongLong');
-  late final _PyLong_AsLongLong =
-      _PyLong_AsLongLongPtr.asFunction<int Function(ffi.Pointer<PyObject>)>();
-
-  int PyLong_AsUnsignedLongLong(
-    ffi.Pointer<PyObject> arg0,
-  ) {
-    return _PyLong_AsUnsignedLongLong(
-      arg0,
-    );
-  }
-
-  late final _PyLong_AsUnsignedLongLongPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.UnsignedLongLong Function(
-              ffi.Pointer<PyObject>)>>('PyLong_AsUnsignedLongLong');
-  late final _PyLong_AsUnsignedLongLong = _PyLong_AsUnsignedLongLongPtr
-      .asFunction<int Function(ffi.Pointer<PyObject>)>();
-
-  int PyLong_AsUnsignedLongLongMask(
-    ffi.Pointer<PyObject> arg0,
-  ) {
-    return _PyLong_AsUnsignedLongLongMask(
-      arg0,
-    );
-  }
-
-  late final _PyLong_AsUnsignedLongLongMaskPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.UnsignedLongLong Function(
-              ffi.Pointer<PyObject>)>>('PyLong_AsUnsignedLongLongMask');
-  late final _PyLong_AsUnsignedLongLongMask = _PyLong_AsUnsignedLongLongMaskPtr
-      .asFunction<int Function(ffi.Pointer<PyObject>)>();
-
-  int PyLong_AsLongLongAndOverflow(
-    ffi.Pointer<PyObject> arg0,
-    ffi.Pointer<ffi.Int> arg1,
-  ) {
-    return _PyLong_AsLongLongAndOverflow(
-      arg0,
-      arg1,
-    );
-  }
-
-  late final _PyLong_AsLongLongAndOverflowPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.LongLong Function(ffi.Pointer<PyObject>,
-              ffi.Pointer<ffi.Int>)>>('PyLong_AsLongLongAndOverflow');
-  late final _PyLong_AsLongLongAndOverflow = _PyLong_AsLongLongAndOverflowPtr
-      .asFunction<int Function(ffi.Pointer<PyObject>, ffi.Pointer<ffi.Int>)>();
-
-  ffi.Pointer<PyObject> PyLong_FromString(
-    ffi.Pointer<ffi.Char> arg0,
-    ffi.Pointer<ffi.Pointer<ffi.Char>> arg1,
-    int arg2,
-  ) {
-    return _PyLong_FromString(
-      arg0,
-      arg1,
-      arg2,
-    );
-  }
-
-  late final _PyLong_FromStringPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<PyObject> Function(
-              ffi.Pointer<ffi.Char>,
-              ffi.Pointer<ffi.Pointer<ffi.Char>>,
-              ffi.Int)>>('PyLong_FromString');
-  late final _PyLong_FromString = _PyLong_FromStringPtr.asFunction<
-      ffi.Pointer<PyObject> Function(
-          ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Pointer<ffi.Char>>, int)>();
-
-  ffi.Pointer<PyObject> PyLong_FromUnicode(
-    ffi.Pointer<Py_UNICODE> arg0,
-    int arg1,
-    int arg2,
-  ) {
-    return _PyLong_FromUnicode(
-      arg0,
-      arg1,
-      arg2,
-    );
-  }
-
-  late final _PyLong_FromUnicodePtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<PyObject> Function(ffi.Pointer<Py_UNICODE>, Py_ssize_t,
-              ffi.Int)>>('PyLong_FromUnicode');
-  late final _PyLong_FromUnicode = _PyLong_FromUnicodePtr.asFunction<
-      ffi.Pointer<PyObject> Function(ffi.Pointer<Py_UNICODE>, int, int)>();
-
-  ffi.Pointer<PyObject> PyLong_FromUnicodeObject(
-    ffi.Pointer<PyObject> u,
-    int base,
-  ) {
-    return _PyLong_FromUnicodeObject(
-      u,
-      base,
-    );
-  }
-
-  late final _PyLong_FromUnicodeObjectPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<PyObject> Function(
-              ffi.Pointer<PyObject>, ffi.Int)>>('PyLong_FromUnicodeObject');
-  late final _PyLong_FromUnicodeObject = _PyLong_FromUnicodeObjectPtr
-      .asFunction<ffi.Pointer<PyObject> Function(ffi.Pointer<PyObject>, int)>();
-
-  ffi.Pointer<PyObject> PyLong_FromBytes(
-    ffi.Pointer<ffi.Char> arg0,
-    int arg1,
-    int arg2,
-  ) {
-    return _PyLong_FromBytes(
-      arg0,
-      arg1,
-      arg2,
-    );
-  }
-
-  late final _PyLong_FromBytesPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<PyObject> Function(ffi.Pointer<ffi.Char>, Py_ssize_t,
-              ffi.Int)>>('_PyLong_FromBytes');
-  late final _PyLong_FromBytes = _PyLong_FromBytesPtr.asFunction<
-      ffi.Pointer<PyObject> Function(ffi.Pointer<ffi.Char>, int, int)>();
-
-  int PyLong_Sign(
-    ffi.Pointer<PyObject> v,
-  ) {
-    return _PyLong_Sign(
-      v,
-    );
-  }
-
-  late final _PyLong_SignPtr =
-      _lookup<ffi.NativeFunction<ffi.Int Function(ffi.Pointer<PyObject>)>>(
-          '_PyLong_Sign');
-  late final _PyLong_Sign =
-      _PyLong_SignPtr.asFunction<int Function(ffi.Pointer<PyObject>)>();
-
-  int PyLong_NumBits(
-    ffi.Pointer<PyObject> v,
-  ) {
-    return _PyLong_NumBits(
-      v,
-    );
-  }
-
-  late final _PyLong_NumBitsPtr =
-      _lookup<ffi.NativeFunction<ffi.Size Function(ffi.Pointer<PyObject>)>>(
-          '_PyLong_NumBits');
-  late final _PyLong_NumBits =
-      _PyLong_NumBitsPtr.asFunction<int Function(ffi.Pointer<PyObject>)>();
-
-  ffi.Pointer<PyObject> PyLong_DivmodNear(
-    ffi.Pointer<PyObject> arg0,
-    ffi.Pointer<PyObject> arg1,
-  ) {
-    return _PyLong_DivmodNear(
-      arg0,
-      arg1,
-    );
-  }
-
-  late final _PyLong_DivmodNearPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<PyObject> Function(ffi.Pointer<PyObject>,
-              ffi.Pointer<PyObject>)>>('_PyLong_DivmodNear');
-  late final _PyLong_DivmodNear = _PyLong_DivmodNearPtr.asFunction<
-      ffi.Pointer<PyObject> Function(
-          ffi.Pointer<PyObject>, ffi.Pointer<PyObject>)>();
-
-  ffi.Pointer<PyObject> PyLong_FromByteArray(
-    ffi.Pointer<ffi.UnsignedChar> bytes,
-    int n,
-    int little_endian,
-    int is_signed,
-  ) {
-    return _PyLong_FromByteArray(
-      bytes,
-      n,
-      little_endian,
-      is_signed,
-    );
-  }
-
-  late final _PyLong_FromByteArrayPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<PyObject> Function(ffi.Pointer<ffi.UnsignedChar>,
-              ffi.Size, ffi.Int, ffi.Int)>>('_PyLong_FromByteArray');
-  late final _PyLong_FromByteArray = _PyLong_FromByteArrayPtr.asFunction<
-      ffi.Pointer<PyObject> Function(
-          ffi.Pointer<ffi.UnsignedChar>, int, int, int)>();
-
-  int PyLong_AsByteArray(
-    ffi.Pointer<PyLongObject> v,
-    ffi.Pointer<ffi.UnsignedChar> bytes,
-    int n,
-    int little_endian,
-    int is_signed,
-  ) {
-    return _PyLong_AsByteArray(
-      v,
-      bytes,
-      n,
-      little_endian,
-      is_signed,
-    );
-  }
-
-  late final _PyLong_AsByteArrayPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Int Function(
-              ffi.Pointer<PyLongObject>,
-              ffi.Pointer<ffi.UnsignedChar>,
-              ffi.Size,
-              ffi.Int,
-              ffi.Int)>>('_PyLong_AsByteArray');
-  late final _PyLong_AsByteArray = _PyLong_AsByteArrayPtr.asFunction<
-      int Function(ffi.Pointer<PyLongObject>, ffi.Pointer<ffi.UnsignedChar>,
-          int, int, int)>();
-
-  ffi.Pointer<PyObject> PyLong_FromNbInt(
-    ffi.Pointer<PyObject> arg0,
-  ) {
-    return _PyLong_FromNbInt(
-      arg0,
-    );
-  }
-
-  late final _PyLong_FromNbIntPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<PyObject> Function(
-              ffi.Pointer<PyObject>)>>('_PyLong_FromNbInt');
-  late final _PyLong_FromNbInt = _PyLong_FromNbIntPtr.asFunction<
+              ffi.Pointer<PyObject>)>>('_PyUnicode_Copy');
+  late final _PyUnicode_Copy = _PyUnicode_CopyPtr.asFunction<
       ffi.Pointer<PyObject> Function(ffi.Pointer<PyObject>)>();
 
-  ffi.Pointer<PyObject> PyLong_FromNbIndexOrNbInt(
-    ffi.Pointer<PyObject> arg0,
+  int PyUnicode_CopyCharacters(
+    ffi.Pointer<PyObject> to,
+    int to_start,
+    ffi.Pointer<PyObject> from,
+    int from_start,
+    int how_many,
   ) {
-    return _PyLong_FromNbIndexOrNbInt(
-      arg0,
+    return _PyUnicode_CopyCharacters(
+      to,
+      to_start,
+      from,
+      from_start,
+      how_many,
     );
   }
 
-  late final _PyLong_FromNbIndexOrNbIntPtr = _lookup<
+  late final _PyUnicode_CopyCharactersPtr = _lookup<
       ffi.NativeFunction<
-          ffi.Pointer<PyObject> Function(
-              ffi.Pointer<PyObject>)>>('_PyLong_FromNbIndexOrNbInt');
-  late final _PyLong_FromNbIndexOrNbInt = _PyLong_FromNbIndexOrNbIntPtr
-      .asFunction<ffi.Pointer<PyObject> Function(ffi.Pointer<PyObject>)>();
-
-  ffi.Pointer<PyObject> PyLong_Format(
-    ffi.Pointer<PyObject> obj,
-    int base,
-  ) {
-    return _PyLong_Format(
-      obj,
-      base,
-    );
-  }
-
-  late final _PyLong_FormatPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<PyObject> Function(
-              ffi.Pointer<PyObject>, ffi.Int)>>('_PyLong_Format');
-  late final _PyLong_Format = _PyLong_FormatPtr.asFunction<
-      ffi.Pointer<PyObject> Function(ffi.Pointer<PyObject>, int)>();
-
-  int PyLong_FormatWriter(
-    ffi.Pointer<_PyUnicodeWriter> writer,
-    ffi.Pointer<PyObject> obj,
-    int base,
-    int alternate,
-  ) {
-    return _PyLong_FormatWriter(
-      writer,
-      obj,
-      base,
-      alternate,
-    );
-  }
-
-  late final _PyLong_FormatWriterPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Int Function(ffi.Pointer<_PyUnicodeWriter>, ffi.Pointer<PyObject>,
-              ffi.Int, ffi.Int)>>('_PyLong_FormatWriter');
-  late final _PyLong_FormatWriter = _PyLong_FormatWriterPtr.asFunction<
-      int Function(
-          ffi.Pointer<_PyUnicodeWriter>, ffi.Pointer<PyObject>, int, int)>();
-
-  ffi.Pointer<ffi.Char> PyLong_FormatBytesWriter(
-    ffi.Pointer<_PyBytesWriter> writer,
-    ffi.Pointer<ffi.Char> str,
-    ffi.Pointer<PyObject> obj,
-    int base,
-    int alternate,
-  ) {
-    return _PyLong_FormatBytesWriter(
-      writer,
-      str,
-      obj,
-      base,
-      alternate,
-    );
-  }
-
-  late final _PyLong_FormatBytesWriterPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<ffi.Char> Function(
-              ffi.Pointer<_PyBytesWriter>,
-              ffi.Pointer<ffi.Char>,
+          Py_ssize_t Function(
               ffi.Pointer<PyObject>,
-              ffi.Int,
-              ffi.Int)>>('_PyLong_FormatBytesWriter');
-  late final _PyLong_FormatBytesWriter =
-      _PyLong_FormatBytesWriterPtr.asFunction<
-          ffi.Pointer<ffi.Char> Function(ffi.Pointer<_PyBytesWriter>,
-              ffi.Pointer<ffi.Char>, ffi.Pointer<PyObject>, int, int)>();
+              Py_ssize_t,
+              ffi.Pointer<PyObject>,
+              Py_ssize_t,
+              Py_ssize_t)>>('PyUnicode_CopyCharacters');
+  late final _PyUnicode_CopyCharacters =
+      _PyUnicode_CopyCharactersPtr.asFunction<
+          int Function(
+              ffi.Pointer<PyObject>, int, ffi.Pointer<PyObject>, int, int)>();
 
-  int PyLong_FormatAdvancedWriter(
-    ffi.Pointer<_PyUnicodeWriter> writer,
-    ffi.Pointer<PyObject> obj,
-    ffi.Pointer<PyObject> format_spec,
+  void PyUnicode_FastCopyCharacters(
+    ffi.Pointer<PyObject> to,
+    int to_start,
+    ffi.Pointer<PyObject> from,
+    int from_start,
+    int how_many,
+  ) {
+    return _PyUnicode_FastCopyCharacters(
+      to,
+      to_start,
+      from,
+      from_start,
+      how_many,
+    );
+  }
+
+  late final _PyUnicode_FastCopyCharactersPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Void Function(
+              ffi.Pointer<PyObject>,
+              Py_ssize_t,
+              ffi.Pointer<PyObject>,
+              Py_ssize_t,
+              Py_ssize_t)>>('_PyUnicode_FastCopyCharacters');
+  late final _PyUnicode_FastCopyCharacters =
+      _PyUnicode_FastCopyCharactersPtr.asFunction<
+          void Function(
+              ffi.Pointer<PyObject>, int, ffi.Pointer<PyObject>, int, int)>();
+
+  int PyUnicode_Fill(
+    ffi.Pointer<PyObject> unicode,
+    int start,
+    int length,
+    int fill_char,
+  ) {
+    return _PyUnicode_Fill(
+      unicode,
+      start,
+      length,
+      fill_char,
+    );
+  }
+
+  late final _PyUnicode_FillPtr = _lookup<
+      ffi.NativeFunction<
+          Py_ssize_t Function(ffi.Pointer<PyObject>, Py_ssize_t, Py_ssize_t,
+              Py_UCS4)>>('PyUnicode_Fill');
+  late final _PyUnicode_Fill = _PyUnicode_FillPtr.asFunction<
+      int Function(ffi.Pointer<PyObject>, int, int, int)>();
+
+  void PyUnicode_FastFill(
+    ffi.Pointer<PyObject> unicode,
+    int start,
+    int length,
+    int fill_char,
+  ) {
+    return _PyUnicode_FastFill(
+      unicode,
+      start,
+      length,
+      fill_char,
+    );
+  }
+
+  late final _PyUnicode_FastFillPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Void Function(ffi.Pointer<PyObject>, Py_ssize_t, Py_ssize_t,
+              Py_UCS4)>>('_PyUnicode_FastFill');
+  late final _PyUnicode_FastFill = _PyUnicode_FastFillPtr.asFunction<
+      void Function(ffi.Pointer<PyObject>, int, int, int)>();
+
+  ffi.Pointer<PyObject> PyUnicode_FromKindAndData(
+    int kind,
+    ffi.Pointer<ffi.Void> buffer,
+    int size,
+  ) {
+    return _PyUnicode_FromKindAndData(
+      kind,
+      buffer,
+      size,
+    );
+  }
+
+  late final _PyUnicode_FromKindAndDataPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<PyObject> Function(ffi.Int, ffi.Pointer<ffi.Void>,
+              Py_ssize_t)>>('PyUnicode_FromKindAndData');
+  late final _PyUnicode_FromKindAndData =
+      _PyUnicode_FromKindAndDataPtr.asFunction<
+          ffi.Pointer<PyObject> Function(int, ffi.Pointer<ffi.Void>, int)>();
+
+  ffi.Pointer<PyObject> PyUnicode_FromASCII(
+    ffi.Pointer<ffi.Char> buffer,
+    int size,
+  ) {
+    return _PyUnicode_FromASCII(
+      buffer,
+      size,
+    );
+  }
+
+  late final _PyUnicode_FromASCIIPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<PyObject> Function(
+              ffi.Pointer<ffi.Char>, Py_ssize_t)>>('_PyUnicode_FromASCII');
+  late final _PyUnicode_FromASCII = _PyUnicode_FromASCIIPtr.asFunction<
+      ffi.Pointer<PyObject> Function(ffi.Pointer<ffi.Char>, int)>();
+
+  int PyUnicode_FindMaxChar(
+    ffi.Pointer<PyObject> unicode,
     int start,
     int end,
   ) {
-    return _PyLong_FormatAdvancedWriter(
-      writer,
-      obj,
-      format_spec,
+    return _PyUnicode_FindMaxChar(
+      unicode,
       start,
       end,
     );
   }
 
-  late final _PyLong_FormatAdvancedWriterPtr = _lookup<
+  late final _PyUnicode_FindMaxCharPtr = _lookup<
       ffi.NativeFunction<
-          ffi.Int Function(
-              ffi.Pointer<_PyUnicodeWriter>,
-              ffi.Pointer<PyObject>,
-              ffi.Pointer<PyObject>,
-              Py_ssize_t,
-              Py_ssize_t)>>('_PyLong_FormatAdvancedWriter');
-  late final _PyLong_FormatAdvancedWriter =
-      _PyLong_FormatAdvancedWriterPtr.asFunction<
+          Py_UCS4 Function(ffi.Pointer<PyObject>, Py_ssize_t,
+              Py_ssize_t)>>('_PyUnicode_FindMaxChar');
+  late final _PyUnicode_FindMaxChar = _PyUnicode_FindMaxCharPtr.asFunction<
+      int Function(ffi.Pointer<PyObject>, int, int)>();
+
+  void PyUnicodeWriter_Init(
+    ffi.Pointer<_PyUnicodeWriter> writer,
+  ) {
+    return _PyUnicodeWriter_Init(
+      writer,
+    );
+  }
+
+  late final _PyUnicodeWriter_InitPtr = _lookup<
+          ffi.NativeFunction<ffi.Void Function(ffi.Pointer<_PyUnicodeWriter>)>>(
+      '_PyUnicodeWriter_Init');
+  late final _PyUnicodeWriter_Init = _PyUnicodeWriter_InitPtr.asFunction<
+      void Function(ffi.Pointer<_PyUnicodeWriter>)>();
+
+  int PyUnicodeWriter_PrepareInternal(
+    ffi.Pointer<_PyUnicodeWriter> writer,
+    int length,
+    int maxchar,
+  ) {
+    return _PyUnicodeWriter_PrepareInternal(
+      writer,
+      length,
+      maxchar,
+    );
+  }
+
+  late final _PyUnicodeWriter_PrepareInternalPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int Function(ffi.Pointer<_PyUnicodeWriter>, Py_ssize_t,
+              Py_UCS4)>>('_PyUnicodeWriter_PrepareInternal');
+  late final _PyUnicodeWriter_PrepareInternal =
+      _PyUnicodeWriter_PrepareInternalPtr.asFunction<
+          int Function(ffi.Pointer<_PyUnicodeWriter>, int, int)>();
+
+  int PyUnicodeWriter_PrepareKindInternal(
+    ffi.Pointer<_PyUnicodeWriter> writer,
+    int kind,
+  ) {
+    return _PyUnicodeWriter_PrepareKindInternal(
+      writer,
+      kind,
+    );
+  }
+
+  late final _PyUnicodeWriter_PrepareKindInternalPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int Function(ffi.Pointer<_PyUnicodeWriter>,
+              ffi.Int)>>('_PyUnicodeWriter_PrepareKindInternal');
+  late final _PyUnicodeWriter_PrepareKindInternal =
+      _PyUnicodeWriter_PrepareKindInternalPtr.asFunction<
+          int Function(ffi.Pointer<_PyUnicodeWriter>, int)>();
+
+  int PyUnicodeWriter_WriteChar(
+    ffi.Pointer<_PyUnicodeWriter> writer,
+    int ch,
+  ) {
+    return _PyUnicodeWriter_WriteChar(
+      writer,
+      ch,
+    );
+  }
+
+  late final _PyUnicodeWriter_WriteCharPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int Function(ffi.Pointer<_PyUnicodeWriter>,
+              Py_UCS4)>>('_PyUnicodeWriter_WriteChar');
+  late final _PyUnicodeWriter_WriteChar = _PyUnicodeWriter_WriteCharPtr
+      .asFunction<int Function(ffi.Pointer<_PyUnicodeWriter>, int)>();
+
+  int PyUnicodeWriter_WriteStr(
+    ffi.Pointer<_PyUnicodeWriter> writer,
+    ffi.Pointer<PyObject> str,
+  ) {
+    return _PyUnicodeWriter_WriteStr(
+      writer,
+      str,
+    );
+  }
+
+  late final _PyUnicodeWriter_WriteStrPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int Function(ffi.Pointer<_PyUnicodeWriter>,
+              ffi.Pointer<PyObject>)>>('_PyUnicodeWriter_WriteStr');
+  late final _PyUnicodeWriter_WriteStr =
+      _PyUnicodeWriter_WriteStrPtr.asFunction<
+          int Function(ffi.Pointer<_PyUnicodeWriter>, ffi.Pointer<PyObject>)>();
+
+  int PyUnicodeWriter_WriteSubstring(
+    ffi.Pointer<_PyUnicodeWriter> writer,
+    ffi.Pointer<PyObject> str,
+    int start,
+    int end,
+  ) {
+    return _PyUnicodeWriter_WriteSubstring(
+      writer,
+      str,
+      start,
+      end,
+    );
+  }
+
+  late final _PyUnicodeWriter_WriteSubstringPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int Function(ffi.Pointer<_PyUnicodeWriter>, ffi.Pointer<PyObject>,
+              Py_ssize_t, Py_ssize_t)>>('_PyUnicodeWriter_WriteSubstring');
+  late final _PyUnicodeWriter_WriteSubstring =
+      _PyUnicodeWriter_WriteSubstringPtr.asFunction<
           int Function(ffi.Pointer<_PyUnicodeWriter>, ffi.Pointer<PyObject>,
-              ffi.Pointer<PyObject>, int, int)>();
+              int, int)>();
 
-  int PyOS_strtoul(
-    ffi.Pointer<ffi.Char> arg0,
-    ffi.Pointer<ffi.Pointer<ffi.Char>> arg1,
-    int arg2,
-  ) {
-    return _PyOS_strtoul(
-      arg0,
-      arg1,
-      arg2,
-    );
-  }
-
-  late final _PyOS_strtoulPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.UnsignedLong Function(ffi.Pointer<ffi.Char>,
-              ffi.Pointer<ffi.Pointer<ffi.Char>>, ffi.Int)>>('PyOS_strtoul');
-  late final _PyOS_strtoul = _PyOS_strtoulPtr.asFunction<
-      int Function(
-          ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Pointer<ffi.Char>>, int)>();
-
-  int PyOS_strtol(
-    ffi.Pointer<ffi.Char> arg0,
-    ffi.Pointer<ffi.Pointer<ffi.Char>> arg1,
-    int arg2,
-  ) {
-    return _PyOS_strtol(
-      arg0,
-      arg1,
-      arg2,
-    );
-  }
-
-  late final _PyOS_strtolPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Long Function(ffi.Pointer<ffi.Char>,
-              ffi.Pointer<ffi.Pointer<ffi.Char>>, ffi.Int)>>('PyOS_strtol');
-  late final _PyOS_strtol = _PyOS_strtolPtr.asFunction<
-      int Function(
-          ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Pointer<ffi.Char>>, int)>();
-
-  ffi.Pointer<PyObject> PyLong_GCD(
-    ffi.Pointer<PyObject> arg0,
-    ffi.Pointer<PyObject> arg1,
-  ) {
-    return _PyLong_GCD(
-      arg0,
-      arg1,
-    );
-  }
-
-  late final _PyLong_GCDPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<PyObject> Function(
-              ffi.Pointer<PyObject>, ffi.Pointer<PyObject>)>>('_PyLong_GCD');
-  late final _PyLong_GCD = _PyLong_GCDPtr.asFunction<
-      ffi.Pointer<PyObject> Function(
-          ffi.Pointer<PyObject>, ffi.Pointer<PyObject>)>();
-
-  late final ffi.Pointer<ffi.Pointer<PyObject>> _PyLong_Zero =
-      _lookup<ffi.Pointer<PyObject>>('_PyLong_Zero');
-
-  ffi.Pointer<PyObject> get PyLong_Zero => _PyLong_Zero.value;
-
-  set PyLong_Zero(ffi.Pointer<PyObject> value) => _PyLong_Zero.value = value;
-
-  late final ffi.Pointer<ffi.Pointer<PyObject>> _PyLong_One =
-      _lookup<ffi.Pointer<PyObject>>('_PyLong_One');
-
-  ffi.Pointer<PyObject> get PyLong_One => _PyLong_One.value;
-
-  set PyLong_One(ffi.Pointer<PyObject> value) => _PyLong_One.value = value;
-
-  ffi.Pointer<PyObject> PyLong_Rshift(
-    ffi.Pointer<PyObject> arg0,
-    int arg1,
-  ) {
-    return _PyLong_Rshift(
-      arg0,
-      arg1,
-    );
-  }
-
-  late final _PyLong_RshiftPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<PyObject> Function(
-              ffi.Pointer<PyObject>, ffi.Size)>>('_PyLong_Rshift');
-  late final _PyLong_Rshift = _PyLong_RshiftPtr.asFunction<
-      ffi.Pointer<PyObject> Function(ffi.Pointer<PyObject>, int)>();
-
-  ffi.Pointer<PyObject> PyLong_Lshift(
-    ffi.Pointer<PyObject> arg0,
-    int arg1,
-  ) {
-    return _PyLong_Lshift(
-      arg0,
-      arg1,
-    );
-  }
-
-  late final _PyLong_LshiftPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<PyObject> Function(
-              ffi.Pointer<PyObject>, ffi.Size)>>('_PyLong_Lshift');
-  late final _PyLong_Lshift = _PyLong_LshiftPtr.asFunction<
-      ffi.Pointer<PyObject> Function(ffi.Pointer<PyObject>, int)>();
-
-  ffi.Pointer<PyLongObject> PyLong_New(
-    int arg0,
-  ) {
-    return _PyLong_New(
-      arg0,
-    );
-  }
-
-  late final _PyLong_NewPtr = _lookup<
-          ffi.NativeFunction<ffi.Pointer<PyLongObject> Function(Py_ssize_t)>>(
-      '_PyLong_New');
-  late final _PyLong_New =
-      _PyLong_NewPtr.asFunction<ffi.Pointer<PyLongObject> Function(int)>();
-
-  ffi.Pointer<PyObject> PyLong_Copy(
-    ffi.Pointer<PyLongObject> src,
-  ) {
-    return _PyLong_Copy(
-      src,
-    );
-  }
-
-  late final _PyLong_CopyPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<PyObject> Function(
-              ffi.Pointer<PyLongObject>)>>('_PyLong_Copy');
-  late final _PyLong_Copy = _PyLong_CopyPtr.asFunction<
-      ffi.Pointer<PyObject> Function(ffi.Pointer<PyLongObject>)>();
-
-  late final ffi.Pointer<PyTypeObject> _PyBool_Type =
-      _lookup<PyTypeObject>('PyBool_Type');
-
-  PyTypeObject get PyBool_Type => _PyBool_Type.ref;
-
-  late final ffi.Pointer<_longobject> _Py_FalseStruct =
-      _lookup<_longobject>('_Py_FalseStruct');
-
-  _longobject get Py_FalseStruct => _Py_FalseStruct.ref;
-
-  late final ffi.Pointer<_longobject> _Py_TrueStruct =
-      _lookup<_longobject>('_Py_TrueStruct');
-
-  _longobject get Py_TrueStruct => _Py_TrueStruct.ref;
-
-  ffi.Pointer<PyObject> PyBool_FromLong(
-    int arg0,
-  ) {
-    return _PyBool_FromLong(
-      arg0,
-    );
-  }
-
-  late final _PyBool_FromLongPtr =
-      _lookup<ffi.NativeFunction<ffi.Pointer<PyObject> Function(ffi.Long)>>(
-          'PyBool_FromLong');
-  late final _PyBool_FromLong =
-      _PyBool_FromLongPtr.asFunction<ffi.Pointer<PyObject> Function(int)>();
-
-  late final ffi.Pointer<PyTypeObject> _PyFloat_Type =
-      _lookup<PyTypeObject>('PyFloat_Type');
-
-  PyTypeObject get PyFloat_Type => _PyFloat_Type.ref;
-
-  double PyFloat_GetMax() {
-    return _PyFloat_GetMax();
-  }
-
-  late final _PyFloat_GetMaxPtr =
-      _lookup<ffi.NativeFunction<ffi.Double Function()>>('PyFloat_GetMax');
-  late final _PyFloat_GetMax =
-      _PyFloat_GetMaxPtr.asFunction<double Function()>();
-
-  double PyFloat_GetMin() {
-    return _PyFloat_GetMin();
-  }
-
-  late final _PyFloat_GetMinPtr =
-      _lookup<ffi.NativeFunction<ffi.Double Function()>>('PyFloat_GetMin');
-  late final _PyFloat_GetMin =
-      _PyFloat_GetMinPtr.asFunction<double Function()>();
-
-  ffi.Pointer<PyObject> PyFloat_GetInfo() {
-    return _PyFloat_GetInfo();
-  }
-
-  late final _PyFloat_GetInfoPtr =
-      _lookup<ffi.NativeFunction<ffi.Pointer<PyObject> Function()>>(
-          'PyFloat_GetInfo');
-  late final _PyFloat_GetInfo =
-      _PyFloat_GetInfoPtr.asFunction<ffi.Pointer<PyObject> Function()>();
-
-  ffi.Pointer<PyObject> PyFloat_FromString(
-    ffi.Pointer<PyObject> arg0,
-  ) {
-    return _PyFloat_FromString(
-      arg0,
-    );
-  }
-
-  late final _PyFloat_FromStringPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<PyObject> Function(
-              ffi.Pointer<PyObject>)>>('PyFloat_FromString');
-  late final _PyFloat_FromString = _PyFloat_FromStringPtr.asFunction<
-      ffi.Pointer<PyObject> Function(ffi.Pointer<PyObject>)>();
-
-  ffi.Pointer<PyObject> PyFloat_FromDouble(
-    double arg0,
-  ) {
-    return _PyFloat_FromDouble(
-      arg0,
-    );
-  }
-
-  late final _PyFloat_FromDoublePtr =
-      _lookup<ffi.NativeFunction<ffi.Pointer<PyObject> Function(ffi.Double)>>(
-          'PyFloat_FromDouble');
-  late final _PyFloat_FromDouble = _PyFloat_FromDoublePtr.asFunction<
-      ffi.Pointer<PyObject> Function(double)>();
-
-  double PyFloat_AsDouble(
-    ffi.Pointer<PyObject> arg0,
-  ) {
-    return _PyFloat_AsDouble(
-      arg0,
-    );
-  }
-
-  late final _PyFloat_AsDoublePtr =
-      _lookup<ffi.NativeFunction<ffi.Double Function(ffi.Pointer<PyObject>)>>(
-          'PyFloat_AsDouble');
-  late final _PyFloat_AsDouble =
-      _PyFloat_AsDoublePtr.asFunction<double Function(ffi.Pointer<PyObject>)>();
-
-  int PyFloat_Pack2(
-    double x,
-    ffi.Pointer<ffi.UnsignedChar> p,
-    int le,
-  ) {
-    return _PyFloat_Pack2(
-      x,
-      p,
-      le,
-    );
-  }
-
-  late final _PyFloat_Pack2Ptr = _lookup<
-      ffi.NativeFunction<
-          ffi.Int Function(ffi.Double, ffi.Pointer<ffi.UnsignedChar>,
-              ffi.Int)>>('_PyFloat_Pack2');
-  late final _PyFloat_Pack2 = _PyFloat_Pack2Ptr.asFunction<
-      int Function(double, ffi.Pointer<ffi.UnsignedChar>, int)>();
-
-  int PyFloat_Pack4(
-    double x,
-    ffi.Pointer<ffi.UnsignedChar> p,
-    int le,
-  ) {
-    return _PyFloat_Pack4(
-      x,
-      p,
-      le,
-    );
-  }
-
-  late final _PyFloat_Pack4Ptr = _lookup<
-      ffi.NativeFunction<
-          ffi.Int Function(ffi.Double, ffi.Pointer<ffi.UnsignedChar>,
-              ffi.Int)>>('_PyFloat_Pack4');
-  late final _PyFloat_Pack4 = _PyFloat_Pack4Ptr.asFunction<
-      int Function(double, ffi.Pointer<ffi.UnsignedChar>, int)>();
-
-  int PyFloat_Pack8(
-    double x,
-    ffi.Pointer<ffi.UnsignedChar> p,
-    int le,
-  ) {
-    return _PyFloat_Pack8(
-      x,
-      p,
-      le,
-    );
-  }
-
-  late final _PyFloat_Pack8Ptr = _lookup<
-      ffi.NativeFunction<
-          ffi.Int Function(ffi.Double, ffi.Pointer<ffi.UnsignedChar>,
-              ffi.Int)>>('_PyFloat_Pack8');
-  late final _PyFloat_Pack8 = _PyFloat_Pack8Ptr.asFunction<
-      int Function(double, ffi.Pointer<ffi.UnsignedChar>, int)>();
-
-  int PyFloat_Repr(
-    double x,
-    ffi.Pointer<ffi.Char> p,
+  int PyUnicodeWriter_WriteASCIIString(
+    ffi.Pointer<_PyUnicodeWriter> writer,
+    ffi.Pointer<ffi.Char> str,
     int len,
   ) {
-    return _PyFloat_Repr(
-      x,
-      p,
+    return _PyUnicodeWriter_WriteASCIIString(
+      writer,
+      str,
       len,
     );
   }
 
-  late final _PyFloat_ReprPtr = _lookup<
+  late final _PyUnicodeWriter_WriteASCIIStringPtr = _lookup<
       ffi.NativeFunction<
-          ffi.Int Function(
-              ffi.Double, ffi.Pointer<ffi.Char>, ffi.Size)>>('_PyFloat_Repr');
-  late final _PyFloat_Repr = _PyFloat_ReprPtr.asFunction<
-      int Function(double, ffi.Pointer<ffi.Char>, int)>();
+          ffi.Int Function(ffi.Pointer<_PyUnicodeWriter>, ffi.Pointer<ffi.Char>,
+              Py_ssize_t)>>('_PyUnicodeWriter_WriteASCIIString');
+  late final _PyUnicodeWriter_WriteASCIIString =
+      _PyUnicodeWriter_WriteASCIIStringPtr.asFunction<
+          int Function(
+              ffi.Pointer<_PyUnicodeWriter>, ffi.Pointer<ffi.Char>, int)>();
 
-  int PyFloat_Digits(
-    ffi.Pointer<ffi.Char> buf,
-    double v,
-    ffi.Pointer<ffi.Int> signum,
+  int PyUnicodeWriter_WriteLatin1String(
+    ffi.Pointer<_PyUnicodeWriter> writer,
+    ffi.Pointer<ffi.Char> str,
+    int len,
   ) {
-    return _PyFloat_Digits(
-      buf,
-      v,
-      signum,
+    return _PyUnicodeWriter_WriteLatin1String(
+      writer,
+      str,
+      len,
     );
   }
 
-  late final _PyFloat_DigitsPtr = _lookup<
+  late final _PyUnicodeWriter_WriteLatin1StringPtr = _lookup<
       ffi.NativeFunction<
-          ffi.Int Function(ffi.Pointer<ffi.Char>, ffi.Double,
-              ffi.Pointer<ffi.Int>)>>('_PyFloat_Digits');
-  late final _PyFloat_Digits = _PyFloat_DigitsPtr.asFunction<
-      int Function(ffi.Pointer<ffi.Char>, double, ffi.Pointer<ffi.Int>)>();
+          ffi.Int Function(ffi.Pointer<_PyUnicodeWriter>, ffi.Pointer<ffi.Char>,
+              Py_ssize_t)>>('_PyUnicodeWriter_WriteLatin1String');
+  late final _PyUnicodeWriter_WriteLatin1String =
+      _PyUnicodeWriter_WriteLatin1StringPtr.asFunction<
+          int Function(
+              ffi.Pointer<_PyUnicodeWriter>, ffi.Pointer<ffi.Char>, int)>();
 
-  void PyFloat_DigitsInit() {
-    return _PyFloat_DigitsInit();
-  }
-
-  late final _PyFloat_DigitsInitPtr =
-      _lookup<ffi.NativeFunction<ffi.Void Function()>>('_PyFloat_DigitsInit');
-  late final _PyFloat_DigitsInit =
-      _PyFloat_DigitsInitPtr.asFunction<void Function()>();
-
-  double PyFloat_Unpack2(
-    ffi.Pointer<ffi.UnsignedChar> p,
-    int le,
+  ffi.Pointer<PyObject> PyUnicodeWriter_Finish(
+    ffi.Pointer<_PyUnicodeWriter> writer,
   ) {
-    return _PyFloat_Unpack2(
-      p,
-      le,
+    return _PyUnicodeWriter_Finish(
+      writer,
     );
   }
 
-  late final _PyFloat_Unpack2Ptr = _lookup<
+  late final _PyUnicodeWriter_FinishPtr = _lookup<
       ffi.NativeFunction<
-          ffi.Double Function(
-              ffi.Pointer<ffi.UnsignedChar>, ffi.Int)>>('_PyFloat_Unpack2');
-  late final _PyFloat_Unpack2 = _PyFloat_Unpack2Ptr.asFunction<
-      double Function(ffi.Pointer<ffi.UnsignedChar>, int)>();
+          ffi.Pointer<PyObject> Function(
+              ffi.Pointer<_PyUnicodeWriter>)>>('_PyUnicodeWriter_Finish');
+  late final _PyUnicodeWriter_Finish = _PyUnicodeWriter_FinishPtr.asFunction<
+      ffi.Pointer<PyObject> Function(ffi.Pointer<_PyUnicodeWriter>)>();
 
-  double PyFloat_Unpack4(
-    ffi.Pointer<ffi.UnsignedChar> p,
-    int le,
+  void PyUnicodeWriter_Dealloc(
+    ffi.Pointer<_PyUnicodeWriter> writer,
   ) {
-    return _PyFloat_Unpack4(
-      p,
-      le,
+    return _PyUnicodeWriter_Dealloc(
+      writer,
     );
   }
 
-  late final _PyFloat_Unpack4Ptr = _lookup<
-      ffi.NativeFunction<
-          ffi.Double Function(
-              ffi.Pointer<ffi.UnsignedChar>, ffi.Int)>>('_PyFloat_Unpack4');
-  late final _PyFloat_Unpack4 = _PyFloat_Unpack4Ptr.asFunction<
-      double Function(ffi.Pointer<ffi.UnsignedChar>, int)>();
+  late final _PyUnicodeWriter_DeallocPtr = _lookup<
+          ffi.NativeFunction<ffi.Void Function(ffi.Pointer<_PyUnicodeWriter>)>>(
+      '_PyUnicodeWriter_Dealloc');
+  late final _PyUnicodeWriter_Dealloc = _PyUnicodeWriter_DeallocPtr.asFunction<
+      void Function(ffi.Pointer<_PyUnicodeWriter>)>();
 
-  double PyFloat_Unpack8(
-    ffi.Pointer<ffi.UnsignedChar> p,
-    int le,
-  ) {
-    return _PyFloat_Unpack8(
-      p,
-      le,
-    );
-  }
-
-  late final _PyFloat_Unpack8Ptr = _lookup<
-      ffi.NativeFunction<
-          ffi.Double Function(
-              ffi.Pointer<ffi.UnsignedChar>, ffi.Int)>>('_PyFloat_Unpack8');
-  late final _PyFloat_Unpack8 = _PyFloat_Unpack8Ptr.asFunction<
-      double Function(ffi.Pointer<ffi.UnsignedChar>, int)>();
-
-  int PyFloat_ClearFreeList() {
-    return _PyFloat_ClearFreeList();
-  }
-
-  late final _PyFloat_ClearFreeListPtr =
-      _lookup<ffi.NativeFunction<ffi.Int Function()>>('PyFloat_ClearFreeList');
-  late final _PyFloat_ClearFreeList =
-      _PyFloat_ClearFreeListPtr.asFunction<int Function()>();
-
-  void PyFloat_DebugMallocStats(
-    ffi.Pointer<FILE> out,
-  ) {
-    return _PyFloat_DebugMallocStats(
-      out,
-    );
-  }
-
-  late final _PyFloat_DebugMallocStatsPtr =
-      _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Pointer<FILE>)>>(
-          '_PyFloat_DebugMallocStats');
-  late final _PyFloat_DebugMallocStats = _PyFloat_DebugMallocStatsPtr
-      .asFunction<void Function(ffi.Pointer<FILE>)>();
-
-  int PyFloat_FormatAdvancedWriter(
+  int PyUnicode_FormatAdvancedWriter(
     ffi.Pointer<_PyUnicodeWriter> writer,
     ffi.Pointer<PyObject> obj,
     ffi.Pointer<PyObject> format_spec,
     int start,
     int end,
   ) {
-    return _PyFloat_FormatAdvancedWriter(
+    return _PyUnicode_FormatAdvancedWriter(
       writer,
       obj,
       format_spec,
@@ -4979,3178 +5175,1226 @@ class DartPyC {
     );
   }
 
-  late final _PyFloat_FormatAdvancedWriterPtr = _lookup<
+  late final _PyUnicode_FormatAdvancedWriterPtr = _lookup<
       ffi.NativeFunction<
           ffi.Int Function(
               ffi.Pointer<_PyUnicodeWriter>,
               ffi.Pointer<PyObject>,
               ffi.Pointer<PyObject>,
               Py_ssize_t,
-              Py_ssize_t)>>('_PyFloat_FormatAdvancedWriter');
-  late final _PyFloat_FormatAdvancedWriter =
-      _PyFloat_FormatAdvancedWriterPtr.asFunction<
+              Py_ssize_t)>>('_PyUnicode_FormatAdvancedWriter');
+  late final _PyUnicode_FormatAdvancedWriter =
+      _PyUnicode_FormatAdvancedWriterPtr.asFunction<
           int Function(ffi.Pointer<_PyUnicodeWriter>, ffi.Pointer<PyObject>,
               ffi.Pointer<PyObject>, int, int)>();
 
-  Py_complex Py_c_sum(
-    Py_complex arg0,
-    Py_complex arg1,
+  ffi.Pointer<ffi.Char> PyUnicode_AsUTF8(
+    ffi.Pointer<PyObject> unicode,
   ) {
-    return _Py_c_sum(
-      arg0,
-      arg1,
+    return _PyUnicode_AsUTF8(
+      unicode,
     );
   }
 
-  late final _Py_c_sumPtr =
-      _lookup<ffi.NativeFunction<Py_complex Function(Py_complex, Py_complex)>>(
-          '_Py_c_sum');
-  late final _Py_c_sum =
-      _Py_c_sumPtr.asFunction<Py_complex Function(Py_complex, Py_complex)>();
-
-  Py_complex Py_c_diff(
-    Py_complex arg0,
-    Py_complex arg1,
-  ) {
-    return _Py_c_diff(
-      arg0,
-      arg1,
-    );
-  }
-
-  late final _Py_c_diffPtr =
-      _lookup<ffi.NativeFunction<Py_complex Function(Py_complex, Py_complex)>>(
-          '_Py_c_diff');
-  late final _Py_c_diff =
-      _Py_c_diffPtr.asFunction<Py_complex Function(Py_complex, Py_complex)>();
-
-  Py_complex Py_c_neg(
-    Py_complex arg0,
-  ) {
-    return _Py_c_neg(
-      arg0,
-    );
-  }
-
-  late final _Py_c_negPtr =
-      _lookup<ffi.NativeFunction<Py_complex Function(Py_complex)>>('_Py_c_neg');
-  late final _Py_c_neg =
-      _Py_c_negPtr.asFunction<Py_complex Function(Py_complex)>();
-
-  Py_complex Py_c_prod(
-    Py_complex arg0,
-    Py_complex arg1,
-  ) {
-    return _Py_c_prod(
-      arg0,
-      arg1,
-    );
-  }
-
-  late final _Py_c_prodPtr =
-      _lookup<ffi.NativeFunction<Py_complex Function(Py_complex, Py_complex)>>(
-          '_Py_c_prod');
-  late final _Py_c_prod =
-      _Py_c_prodPtr.asFunction<Py_complex Function(Py_complex, Py_complex)>();
-
-  Py_complex Py_c_quot(
-    Py_complex arg0,
-    Py_complex arg1,
-  ) {
-    return _Py_c_quot(
-      arg0,
-      arg1,
-    );
-  }
-
-  late final _Py_c_quotPtr =
-      _lookup<ffi.NativeFunction<Py_complex Function(Py_complex, Py_complex)>>(
-          '_Py_c_quot');
-  late final _Py_c_quot =
-      _Py_c_quotPtr.asFunction<Py_complex Function(Py_complex, Py_complex)>();
-
-  Py_complex Py_c_pow(
-    Py_complex arg0,
-    Py_complex arg1,
-  ) {
-    return _Py_c_pow(
-      arg0,
-      arg1,
-    );
-  }
-
-  late final _Py_c_powPtr =
-      _lookup<ffi.NativeFunction<Py_complex Function(Py_complex, Py_complex)>>(
-          '_Py_c_pow');
-  late final _Py_c_pow =
-      _Py_c_powPtr.asFunction<Py_complex Function(Py_complex, Py_complex)>();
-
-  double Py_c_abs(
-    Py_complex arg0,
-  ) {
-    return _Py_c_abs(
-      arg0,
-    );
-  }
-
-  late final _Py_c_absPtr =
-      _lookup<ffi.NativeFunction<ffi.Double Function(Py_complex)>>('_Py_c_abs');
-  late final _Py_c_abs = _Py_c_absPtr.asFunction<double Function(Py_complex)>();
-
-  late final ffi.Pointer<PyTypeObject> _PyComplex_Type =
-      _lookup<PyTypeObject>('PyComplex_Type');
-
-  PyTypeObject get PyComplex_Type => _PyComplex_Type.ref;
-
-  ffi.Pointer<PyObject> PyComplex_FromCComplex(
-    Py_complex arg0,
-  ) {
-    return _PyComplex_FromCComplex(
-      arg0,
-    );
-  }
-
-  late final _PyComplex_FromCComplexPtr =
-      _lookup<ffi.NativeFunction<ffi.Pointer<PyObject> Function(Py_complex)>>(
-          'PyComplex_FromCComplex');
-  late final _PyComplex_FromCComplex = _PyComplex_FromCComplexPtr.asFunction<
-      ffi.Pointer<PyObject> Function(Py_complex)>();
-
-  ffi.Pointer<PyObject> PyComplex_FromDoubles(
-    double real,
-    double imag,
-  ) {
-    return _PyComplex_FromDoubles(
-      real,
-      imag,
-    );
-  }
-
-  late final _PyComplex_FromDoublesPtr = _lookup<
+  late final _PyUnicode_AsUTF8Ptr = _lookup<
       ffi.NativeFunction<
-          ffi.Pointer<PyObject> Function(
-              ffi.Double, ffi.Double)>>('PyComplex_FromDoubles');
-  late final _PyComplex_FromDoubles = _PyComplex_FromDoublesPtr.asFunction<
-      ffi.Pointer<PyObject> Function(double, double)>();
+          ffi.Pointer<ffi.Char> Function(
+              ffi.Pointer<PyObject>)>>('PyUnicode_AsUTF8');
+  late final _PyUnicode_AsUTF8 = _PyUnicode_AsUTF8Ptr.asFunction<
+      ffi.Pointer<ffi.Char> Function(ffi.Pointer<PyObject>)>();
 
-  double PyComplex_RealAsDouble(
-    ffi.Pointer<PyObject> op,
+  ffi.Pointer<PyObject> PyUnicode_EncodeUTF7(
+    ffi.Pointer<PyObject> unicode,
+    int base64SetO,
+    int base64WhiteSpace,
+    ffi.Pointer<ffi.Char> errors,
   ) {
-    return _PyComplex_RealAsDouble(
-      op,
+    return _PyUnicode_EncodeUTF7(
+      unicode,
+      base64SetO,
+      base64WhiteSpace,
+      errors,
     );
   }
 
-  late final _PyComplex_RealAsDoublePtr =
-      _lookup<ffi.NativeFunction<ffi.Double Function(ffi.Pointer<PyObject>)>>(
-          'PyComplex_RealAsDouble');
-  late final _PyComplex_RealAsDouble = _PyComplex_RealAsDoublePtr.asFunction<
-      double Function(ffi.Pointer<PyObject>)>();
-
-  double PyComplex_ImagAsDouble(
-    ffi.Pointer<PyObject> op,
-  ) {
-    return _PyComplex_ImagAsDouble(
-      op,
-    );
-  }
-
-  late final _PyComplex_ImagAsDoublePtr =
-      _lookup<ffi.NativeFunction<ffi.Double Function(ffi.Pointer<PyObject>)>>(
-          'PyComplex_ImagAsDouble');
-  late final _PyComplex_ImagAsDouble = _PyComplex_ImagAsDoublePtr.asFunction<
-      double Function(ffi.Pointer<PyObject>)>();
-
-  Py_complex PyComplex_AsCComplex(
-    ffi.Pointer<PyObject> op,
-  ) {
-    return _PyComplex_AsCComplex(
-      op,
-    );
-  }
-
-  late final _PyComplex_AsCComplexPtr =
-      _lookup<ffi.NativeFunction<Py_complex Function(ffi.Pointer<PyObject>)>>(
-          'PyComplex_AsCComplex');
-  late final _PyComplex_AsCComplex = _PyComplex_AsCComplexPtr.asFunction<
-      Py_complex Function(ffi.Pointer<PyObject>)>();
-
-  int PyComplex_FormatAdvancedWriter(
-    ffi.Pointer<_PyUnicodeWriter> writer,
-    ffi.Pointer<PyObject> obj,
-    ffi.Pointer<PyObject> format_spec,
-    int start,
-    int end,
-  ) {
-    return _PyComplex_FormatAdvancedWriter(
-      writer,
-      obj,
-      format_spec,
-      start,
-      end,
-    );
-  }
-
-  late final _PyComplex_FormatAdvancedWriterPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Int Function(
-              ffi.Pointer<_PyUnicodeWriter>,
-              ffi.Pointer<PyObject>,
-              ffi.Pointer<PyObject>,
-              Py_ssize_t,
-              Py_ssize_t)>>('_PyComplex_FormatAdvancedWriter');
-  late final _PyComplex_FormatAdvancedWriter =
-      _PyComplex_FormatAdvancedWriterPtr.asFunction<
-          int Function(ffi.Pointer<_PyUnicodeWriter>, ffi.Pointer<PyObject>,
-              ffi.Pointer<PyObject>, int, int)>();
-
-  late final ffi.Pointer<PyTypeObject> _PyRange_Type =
-      _lookup<PyTypeObject>('PyRange_Type');
-
-  PyTypeObject get PyRange_Type => _PyRange_Type.ref;
-
-  late final ffi.Pointer<PyTypeObject> _PyRangeIter_Type =
-      _lookup<PyTypeObject>('PyRangeIter_Type');
-
-  PyTypeObject get PyRangeIter_Type => _PyRangeIter_Type.ref;
-
-  late final ffi.Pointer<PyTypeObject> _PyLongRangeIter_Type =
-      _lookup<PyTypeObject>('PyLongRangeIter_Type');
-
-  PyTypeObject get PyLongRangeIter_Type => _PyLongRangeIter_Type.ref;
-
-  late final ffi.Pointer<PyTypeObject> _PyManagedBuffer_Type =
-      _lookup<PyTypeObject>('_PyManagedBuffer_Type');
-
-  PyTypeObject get PyManagedBuffer_Type => _PyManagedBuffer_Type.ref;
-
-  late final ffi.Pointer<PyTypeObject> _PyMemoryView_Type =
-      _lookup<PyTypeObject>('PyMemoryView_Type');
-
-  PyTypeObject get PyMemoryView_Type => _PyMemoryView_Type.ref;
-
-  ffi.Pointer<PyObject> PyMemoryView_FromObject(
-    ffi.Pointer<PyObject> base,
-  ) {
-    return _PyMemoryView_FromObject(
-      base,
-    );
-  }
-
-  late final _PyMemoryView_FromObjectPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<PyObject> Function(
-              ffi.Pointer<PyObject>)>>('PyMemoryView_FromObject');
-  late final _PyMemoryView_FromObject = _PyMemoryView_FromObjectPtr.asFunction<
-      ffi.Pointer<PyObject> Function(ffi.Pointer<PyObject>)>();
-
-  ffi.Pointer<PyObject> PyMemoryView_FromMemory(
-    ffi.Pointer<ffi.Char> mem,
-    int size,
-    int flags,
-  ) {
-    return _PyMemoryView_FromMemory(
-      mem,
-      size,
-      flags,
-    );
-  }
-
-  late final _PyMemoryView_FromMemoryPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<PyObject> Function(ffi.Pointer<ffi.Char>, Py_ssize_t,
-              ffi.Int)>>('PyMemoryView_FromMemory');
-  late final _PyMemoryView_FromMemory = _PyMemoryView_FromMemoryPtr.asFunction<
-      ffi.Pointer<PyObject> Function(ffi.Pointer<ffi.Char>, int, int)>();
-
-  ffi.Pointer<PyObject> PyMemoryView_FromBuffer(
-    ffi.Pointer<Py_buffer> info,
-  ) {
-    return _PyMemoryView_FromBuffer(
-      info,
-    );
-  }
-
-  late final _PyMemoryView_FromBufferPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<PyObject> Function(
-              ffi.Pointer<Py_buffer>)>>('PyMemoryView_FromBuffer');
-  late final _PyMemoryView_FromBuffer = _PyMemoryView_FromBufferPtr.asFunction<
-      ffi.Pointer<PyObject> Function(ffi.Pointer<Py_buffer>)>();
-
-  ffi.Pointer<PyObject> PyMemoryView_GetContiguous(
-    ffi.Pointer<PyObject> base,
-    int buffertype,
-    int order,
-  ) {
-    return _PyMemoryView_GetContiguous(
-      base,
-      buffertype,
-      order,
-    );
-  }
-
-  late final _PyMemoryView_GetContiguousPtr = _lookup<
+  late final _PyUnicode_EncodeUTF7Ptr = _lookup<
       ffi.NativeFunction<
           ffi.Pointer<PyObject> Function(ffi.Pointer<PyObject>, ffi.Int,
-              ffi.Char)>>('PyMemoryView_GetContiguous');
-  late final _PyMemoryView_GetContiguous =
-      _PyMemoryView_GetContiguousPtr.asFunction<
-          ffi.Pointer<PyObject> Function(ffi.Pointer<PyObject>, int, int)>();
-
-  late final ffi.Pointer<PyTypeObject> _PyTuple_Type =
-      _lookup<PyTypeObject>('PyTuple_Type');
-
-  PyTypeObject get PyTuple_Type => _PyTuple_Type.ref;
-
-  late final ffi.Pointer<PyTypeObject> _PyTupleIter_Type =
-      _lookup<PyTypeObject>('PyTupleIter_Type');
-
-  PyTypeObject get PyTupleIter_Type => _PyTupleIter_Type.ref;
-
-  ffi.Pointer<PyObject> PyTuple_New(
-    int size,
-  ) {
-    return _PyTuple_New(
-      size,
-    );
-  }
-
-  late final _PyTuple_NewPtr =
-      _lookup<ffi.NativeFunction<ffi.Pointer<PyObject> Function(Py_ssize_t)>>(
-          'PyTuple_New');
-  late final _PyTuple_New =
-      _PyTuple_NewPtr.asFunction<ffi.Pointer<PyObject> Function(int)>();
-
-  int PyTuple_Size(
-    ffi.Pointer<PyObject> arg0,
-  ) {
-    return _PyTuple_Size(
-      arg0,
-    );
-  }
-
-  late final _PyTuple_SizePtr =
-      _lookup<ffi.NativeFunction<Py_ssize_t Function(ffi.Pointer<PyObject>)>>(
-          'PyTuple_Size');
-  late final _PyTuple_Size =
-      _PyTuple_SizePtr.asFunction<int Function(ffi.Pointer<PyObject>)>();
-
-  ffi.Pointer<PyObject> PyTuple_GetItem(
-    ffi.Pointer<PyObject> arg0,
-    int arg1,
-  ) {
-    return _PyTuple_GetItem(
-      arg0,
-      arg1,
-    );
-  }
-
-  late final _PyTuple_GetItemPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<PyObject> Function(
-              ffi.Pointer<PyObject>, Py_ssize_t)>>('PyTuple_GetItem');
-  late final _PyTuple_GetItem = _PyTuple_GetItemPtr.asFunction<
-      ffi.Pointer<PyObject> Function(ffi.Pointer<PyObject>, int)>();
-
-  int PyTuple_SetItem(
-    ffi.Pointer<PyObject> arg0,
-    int arg1,
-    ffi.Pointer<PyObject> arg2,
-  ) {
-    return _PyTuple_SetItem(
-      arg0,
-      arg1,
-      arg2,
-    );
-  }
-
-  late final _PyTuple_SetItemPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Int Function(ffi.Pointer<PyObject>, Py_ssize_t,
-              ffi.Pointer<PyObject>)>>('PyTuple_SetItem');
-  late final _PyTuple_SetItem = _PyTuple_SetItemPtr.asFunction<
-      int Function(ffi.Pointer<PyObject>, int, ffi.Pointer<PyObject>)>();
-
-  ffi.Pointer<PyObject> PyTuple_GetSlice(
-    ffi.Pointer<PyObject> arg0,
-    int arg1,
-    int arg2,
-  ) {
-    return _PyTuple_GetSlice(
-      arg0,
-      arg1,
-      arg2,
-    );
-  }
-
-  late final _PyTuple_GetSlicePtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<PyObject> Function(ffi.Pointer<PyObject>, Py_ssize_t,
-              Py_ssize_t)>>('PyTuple_GetSlice');
-  late final _PyTuple_GetSlice = _PyTuple_GetSlicePtr.asFunction<
-      ffi.Pointer<PyObject> Function(ffi.Pointer<PyObject>, int, int)>();
-
-  ffi.Pointer<PyObject> PyTuple_Pack(
-    int arg0,
-  ) {
-    return _PyTuple_Pack(
-      arg0,
-    );
-  }
-
-  late final _PyTuple_PackPtr =
-      _lookup<ffi.NativeFunction<ffi.Pointer<PyObject> Function(Py_ssize_t)>>(
-          'PyTuple_Pack');
-  late final _PyTuple_Pack =
-      _PyTuple_PackPtr.asFunction<ffi.Pointer<PyObject> Function(int)>();
-
-  int PyTuple_ClearFreeList() {
-    return _PyTuple_ClearFreeList();
-  }
-
-  late final _PyTuple_ClearFreeListPtr =
-      _lookup<ffi.NativeFunction<ffi.Int Function()>>('PyTuple_ClearFreeList');
-  late final _PyTuple_ClearFreeList =
-      _PyTuple_ClearFreeListPtr.asFunction<int Function()>();
-
-  late final ffi.Pointer<PyTypeObject> _PyList_Type =
-      _lookup<PyTypeObject>('PyList_Type');
-
-  PyTypeObject get PyList_Type => _PyList_Type.ref;
-
-  late final ffi.Pointer<PyTypeObject> _PyListIter_Type =
-      _lookup<PyTypeObject>('PyListIter_Type');
-
-  PyTypeObject get PyListIter_Type => _PyListIter_Type.ref;
-
-  late final ffi.Pointer<PyTypeObject> _PyListRevIter_Type =
-      _lookup<PyTypeObject>('PyListRevIter_Type');
-
-  PyTypeObject get PyListRevIter_Type => _PyListRevIter_Type.ref;
-
-  late final ffi.Pointer<PyTypeObject> _PySortWrapper_Type =
-      _lookup<PyTypeObject>('PySortWrapper_Type');
-
-  PyTypeObject get PySortWrapper_Type => _PySortWrapper_Type.ref;
-
-  ffi.Pointer<PyObject> PyList_New(
-    int size,
-  ) {
-    return _PyList_New(
-      size,
-    );
-  }
-
-  late final _PyList_NewPtr =
-      _lookup<ffi.NativeFunction<ffi.Pointer<PyObject> Function(Py_ssize_t)>>(
-          'PyList_New');
-  late final _PyList_New =
-      _PyList_NewPtr.asFunction<ffi.Pointer<PyObject> Function(int)>();
-
-  int PyList_Size(
-    ffi.Pointer<PyObject> arg0,
-  ) {
-    return _PyList_Size(
-      arg0,
-    );
-  }
-
-  late final _PyList_SizePtr =
-      _lookup<ffi.NativeFunction<Py_ssize_t Function(ffi.Pointer<PyObject>)>>(
-          'PyList_Size');
-  late final _PyList_Size =
-      _PyList_SizePtr.asFunction<int Function(ffi.Pointer<PyObject>)>();
-
-  ffi.Pointer<PyObject> PyList_GetItem(
-    ffi.Pointer<PyObject> arg0,
-    int arg1,
-  ) {
-    return _PyList_GetItem(
-      arg0,
-      arg1,
-    );
-  }
-
-  late final _PyList_GetItemPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<PyObject> Function(
-              ffi.Pointer<PyObject>, Py_ssize_t)>>('PyList_GetItem');
-  late final _PyList_GetItem = _PyList_GetItemPtr.asFunction<
-      ffi.Pointer<PyObject> Function(ffi.Pointer<PyObject>, int)>();
-
-  int PyList_SetItem(
-    ffi.Pointer<PyObject> arg0,
-    int arg1,
-    ffi.Pointer<PyObject> arg2,
-  ) {
-    return _PyList_SetItem(
-      arg0,
-      arg1,
-      arg2,
-    );
-  }
-
-  late final _PyList_SetItemPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Int Function(ffi.Pointer<PyObject>, Py_ssize_t,
-              ffi.Pointer<PyObject>)>>('PyList_SetItem');
-  late final _PyList_SetItem = _PyList_SetItemPtr.asFunction<
-      int Function(ffi.Pointer<PyObject>, int, ffi.Pointer<PyObject>)>();
-
-  int PyList_Insert(
-    ffi.Pointer<PyObject> arg0,
-    int arg1,
-    ffi.Pointer<PyObject> arg2,
-  ) {
-    return _PyList_Insert(
-      arg0,
-      arg1,
-      arg2,
-    );
-  }
-
-  late final _PyList_InsertPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Int Function(ffi.Pointer<PyObject>, Py_ssize_t,
-              ffi.Pointer<PyObject>)>>('PyList_Insert');
-  late final _PyList_Insert = _PyList_InsertPtr.asFunction<
-      int Function(ffi.Pointer<PyObject>, int, ffi.Pointer<PyObject>)>();
-
-  int PyList_Append(
-    ffi.Pointer<PyObject> arg0,
-    ffi.Pointer<PyObject> arg1,
-  ) {
-    return _PyList_Append(
-      arg0,
-      arg1,
-    );
-  }
-
-  late final _PyList_AppendPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Int Function(
-              ffi.Pointer<PyObject>, ffi.Pointer<PyObject>)>>('PyList_Append');
-  late final _PyList_Append = _PyList_AppendPtr.asFunction<
-      int Function(ffi.Pointer<PyObject>, ffi.Pointer<PyObject>)>();
-
-  ffi.Pointer<PyObject> PyList_GetSlice(
-    ffi.Pointer<PyObject> arg0,
-    int arg1,
-    int arg2,
-  ) {
-    return _PyList_GetSlice(
-      arg0,
-      arg1,
-      arg2,
-    );
-  }
-
-  late final _PyList_GetSlicePtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<PyObject> Function(ffi.Pointer<PyObject>, Py_ssize_t,
-              Py_ssize_t)>>('PyList_GetSlice');
-  late final _PyList_GetSlice = _PyList_GetSlicePtr.asFunction<
-      ffi.Pointer<PyObject> Function(ffi.Pointer<PyObject>, int, int)>();
-
-  int PyList_SetSlice(
-    ffi.Pointer<PyObject> arg0,
-    int arg1,
-    int arg2,
-    ffi.Pointer<PyObject> arg3,
-  ) {
-    return _PyList_SetSlice(
-      arg0,
-      arg1,
-      arg2,
-      arg3,
-    );
-  }
-
-  late final _PyList_SetSlicePtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Int Function(ffi.Pointer<PyObject>, Py_ssize_t, Py_ssize_t,
-              ffi.Pointer<PyObject>)>>('PyList_SetSlice');
-  late final _PyList_SetSlice = _PyList_SetSlicePtr.asFunction<
-      int Function(ffi.Pointer<PyObject>, int, int, ffi.Pointer<PyObject>)>();
-
-  int PyList_Sort(
-    ffi.Pointer<PyObject> arg0,
-  ) {
-    return _PyList_Sort(
-      arg0,
-    );
-  }
-
-  late final _PyList_SortPtr =
-      _lookup<ffi.NativeFunction<ffi.Int Function(ffi.Pointer<PyObject>)>>(
-          'PyList_Sort');
-  late final _PyList_Sort =
-      _PyList_SortPtr.asFunction<int Function(ffi.Pointer<PyObject>)>();
-
-  int PyList_Reverse(
-    ffi.Pointer<PyObject> arg0,
-  ) {
-    return _PyList_Reverse(
-      arg0,
-    );
-  }
-
-  late final _PyList_ReversePtr =
-      _lookup<ffi.NativeFunction<ffi.Int Function(ffi.Pointer<PyObject>)>>(
-          'PyList_Reverse');
-  late final _PyList_Reverse =
-      _PyList_ReversePtr.asFunction<int Function(ffi.Pointer<PyObject>)>();
-
-  ffi.Pointer<PyObject> PyList_AsTuple(
-    ffi.Pointer<PyObject> arg0,
-  ) {
-    return _PyList_AsTuple(
-      arg0,
-    );
-  }
-
-  late final _PyList_AsTuplePtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<PyObject> Function(
-              ffi.Pointer<PyObject>)>>('PyList_AsTuple');
-  late final _PyList_AsTuple = _PyList_AsTuplePtr.asFunction<
-      ffi.Pointer<PyObject> Function(ffi.Pointer<PyObject>)>();
-
-  ffi.Pointer<PyObject> PyList_Extend(
-    ffi.Pointer<PyListObject> arg0,
-    ffi.Pointer<PyObject> arg1,
-  ) {
-    return _PyList_Extend(
-      arg0,
-      arg1,
-    );
-  }
-
-  late final _PyList_ExtendPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<PyObject> Function(ffi.Pointer<PyListObject>,
-              ffi.Pointer<PyObject>)>>('_PyList_Extend');
-  late final _PyList_Extend = _PyList_ExtendPtr.asFunction<
+              ffi.Int, ffi.Pointer<ffi.Char>)>>('_PyUnicode_EncodeUTF7');
+  late final _PyUnicode_EncodeUTF7 = _PyUnicode_EncodeUTF7Ptr.asFunction<
       ffi.Pointer<PyObject> Function(
-          ffi.Pointer<PyListObject>, ffi.Pointer<PyObject>)>();
+          ffi.Pointer<PyObject>, int, int, ffi.Pointer<ffi.Char>)>();
 
-  int PyList_ClearFreeList() {
-    return _PyList_ClearFreeList();
-  }
-
-  late final _PyList_ClearFreeListPtr =
-      _lookup<ffi.NativeFunction<ffi.Int Function()>>('PyList_ClearFreeList');
-  late final _PyList_ClearFreeList =
-      _PyList_ClearFreeListPtr.asFunction<int Function()>();
-
-  void PyList_DebugMallocStats(
-    ffi.Pointer<FILE> out,
+  ffi.Pointer<PyObject> PyUnicode_AsUTF8String1(
+    ffi.Pointer<PyObject> unicode,
+    ffi.Pointer<ffi.Char> errors,
   ) {
-    return _PyList_DebugMallocStats(
-      out,
+    return _PyUnicode_AsUTF8String1(
+      unicode,
+      errors,
     );
   }
 
-  late final _PyList_DebugMallocStatsPtr =
-      _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Pointer<FILE>)>>(
-          '_PyList_DebugMallocStats');
-  late final _PyList_DebugMallocStats = _PyList_DebugMallocStatsPtr.asFunction<
-      void Function(ffi.Pointer<FILE>)>();
-
-  late final ffi.Pointer<PyTypeObject> _PyDict_Type =
-      _lookup<PyTypeObject>('PyDict_Type');
-
-  PyTypeObject get PyDict_Type => _PyDict_Type.ref;
-
-  ffi.Pointer<PyObject> PyDict_New() {
-    return _PyDict_New();
-  }
-
-  late final _PyDict_NewPtr =
-      _lookup<ffi.NativeFunction<ffi.Pointer<PyObject> Function()>>(
-          'PyDict_New');
-  late final _PyDict_New =
-      _PyDict_NewPtr.asFunction<ffi.Pointer<PyObject> Function()>();
-
-  ffi.Pointer<PyObject> PyDict_GetItem(
-    ffi.Pointer<PyObject> mp,
-    ffi.Pointer<PyObject> key,
-  ) {
-    return _PyDict_GetItem(
-      mp,
-      key,
-    );
-  }
-
-  late final _PyDict_GetItemPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<PyObject> Function(
-              ffi.Pointer<PyObject>, ffi.Pointer<PyObject>)>>('PyDict_GetItem');
-  late final _PyDict_GetItem = _PyDict_GetItemPtr.asFunction<
-      ffi.Pointer<PyObject> Function(
-          ffi.Pointer<PyObject>, ffi.Pointer<PyObject>)>();
-
-  ffi.Pointer<PyObject> PyDict_GetItemWithError(
-    ffi.Pointer<PyObject> mp,
-    ffi.Pointer<PyObject> key,
-  ) {
-    return _PyDict_GetItemWithError(
-      mp,
-      key,
-    );
-  }
-
-  late final _PyDict_GetItemWithErrorPtr = _lookup<
+  late final _PyUnicode_AsUTF8String1Ptr = _lookup<
       ffi.NativeFunction<
           ffi.Pointer<PyObject> Function(ffi.Pointer<PyObject>,
-              ffi.Pointer<PyObject>)>>('PyDict_GetItemWithError');
-  late final _PyDict_GetItemWithError = _PyDict_GetItemWithErrorPtr.asFunction<
-      ffi.Pointer<PyObject> Function(
-          ffi.Pointer<PyObject>, ffi.Pointer<PyObject>)>();
-
-  int PyDict_SetItem(
-    ffi.Pointer<PyObject> mp,
-    ffi.Pointer<PyObject> key,
-    ffi.Pointer<PyObject> item,
-  ) {
-    return _PyDict_SetItem(
-      mp,
-      key,
-      item,
-    );
-  }
-
-  late final _PyDict_SetItemPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Int Function(ffi.Pointer<PyObject>, ffi.Pointer<PyObject>,
-              ffi.Pointer<PyObject>)>>('PyDict_SetItem');
-  late final _PyDict_SetItem = _PyDict_SetItemPtr.asFunction<
-      int Function(ffi.Pointer<PyObject>, ffi.Pointer<PyObject>,
-          ffi.Pointer<PyObject>)>();
-
-  int PyDict_DelItem(
-    ffi.Pointer<PyObject> mp,
-    ffi.Pointer<PyObject> key,
-  ) {
-    return _PyDict_DelItem(
-      mp,
-      key,
-    );
-  }
-
-  late final _PyDict_DelItemPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Int Function(
-              ffi.Pointer<PyObject>, ffi.Pointer<PyObject>)>>('PyDict_DelItem');
-  late final _PyDict_DelItem = _PyDict_DelItemPtr.asFunction<
-      int Function(ffi.Pointer<PyObject>, ffi.Pointer<PyObject>)>();
-
-  void PyDict_Clear(
-    ffi.Pointer<PyObject> mp,
-  ) {
-    return _PyDict_Clear(
-      mp,
-    );
-  }
-
-  late final _PyDict_ClearPtr =
-      _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Pointer<PyObject>)>>(
-          'PyDict_Clear');
-  late final _PyDict_Clear =
-      _PyDict_ClearPtr.asFunction<void Function(ffi.Pointer<PyObject>)>();
-
-  int PyDict_Next(
-    ffi.Pointer<PyObject> mp,
-    ffi.Pointer<Py_ssize_t> pos,
-    ffi.Pointer<ffi.Pointer<PyObject>> key,
-    ffi.Pointer<ffi.Pointer<PyObject>> value,
-  ) {
-    return _PyDict_Next(
-      mp,
-      pos,
-      key,
-      value,
-    );
-  }
-
-  late final _PyDict_NextPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Int Function(
-              ffi.Pointer<PyObject>,
-              ffi.Pointer<Py_ssize_t>,
-              ffi.Pointer<ffi.Pointer<PyObject>>,
-              ffi.Pointer<ffi.Pointer<PyObject>>)>>('PyDict_Next');
-  late final _PyDict_Next = _PyDict_NextPtr.asFunction<
-      int Function(
-          ffi.Pointer<PyObject>,
-          ffi.Pointer<Py_ssize_t>,
-          ffi.Pointer<ffi.Pointer<PyObject>>,
-          ffi.Pointer<ffi.Pointer<PyObject>>)>();
-
-  ffi.Pointer<PyObject> PyDict_Keys(
-    ffi.Pointer<PyObject> mp,
-  ) {
-    return _PyDict_Keys(
-      mp,
-    );
-  }
-
-  late final _PyDict_KeysPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<PyObject> Function(
-              ffi.Pointer<PyObject>)>>('PyDict_Keys');
-  late final _PyDict_Keys = _PyDict_KeysPtr.asFunction<
-      ffi.Pointer<PyObject> Function(ffi.Pointer<PyObject>)>();
-
-  ffi.Pointer<PyObject> PyDict_Values(
-    ffi.Pointer<PyObject> mp,
-  ) {
-    return _PyDict_Values(
-      mp,
-    );
-  }
-
-  late final _PyDict_ValuesPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<PyObject> Function(
-              ffi.Pointer<PyObject>)>>('PyDict_Values');
-  late final _PyDict_Values = _PyDict_ValuesPtr.asFunction<
-      ffi.Pointer<PyObject> Function(ffi.Pointer<PyObject>)>();
-
-  ffi.Pointer<PyObject> PyDict_Items(
-    ffi.Pointer<PyObject> mp,
-  ) {
-    return _PyDict_Items(
-      mp,
-    );
-  }
-
-  late final _PyDict_ItemsPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<PyObject> Function(
-              ffi.Pointer<PyObject>)>>('PyDict_Items');
-  late final _PyDict_Items = _PyDict_ItemsPtr.asFunction<
-      ffi.Pointer<PyObject> Function(ffi.Pointer<PyObject>)>();
-
-  int PyDict_Size(
-    ffi.Pointer<PyObject> mp,
-  ) {
-    return _PyDict_Size(
-      mp,
-    );
-  }
-
-  late final _PyDict_SizePtr =
-      _lookup<ffi.NativeFunction<Py_ssize_t Function(ffi.Pointer<PyObject>)>>(
-          'PyDict_Size');
-  late final _PyDict_Size =
-      _PyDict_SizePtr.asFunction<int Function(ffi.Pointer<PyObject>)>();
-
-  ffi.Pointer<PyObject> PyDict_Copy(
-    ffi.Pointer<PyObject> mp,
-  ) {
-    return _PyDict_Copy(
-      mp,
-    );
-  }
-
-  late final _PyDict_CopyPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<PyObject> Function(
-              ffi.Pointer<PyObject>)>>('PyDict_Copy');
-  late final _PyDict_Copy = _PyDict_CopyPtr.asFunction<
-      ffi.Pointer<PyObject> Function(ffi.Pointer<PyObject>)>();
-
-  int PyDict_Contains(
-    ffi.Pointer<PyObject> mp,
-    ffi.Pointer<PyObject> key,
-  ) {
-    return _PyDict_Contains(
-      mp,
-      key,
-    );
-  }
-
-  late final _PyDict_ContainsPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Int Function(ffi.Pointer<PyObject>,
-              ffi.Pointer<PyObject>)>>('PyDict_Contains');
-  late final _PyDict_Contains = _PyDict_ContainsPtr.asFunction<
-      int Function(ffi.Pointer<PyObject>, ffi.Pointer<PyObject>)>();
-
-  int PyDict_Update(
-    ffi.Pointer<PyObject> mp,
-    ffi.Pointer<PyObject> other,
-  ) {
-    return _PyDict_Update(
-      mp,
-      other,
-    );
-  }
-
-  late final _PyDict_UpdatePtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Int Function(
-              ffi.Pointer<PyObject>, ffi.Pointer<PyObject>)>>('PyDict_Update');
-  late final _PyDict_Update = _PyDict_UpdatePtr.asFunction<
-      int Function(ffi.Pointer<PyObject>, ffi.Pointer<PyObject>)>();
-
-  int PyDict_Merge(
-    ffi.Pointer<PyObject> mp,
-    ffi.Pointer<PyObject> other,
-    int override,
-  ) {
-    return _PyDict_Merge(
-      mp,
-      other,
-      override,
-    );
-  }
-
-  late final _PyDict_MergePtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Int Function(ffi.Pointer<PyObject>, ffi.Pointer<PyObject>,
-              ffi.Int)>>('PyDict_Merge');
-  late final _PyDict_Merge = _PyDict_MergePtr.asFunction<
-      int Function(ffi.Pointer<PyObject>, ffi.Pointer<PyObject>, int)>();
-
-  int PyDict_MergeFromSeq2(
-    ffi.Pointer<PyObject> d,
-    ffi.Pointer<PyObject> seq2,
-    int override,
-  ) {
-    return _PyDict_MergeFromSeq2(
-      d,
-      seq2,
-      override,
-    );
-  }
-
-  late final _PyDict_MergeFromSeq2Ptr = _lookup<
-      ffi.NativeFunction<
-          ffi.Int Function(ffi.Pointer<PyObject>, ffi.Pointer<PyObject>,
-              ffi.Int)>>('PyDict_MergeFromSeq2');
-  late final _PyDict_MergeFromSeq2 = _PyDict_MergeFromSeq2Ptr.asFunction<
-      int Function(ffi.Pointer<PyObject>, ffi.Pointer<PyObject>, int)>();
-
-  ffi.Pointer<PyObject> PyDict_GetItemString(
-    ffi.Pointer<PyObject> dp,
-    ffi.Pointer<ffi.Char> key,
-  ) {
-    return _PyDict_GetItemString(
-      dp,
-      key,
-    );
-  }
-
-  late final _PyDict_GetItemStringPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<PyObject> Function(ffi.Pointer<PyObject>,
-              ffi.Pointer<ffi.Char>)>>('PyDict_GetItemString');
-  late final _PyDict_GetItemString = _PyDict_GetItemStringPtr.asFunction<
+              ffi.Pointer<ffi.Char>)>>('_PyUnicode_AsUTF8String');
+  late final _PyUnicode_AsUTF8String1 = _PyUnicode_AsUTF8String1Ptr.asFunction<
       ffi.Pointer<PyObject> Function(
           ffi.Pointer<PyObject>, ffi.Pointer<ffi.Char>)>();
 
-  int PyDict_SetItemString(
-    ffi.Pointer<PyObject> dp,
-    ffi.Pointer<ffi.Char> key,
-    ffi.Pointer<PyObject> item,
+  ffi.Pointer<PyObject> PyUnicode_EncodeUTF32(
+    ffi.Pointer<PyObject> object,
+    ffi.Pointer<ffi.Char> errors,
+    int byteorder,
   ) {
-    return _PyDict_SetItemString(
-      dp,
-      key,
-      item,
+    return _PyUnicode_EncodeUTF32(
+      object,
+      errors,
+      byteorder,
     );
   }
 
-  late final _PyDict_SetItemStringPtr = _lookup<
+  late final _PyUnicode_EncodeUTF32Ptr = _lookup<
       ffi.NativeFunction<
-          ffi.Int Function(ffi.Pointer<PyObject>, ffi.Pointer<ffi.Char>,
-              ffi.Pointer<PyObject>)>>('PyDict_SetItemString');
-  late final _PyDict_SetItemString = _PyDict_SetItemStringPtr.asFunction<
-      int Function(ffi.Pointer<PyObject>, ffi.Pointer<ffi.Char>,
-          ffi.Pointer<PyObject>)>();
-
-  int PyDict_DelItemString(
-    ffi.Pointer<PyObject> dp,
-    ffi.Pointer<ffi.Char> key,
-  ) {
-    return _PyDict_DelItemString(
-      dp,
-      key,
-    );
-  }
-
-  late final _PyDict_DelItemStringPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Int Function(ffi.Pointer<PyObject>,
-              ffi.Pointer<ffi.Char>)>>('PyDict_DelItemString');
-  late final _PyDict_DelItemString = _PyDict_DelItemStringPtr.asFunction<
-      int Function(ffi.Pointer<PyObject>, ffi.Pointer<ffi.Char>)>();
-
-  late final ffi.Pointer<PyTypeObject> _PyDictKeys_Type =
-      _lookup<PyTypeObject>('PyDictKeys_Type');
-
-  PyTypeObject get PyDictKeys_Type => _PyDictKeys_Type.ref;
-
-  late final ffi.Pointer<PyTypeObject> _PyDictValues_Type =
-      _lookup<PyTypeObject>('PyDictValues_Type');
-
-  PyTypeObject get PyDictValues_Type => _PyDictValues_Type.ref;
-
-  late final ffi.Pointer<PyTypeObject> _PyDictItems_Type =
-      _lookup<PyTypeObject>('PyDictItems_Type');
-
-  PyTypeObject get PyDictItems_Type => _PyDictItems_Type.ref;
-
-  late final ffi.Pointer<PyTypeObject> _PyDictIterKey_Type =
-      _lookup<PyTypeObject>('PyDictIterKey_Type');
-
-  PyTypeObject get PyDictIterKey_Type => _PyDictIterKey_Type.ref;
-
-  late final ffi.Pointer<PyTypeObject> _PyDictIterValue_Type =
-      _lookup<PyTypeObject>('PyDictIterValue_Type');
-
-  PyTypeObject get PyDictIterValue_Type => _PyDictIterValue_Type.ref;
-
-  late final ffi.Pointer<PyTypeObject> _PyDictIterItem_Type =
-      _lookup<PyTypeObject>('PyDictIterItem_Type');
-
-  PyTypeObject get PyDictIterItem_Type => _PyDictIterItem_Type.ref;
-
-  late final ffi.Pointer<PyTypeObject> _PyDictRevIterKey_Type =
-      _lookup<PyTypeObject>('PyDictRevIterKey_Type');
-
-  PyTypeObject get PyDictRevIterKey_Type => _PyDictRevIterKey_Type.ref;
-
-  late final ffi.Pointer<PyTypeObject> _PyDictRevIterItem_Type =
-      _lookup<PyTypeObject>('PyDictRevIterItem_Type');
-
-  PyTypeObject get PyDictRevIterItem_Type => _PyDictRevIterItem_Type.ref;
-
-  late final ffi.Pointer<PyTypeObject> _PyDictRevIterValue_Type =
-      _lookup<PyTypeObject>('PyDictRevIterValue_Type');
-
-  PyTypeObject get PyDictRevIterValue_Type => _PyDictRevIterValue_Type.ref;
-
-  late final ffi.Pointer<PyTypeObject> _PyODict_Type =
-      _lookup<PyTypeObject>('PyODict_Type');
-
-  PyTypeObject get PyODict_Type => _PyODict_Type.ref;
-
-  late final ffi.Pointer<PyTypeObject> _PyODictIter_Type =
-      _lookup<PyTypeObject>('PyODictIter_Type');
-
-  PyTypeObject get PyODictIter_Type => _PyODictIter_Type.ref;
-
-  late final ffi.Pointer<PyTypeObject> _PyODictKeys_Type =
-      _lookup<PyTypeObject>('PyODictKeys_Type');
-
-  PyTypeObject get PyODictKeys_Type => _PyODictKeys_Type.ref;
-
-  late final ffi.Pointer<PyTypeObject> _PyODictItems_Type =
-      _lookup<PyTypeObject>('PyODictItems_Type');
-
-  PyTypeObject get PyODictItems_Type => _PyODictItems_Type.ref;
-
-  late final ffi.Pointer<PyTypeObject> _PyODictValues_Type =
-      _lookup<PyTypeObject>('PyODictValues_Type');
-
-  PyTypeObject get PyODictValues_Type => _PyODictValues_Type.ref;
-
-  ffi.Pointer<PyObject> PyODict_New() {
-    return _PyODict_New();
-  }
-
-  late final _PyODict_NewPtr =
-      _lookup<ffi.NativeFunction<ffi.Pointer<PyObject> Function()>>(
-          'PyODict_New');
-  late final _PyODict_New =
-      _PyODict_NewPtr.asFunction<ffi.Pointer<PyObject> Function()>();
-
-  int PyODict_SetItem(
-    ffi.Pointer<PyObject> od,
-    ffi.Pointer<PyObject> key,
-    ffi.Pointer<PyObject> item,
-  ) {
-    return _PyODict_SetItem(
-      od,
-      key,
-      item,
-    );
-  }
-
-  late final _PyODict_SetItemPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Int Function(ffi.Pointer<PyObject>, ffi.Pointer<PyObject>,
-              ffi.Pointer<PyObject>)>>('PyODict_SetItem');
-  late final _PyODict_SetItem = _PyODict_SetItemPtr.asFunction<
-      int Function(ffi.Pointer<PyObject>, ffi.Pointer<PyObject>,
-          ffi.Pointer<PyObject>)>();
-
-  int PyODict_DelItem(
-    ffi.Pointer<PyObject> od,
-    ffi.Pointer<PyObject> key,
-  ) {
-    return _PyODict_DelItem(
-      od,
-      key,
-    );
-  }
-
-  late final _PyODict_DelItemPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Int Function(ffi.Pointer<PyObject>,
-              ffi.Pointer<PyObject>)>>('PyODict_DelItem');
-  late final _PyODict_DelItem = _PyODict_DelItemPtr.asFunction<
-      int Function(ffi.Pointer<PyObject>, ffi.Pointer<PyObject>)>();
-
-  late final ffi.Pointer<PyTypeObject> _PyEnum_Type =
-      _lookup<PyTypeObject>('PyEnum_Type');
-
-  PyTypeObject get PyEnum_Type => _PyEnum_Type.ref;
-
-  late final ffi.Pointer<PyTypeObject> _PyReversed_Type =
-      _lookup<PyTypeObject>('PyReversed_Type');
-
-  PyTypeObject get PyReversed_Type => _PyReversed_Type.ref;
-
-  late final ffi.Pointer<ffi.Pointer<PyObject>> _PySet_Dummy =
-      _lookup<ffi.Pointer<PyObject>>('_PySet_Dummy');
-
-  ffi.Pointer<PyObject> get PySet_Dummy => _PySet_Dummy.value;
-
-  set PySet_Dummy(ffi.Pointer<PyObject> value) => _PySet_Dummy.value = value;
-
-  int PySet_NextEntry(
-    ffi.Pointer<PyObject> set1,
-    ffi.Pointer<Py_ssize_t> pos,
-    ffi.Pointer<ffi.Pointer<PyObject>> key,
-    ffi.Pointer<Py_hash_t> hash,
-  ) {
-    return _PySet_NextEntry(
-      set1,
-      pos,
-      key,
-      hash,
-    );
-  }
-
-  late final _PySet_NextEntryPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Int Function(
-              ffi.Pointer<PyObject>,
-              ffi.Pointer<Py_ssize_t>,
-              ffi.Pointer<ffi.Pointer<PyObject>>,
-              ffi.Pointer<Py_hash_t>)>>('_PySet_NextEntry');
-  late final _PySet_NextEntry = _PySet_NextEntryPtr.asFunction<
-      int Function(ffi.Pointer<PyObject>, ffi.Pointer<Py_ssize_t>,
-          ffi.Pointer<ffi.Pointer<PyObject>>, ffi.Pointer<Py_hash_t>)>();
-
-  int PySet_Update(
-    ffi.Pointer<PyObject> set1,
-    ffi.Pointer<PyObject> iterable,
-  ) {
-    return _PySet_Update(
-      set1,
-      iterable,
-    );
-  }
-
-  late final _PySet_UpdatePtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Int Function(
-              ffi.Pointer<PyObject>, ffi.Pointer<PyObject>)>>('_PySet_Update');
-  late final _PySet_Update = _PySet_UpdatePtr.asFunction<
-      int Function(ffi.Pointer<PyObject>, ffi.Pointer<PyObject>)>();
-
-  int PySet_ClearFreeList() {
-    return _PySet_ClearFreeList();
-  }
-
-  late final _PySet_ClearFreeListPtr =
-      _lookup<ffi.NativeFunction<ffi.Int Function()>>('PySet_ClearFreeList');
-  late final _PySet_ClearFreeList =
-      _PySet_ClearFreeListPtr.asFunction<int Function()>();
-
-  late final ffi.Pointer<PyTypeObject> _PySet_Type =
-      _lookup<PyTypeObject>('PySet_Type');
-
-  PyTypeObject get PySet_Type => _PySet_Type.ref;
-
-  late final ffi.Pointer<PyTypeObject> _PyFrozenSet_Type =
-      _lookup<PyTypeObject>('PyFrozenSet_Type');
-
-  PyTypeObject get PyFrozenSet_Type => _PyFrozenSet_Type.ref;
-
-  late final ffi.Pointer<PyTypeObject> _PySetIter_Type =
-      _lookup<PyTypeObject>('PySetIter_Type');
-
-  PyTypeObject get PySetIter_Type => _PySetIter_Type.ref;
-
-  ffi.Pointer<PyObject> PySet_New(
-    ffi.Pointer<PyObject> arg0,
-  ) {
-    return _PySet_New(
-      arg0,
-    );
-  }
-
-  late final _PySet_NewPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<PyObject> Function(ffi.Pointer<PyObject>)>>('PySet_New');
-  late final _PySet_New = _PySet_NewPtr.asFunction<
-      ffi.Pointer<PyObject> Function(ffi.Pointer<PyObject>)>();
-
-  ffi.Pointer<PyObject> PyFrozenSet_New(
-    ffi.Pointer<PyObject> arg0,
-  ) {
-    return _PyFrozenSet_New(
-      arg0,
-    );
-  }
-
-  late final _PyFrozenSet_NewPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<PyObject> Function(
-              ffi.Pointer<PyObject>)>>('PyFrozenSet_New');
-  late final _PyFrozenSet_New = _PyFrozenSet_NewPtr.asFunction<
-      ffi.Pointer<PyObject> Function(ffi.Pointer<PyObject>)>();
-
-  int PySet_Add(
-    ffi.Pointer<PyObject> set1,
-    ffi.Pointer<PyObject> key,
-  ) {
-    return _PySet_Add(
-      set1,
-      key,
-    );
-  }
-
-  late final _PySet_AddPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Int Function(
-              ffi.Pointer<PyObject>, ffi.Pointer<PyObject>)>>('PySet_Add');
-  late final _PySet_Add = _PySet_AddPtr.asFunction<
-      int Function(ffi.Pointer<PyObject>, ffi.Pointer<PyObject>)>();
-
-  int PySet_Clear(
-    ffi.Pointer<PyObject> set1,
-  ) {
-    return _PySet_Clear(
-      set1,
-    );
-  }
-
-  late final _PySet_ClearPtr =
-      _lookup<ffi.NativeFunction<ffi.Int Function(ffi.Pointer<PyObject>)>>(
-          'PySet_Clear');
-  late final _PySet_Clear =
-      _PySet_ClearPtr.asFunction<int Function(ffi.Pointer<PyObject>)>();
-
-  int PySet_Contains(
-    ffi.Pointer<PyObject> anyset,
-    ffi.Pointer<PyObject> key,
-  ) {
-    return _PySet_Contains(
-      anyset,
-      key,
-    );
-  }
-
-  late final _PySet_ContainsPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Int Function(
-              ffi.Pointer<PyObject>, ffi.Pointer<PyObject>)>>('PySet_Contains');
-  late final _PySet_Contains = _PySet_ContainsPtr.asFunction<
-      int Function(ffi.Pointer<PyObject>, ffi.Pointer<PyObject>)>();
-
-  int PySet_Discard(
-    ffi.Pointer<PyObject> set1,
-    ffi.Pointer<PyObject> key,
-  ) {
-    return _PySet_Discard(
-      set1,
-      key,
-    );
-  }
-
-  late final _PySet_DiscardPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Int Function(
-              ffi.Pointer<PyObject>, ffi.Pointer<PyObject>)>>('PySet_Discard');
-  late final _PySet_Discard = _PySet_DiscardPtr.asFunction<
-      int Function(ffi.Pointer<PyObject>, ffi.Pointer<PyObject>)>();
-
-  ffi.Pointer<PyObject> PySet_Pop(
-    ffi.Pointer<PyObject> set1,
-  ) {
-    return _PySet_Pop(
-      set1,
-    );
-  }
-
-  late final _PySet_PopPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<PyObject> Function(ffi.Pointer<PyObject>)>>('PySet_Pop');
-  late final _PySet_Pop = _PySet_PopPtr.asFunction<
-      ffi.Pointer<PyObject> Function(ffi.Pointer<PyObject>)>();
-
-  int PySet_Size(
-    ffi.Pointer<PyObject> anyset,
-  ) {
-    return _PySet_Size(
-      anyset,
-    );
-  }
-
-  late final _PySet_SizePtr =
-      _lookup<ffi.NativeFunction<Py_ssize_t Function(ffi.Pointer<PyObject>)>>(
-          'PySet_Size');
-  late final _PySet_Size =
-      _PySet_SizePtr.asFunction<int Function(ffi.Pointer<PyObject>)>();
-
-  late final ffi.Pointer<PyTypeObject> _PyCFunction_Type =
-      _lookup<PyTypeObject>('PyCFunction_Type');
-
-  PyTypeObject get PyCFunction_Type => _PyCFunction_Type.ref;
-
-  PyCFunction PyCFunction_GetFunction(
-    ffi.Pointer<PyObject> arg0,
-  ) {
-    return _PyCFunction_GetFunction(
-      arg0,
-    );
-  }
-
-  late final _PyCFunction_GetFunctionPtr =
-      _lookup<ffi.NativeFunction<PyCFunction Function(ffi.Pointer<PyObject>)>>(
-          'PyCFunction_GetFunction');
-  late final _PyCFunction_GetFunction = _PyCFunction_GetFunctionPtr.asFunction<
-      PyCFunction Function(ffi.Pointer<PyObject>)>();
-
-  ffi.Pointer<PyObject> PyCFunction_GetSelf(
-    ffi.Pointer<PyObject> arg0,
-  ) {
-    return _PyCFunction_GetSelf(
-      arg0,
-    );
-  }
-
-  late final _PyCFunction_GetSelfPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<PyObject> Function(
-              ffi.Pointer<PyObject>)>>('PyCFunction_GetSelf');
-  late final _PyCFunction_GetSelf = _PyCFunction_GetSelfPtr.asFunction<
-      ffi.Pointer<PyObject> Function(ffi.Pointer<PyObject>)>();
-
-  int PyCFunction_GetFlags(
-    ffi.Pointer<PyObject> arg0,
-  ) {
-    return _PyCFunction_GetFlags(
-      arg0,
-    );
-  }
-
-  late final _PyCFunction_GetFlagsPtr =
-      _lookup<ffi.NativeFunction<ffi.Int Function(ffi.Pointer<PyObject>)>>(
-          'PyCFunction_GetFlags');
-  late final _PyCFunction_GetFlags = _PyCFunction_GetFlagsPtr.asFunction<
-      int Function(ffi.Pointer<PyObject>)>();
-
-  ffi.Pointer<PyObject> PyCFunction_Call(
-    ffi.Pointer<PyObject> arg0,
-    ffi.Pointer<PyObject> arg1,
-    ffi.Pointer<PyObject> arg2,
-  ) {
-    return _PyCFunction_Call(
-      arg0,
-      arg1,
-      arg2,
-    );
-  }
-
-  late final _PyCFunction_CallPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<PyObject> Function(
-              ffi.Pointer<PyObject>,
-              ffi.Pointer<PyObject>,
-              ffi.Pointer<PyObject>)>>('PyCFunction_Call');
-  late final _PyCFunction_Call = _PyCFunction_CallPtr.asFunction<
-      ffi.Pointer<PyObject> Function(ffi.Pointer<PyObject>,
-          ffi.Pointer<PyObject>, ffi.Pointer<PyObject>)>();
-
-  ffi.Pointer<PyObject> PyCFunction_FastCallDict(
-    ffi.Pointer<PyObject> func,
-    ffi.Pointer<ffi.Pointer<PyObject>> args,
-    int nargs,
-    ffi.Pointer<PyObject> kwargs,
-  ) {
-    return _PyCFunction_FastCallDict(
-      func,
-      args,
-      nargs,
-      kwargs,
-    );
-  }
-
-  late final _PyCFunction_FastCallDictPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<PyObject> Function(
-              ffi.Pointer<PyObject>,
-              ffi.Pointer<ffi.Pointer<PyObject>>,
-              Py_ssize_t,
-              ffi.Pointer<PyObject>)>>('_PyCFunction_FastCallDict');
-  late final _PyCFunction_FastCallDict =
-      _PyCFunction_FastCallDictPtr.asFunction<
-          ffi.Pointer<PyObject> Function(
-              ffi.Pointer<PyObject>,
-              ffi.Pointer<ffi.Pointer<PyObject>>,
-              int,
-              ffi.Pointer<PyObject>)>();
-
-  ffi.Pointer<PyObject> PyCFunction_NewEx(
-    ffi.Pointer<PyMethodDef> arg0,
-    ffi.Pointer<PyObject> arg1,
-    ffi.Pointer<PyObject> arg2,
-  ) {
-    return _PyCFunction_NewEx(
-      arg0,
-      arg1,
-      arg2,
-    );
-  }
-
-  late final _PyCFunction_NewExPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<PyObject> Function(
-              ffi.Pointer<PyMethodDef>,
-              ffi.Pointer<PyObject>,
-              ffi.Pointer<PyObject>)>>('PyCFunction_NewEx');
-  late final _PyCFunction_NewEx = _PyCFunction_NewExPtr.asFunction<
-      ffi.Pointer<PyObject> Function(ffi.Pointer<PyMethodDef>,
-          ffi.Pointer<PyObject>, ffi.Pointer<PyObject>)>();
-
-  ffi.Pointer<PyObject> PyMethodDef_RawFastCallDict(
-    ffi.Pointer<PyMethodDef> method,
-    ffi.Pointer<PyObject> self,
-    ffi.Pointer<ffi.Pointer<PyObject>> args,
-    int nargs,
-    ffi.Pointer<PyObject> kwargs,
-  ) {
-    return _PyMethodDef_RawFastCallDict(
-      method,
-      self,
-      args,
-      nargs,
-      kwargs,
-    );
-  }
-
-  late final _PyMethodDef_RawFastCallDictPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<PyObject> Function(
-              ffi.Pointer<PyMethodDef>,
-              ffi.Pointer<PyObject>,
-              ffi.Pointer<ffi.Pointer<PyObject>>,
-              Py_ssize_t,
-              ffi.Pointer<PyObject>)>>('_PyMethodDef_RawFastCallDict');
-  late final _PyMethodDef_RawFastCallDict =
-      _PyMethodDef_RawFastCallDictPtr.asFunction<
-          ffi.Pointer<PyObject> Function(
-              ffi.Pointer<PyMethodDef>,
-              ffi.Pointer<PyObject>,
-              ffi.Pointer<ffi.Pointer<PyObject>>,
-              int,
-              ffi.Pointer<PyObject>)>();
-
-  ffi.Pointer<PyObject> PyMethodDef_RawFastCallKeywords(
-    ffi.Pointer<PyMethodDef> method,
-    ffi.Pointer<PyObject> self,
-    ffi.Pointer<ffi.Pointer<PyObject>> args,
-    int nargs,
-    ffi.Pointer<PyObject> kwnames,
-  ) {
-    return _PyMethodDef_RawFastCallKeywords(
-      method,
-      self,
-      args,
-      nargs,
-      kwnames,
-    );
-  }
-
-  late final _PyMethodDef_RawFastCallKeywordsPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<PyObject> Function(
-              ffi.Pointer<PyMethodDef>,
-              ffi.Pointer<PyObject>,
-              ffi.Pointer<ffi.Pointer<PyObject>>,
-              Py_ssize_t,
-              ffi.Pointer<PyObject>)>>('_PyMethodDef_RawFastCallKeywords');
-  late final _PyMethodDef_RawFastCallKeywords =
-      _PyMethodDef_RawFastCallKeywordsPtr.asFunction<
-          ffi.Pointer<PyObject> Function(
-              ffi.Pointer<PyMethodDef>,
-              ffi.Pointer<PyObject>,
-              ffi.Pointer<ffi.Pointer<PyObject>>,
-              int,
-              ffi.Pointer<PyObject>)>();
-
-  int PyCFunction_ClearFreeList() {
-    return _PyCFunction_ClearFreeList();
-  }
-
-  late final _PyCFunction_ClearFreeListPtr =
-      _lookup<ffi.NativeFunction<ffi.Int Function()>>(
-          'PyCFunction_ClearFreeList');
-  late final _PyCFunction_ClearFreeList =
-      _PyCFunction_ClearFreeListPtr.asFunction<int Function()>();
-
-  void PyCFunction_DebugMallocStats(
-    ffi.Pointer<FILE> out,
-  ) {
-    return _PyCFunction_DebugMallocStats(
-      out,
-    );
-  }
-
-  late final _PyCFunction_DebugMallocStatsPtr =
-      _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Pointer<FILE>)>>(
-          '_PyCFunction_DebugMallocStats');
-  late final _PyCFunction_DebugMallocStats = _PyCFunction_DebugMallocStatsPtr
-      .asFunction<void Function(ffi.Pointer<FILE>)>();
-
-  void PyMethod_DebugMallocStats(
-    ffi.Pointer<FILE> out,
-  ) {
-    return _PyMethod_DebugMallocStats(
-      out,
-    );
-  }
-
-  late final _PyMethod_DebugMallocStatsPtr =
-      _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Pointer<FILE>)>>(
-          '_PyMethod_DebugMallocStats');
-  late final _PyMethod_DebugMallocStats = _PyMethod_DebugMallocStatsPtr
-      .asFunction<void Function(ffi.Pointer<FILE>)>();
-
-  late final ffi.Pointer<PyTypeObject> _PyModule_Type =
-      _lookup<PyTypeObject>('PyModule_Type');
-
-  PyTypeObject get PyModule_Type => _PyModule_Type.ref;
-
-  ffi.Pointer<PyObject> PyModule_NewObject(
-    ffi.Pointer<PyObject> name,
-  ) {
-    return _PyModule_NewObject(
-      name,
-    );
-  }
-
-  late final _PyModule_NewObjectPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<PyObject> Function(
-              ffi.Pointer<PyObject>)>>('PyModule_NewObject');
-  late final _PyModule_NewObject = _PyModule_NewObjectPtr.asFunction<
-      ffi.Pointer<PyObject> Function(ffi.Pointer<PyObject>)>();
-
-  ffi.Pointer<PyObject> PyModule_New(
-    ffi.Pointer<ffi.Char> name,
-  ) {
-    return _PyModule_New(
-      name,
-    );
-  }
-
-  late final _PyModule_NewPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<PyObject> Function(
-              ffi.Pointer<ffi.Char>)>>('PyModule_New');
-  late final _PyModule_New = _PyModule_NewPtr.asFunction<
-      ffi.Pointer<PyObject> Function(ffi.Pointer<ffi.Char>)>();
-
-  ffi.Pointer<PyObject> PyModule_GetDict(
-    ffi.Pointer<PyObject> arg0,
-  ) {
-    return _PyModule_GetDict(
-      arg0,
-    );
-  }
-
-  late final _PyModule_GetDictPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<PyObject> Function(
-              ffi.Pointer<PyObject>)>>('PyModule_GetDict');
-  late final _PyModule_GetDict = _PyModule_GetDictPtr.asFunction<
-      ffi.Pointer<PyObject> Function(ffi.Pointer<PyObject>)>();
-
-  ffi.Pointer<PyObject> PyModule_GetNameObject(
-    ffi.Pointer<PyObject> arg0,
-  ) {
-    return _PyModule_GetNameObject(
-      arg0,
-    );
-  }
-
-  late final _PyModule_GetNameObjectPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<PyObject> Function(
-              ffi.Pointer<PyObject>)>>('PyModule_GetNameObject');
-  late final _PyModule_GetNameObject = _PyModule_GetNameObjectPtr.asFunction<
-      ffi.Pointer<PyObject> Function(ffi.Pointer<PyObject>)>();
-
-  ffi.Pointer<ffi.Char> PyModule_GetName(
-    ffi.Pointer<PyObject> arg0,
-  ) {
-    return _PyModule_GetName(
-      arg0,
-    );
-  }
-
-  late final _PyModule_GetNamePtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<ffi.Char> Function(
-              ffi.Pointer<PyObject>)>>('PyModule_GetName');
-  late final _PyModule_GetName = _PyModule_GetNamePtr.asFunction<
-      ffi.Pointer<ffi.Char> Function(ffi.Pointer<PyObject>)>();
-
-  ffi.Pointer<ffi.Char> PyModule_GetFilename(
-    ffi.Pointer<PyObject> arg0,
-  ) {
-    return _PyModule_GetFilename(
-      arg0,
-    );
-  }
-
-  late final _PyModule_GetFilenamePtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<ffi.Char> Function(
-              ffi.Pointer<PyObject>)>>('PyModule_GetFilename');
-  late final _PyModule_GetFilename = _PyModule_GetFilenamePtr.asFunction<
-      ffi.Pointer<ffi.Char> Function(ffi.Pointer<PyObject>)>();
-
-  ffi.Pointer<PyObject> PyModule_GetFilenameObject(
-    ffi.Pointer<PyObject> arg0,
-  ) {
-    return _PyModule_GetFilenameObject(
-      arg0,
-    );
-  }
-
-  late final _PyModule_GetFilenameObjectPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<PyObject> Function(
-              ffi.Pointer<PyObject>)>>('PyModule_GetFilenameObject');
-  late final _PyModule_GetFilenameObject = _PyModule_GetFilenameObjectPtr
-      .asFunction<ffi.Pointer<PyObject> Function(ffi.Pointer<PyObject>)>();
-
-  void PyModule_Clear(
-    ffi.Pointer<PyObject> arg0,
-  ) {
-    return _PyModule_Clear(
-      arg0,
-    );
-  }
-
-  late final _PyModule_ClearPtr =
-      _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Pointer<PyObject>)>>(
-          '_PyModule_Clear');
-  late final _PyModule_Clear =
-      _PyModule_ClearPtr.asFunction<void Function(ffi.Pointer<PyObject>)>();
-
-  void PyModule_ClearDict(
-    ffi.Pointer<PyObject> arg0,
-  ) {
-    return _PyModule_ClearDict(
-      arg0,
-    );
-  }
-
-  late final _PyModule_ClearDictPtr =
-      _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Pointer<PyObject>)>>(
-          '_PyModule_ClearDict');
-  late final _PyModule_ClearDict =
-      _PyModule_ClearDictPtr.asFunction<void Function(ffi.Pointer<PyObject>)>();
-
-  int PyModuleSpec_IsInitializing(
-    ffi.Pointer<PyObject> arg0,
-  ) {
-    return _PyModuleSpec_IsInitializing(
-      arg0,
-    );
-  }
-
-  late final _PyModuleSpec_IsInitializingPtr =
-      _lookup<ffi.NativeFunction<ffi.Int Function(ffi.Pointer<PyObject>)>>(
-          '_PyModuleSpec_IsInitializing');
-  late final _PyModuleSpec_IsInitializing = _PyModuleSpec_IsInitializingPtr
-      .asFunction<int Function(ffi.Pointer<PyObject>)>();
-
-  ffi.Pointer<PyModuleDef> PyModule_GetDef(
-    ffi.Pointer<PyObject> arg0,
-  ) {
-    return _PyModule_GetDef(
-      arg0,
-    );
-  }
-
-  late final _PyModule_GetDefPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<PyModuleDef> Function(
-              ffi.Pointer<PyObject>)>>('PyModule_GetDef');
-  late final _PyModule_GetDef = _PyModule_GetDefPtr.asFunction<
-      ffi.Pointer<PyModuleDef> Function(ffi.Pointer<PyObject>)>();
-
-  ffi.Pointer<ffi.Void> PyModule_GetState(
-    ffi.Pointer<PyObject> arg0,
-  ) {
-    return _PyModule_GetState(
-      arg0,
-    );
-  }
-
-  late final _PyModule_GetStatePtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<ffi.Void> Function(
-              ffi.Pointer<PyObject>)>>('PyModule_GetState');
-  late final _PyModule_GetState = _PyModule_GetStatePtr.asFunction<
-      ffi.Pointer<ffi.Void> Function(ffi.Pointer<PyObject>)>();
-
-  ffi.Pointer<PyObject> PyModuleDef_Init(
-    ffi.Pointer<PyModuleDef> arg0,
-  ) {
-    return _PyModuleDef_Init(
-      arg0,
-    );
-  }
-
-  late final _PyModuleDef_InitPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<PyObject> Function(
-              ffi.Pointer<PyModuleDef>)>>('PyModuleDef_Init');
-  late final _PyModuleDef_Init = _PyModuleDef_InitPtr.asFunction<
-      ffi.Pointer<PyObject> Function(ffi.Pointer<PyModuleDef>)>();
-
-  late final ffi.Pointer<PyTypeObject> _PyModuleDef_Type =
-      _lookup<PyTypeObject>('PyModuleDef_Type');
-
-  PyTypeObject get PyModuleDef_Type => _PyModuleDef_Type.ref;
-
-  late final ffi.Pointer<PyTypeObject> _PyFunction_Type =
-      _lookup<PyTypeObject>('PyFunction_Type');
-
-  PyTypeObject get PyFunction_Type => _PyFunction_Type.ref;
-
-  ffi.Pointer<PyObject> PyFunction_New(
-    ffi.Pointer<PyObject> arg0,
-    ffi.Pointer<PyObject> arg1,
-  ) {
-    return _PyFunction_New(
-      arg0,
-      arg1,
-    );
-  }
-
-  late final _PyFunction_NewPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<PyObject> Function(
-              ffi.Pointer<PyObject>, ffi.Pointer<PyObject>)>>('PyFunction_New');
-  late final _PyFunction_New = _PyFunction_NewPtr.asFunction<
-      ffi.Pointer<PyObject> Function(
-          ffi.Pointer<PyObject>, ffi.Pointer<PyObject>)>();
-
-  ffi.Pointer<PyObject> PyFunction_NewWithQualName(
-    ffi.Pointer<PyObject> arg0,
-    ffi.Pointer<PyObject> arg1,
-    ffi.Pointer<PyObject> arg2,
-  ) {
-    return _PyFunction_NewWithQualName(
-      arg0,
-      arg1,
-      arg2,
-    );
-  }
-
-  late final _PyFunction_NewWithQualNamePtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<PyObject> Function(
-              ffi.Pointer<PyObject>,
-              ffi.Pointer<PyObject>,
-              ffi.Pointer<PyObject>)>>('PyFunction_NewWithQualName');
-  late final _PyFunction_NewWithQualName =
-      _PyFunction_NewWithQualNamePtr.asFunction<
           ffi.Pointer<PyObject> Function(ffi.Pointer<PyObject>,
-              ffi.Pointer<PyObject>, ffi.Pointer<PyObject>)>();
-
-  ffi.Pointer<PyObject> PyFunction_GetCode(
-    ffi.Pointer<PyObject> arg0,
-  ) {
-    return _PyFunction_GetCode(
-      arg0,
-    );
-  }
-
-  late final _PyFunction_GetCodePtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<PyObject> Function(
-              ffi.Pointer<PyObject>)>>('PyFunction_GetCode');
-  late final _PyFunction_GetCode = _PyFunction_GetCodePtr.asFunction<
-      ffi.Pointer<PyObject> Function(ffi.Pointer<PyObject>)>();
-
-  ffi.Pointer<PyObject> PyFunction_GetGlobals(
-    ffi.Pointer<PyObject> arg0,
-  ) {
-    return _PyFunction_GetGlobals(
-      arg0,
-    );
-  }
-
-  late final _PyFunction_GetGlobalsPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<PyObject> Function(
-              ffi.Pointer<PyObject>)>>('PyFunction_GetGlobals');
-  late final _PyFunction_GetGlobals = _PyFunction_GetGlobalsPtr.asFunction<
-      ffi.Pointer<PyObject> Function(ffi.Pointer<PyObject>)>();
-
-  ffi.Pointer<PyObject> PyFunction_GetModule(
-    ffi.Pointer<PyObject> arg0,
-  ) {
-    return _PyFunction_GetModule(
-      arg0,
-    );
-  }
-
-  late final _PyFunction_GetModulePtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<PyObject> Function(
-              ffi.Pointer<PyObject>)>>('PyFunction_GetModule');
-  late final _PyFunction_GetModule = _PyFunction_GetModulePtr.asFunction<
-      ffi.Pointer<PyObject> Function(ffi.Pointer<PyObject>)>();
-
-  ffi.Pointer<PyObject> PyFunction_GetDefaults(
-    ffi.Pointer<PyObject> arg0,
-  ) {
-    return _PyFunction_GetDefaults(
-      arg0,
-    );
-  }
-
-  late final _PyFunction_GetDefaultsPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<PyObject> Function(
-              ffi.Pointer<PyObject>)>>('PyFunction_GetDefaults');
-  late final _PyFunction_GetDefaults = _PyFunction_GetDefaultsPtr.asFunction<
-      ffi.Pointer<PyObject> Function(ffi.Pointer<PyObject>)>();
-
-  int PyFunction_SetDefaults(
-    ffi.Pointer<PyObject> arg0,
-    ffi.Pointer<PyObject> arg1,
-  ) {
-    return _PyFunction_SetDefaults(
-      arg0,
-      arg1,
-    );
-  }
-
-  late final _PyFunction_SetDefaultsPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Int Function(ffi.Pointer<PyObject>,
-              ffi.Pointer<PyObject>)>>('PyFunction_SetDefaults');
-  late final _PyFunction_SetDefaults = _PyFunction_SetDefaultsPtr.asFunction<
-      int Function(ffi.Pointer<PyObject>, ffi.Pointer<PyObject>)>();
-
-  ffi.Pointer<PyObject> PyFunction_GetKwDefaults(
-    ffi.Pointer<PyObject> arg0,
-  ) {
-    return _PyFunction_GetKwDefaults(
-      arg0,
-    );
-  }
-
-  late final _PyFunction_GetKwDefaultsPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<PyObject> Function(
-              ffi.Pointer<PyObject>)>>('PyFunction_GetKwDefaults');
-  late final _PyFunction_GetKwDefaults = _PyFunction_GetKwDefaultsPtr
-      .asFunction<ffi.Pointer<PyObject> Function(ffi.Pointer<PyObject>)>();
-
-  int PyFunction_SetKwDefaults(
-    ffi.Pointer<PyObject> arg0,
-    ffi.Pointer<PyObject> arg1,
-  ) {
-    return _PyFunction_SetKwDefaults(
-      arg0,
-      arg1,
-    );
-  }
-
-  late final _PyFunction_SetKwDefaultsPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Int Function(ffi.Pointer<PyObject>,
-              ffi.Pointer<PyObject>)>>('PyFunction_SetKwDefaults');
-  late final _PyFunction_SetKwDefaults = _PyFunction_SetKwDefaultsPtr
-      .asFunction<int Function(ffi.Pointer<PyObject>, ffi.Pointer<PyObject>)>();
-
-  ffi.Pointer<PyObject> PyFunction_GetClosure(
-    ffi.Pointer<PyObject> arg0,
-  ) {
-    return _PyFunction_GetClosure(
-      arg0,
-    );
-  }
-
-  late final _PyFunction_GetClosurePtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<PyObject> Function(
-              ffi.Pointer<PyObject>)>>('PyFunction_GetClosure');
-  late final _PyFunction_GetClosure = _PyFunction_GetClosurePtr.asFunction<
-      ffi.Pointer<PyObject> Function(ffi.Pointer<PyObject>)>();
-
-  int PyFunction_SetClosure(
-    ffi.Pointer<PyObject> arg0,
-    ffi.Pointer<PyObject> arg1,
-  ) {
-    return _PyFunction_SetClosure(
-      arg0,
-      arg1,
-    );
-  }
-
-  late final _PyFunction_SetClosurePtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Int Function(ffi.Pointer<PyObject>,
-              ffi.Pointer<PyObject>)>>('PyFunction_SetClosure');
-  late final _PyFunction_SetClosure = _PyFunction_SetClosurePtr.asFunction<
-      int Function(ffi.Pointer<PyObject>, ffi.Pointer<PyObject>)>();
-
-  ffi.Pointer<PyObject> PyFunction_GetAnnotations(
-    ffi.Pointer<PyObject> arg0,
-  ) {
-    return _PyFunction_GetAnnotations(
-      arg0,
-    );
-  }
-
-  late final _PyFunction_GetAnnotationsPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<PyObject> Function(
-              ffi.Pointer<PyObject>)>>('PyFunction_GetAnnotations');
-  late final _PyFunction_GetAnnotations = _PyFunction_GetAnnotationsPtr
-      .asFunction<ffi.Pointer<PyObject> Function(ffi.Pointer<PyObject>)>();
-
-  int PyFunction_SetAnnotations(
-    ffi.Pointer<PyObject> arg0,
-    ffi.Pointer<PyObject> arg1,
-  ) {
-    return _PyFunction_SetAnnotations(
-      arg0,
-      arg1,
-    );
-  }
-
-  late final _PyFunction_SetAnnotationsPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Int Function(ffi.Pointer<PyObject>,
-              ffi.Pointer<PyObject>)>>('PyFunction_SetAnnotations');
-  late final _PyFunction_SetAnnotations = _PyFunction_SetAnnotationsPtr
-      .asFunction<int Function(ffi.Pointer<PyObject>, ffi.Pointer<PyObject>)>();
-
-  ffi.Pointer<PyObject> PyFunction_FastCallDict(
-    ffi.Pointer<PyObject> func,
-    ffi.Pointer<ffi.Pointer<PyObject>> args,
-    int nargs,
-    ffi.Pointer<PyObject> kwargs,
-  ) {
-    return _PyFunction_FastCallDict(
-      func,
-      args,
-      nargs,
-      kwargs,
-    );
-  }
-
-  late final _PyFunction_FastCallDictPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<PyObject> Function(
-              ffi.Pointer<PyObject>,
-              ffi.Pointer<ffi.Pointer<PyObject>>,
-              Py_ssize_t,
-              ffi.Pointer<PyObject>)>>('_PyFunction_FastCallDict');
-  late final _PyFunction_FastCallDict = _PyFunction_FastCallDictPtr.asFunction<
-      ffi.Pointer<PyObject> Function(ffi.Pointer<PyObject>,
-          ffi.Pointer<ffi.Pointer<PyObject>>, int, ffi.Pointer<PyObject>)>();
-
-  ffi.Pointer<PyObject> PyFunction_Vectorcall(
-    ffi.Pointer<PyObject> func,
-    ffi.Pointer<ffi.Pointer<PyObject>> stack,
-    int nargsf,
-    ffi.Pointer<PyObject> kwnames,
-  ) {
-    return _PyFunction_Vectorcall(
-      func,
-      stack,
-      nargsf,
-      kwnames,
-    );
-  }
-
-  late final _PyFunction_VectorcallPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<PyObject> Function(
-              ffi.Pointer<PyObject>,
-              ffi.Pointer<ffi.Pointer<PyObject>>,
-              ffi.Size,
-              ffi.Pointer<PyObject>)>>('_PyFunction_Vectorcall');
-  late final _PyFunction_Vectorcall = _PyFunction_VectorcallPtr.asFunction<
-      ffi.Pointer<PyObject> Function(ffi.Pointer<PyObject>,
-          ffi.Pointer<ffi.Pointer<PyObject>>, int, ffi.Pointer<PyObject>)>();
-
-  late final ffi.Pointer<PyTypeObject> _PyClassMethod_Type =
-      _lookup<PyTypeObject>('PyClassMethod_Type');
-
-  PyTypeObject get PyClassMethod_Type => _PyClassMethod_Type.ref;
-
-  late final ffi.Pointer<PyTypeObject> _PyStaticMethod_Type =
-      _lookup<PyTypeObject>('PyStaticMethod_Type');
-
-  PyTypeObject get PyStaticMethod_Type => _PyStaticMethod_Type.ref;
-
-  ffi.Pointer<PyObject> PyClassMethod_New(
-    ffi.Pointer<PyObject> arg0,
-  ) {
-    return _PyClassMethod_New(
-      arg0,
-    );
-  }
-
-  late final _PyClassMethod_NewPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<PyObject> Function(
-              ffi.Pointer<PyObject>)>>('PyClassMethod_New');
-  late final _PyClassMethod_New = _PyClassMethod_NewPtr.asFunction<
-      ffi.Pointer<PyObject> Function(ffi.Pointer<PyObject>)>();
-
-  ffi.Pointer<PyObject> PyStaticMethod_New(
-    ffi.Pointer<PyObject> arg0,
-  ) {
-    return _PyStaticMethod_New(
-      arg0,
-    );
-  }
-
-  late final _PyStaticMethod_NewPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<PyObject> Function(
-              ffi.Pointer<PyObject>)>>('PyStaticMethod_New');
-  late final _PyStaticMethod_New = _PyStaticMethod_NewPtr.asFunction<
-      ffi.Pointer<PyObject> Function(ffi.Pointer<PyObject>)>();
-
-  late final ffi.Pointer<PyTypeObject> _PyMethod_Type =
-      _lookup<PyTypeObject>('PyMethod_Type');
-
-  PyTypeObject get PyMethod_Type => _PyMethod_Type.ref;
-
-  ffi.Pointer<PyObject> PyMethod_New(
-    ffi.Pointer<PyObject> arg0,
-    ffi.Pointer<PyObject> arg1,
-  ) {
-    return _PyMethod_New(
-      arg0,
-      arg1,
-    );
-  }
-
-  late final _PyMethod_NewPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<PyObject> Function(
-              ffi.Pointer<PyObject>, ffi.Pointer<PyObject>)>>('PyMethod_New');
-  late final _PyMethod_New = _PyMethod_NewPtr.asFunction<
+              ffi.Pointer<ffi.Char>, ffi.Int)>>('_PyUnicode_EncodeUTF32');
+  late final _PyUnicode_EncodeUTF32 = _PyUnicode_EncodeUTF32Ptr.asFunction<
       ffi.Pointer<PyObject> Function(
-          ffi.Pointer<PyObject>, ffi.Pointer<PyObject>)>();
+          ffi.Pointer<PyObject>, ffi.Pointer<ffi.Char>, int)>();
 
-  ffi.Pointer<PyObject> PyMethod_Function(
-    ffi.Pointer<PyObject> arg0,
+  ffi.Pointer<PyObject> PyUnicode_EncodeUTF16(
+    ffi.Pointer<PyObject> unicode,
+    ffi.Pointer<ffi.Char> errors,
+    int byteorder,
   ) {
-    return _PyMethod_Function(
-      arg0,
+    return _PyUnicode_EncodeUTF16(
+      unicode,
+      errors,
+      byteorder,
     );
   }
 
-  late final _PyMethod_FunctionPtr = _lookup<
+  late final _PyUnicode_EncodeUTF16Ptr = _lookup<
       ffi.NativeFunction<
-          ffi.Pointer<PyObject> Function(
-              ffi.Pointer<PyObject>)>>('PyMethod_Function');
-  late final _PyMethod_Function = _PyMethod_FunctionPtr.asFunction<
-      ffi.Pointer<PyObject> Function(ffi.Pointer<PyObject>)>();
+          ffi.Pointer<PyObject> Function(ffi.Pointer<PyObject>,
+              ffi.Pointer<ffi.Char>, ffi.Int)>>('_PyUnicode_EncodeUTF16');
+  late final _PyUnicode_EncodeUTF16 = _PyUnicode_EncodeUTF16Ptr.asFunction<
+      ffi.Pointer<PyObject> Function(
+          ffi.Pointer<PyObject>, ffi.Pointer<ffi.Char>, int)>();
 
-  ffi.Pointer<PyObject> PyMethod_Self(
-    ffi.Pointer<PyObject> arg0,
+  ffi.Pointer<PyObject> PyUnicode_DecodeUnicodeEscapeStateful(
+    ffi.Pointer<ffi.Char> string,
+    int length,
+    ffi.Pointer<ffi.Char> errors,
+    ffi.Pointer<Py_ssize_t> consumed,
   ) {
-    return _PyMethod_Self(
-      arg0,
+    return _PyUnicode_DecodeUnicodeEscapeStateful(
+      string,
+      length,
+      errors,
+      consumed,
     );
   }
 
-  late final _PyMethod_SelfPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<PyObject> Function(
-              ffi.Pointer<PyObject>)>>('PyMethod_Self');
-  late final _PyMethod_Self = _PyMethod_SelfPtr.asFunction<
-      ffi.Pointer<PyObject> Function(ffi.Pointer<PyObject>)>();
+  late final _PyUnicode_DecodeUnicodeEscapeStatefulPtr = _lookup<
+          ffi.NativeFunction<
+              ffi.Pointer<PyObject> Function(ffi.Pointer<ffi.Char>, Py_ssize_t,
+                  ffi.Pointer<ffi.Char>, ffi.Pointer<Py_ssize_t>)>>(
+      '_PyUnicode_DecodeUnicodeEscapeStateful');
+  late final _PyUnicode_DecodeUnicodeEscapeStateful =
+      _PyUnicode_DecodeUnicodeEscapeStatefulPtr.asFunction<
+          ffi.Pointer<PyObject> Function(ffi.Pointer<ffi.Char>, int,
+              ffi.Pointer<ffi.Char>, ffi.Pointer<Py_ssize_t>)>();
 
-  int PyMethod_ClearFreeList() {
-    return _PyMethod_ClearFreeList();
-  }
-
-  late final _PyMethod_ClearFreeListPtr =
-      _lookup<ffi.NativeFunction<ffi.Int Function()>>('PyMethod_ClearFreeList');
-  late final _PyMethod_ClearFreeList =
-      _PyMethod_ClearFreeListPtr.asFunction<int Function()>();
-
-  late final ffi.Pointer<PyTypeObject> _PyInstanceMethod_Type =
-      _lookup<PyTypeObject>('PyInstanceMethod_Type');
-
-  PyTypeObject get PyInstanceMethod_Type => _PyInstanceMethod_Type.ref;
-
-  ffi.Pointer<PyObject> PyInstanceMethod_New(
-    ffi.Pointer<PyObject> arg0,
+  ffi.Pointer<PyObject> PyUnicode_DecodeUnicodeEscapeInternal(
+    ffi.Pointer<ffi.Char> string,
+    int length,
+    ffi.Pointer<ffi.Char> errors,
+    ffi.Pointer<Py_ssize_t> consumed,
+    ffi.Pointer<ffi.Pointer<ffi.Char>> first_invalid_escape,
   ) {
-    return _PyInstanceMethod_New(
-      arg0,
+    return _PyUnicode_DecodeUnicodeEscapeInternal(
+      string,
+      length,
+      errors,
+      consumed,
+      first_invalid_escape,
     );
   }
 
-  late final _PyInstanceMethod_NewPtr = _lookup<
-      ffi.NativeFunction<
+  late final _PyUnicode_DecodeUnicodeEscapeInternalPtr = _lookup<
+          ffi.NativeFunction<
+              ffi.Pointer<PyObject> Function(
+                  ffi.Pointer<ffi.Char>,
+                  Py_ssize_t,
+                  ffi.Pointer<ffi.Char>,
+                  ffi.Pointer<Py_ssize_t>,
+                  ffi.Pointer<ffi.Pointer<ffi.Char>>)>>(
+      '_PyUnicode_DecodeUnicodeEscapeInternal');
+  late final _PyUnicode_DecodeUnicodeEscapeInternal =
+      _PyUnicode_DecodeUnicodeEscapeInternalPtr.asFunction<
           ffi.Pointer<PyObject> Function(
-              ffi.Pointer<PyObject>)>>('PyInstanceMethod_New');
-  late final _PyInstanceMethod_New = _PyInstanceMethod_NewPtr.asFunction<
-      ffi.Pointer<PyObject> Function(ffi.Pointer<PyObject>)>();
+              ffi.Pointer<ffi.Char>,
+              int,
+              ffi.Pointer<ffi.Char>,
+              ffi.Pointer<Py_ssize_t>,
+              ffi.Pointer<ffi.Pointer<ffi.Char>>)>();
 
-  ffi.Pointer<PyObject> PyInstanceMethod_Function(
-    ffi.Pointer<PyObject> arg0,
+  ffi.Pointer<PyObject> PyUnicode_DecodeRawUnicodeEscapeStateful(
+    ffi.Pointer<ffi.Char> string,
+    int length,
+    ffi.Pointer<ffi.Char> errors,
+    ffi.Pointer<Py_ssize_t> consumed,
   ) {
-    return _PyInstanceMethod_Function(
-      arg0,
+    return _PyUnicode_DecodeRawUnicodeEscapeStateful(
+      string,
+      length,
+      errors,
+      consumed,
     );
   }
 
-  late final _PyInstanceMethod_FunctionPtr = _lookup<
+  late final _PyUnicode_DecodeRawUnicodeEscapeStatefulPtr = _lookup<
+          ffi.NativeFunction<
+              ffi.Pointer<PyObject> Function(ffi.Pointer<ffi.Char>, Py_ssize_t,
+                  ffi.Pointer<ffi.Char>, ffi.Pointer<Py_ssize_t>)>>(
+      '_PyUnicode_DecodeRawUnicodeEscapeStateful');
+  late final _PyUnicode_DecodeRawUnicodeEscapeStateful =
+      _PyUnicode_DecodeRawUnicodeEscapeStatefulPtr.asFunction<
+          ffi.Pointer<PyObject> Function(ffi.Pointer<ffi.Char>, int,
+              ffi.Pointer<ffi.Char>, ffi.Pointer<Py_ssize_t>)>();
+
+  ffi.Pointer<PyObject> PyUnicode_AsLatin1String1(
+    ffi.Pointer<PyObject> unicode,
+    ffi.Pointer<ffi.Char> errors,
+  ) {
+    return _PyUnicode_AsLatin1String1(
+      unicode,
+      errors,
+    );
+  }
+
+  late final _PyUnicode_AsLatin1String1Ptr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<PyObject> Function(ffi.Pointer<PyObject>,
+              ffi.Pointer<ffi.Char>)>>('_PyUnicode_AsLatin1String');
+  late final _PyUnicode_AsLatin1String1 =
+      _PyUnicode_AsLatin1String1Ptr.asFunction<
+          ffi.Pointer<PyObject> Function(
+              ffi.Pointer<PyObject>, ffi.Pointer<ffi.Char>)>();
+
+  ffi.Pointer<PyObject> PyUnicode_AsASCIIString1(
+    ffi.Pointer<PyObject> unicode,
+    ffi.Pointer<ffi.Char> errors,
+  ) {
+    return _PyUnicode_AsASCIIString1(
+      unicode,
+      errors,
+    );
+  }
+
+  late final _PyUnicode_AsASCIIString1Ptr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<PyObject> Function(ffi.Pointer<PyObject>,
+              ffi.Pointer<ffi.Char>)>>('_PyUnicode_AsASCIIString');
+  late final _PyUnicode_AsASCIIString1 =
+      _PyUnicode_AsASCIIString1Ptr.asFunction<
+          ffi.Pointer<PyObject> Function(
+              ffi.Pointer<PyObject>, ffi.Pointer<ffi.Char>)>();
+
+  ffi.Pointer<PyObject> PyUnicode_EncodeCharmap(
+    ffi.Pointer<PyObject> unicode,
+    ffi.Pointer<PyObject> mapping,
+    ffi.Pointer<ffi.Char> errors,
+  ) {
+    return _PyUnicode_EncodeCharmap(
+      unicode,
+      mapping,
+      errors,
+    );
+  }
+
+  late final _PyUnicode_EncodeCharmapPtr = _lookup<
       ffi.NativeFunction<
           ffi.Pointer<PyObject> Function(
-              ffi.Pointer<PyObject>)>>('PyInstanceMethod_Function');
-  late final _PyInstanceMethod_Function = _PyInstanceMethod_FunctionPtr
-      .asFunction<ffi.Pointer<PyObject> Function(ffi.Pointer<PyObject>)>();
+              ffi.Pointer<PyObject>,
+              ffi.Pointer<PyObject>,
+              ffi.Pointer<ffi.Char>)>>('_PyUnicode_EncodeCharmap');
+  late final _PyUnicode_EncodeCharmap = _PyUnicode_EncodeCharmapPtr.asFunction<
+      ffi.Pointer<PyObject> Function(ffi.Pointer<PyObject>,
+          ffi.Pointer<PyObject>, ffi.Pointer<ffi.Char>)>();
 
-  ffi.Pointer<PyObject> PyFile_FromFd(
-    int arg0,
-    ffi.Pointer<ffi.Char> arg1,
-    ffi.Pointer<ffi.Char> arg2,
+  ffi.Pointer<PyObject> PyUnicode_TransformDecimalAndSpaceToASCII(
+    ffi.Pointer<PyObject> unicode,
+  ) {
+    return _PyUnicode_TransformDecimalAndSpaceToASCII(
+      unicode,
+    );
+  }
+
+  late final _PyUnicode_TransformDecimalAndSpaceToASCIIPtr = _lookup<
+          ffi.NativeFunction<
+              ffi.Pointer<PyObject> Function(ffi.Pointer<PyObject>)>>(
+      '_PyUnicode_TransformDecimalAndSpaceToASCII');
+  late final _PyUnicode_TransformDecimalAndSpaceToASCII =
+      _PyUnicode_TransformDecimalAndSpaceToASCIIPtr.asFunction<
+          ffi.Pointer<PyObject> Function(ffi.Pointer<PyObject>)>();
+
+  ffi.Pointer<PyObject> PyUnicode_JoinArray(
+    ffi.Pointer<PyObject> separator,
+    ffi.Pointer<ffi.Pointer<PyObject>> items,
+    int seqlen,
+  ) {
+    return _PyUnicode_JoinArray(
+      separator,
+      items,
+      seqlen,
+    );
+  }
+
+  late final _PyUnicode_JoinArrayPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<PyObject> Function(
+              ffi.Pointer<PyObject>,
+              ffi.Pointer<ffi.Pointer<PyObject>>,
+              Py_ssize_t)>>('_PyUnicode_JoinArray');
+  late final _PyUnicode_JoinArray = _PyUnicode_JoinArrayPtr.asFunction<
+      ffi.Pointer<PyObject> Function(
+          ffi.Pointer<PyObject>, ffi.Pointer<ffi.Pointer<PyObject>>, int)>();
+
+  int PyUnicode_EqualToASCIIId(
+    ffi.Pointer<PyObject> left,
+    ffi.Pointer<_Py_Identifier> right,
+  ) {
+    return _PyUnicode_EqualToASCIIId(
+      left,
+      right,
+    );
+  }
+
+  late final _PyUnicode_EqualToASCIIIdPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int Function(ffi.Pointer<PyObject>,
+              ffi.Pointer<_Py_Identifier>)>>('_PyUnicode_EqualToASCIIId');
+  late final _PyUnicode_EqualToASCIIId =
+      _PyUnicode_EqualToASCIIIdPtr.asFunction<
+          int Function(ffi.Pointer<PyObject>, ffi.Pointer<_Py_Identifier>)>();
+
+  int PyUnicode_EqualToASCIIString(
+    ffi.Pointer<PyObject> left,
+    ffi.Pointer<ffi.Char> right,
+  ) {
+    return _PyUnicode_EqualToASCIIString(
+      left,
+      right,
+    );
+  }
+
+  late final _PyUnicode_EqualToASCIIStringPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int Function(ffi.Pointer<PyObject>,
+              ffi.Pointer<ffi.Char>)>>('_PyUnicode_EqualToASCIIString');
+  late final _PyUnicode_EqualToASCIIString = _PyUnicode_EqualToASCIIStringPtr
+      .asFunction<int Function(ffi.Pointer<PyObject>, ffi.Pointer<ffi.Char>)>();
+
+  ffi.Pointer<PyObject> PyUnicode_XStrip(
+    ffi.Pointer<PyObject> self,
+    int striptype,
+    ffi.Pointer<PyObject> sepobj,
+  ) {
+    return _PyUnicode_XStrip(
+      self,
+      striptype,
+      sepobj,
+    );
+  }
+
+  late final _PyUnicode_XStripPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<PyObject> Function(ffi.Pointer<PyObject>, ffi.Int,
+              ffi.Pointer<PyObject>)>>('_PyUnicode_XStrip');
+  late final _PyUnicode_XStrip = _PyUnicode_XStripPtr.asFunction<
+      ffi.Pointer<PyObject> Function(
+          ffi.Pointer<PyObject>, int, ffi.Pointer<PyObject>)>();
+
+  int PyUnicode_InsertThousandsGrouping(
+    ffi.Pointer<_PyUnicodeWriter> writer,
+    int n_buffer,
+    ffi.Pointer<PyObject> digits,
+    int d_pos,
+    int n_digits,
+    int min_width,
+    ffi.Pointer<ffi.Char> grouping,
+    ffi.Pointer<PyObject> thousands_sep,
+    ffi.Pointer<Py_UCS4> maxchar,
+  ) {
+    return _PyUnicode_InsertThousandsGrouping(
+      writer,
+      n_buffer,
+      digits,
+      d_pos,
+      n_digits,
+      min_width,
+      grouping,
+      thousands_sep,
+      maxchar,
+    );
+  }
+
+  late final _PyUnicode_InsertThousandsGroupingPtr = _lookup<
+      ffi.NativeFunction<
+          Py_ssize_t Function(
+              ffi.Pointer<_PyUnicodeWriter>,
+              Py_ssize_t,
+              ffi.Pointer<PyObject>,
+              Py_ssize_t,
+              Py_ssize_t,
+              Py_ssize_t,
+              ffi.Pointer<ffi.Char>,
+              ffi.Pointer<PyObject>,
+              ffi.Pointer<Py_UCS4>)>>('_PyUnicode_InsertThousandsGrouping');
+  late final _PyUnicode_InsertThousandsGrouping =
+      _PyUnicode_InsertThousandsGroupingPtr.asFunction<
+          int Function(
+              ffi.Pointer<_PyUnicodeWriter>,
+              int,
+              ffi.Pointer<PyObject>,
+              int,
+              int,
+              int,
+              ffi.Pointer<ffi.Char>,
+              ffi.Pointer<PyObject>,
+              ffi.Pointer<Py_UCS4>)>();
+
+  int PyUnicode_IsLowercase(
+    int ch,
+  ) {
+    return _PyUnicode_IsLowercase(
+      ch,
+    );
+  }
+
+  late final _PyUnicode_IsLowercasePtr =
+      _lookup<ffi.NativeFunction<ffi.Int Function(Py_UCS4)>>(
+          '_PyUnicode_IsLowercase');
+  late final _PyUnicode_IsLowercase =
+      _PyUnicode_IsLowercasePtr.asFunction<int Function(int)>();
+
+  int PyUnicode_IsUppercase(
+    int ch,
+  ) {
+    return _PyUnicode_IsUppercase(
+      ch,
+    );
+  }
+
+  late final _PyUnicode_IsUppercasePtr =
+      _lookup<ffi.NativeFunction<ffi.Int Function(Py_UCS4)>>(
+          '_PyUnicode_IsUppercase');
+  late final _PyUnicode_IsUppercase =
+      _PyUnicode_IsUppercasePtr.asFunction<int Function(int)>();
+
+  int PyUnicode_IsTitlecase(
+    int ch,
+  ) {
+    return _PyUnicode_IsTitlecase(
+      ch,
+    );
+  }
+
+  late final _PyUnicode_IsTitlecasePtr =
+      _lookup<ffi.NativeFunction<ffi.Int Function(Py_UCS4)>>(
+          '_PyUnicode_IsTitlecase');
+  late final _PyUnicode_IsTitlecase =
+      _PyUnicode_IsTitlecasePtr.asFunction<int Function(int)>();
+
+  int PyUnicode_IsXidStart(
+    int ch,
+  ) {
+    return _PyUnicode_IsXidStart(
+      ch,
+    );
+  }
+
+  late final _PyUnicode_IsXidStartPtr =
+      _lookup<ffi.NativeFunction<ffi.Int Function(Py_UCS4)>>(
+          '_PyUnicode_IsXidStart');
+  late final _PyUnicode_IsXidStart =
+      _PyUnicode_IsXidStartPtr.asFunction<int Function(int)>();
+
+  int PyUnicode_IsXidContinue(
+    int ch,
+  ) {
+    return _PyUnicode_IsXidContinue(
+      ch,
+    );
+  }
+
+  late final _PyUnicode_IsXidContinuePtr =
+      _lookup<ffi.NativeFunction<ffi.Int Function(Py_UCS4)>>(
+          '_PyUnicode_IsXidContinue');
+  late final _PyUnicode_IsXidContinue =
+      _PyUnicode_IsXidContinuePtr.asFunction<int Function(int)>();
+
+  int PyUnicode_IsWhitespace(
+    int ch,
+  ) {
+    return _PyUnicode_IsWhitespace(
+      ch,
+    );
+  }
+
+  late final _PyUnicode_IsWhitespacePtr =
+      _lookup<ffi.NativeFunction<ffi.Int Function(Py_UCS4)>>(
+          '_PyUnicode_IsWhitespace');
+  late final _PyUnicode_IsWhitespace =
+      _PyUnicode_IsWhitespacePtr.asFunction<int Function(int)>();
+
+  int PyUnicode_IsLinebreak(
+    int ch,
+  ) {
+    return _PyUnicode_IsLinebreak(
+      ch,
+    );
+  }
+
+  late final _PyUnicode_IsLinebreakPtr =
+      _lookup<ffi.NativeFunction<ffi.Int Function(Py_UCS4)>>(
+          '_PyUnicode_IsLinebreak');
+  late final _PyUnicode_IsLinebreak =
+      _PyUnicode_IsLinebreakPtr.asFunction<int Function(int)>();
+
+  int PyUnicode_ToLowercase(
+    int ch,
+  ) {
+    return _PyUnicode_ToLowercase(
+      ch,
+    );
+  }
+
+  late final _PyUnicode_ToLowercasePtr =
+      _lookup<ffi.NativeFunction<Py_UCS4 Function(Py_UCS4)>>(
+          '_PyUnicode_ToLowercase');
+  late final _PyUnicode_ToLowercase =
+      _PyUnicode_ToLowercasePtr.asFunction<int Function(int)>();
+
+  int PyUnicode_ToUppercase(
+    int ch,
+  ) {
+    return _PyUnicode_ToUppercase(
+      ch,
+    );
+  }
+
+  late final _PyUnicode_ToUppercasePtr =
+      _lookup<ffi.NativeFunction<Py_UCS4 Function(Py_UCS4)>>(
+          '_PyUnicode_ToUppercase');
+  late final _PyUnicode_ToUppercase =
+      _PyUnicode_ToUppercasePtr.asFunction<int Function(int)>();
+
+  int PyUnicode_ToTitlecase(
+    int ch,
+  ) {
+    return _PyUnicode_ToTitlecase(
+      ch,
+    );
+  }
+
+  late final _PyUnicode_ToTitlecasePtr =
+      _lookup<ffi.NativeFunction<Py_UCS4 Function(Py_UCS4)>>(
+          '_PyUnicode_ToTitlecase');
+  late final _PyUnicode_ToTitlecase =
+      _PyUnicode_ToTitlecasePtr.asFunction<int Function(int)>();
+
+  int PyUnicode_ToLowerFull(
+    int ch,
+    ffi.Pointer<Py_UCS4> res,
+  ) {
+    return _PyUnicode_ToLowerFull(
+      ch,
+      res,
+    );
+  }
+
+  late final _PyUnicode_ToLowerFullPtr = _lookup<
+          ffi.NativeFunction<ffi.Int Function(Py_UCS4, ffi.Pointer<Py_UCS4>)>>(
+      '_PyUnicode_ToLowerFull');
+  late final _PyUnicode_ToLowerFull = _PyUnicode_ToLowerFullPtr.asFunction<
+      int Function(int, ffi.Pointer<Py_UCS4>)>();
+
+  int PyUnicode_ToTitleFull(
+    int ch,
+    ffi.Pointer<Py_UCS4> res,
+  ) {
+    return _PyUnicode_ToTitleFull(
+      ch,
+      res,
+    );
+  }
+
+  late final _PyUnicode_ToTitleFullPtr = _lookup<
+          ffi.NativeFunction<ffi.Int Function(Py_UCS4, ffi.Pointer<Py_UCS4>)>>(
+      '_PyUnicode_ToTitleFull');
+  late final _PyUnicode_ToTitleFull = _PyUnicode_ToTitleFullPtr.asFunction<
+      int Function(int, ffi.Pointer<Py_UCS4>)>();
+
+  int PyUnicode_ToUpperFull(
+    int ch,
+    ffi.Pointer<Py_UCS4> res,
+  ) {
+    return _PyUnicode_ToUpperFull(
+      ch,
+      res,
+    );
+  }
+
+  late final _PyUnicode_ToUpperFullPtr = _lookup<
+          ffi.NativeFunction<ffi.Int Function(Py_UCS4, ffi.Pointer<Py_UCS4>)>>(
+      '_PyUnicode_ToUpperFull');
+  late final _PyUnicode_ToUpperFull = _PyUnicode_ToUpperFullPtr.asFunction<
+      int Function(int, ffi.Pointer<Py_UCS4>)>();
+
+  int PyUnicode_ToFoldedFull(
+    int ch,
+    ffi.Pointer<Py_UCS4> res,
+  ) {
+    return _PyUnicode_ToFoldedFull(
+      ch,
+      res,
+    );
+  }
+
+  late final _PyUnicode_ToFoldedFullPtr = _lookup<
+          ffi.NativeFunction<ffi.Int Function(Py_UCS4, ffi.Pointer<Py_UCS4>)>>(
+      '_PyUnicode_ToFoldedFull');
+  late final _PyUnicode_ToFoldedFull = _PyUnicode_ToFoldedFullPtr.asFunction<
+      int Function(int, ffi.Pointer<Py_UCS4>)>();
+
+  int PyUnicode_IsCaseIgnorable(
+    int ch,
+  ) {
+    return _PyUnicode_IsCaseIgnorable(
+      ch,
+    );
+  }
+
+  late final _PyUnicode_IsCaseIgnorablePtr =
+      _lookup<ffi.NativeFunction<ffi.Int Function(Py_UCS4)>>(
+          '_PyUnicode_IsCaseIgnorable');
+  late final _PyUnicode_IsCaseIgnorable =
+      _PyUnicode_IsCaseIgnorablePtr.asFunction<int Function(int)>();
+
+  int PyUnicode_IsCased(
+    int ch,
+  ) {
+    return _PyUnicode_IsCased(
+      ch,
+    );
+  }
+
+  late final _PyUnicode_IsCasedPtr =
+      _lookup<ffi.NativeFunction<ffi.Int Function(Py_UCS4)>>(
+          '_PyUnicode_IsCased');
+  late final _PyUnicode_IsCased =
+      _PyUnicode_IsCasedPtr.asFunction<int Function(int)>();
+
+  int PyUnicode_ToDecimalDigit(
+    int ch,
+  ) {
+    return _PyUnicode_ToDecimalDigit(
+      ch,
+    );
+  }
+
+  late final _PyUnicode_ToDecimalDigitPtr =
+      _lookup<ffi.NativeFunction<ffi.Int Function(Py_UCS4)>>(
+          '_PyUnicode_ToDecimalDigit');
+  late final _PyUnicode_ToDecimalDigit =
+      _PyUnicode_ToDecimalDigitPtr.asFunction<int Function(int)>();
+
+  int PyUnicode_ToDigit(
+    int ch,
+  ) {
+    return _PyUnicode_ToDigit(
+      ch,
+    );
+  }
+
+  late final _PyUnicode_ToDigitPtr =
+      _lookup<ffi.NativeFunction<ffi.Int Function(Py_UCS4)>>(
+          '_PyUnicode_ToDigit');
+  late final _PyUnicode_ToDigit =
+      _PyUnicode_ToDigitPtr.asFunction<int Function(int)>();
+
+  double PyUnicode_ToNumeric(
+    int ch,
+  ) {
+    return _PyUnicode_ToNumeric(
+      ch,
+    );
+  }
+
+  late final _PyUnicode_ToNumericPtr =
+      _lookup<ffi.NativeFunction<ffi.Double Function(Py_UCS4)>>(
+          '_PyUnicode_ToNumeric');
+  late final _PyUnicode_ToNumeric =
+      _PyUnicode_ToNumericPtr.asFunction<double Function(int)>();
+
+  int PyUnicode_IsDecimalDigit(
+    int ch,
+  ) {
+    return _PyUnicode_IsDecimalDigit(
+      ch,
+    );
+  }
+
+  late final _PyUnicode_IsDecimalDigitPtr =
+      _lookup<ffi.NativeFunction<ffi.Int Function(Py_UCS4)>>(
+          '_PyUnicode_IsDecimalDigit');
+  late final _PyUnicode_IsDecimalDigit =
+      _PyUnicode_IsDecimalDigitPtr.asFunction<int Function(int)>();
+
+  int PyUnicode_IsDigit(
+    int ch,
+  ) {
+    return _PyUnicode_IsDigit(
+      ch,
+    );
+  }
+
+  late final _PyUnicode_IsDigitPtr =
+      _lookup<ffi.NativeFunction<ffi.Int Function(Py_UCS4)>>(
+          '_PyUnicode_IsDigit');
+  late final _PyUnicode_IsDigit =
+      _PyUnicode_IsDigitPtr.asFunction<int Function(int)>();
+
+  int PyUnicode_IsNumeric(
+    int ch,
+  ) {
+    return _PyUnicode_IsNumeric(
+      ch,
+    );
+  }
+
+  late final _PyUnicode_IsNumericPtr =
+      _lookup<ffi.NativeFunction<ffi.Int Function(Py_UCS4)>>(
+          '_PyUnicode_IsNumeric');
+  late final _PyUnicode_IsNumeric =
+      _PyUnicode_IsNumericPtr.asFunction<int Function(int)>();
+
+  int PyUnicode_IsPrintable(
+    int ch,
+  ) {
+    return _PyUnicode_IsPrintable(
+      ch,
+    );
+  }
+
+  late final _PyUnicode_IsPrintablePtr =
+      _lookup<ffi.NativeFunction<ffi.Int Function(Py_UCS4)>>(
+          '_PyUnicode_IsPrintable');
+  late final _PyUnicode_IsPrintable =
+      _PyUnicode_IsPrintablePtr.asFunction<int Function(int)>();
+
+  int PyUnicode_IsAlpha(
+    int ch,
+  ) {
+    return _PyUnicode_IsAlpha(
+      ch,
+    );
+  }
+
+  late final _PyUnicode_IsAlphaPtr =
+      _lookup<ffi.NativeFunction<ffi.Int Function(Py_UCS4)>>(
+          '_PyUnicode_IsAlpha');
+  late final _PyUnicode_IsAlpha =
+      _PyUnicode_IsAlphaPtr.asFunction<int Function(int)>();
+
+  late final ffi.Pointer<ffi.Pointer<ffi.UnsignedChar>> _Py_ascii_whitespace =
+      _lookup<ffi.Pointer<ffi.UnsignedChar>>('_Py_ascii_whitespace');
+
+  ffi.Pointer<ffi.UnsignedChar> get Py_ascii_whitespace =>
+      _Py_ascii_whitespace.value;
+
+  set Py_ascii_whitespace(ffi.Pointer<ffi.UnsignedChar> value) =>
+      _Py_ascii_whitespace.value = value;
+
+  ffi.Pointer<PyObject> PyUnicode_FormatLong(
+    ffi.Pointer<PyObject> arg0,
+    int arg1,
+    int arg2,
     int arg3,
-    ffi.Pointer<ffi.Char> arg4,
-    ffi.Pointer<ffi.Char> arg5,
-    ffi.Pointer<ffi.Char> arg6,
-    int arg7,
   ) {
-    return _PyFile_FromFd(
+    return _PyUnicode_FormatLong(
       arg0,
       arg1,
       arg2,
       arg3,
-      arg4,
-      arg5,
-      arg6,
-      arg7,
     );
   }
 
-  late final _PyFile_FromFdPtr = _lookup<
+  late final _PyUnicode_FormatLongPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<PyObject> Function(ffi.Pointer<PyObject>, ffi.Int,
+              ffi.Int, ffi.Int)>>('_PyUnicode_FormatLong');
+  late final _PyUnicode_FormatLong = _PyUnicode_FormatLongPtr.asFunction<
+      ffi.Pointer<PyObject> Function(ffi.Pointer<PyObject>, int, int, int)>();
+
+  ffi.Pointer<PyObject> PyUnicode_FromId(
+    ffi.Pointer<_Py_Identifier> arg0,
+  ) {
+    return _PyUnicode_FromId(
+      arg0,
+    );
+  }
+
+  late final _PyUnicode_FromIdPtr = _lookup<
       ffi.NativeFunction<
           ffi.Pointer<PyObject> Function(
-              ffi.Int,
-              ffi.Pointer<ffi.Char>,
-              ffi.Pointer<ffi.Char>,
-              ffi.Int,
-              ffi.Pointer<ffi.Char>,
-              ffi.Pointer<ffi.Char>,
-              ffi.Pointer<ffi.Char>,
-              ffi.Int)>>('PyFile_FromFd');
-  late final _PyFile_FromFd = _PyFile_FromFdPtr.asFunction<
-      ffi.Pointer<PyObject> Function(
-          int,
-          ffi.Pointer<ffi.Char>,
-          ffi.Pointer<ffi.Char>,
-          int,
-          ffi.Pointer<ffi.Char>,
-          ffi.Pointer<ffi.Char>,
-          ffi.Pointer<ffi.Char>,
-          int)>();
+              ffi.Pointer<_Py_Identifier>)>>('_PyUnicode_FromId');
+  late final _PyUnicode_FromId = _PyUnicode_FromIdPtr.asFunction<
+      ffi.Pointer<PyObject> Function(ffi.Pointer<_Py_Identifier>)>();
 
-  ffi.Pointer<PyObject> PyFile_GetLine(
-    ffi.Pointer<PyObject> arg0,
-    int arg1,
-  ) {
-    return _PyFile_GetLine(
-      arg0,
-      arg1,
-    );
-  }
-
-  late final _PyFile_GetLinePtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<PyObject> Function(
-              ffi.Pointer<PyObject>, ffi.Int)>>('PyFile_GetLine');
-  late final _PyFile_GetLine = _PyFile_GetLinePtr.asFunction<
-      ffi.Pointer<PyObject> Function(ffi.Pointer<PyObject>, int)>();
-
-  int PyFile_WriteObject(
-    ffi.Pointer<PyObject> arg0,
-    ffi.Pointer<PyObject> arg1,
-    int arg2,
-  ) {
-    return _PyFile_WriteObject(
-      arg0,
-      arg1,
-      arg2,
-    );
-  }
-
-  late final _PyFile_WriteObjectPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Int Function(ffi.Pointer<PyObject>, ffi.Pointer<PyObject>,
-              ffi.Int)>>('PyFile_WriteObject');
-  late final _PyFile_WriteObject = _PyFile_WriteObjectPtr.asFunction<
-      int Function(ffi.Pointer<PyObject>, ffi.Pointer<PyObject>, int)>();
-
-  int PyFile_WriteString(
-    ffi.Pointer<ffi.Char> arg0,
-    ffi.Pointer<PyObject> arg1,
-  ) {
-    return _PyFile_WriteString(
-      arg0,
-      arg1,
-    );
-  }
-
-  late final _PyFile_WriteStringPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Int Function(ffi.Pointer<ffi.Char>,
-              ffi.Pointer<PyObject>)>>('PyFile_WriteString');
-  late final _PyFile_WriteString = _PyFile_WriteStringPtr.asFunction<
-      int Function(ffi.Pointer<ffi.Char>, ffi.Pointer<PyObject>)>();
-
-  int PyObject_AsFileDescriptor(
-    ffi.Pointer<PyObject> arg0,
-  ) {
-    return _PyObject_AsFileDescriptor(
-      arg0,
-    );
-  }
-
-  late final _PyObject_AsFileDescriptorPtr =
-      _lookup<ffi.NativeFunction<ffi.Int Function(ffi.Pointer<PyObject>)>>(
-          'PyObject_AsFileDescriptor');
-  late final _PyObject_AsFileDescriptor = _PyObject_AsFileDescriptorPtr
-      .asFunction<int Function(ffi.Pointer<PyObject>)>();
-
-  late final ffi.Pointer<ffi.Pointer<ffi.Char>> _Py_FileSystemDefaultEncoding =
-      _lookup<ffi.Pointer<ffi.Char>>('Py_FileSystemDefaultEncoding');
-
-  ffi.Pointer<ffi.Char> get Py_FileSystemDefaultEncoding =>
-      _Py_FileSystemDefaultEncoding.value;
-
-  set Py_FileSystemDefaultEncoding(ffi.Pointer<ffi.Char> value) =>
-      _Py_FileSystemDefaultEncoding.value = value;
-
-  late final ffi.Pointer<ffi.Pointer<ffi.Char>>
-      _Py_FileSystemDefaultEncodeErrors =
-      _lookup<ffi.Pointer<ffi.Char>>('Py_FileSystemDefaultEncodeErrors');
-
-  ffi.Pointer<ffi.Char> get Py_FileSystemDefaultEncodeErrors =>
-      _Py_FileSystemDefaultEncodeErrors.value;
-
-  set Py_FileSystemDefaultEncodeErrors(ffi.Pointer<ffi.Char> value) =>
-      _Py_FileSystemDefaultEncodeErrors.value = value;
-
-  late final ffi.Pointer<ffi.Int> _Py_HasFileSystemDefaultEncoding =
-      _lookup<ffi.Int>('Py_HasFileSystemDefaultEncoding');
-
-  int get Py_HasFileSystemDefaultEncoding =>
-      _Py_HasFileSystemDefaultEncoding.value;
-
-  set Py_HasFileSystemDefaultEncoding(int value) =>
-      _Py_HasFileSystemDefaultEncoding.value = value;
-
-  late final ffi.Pointer<ffi.Int> _Py_UTF8Mode =
-      _lookup<ffi.Int>('Py_UTF8Mode');
-
-  int get Py_UTF8Mode => _Py_UTF8Mode.value;
-
-  set Py_UTF8Mode(int value) => _Py_UTF8Mode.value = value;
-
-  late final ffi.Pointer<PyTypeObject> _PyCapsule_Type =
-      _lookup<PyTypeObject>('PyCapsule_Type');
-
-  PyTypeObject get PyCapsule_Type => _PyCapsule_Type.ref;
-
-  ffi.Pointer<PyObject> PyCapsule_New(
-    ffi.Pointer<ffi.Void> pointer,
-    ffi.Pointer<ffi.Char> name,
-    PyCapsule_Destructor destructor,
-  ) {
-    return _PyCapsule_New(
-      pointer,
-      name,
-      destructor,
-    );
-  }
-
-  late final _PyCapsule_NewPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<PyObject> Function(ffi.Pointer<ffi.Void>,
-              ffi.Pointer<ffi.Char>, PyCapsule_Destructor)>>('PyCapsule_New');
-  late final _PyCapsule_New = _PyCapsule_NewPtr.asFunction<
-      ffi.Pointer<PyObject> Function(ffi.Pointer<ffi.Void>,
-          ffi.Pointer<ffi.Char>, PyCapsule_Destructor)>();
-
-  ffi.Pointer<ffi.Void> PyCapsule_GetPointer(
-    ffi.Pointer<PyObject> capsule,
-    ffi.Pointer<ffi.Char> name,
-  ) {
-    return _PyCapsule_GetPointer(
-      capsule,
-      name,
-    );
-  }
-
-  late final _PyCapsule_GetPointerPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<ffi.Void> Function(ffi.Pointer<PyObject>,
-              ffi.Pointer<ffi.Char>)>>('PyCapsule_GetPointer');
-  late final _PyCapsule_GetPointer = _PyCapsule_GetPointerPtr.asFunction<
-      ffi.Pointer<ffi.Void> Function(
-          ffi.Pointer<PyObject>, ffi.Pointer<ffi.Char>)>();
-
-  PyCapsule_Destructor PyCapsule_GetDestructor(
-    ffi.Pointer<PyObject> capsule,
-  ) {
-    return _PyCapsule_GetDestructor(
-      capsule,
-    );
-  }
-
-  late final _PyCapsule_GetDestructorPtr = _lookup<
-      ffi.NativeFunction<
-          PyCapsule_Destructor Function(
-              ffi.Pointer<PyObject>)>>('PyCapsule_GetDestructor');
-  late final _PyCapsule_GetDestructor = _PyCapsule_GetDestructorPtr.asFunction<
-      PyCapsule_Destructor Function(ffi.Pointer<PyObject>)>();
-
-  ffi.Pointer<ffi.Char> PyCapsule_GetName(
-    ffi.Pointer<PyObject> capsule,
-  ) {
-    return _PyCapsule_GetName(
-      capsule,
-    );
-  }
-
-  late final _PyCapsule_GetNamePtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<ffi.Char> Function(
-              ffi.Pointer<PyObject>)>>('PyCapsule_GetName');
-  late final _PyCapsule_GetName = _PyCapsule_GetNamePtr.asFunction<
-      ffi.Pointer<ffi.Char> Function(ffi.Pointer<PyObject>)>();
-
-  ffi.Pointer<ffi.Void> PyCapsule_GetContext(
-    ffi.Pointer<PyObject> capsule,
-  ) {
-    return _PyCapsule_GetContext(
-      capsule,
-    );
-  }
-
-  late final _PyCapsule_GetContextPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<ffi.Void> Function(
-              ffi.Pointer<PyObject>)>>('PyCapsule_GetContext');
-  late final _PyCapsule_GetContext = _PyCapsule_GetContextPtr.asFunction<
-      ffi.Pointer<ffi.Void> Function(ffi.Pointer<PyObject>)>();
-
-  int PyCapsule_IsValid(
-    ffi.Pointer<PyObject> capsule,
-    ffi.Pointer<ffi.Char> name,
-  ) {
-    return _PyCapsule_IsValid(
-      capsule,
-      name,
-    );
-  }
-
-  late final _PyCapsule_IsValidPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Int Function(ffi.Pointer<PyObject>,
-              ffi.Pointer<ffi.Char>)>>('PyCapsule_IsValid');
-  late final _PyCapsule_IsValid = _PyCapsule_IsValidPtr.asFunction<
-      int Function(ffi.Pointer<PyObject>, ffi.Pointer<ffi.Char>)>();
-
-  int PyCapsule_SetPointer(
-    ffi.Pointer<PyObject> capsule,
-    ffi.Pointer<ffi.Void> pointer,
-  ) {
-    return _PyCapsule_SetPointer(
-      capsule,
-      pointer,
-    );
-  }
-
-  late final _PyCapsule_SetPointerPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Int Function(ffi.Pointer<PyObject>,
-              ffi.Pointer<ffi.Void>)>>('PyCapsule_SetPointer');
-  late final _PyCapsule_SetPointer = _PyCapsule_SetPointerPtr.asFunction<
-      int Function(ffi.Pointer<PyObject>, ffi.Pointer<ffi.Void>)>();
-
-  int PyCapsule_SetDestructor(
-    ffi.Pointer<PyObject> capsule,
-    PyCapsule_Destructor destructor,
-  ) {
-    return _PyCapsule_SetDestructor(
-      capsule,
-      destructor,
-    );
-  }
-
-  late final _PyCapsule_SetDestructorPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Int Function(ffi.Pointer<PyObject>,
-              PyCapsule_Destructor)>>('PyCapsule_SetDestructor');
-  late final _PyCapsule_SetDestructor = _PyCapsule_SetDestructorPtr.asFunction<
-      int Function(ffi.Pointer<PyObject>, PyCapsule_Destructor)>();
-
-  int PyCapsule_SetName(
-    ffi.Pointer<PyObject> capsule,
-    ffi.Pointer<ffi.Char> name,
-  ) {
-    return _PyCapsule_SetName(
-      capsule,
-      name,
-    );
-  }
-
-  late final _PyCapsule_SetNamePtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Int Function(ffi.Pointer<PyObject>,
-              ffi.Pointer<ffi.Char>)>>('PyCapsule_SetName');
-  late final _PyCapsule_SetName = _PyCapsule_SetNamePtr.asFunction<
-      int Function(ffi.Pointer<PyObject>, ffi.Pointer<ffi.Char>)>();
-
-  int PyCapsule_SetContext(
-    ffi.Pointer<PyObject> capsule,
-    ffi.Pointer<ffi.Void> context,
-  ) {
-    return _PyCapsule_SetContext(
-      capsule,
-      context,
-    );
-  }
-
-  late final _PyCapsule_SetContextPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Int Function(ffi.Pointer<PyObject>,
-              ffi.Pointer<ffi.Void>)>>('PyCapsule_SetContext');
-  late final _PyCapsule_SetContext = _PyCapsule_SetContextPtr.asFunction<
-      int Function(ffi.Pointer<PyObject>, ffi.Pointer<ffi.Void>)>();
-
-  ffi.Pointer<ffi.Void> PyCapsule_Import(
-    ffi.Pointer<ffi.Char> name,
-    int no_block,
-  ) {
-    return _PyCapsule_Import(
-      name,
-      no_block,
-    );
-  }
-
-  late final _PyCapsule_ImportPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<ffi.Void> Function(
-              ffi.Pointer<ffi.Char>, ffi.Int)>>('PyCapsule_Import');
-  late final _PyCapsule_Import = _PyCapsule_ImportPtr.asFunction<
-      ffi.Pointer<ffi.Void> Function(ffi.Pointer<ffi.Char>, int)>();
-
-  int PyTraceBack_Here(
-    ffi.Pointer<_frame> arg0,
-  ) {
-    return _PyTraceBack_Here(
-      arg0,
-    );
-  }
-
-  late final _PyTraceBack_HerePtr =
-      _lookup<ffi.NativeFunction<ffi.Int Function(ffi.Pointer<_frame>)>>(
-          'PyTraceBack_Here');
-  late final _PyTraceBack_Here =
-      _PyTraceBack_HerePtr.asFunction<int Function(ffi.Pointer<_frame>)>();
-
-  int PyTraceBack_Print(
+  int PyUnicode_EQ(
     ffi.Pointer<PyObject> arg0,
     ffi.Pointer<PyObject> arg1,
   ) {
-    return _PyTraceBack_Print(
+    return _PyUnicode_EQ(
       arg0,
       arg1,
     );
   }
 
-  late final _PyTraceBack_PrintPtr = _lookup<
+  late final _PyUnicode_EQPtr = _lookup<
       ffi.NativeFunction<
-          ffi.Int Function(ffi.Pointer<PyObject>,
-              ffi.Pointer<PyObject>)>>('PyTraceBack_Print');
-  late final _PyTraceBack_Print = _PyTraceBack_PrintPtr.asFunction<
+          ffi.Int Function(
+              ffi.Pointer<PyObject>, ffi.Pointer<PyObject>)>>('_PyUnicode_EQ');
+  late final _PyUnicode_EQ = _PyUnicode_EQPtr.asFunction<
       int Function(ffi.Pointer<PyObject>, ffi.Pointer<PyObject>)>();
 
-  late final ffi.Pointer<PyTypeObject> _PyTraceBack_Type =
-      _lookup<PyTypeObject>('PyTraceBack_Type');
-
-  PyTypeObject get PyTraceBack_Type => _PyTraceBack_Type.ref;
-
-  late final ffi.Pointer<PyObject> _Py_EllipsisObject =
-      _lookup<PyObject>('_Py_EllipsisObject');
-
-  PyObject get Py_EllipsisObject => _Py_EllipsisObject.ref;
-
-  late final ffi.Pointer<PyTypeObject> _PySlice_Type =
-      _lookup<PyTypeObject>('PySlice_Type');
-
-  PyTypeObject get PySlice_Type => _PySlice_Type.ref;
-
-  late final ffi.Pointer<PyTypeObject> _PyEllipsis_Type =
-      _lookup<PyTypeObject>('PyEllipsis_Type');
-
-  PyTypeObject get PyEllipsis_Type => _PyEllipsis_Type.ref;
-
-  ffi.Pointer<PyObject> PySlice_New(
-    ffi.Pointer<PyObject> start,
-    ffi.Pointer<PyObject> stop,
-    ffi.Pointer<PyObject> step,
-  ) {
-    return _PySlice_New(
-      start,
-      stop,
-      step,
-    );
-  }
-
-  late final _PySlice_NewPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<PyObject> Function(ffi.Pointer<PyObject>,
-              ffi.Pointer<PyObject>, ffi.Pointer<PyObject>)>>('PySlice_New');
-  late final _PySlice_New = _PySlice_NewPtr.asFunction<
-      ffi.Pointer<PyObject> Function(ffi.Pointer<PyObject>,
-          ffi.Pointer<PyObject>, ffi.Pointer<PyObject>)>();
-
-  ffi.Pointer<PyObject> PySlice_FromIndices(
-    int start,
-    int stop,
-  ) {
-    return _PySlice_FromIndices(
-      start,
-      stop,
-    );
-  }
-
-  late final _PySlice_FromIndicesPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<PyObject> Function(
-              Py_ssize_t, Py_ssize_t)>>('_PySlice_FromIndices');
-  late final _PySlice_FromIndices = _PySlice_FromIndicesPtr.asFunction<
-      ffi.Pointer<PyObject> Function(int, int)>();
-
-  int PySlice_GetLongIndices(
-    ffi.Pointer<PySliceObject> self,
-    ffi.Pointer<PyObject> length,
-    ffi.Pointer<ffi.Pointer<PyObject>> start_ptr,
-    ffi.Pointer<ffi.Pointer<PyObject>> stop_ptr,
-    ffi.Pointer<ffi.Pointer<PyObject>> step_ptr,
-  ) {
-    return _PySlice_GetLongIndices(
-      self,
-      length,
-      start_ptr,
-      stop_ptr,
-      step_ptr,
-    );
-  }
-
-  late final _PySlice_GetLongIndicesPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Int Function(
-              ffi.Pointer<PySliceObject>,
-              ffi.Pointer<PyObject>,
-              ffi.Pointer<ffi.Pointer<PyObject>>,
-              ffi.Pointer<ffi.Pointer<PyObject>>,
-              ffi.Pointer<ffi.Pointer<PyObject>>)>>('_PySlice_GetLongIndices');
-  late final _PySlice_GetLongIndices = _PySlice_GetLongIndicesPtr.asFunction<
-      int Function(
-          ffi.Pointer<PySliceObject>,
-          ffi.Pointer<PyObject>,
-          ffi.Pointer<ffi.Pointer<PyObject>>,
-          ffi.Pointer<ffi.Pointer<PyObject>>,
-          ffi.Pointer<ffi.Pointer<PyObject>>)>();
-
-  int PySlice_GetIndices(
-    ffi.Pointer<PyObject> r,
-    int length,
-    ffi.Pointer<Py_ssize_t> start,
-    ffi.Pointer<Py_ssize_t> stop,
-    ffi.Pointer<Py_ssize_t> step,
-  ) {
-    return _PySlice_GetIndices(
-      r,
-      length,
-      start,
-      stop,
-      step,
-    );
-  }
-
-  late final _PySlice_GetIndicesPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Int Function(
-              ffi.Pointer<PyObject>,
-              Py_ssize_t,
-              ffi.Pointer<Py_ssize_t>,
-              ffi.Pointer<Py_ssize_t>,
-              ffi.Pointer<Py_ssize_t>)>>('PySlice_GetIndices');
-  late final _PySlice_GetIndices = _PySlice_GetIndicesPtr.asFunction<
-      int Function(ffi.Pointer<PyObject>, int, ffi.Pointer<Py_ssize_t>,
-          ffi.Pointer<Py_ssize_t>, ffi.Pointer<Py_ssize_t>)>();
-
-  int PySlice_GetIndicesEx(
-    ffi.Pointer<PyObject> r,
-    int length,
-    ffi.Pointer<Py_ssize_t> start,
-    ffi.Pointer<Py_ssize_t> stop,
-    ffi.Pointer<Py_ssize_t> step,
-    ffi.Pointer<Py_ssize_t> slicelength,
-  ) {
-    return _PySlice_GetIndicesEx(
-      r,
-      length,
-      start,
-      stop,
-      step,
-      slicelength,
-    );
-  }
-
-  late final _PySlice_GetIndicesExPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Int Function(
-              ffi.Pointer<PyObject>,
-              Py_ssize_t,
-              ffi.Pointer<Py_ssize_t>,
-              ffi.Pointer<Py_ssize_t>,
-              ffi.Pointer<Py_ssize_t>,
-              ffi.Pointer<Py_ssize_t>)>>('PySlice_GetIndicesEx');
-  late final _PySlice_GetIndicesEx = _PySlice_GetIndicesExPtr.asFunction<
-      int Function(
-          ffi.Pointer<PyObject>,
-          int,
-          ffi.Pointer<Py_ssize_t>,
-          ffi.Pointer<Py_ssize_t>,
-          ffi.Pointer<Py_ssize_t>,
-          ffi.Pointer<Py_ssize_t>)>();
-
-  int PySlice_Unpack(
-    ffi.Pointer<PyObject> slice,
-    ffi.Pointer<Py_ssize_t> start,
-    ffi.Pointer<Py_ssize_t> stop,
-    ffi.Pointer<Py_ssize_t> step,
-  ) {
-    return _PySlice_Unpack(
-      slice,
-      start,
-      stop,
-      step,
-    );
-  }
-
-  late final _PySlice_UnpackPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Int Function(
-              ffi.Pointer<PyObject>,
-              ffi.Pointer<Py_ssize_t>,
-              ffi.Pointer<Py_ssize_t>,
-              ffi.Pointer<Py_ssize_t>)>>('PySlice_Unpack');
-  late final _PySlice_Unpack = _PySlice_UnpackPtr.asFunction<
-      int Function(ffi.Pointer<PyObject>, ffi.Pointer<Py_ssize_t>,
-          ffi.Pointer<Py_ssize_t>, ffi.Pointer<Py_ssize_t>)>();
-
-  int PySlice_AdjustIndices(
-    int length,
-    ffi.Pointer<Py_ssize_t> start,
-    ffi.Pointer<Py_ssize_t> stop,
-    int step,
-  ) {
-    return _PySlice_AdjustIndices(
-      length,
-      start,
-      stop,
-      step,
-    );
-  }
-
-  late final _PySlice_AdjustIndicesPtr = _lookup<
-      ffi.NativeFunction<
-          Py_ssize_t Function(Py_ssize_t, ffi.Pointer<Py_ssize_t>,
-              ffi.Pointer<Py_ssize_t>, Py_ssize_t)>>('PySlice_AdjustIndices');
-  late final _PySlice_AdjustIndices = _PySlice_AdjustIndicesPtr.asFunction<
-      int Function(
-          int, ffi.Pointer<Py_ssize_t>, ffi.Pointer<Py_ssize_t>, int)>();
-
-  late final ffi.Pointer<PyTypeObject> _PyCell_Type =
-      _lookup<PyTypeObject>('PyCell_Type');
-
-  PyTypeObject get PyCell_Type => _PyCell_Type.ref;
-
-  ffi.Pointer<PyObject> PyCell_New(
-    ffi.Pointer<PyObject> arg0,
-  ) {
-    return _PyCell_New(
-      arg0,
-    );
-  }
-
-  late final _PyCell_NewPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<PyObject> Function(ffi.Pointer<PyObject>)>>('PyCell_New');
-  late final _PyCell_New = _PyCell_NewPtr.asFunction<
-      ffi.Pointer<PyObject> Function(ffi.Pointer<PyObject>)>();
-
-  ffi.Pointer<PyObject> PyCell_Get(
-    ffi.Pointer<PyObject> arg0,
-  ) {
-    return _PyCell_Get(
-      arg0,
-    );
-  }
-
-  late final _PyCell_GetPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<PyObject> Function(ffi.Pointer<PyObject>)>>('PyCell_Get');
-  late final _PyCell_Get = _PyCell_GetPtr.asFunction<
-      ffi.Pointer<PyObject> Function(ffi.Pointer<PyObject>)>();
-
-  int PyCell_Set(
+  int PyUnicode_Equal(
     ffi.Pointer<PyObject> arg0,
     ffi.Pointer<PyObject> arg1,
   ) {
-    return _PyCell_Set(
+    return _PyUnicode_Equal(
       arg0,
       arg1,
     );
   }
 
-  late final _PyCell_SetPtr = _lookup<
+  late final _PyUnicode_EqualPtr = _lookup<
       ffi.NativeFunction<
-          ffi.Int Function(
-              ffi.Pointer<PyObject>, ffi.Pointer<PyObject>)>>('PyCell_Set');
-  late final _PyCell_Set = _PyCell_SetPtr.asFunction<
+          ffi.Int Function(ffi.Pointer<PyObject>,
+              ffi.Pointer<PyObject>)>>('_PyUnicode_Equal');
+  late final _PyUnicode_Equal = _PyUnicode_EqualPtr.asFunction<
       int Function(ffi.Pointer<PyObject>, ffi.Pointer<PyObject>)>();
 
-  late final ffi.Pointer<PyTypeObject> _PySeqIter_Type =
-      _lookup<PyTypeObject>('PySeqIter_Type');
-
-  PyTypeObject get PySeqIter_Type => _PySeqIter_Type.ref;
-
-  late final ffi.Pointer<PyTypeObject> _PyCallIter_Type =
-      _lookup<PyTypeObject>('PyCallIter_Type');
-
-  PyTypeObject get PyCallIter_Type => _PyCallIter_Type.ref;
-
-  late final ffi.Pointer<PyTypeObject> _PyCmpWrapper_Type =
-      _lookup<PyTypeObject>('PyCmpWrapper_Type');
-
-  PyTypeObject get PyCmpWrapper_Type => _PyCmpWrapper_Type.ref;
-
-  ffi.Pointer<PyObject> PySeqIter_New(
+  int PyUnicode_WideCharString_Converter(
     ffi.Pointer<PyObject> arg0,
-  ) {
-    return _PySeqIter_New(
-      arg0,
-    );
-  }
-
-  late final _PySeqIter_NewPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<PyObject> Function(
-              ffi.Pointer<PyObject>)>>('PySeqIter_New');
-  late final _PySeqIter_New = _PySeqIter_NewPtr.asFunction<
-      ffi.Pointer<PyObject> Function(ffi.Pointer<PyObject>)>();
-
-  ffi.Pointer<PyObject> PyCallIter_New(
-    ffi.Pointer<PyObject> arg0,
-    ffi.Pointer<PyObject> arg1,
-  ) {
-    return _PyCallIter_New(
-      arg0,
-      arg1,
-    );
-  }
-
-  late final _PyCallIter_NewPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<PyObject> Function(
-              ffi.Pointer<PyObject>, ffi.Pointer<PyObject>)>>('PyCallIter_New');
-  late final _PyCallIter_New = _PyCallIter_NewPtr.asFunction<
-      ffi.Pointer<PyObject> Function(
-          ffi.Pointer<PyObject>, ffi.Pointer<PyObject>)>();
-
-  void PyThread_init_thread() {
-    return _PyThread_init_thread();
-  }
-
-  late final _PyThread_init_threadPtr =
-      _lookup<ffi.NativeFunction<ffi.Void Function()>>('PyThread_init_thread');
-  late final _PyThread_init_thread =
-      _PyThread_init_threadPtr.asFunction<void Function()>();
-
-  int PyThread_start_new_thread(
-    ffi.Pointer<ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ffi.Void>)>>
-        arg0,
     ffi.Pointer<ffi.Void> arg1,
   ) {
-    return _PyThread_start_new_thread(
+    return _PyUnicode_WideCharString_Converter(
       arg0,
       arg1,
     );
   }
 
-  late final _PyThread_start_new_threadPtr = _lookup<
+  late final _PyUnicode_WideCharString_ConverterPtr = _lookup<
       ffi.NativeFunction<
-          ffi.UnsignedLong Function(
-              ffi.Pointer<
-                  ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ffi.Void>)>>,
-              ffi.Pointer<ffi.Void>)>>('PyThread_start_new_thread');
-  late final _PyThread_start_new_thread =
-      _PyThread_start_new_threadPtr.asFunction<
-          int Function(
-              ffi.Pointer<
-                  ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ffi.Void>)>>,
-              ffi.Pointer<ffi.Void>)>();
+          ffi.Int Function(ffi.Pointer<PyObject>,
+              ffi.Pointer<ffi.Void>)>>('_PyUnicode_WideCharString_Converter');
+  late final _PyUnicode_WideCharString_Converter =
+      _PyUnicode_WideCharString_ConverterPtr.asFunction<
+          int Function(ffi.Pointer<PyObject>, ffi.Pointer<ffi.Void>)>();
 
-  void PyThread_exit_thread() {
-    return _PyThread_exit_thread();
-  }
-
-  late final _PyThread_exit_threadPtr =
-      _lookup<ffi.NativeFunction<ffi.Void Function()>>('PyThread_exit_thread');
-  late final _PyThread_exit_thread =
-      _PyThread_exit_threadPtr.asFunction<void Function()>();
-
-  int PyThread_get_thread_ident() {
-    return _PyThread_get_thread_ident();
-  }
-
-  late final _PyThread_get_thread_identPtr =
-      _lookup<ffi.NativeFunction<ffi.UnsignedLong Function()>>(
-          'PyThread_get_thread_ident');
-  late final _PyThread_get_thread_ident =
-      _PyThread_get_thread_identPtr.asFunction<int Function()>();
-
-  int PyThread_get_thread_native_id() {
-    return _PyThread_get_thread_native_id();
-  }
-
-  late final _PyThread_get_thread_native_idPtr =
-      _lookup<ffi.NativeFunction<ffi.UnsignedLong Function()>>(
-          'PyThread_get_thread_native_id');
-  late final _PyThread_get_thread_native_id =
-      _PyThread_get_thread_native_idPtr.asFunction<int Function()>();
-
-  PyThread_type_lock PyThread_allocate_lock() {
-    return _PyThread_allocate_lock();
-  }
-
-  late final _PyThread_allocate_lockPtr =
-      _lookup<ffi.NativeFunction<PyThread_type_lock Function()>>(
-          'PyThread_allocate_lock');
-  late final _PyThread_allocate_lock =
-      _PyThread_allocate_lockPtr.asFunction<PyThread_type_lock Function()>();
-
-  void PyThread_free_lock(
-    PyThread_type_lock arg0,
+  int PyUnicode_WideCharString_Opt_Converter(
+    ffi.Pointer<PyObject> arg0,
+    ffi.Pointer<ffi.Void> arg1,
   ) {
-    return _PyThread_free_lock(
-      arg0,
-    );
-  }
-
-  late final _PyThread_free_lockPtr =
-      _lookup<ffi.NativeFunction<ffi.Void Function(PyThread_type_lock)>>(
-          'PyThread_free_lock');
-  late final _PyThread_free_lock =
-      _PyThread_free_lockPtr.asFunction<void Function(PyThread_type_lock)>();
-
-  int PyThread_acquire_lock(
-    PyThread_type_lock arg0,
-    int arg1,
-  ) {
-    return _PyThread_acquire_lock(
+    return _PyUnicode_WideCharString_Opt_Converter(
       arg0,
       arg1,
     );
   }
 
-  late final _PyThread_acquire_lockPtr = _lookup<
-          ffi.NativeFunction<ffi.Int Function(PyThread_type_lock, ffi.Int)>>(
-      'PyThread_acquire_lock');
-  late final _PyThread_acquire_lock = _PyThread_acquire_lockPtr.asFunction<
-      int Function(PyThread_type_lock, int)>();
+  late final _PyUnicode_WideCharString_Opt_ConverterPtr = _lookup<
+          ffi.NativeFunction<
+              ffi.Int Function(ffi.Pointer<PyObject>, ffi.Pointer<ffi.Void>)>>(
+      '_PyUnicode_WideCharString_Opt_Converter');
+  late final _PyUnicode_WideCharString_Opt_Converter =
+      _PyUnicode_WideCharString_Opt_ConverterPtr.asFunction<
+          int Function(ffi.Pointer<PyObject>, ffi.Pointer<ffi.Void>)>();
 
-  int PyThread_acquire_lock_timed(
-    PyThread_type_lock arg0,
-    int microseconds,
-    int intr_flag,
+  int PyUnicode_ScanIdentifier(
+    ffi.Pointer<PyObject> arg0,
   ) {
-    return _PyThread_acquire_lock_timed(
-      arg0,
-      microseconds,
-      intr_flag,
-    );
-  }
-
-  late final _PyThread_acquire_lock_timedPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Int32 Function(PyThread_type_lock, ffi.LongLong,
-              ffi.Int)>>('PyThread_acquire_lock_timed');
-  late final _PyThread_acquire_lock_timed = _PyThread_acquire_lock_timedPtr
-      .asFunction<int Function(PyThread_type_lock, int, int)>();
-
-  void PyThread_release_lock(
-    PyThread_type_lock arg0,
-  ) {
-    return _PyThread_release_lock(
+    return _PyUnicode_ScanIdentifier(
       arg0,
     );
   }
 
-  late final _PyThread_release_lockPtr =
-      _lookup<ffi.NativeFunction<ffi.Void Function(PyThread_type_lock)>>(
-          'PyThread_release_lock');
-  late final _PyThread_release_lock =
-      _PyThread_release_lockPtr.asFunction<void Function(PyThread_type_lock)>();
+  late final _PyUnicode_ScanIdentifierPtr =
+      _lookup<ffi.NativeFunction<Py_ssize_t Function(ffi.Pointer<PyObject>)>>(
+          '_PyUnicode_ScanIdentifier');
+  late final _PyUnicode_ScanIdentifier = _PyUnicode_ScanIdentifierPtr
+      .asFunction<int Function(ffi.Pointer<PyObject>)>();
 
-  int PyThread_get_stacksize() {
-    return _PyThread_get_stacksize();
+  PyStatus PyStatus_Ok() {
+    return _PyStatus_Ok();
   }
 
-  late final _PyThread_get_stacksizePtr =
-      _lookup<ffi.NativeFunction<ffi.Size Function()>>(
-          'PyThread_get_stacksize');
-  late final _PyThread_get_stacksize =
-      _PyThread_get_stacksizePtr.asFunction<int Function()>();
+  late final _PyStatus_OkPtr =
+      _lookup<ffi.NativeFunction<PyStatus Function()>>('PyStatus_Ok');
+  late final _PyStatus_Ok = _PyStatus_OkPtr.asFunction<PyStatus Function()>();
 
-  int PyThread_set_stacksize(
-    int arg0,
+  PyStatus PyStatus_Error(
+    ffi.Pointer<ffi.Char> err_msg,
   ) {
-    return _PyThread_set_stacksize(
+    return _PyStatus_Error(
+      err_msg,
+    );
+  }
+
+  late final _PyStatus_ErrorPtr =
+      _lookup<ffi.NativeFunction<PyStatus Function(ffi.Pointer<ffi.Char>)>>(
+          'PyStatus_Error');
+  late final _PyStatus_Error =
+      _PyStatus_ErrorPtr.asFunction<PyStatus Function(ffi.Pointer<ffi.Char>)>();
+
+  PyStatus PyStatus_NoMemory() {
+    return _PyStatus_NoMemory();
+  }
+
+  late final _PyStatus_NoMemoryPtr =
+      _lookup<ffi.NativeFunction<PyStatus Function()>>('PyStatus_NoMemory');
+  late final _PyStatus_NoMemory =
+      _PyStatus_NoMemoryPtr.asFunction<PyStatus Function()>();
+
+  PyStatus PyStatus_Exit(
+    int exitcode,
+  ) {
+    return _PyStatus_Exit(
+      exitcode,
+    );
+  }
+
+  late final _PyStatus_ExitPtr =
+      _lookup<ffi.NativeFunction<PyStatus Function(ffi.Int)>>('PyStatus_Exit');
+  late final _PyStatus_Exit =
+      _PyStatus_ExitPtr.asFunction<PyStatus Function(int)>();
+
+  int PyStatus_IsError(
+    PyStatus err,
+  ) {
+    return _PyStatus_IsError(
+      err,
+    );
+  }
+
+  late final _PyStatus_IsErrorPtr =
+      _lookup<ffi.NativeFunction<ffi.Int Function(PyStatus)>>(
+          'PyStatus_IsError');
+  late final _PyStatus_IsError =
+      _PyStatus_IsErrorPtr.asFunction<int Function(PyStatus)>();
+
+  int PyStatus_IsExit(
+    PyStatus err,
+  ) {
+    return _PyStatus_IsExit(
+      err,
+    );
+  }
+
+  late final _PyStatus_IsExitPtr =
+      _lookup<ffi.NativeFunction<ffi.Int Function(PyStatus)>>(
+          'PyStatus_IsExit');
+  late final _PyStatus_IsExit =
+      _PyStatus_IsExitPtr.asFunction<int Function(PyStatus)>();
+
+  int PyStatus_Exception(
+    PyStatus err,
+  ) {
+    return _PyStatus_Exception(
+      err,
+    );
+  }
+
+  late final _PyStatus_ExceptionPtr =
+      _lookup<ffi.NativeFunction<ffi.Int Function(PyStatus)>>(
+          'PyStatus_Exception');
+  late final _PyStatus_Exception =
+      _PyStatus_ExceptionPtr.asFunction<int Function(PyStatus)>();
+
+  ffi.Pointer<PyObject> PyErr_SetFromPyStatus(
+    PyStatus status,
+  ) {
+    return _PyErr_SetFromPyStatus(
+      status,
+    );
+  }
+
+  late final _PyErr_SetFromPyStatusPtr =
+      _lookup<ffi.NativeFunction<ffi.Pointer<PyObject> Function(PyStatus)>>(
+          '_PyErr_SetFromPyStatus');
+  late final _PyErr_SetFromPyStatus = _PyErr_SetFromPyStatusPtr.asFunction<
+      ffi.Pointer<PyObject> Function(PyStatus)>();
+
+  PyStatus PyWideStringList_Append(
+    ffi.Pointer<PyWideStringList> list,
+    ffi.Pointer<ffi.WChar> item,
+  ) {
+    return _PyWideStringList_Append(
+      list,
+      item,
+    );
+  }
+
+  late final _PyWideStringList_AppendPtr = _lookup<
+      ffi.NativeFunction<
+          PyStatus Function(ffi.Pointer<PyWideStringList>,
+              ffi.Pointer<ffi.WChar>)>>('PyWideStringList_Append');
+  late final _PyWideStringList_Append = _PyWideStringList_AppendPtr.asFunction<
+      PyStatus Function(
+          ffi.Pointer<PyWideStringList>, ffi.Pointer<ffi.WChar>)>();
+
+  PyStatus PyWideStringList_Insert(
+    ffi.Pointer<PyWideStringList> list,
+    int index,
+    ffi.Pointer<ffi.WChar> item,
+  ) {
+    return _PyWideStringList_Insert(
+      list,
+      index,
+      item,
+    );
+  }
+
+  late final _PyWideStringList_InsertPtr = _lookup<
+      ffi.NativeFunction<
+          PyStatus Function(ffi.Pointer<PyWideStringList>, Py_ssize_t,
+              ffi.Pointer<ffi.WChar>)>>('PyWideStringList_Insert');
+  late final _PyWideStringList_Insert = _PyWideStringList_InsertPtr.asFunction<
+      PyStatus Function(
+          ffi.Pointer<PyWideStringList>, int, ffi.Pointer<ffi.WChar>)>();
+
+  void PyPreConfig_InitPythonConfig(
+    ffi.Pointer<PyPreConfig> config,
+  ) {
+    return _PyPreConfig_InitPythonConfig(
+      config,
+    );
+  }
+
+  late final _PyPreConfig_InitPythonConfigPtr =
+      _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Pointer<PyPreConfig>)>>(
+          'PyPreConfig_InitPythonConfig');
+  late final _PyPreConfig_InitPythonConfig = _PyPreConfig_InitPythonConfigPtr
+      .asFunction<void Function(ffi.Pointer<PyPreConfig>)>();
+
+  void PyPreConfig_InitIsolatedConfig(
+    ffi.Pointer<PyPreConfig> config,
+  ) {
+    return _PyPreConfig_InitIsolatedConfig(
+      config,
+    );
+  }
+
+  late final _PyPreConfig_InitIsolatedConfigPtr =
+      _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Pointer<PyPreConfig>)>>(
+          'PyPreConfig_InitIsolatedConfig');
+  late final _PyPreConfig_InitIsolatedConfig =
+      _PyPreConfig_InitIsolatedConfigPtr.asFunction<
+          void Function(ffi.Pointer<PyPreConfig>)>();
+
+  void PyConfig_InitPythonConfig(
+    ffi.Pointer<PyConfig> config,
+  ) {
+    return _PyConfig_InitPythonConfig(
+      config,
+    );
+  }
+
+  late final _PyConfig_InitPythonConfigPtr =
+      _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Pointer<PyConfig>)>>(
+          'PyConfig_InitPythonConfig');
+  late final _PyConfig_InitPythonConfig = _PyConfig_InitPythonConfigPtr
+      .asFunction<void Function(ffi.Pointer<PyConfig>)>();
+
+  void PyConfig_InitIsolatedConfig(
+    ffi.Pointer<PyConfig> config,
+  ) {
+    return _PyConfig_InitIsolatedConfig(
+      config,
+    );
+  }
+
+  late final _PyConfig_InitIsolatedConfigPtr =
+      _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Pointer<PyConfig>)>>(
+          'PyConfig_InitIsolatedConfig');
+  late final _PyConfig_InitIsolatedConfig = _PyConfig_InitIsolatedConfigPtr
+      .asFunction<void Function(ffi.Pointer<PyConfig>)>();
+
+  void PyConfig_Clear(
+    ffi.Pointer<PyConfig> arg0,
+  ) {
+    return _PyConfig_Clear(
       arg0,
     );
   }
 
-  late final _PyThread_set_stacksizePtr =
-      _lookup<ffi.NativeFunction<ffi.Int Function(ffi.Size)>>(
-          'PyThread_set_stacksize');
-  late final _PyThread_set_stacksize =
-      _PyThread_set_stacksizePtr.asFunction<int Function(int)>();
+  late final _PyConfig_ClearPtr =
+      _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Pointer<PyConfig>)>>(
+          'PyConfig_Clear');
+  late final _PyConfig_Clear =
+      _PyConfig_ClearPtr.asFunction<void Function(ffi.Pointer<PyConfig>)>();
 
-  ffi.Pointer<PyObject> PyThread_GetInfo() {
-    return _PyThread_GetInfo();
-  }
-
-  late final _PyThread_GetInfoPtr =
-      _lookup<ffi.NativeFunction<ffi.Pointer<PyObject> Function()>>(
-          'PyThread_GetInfo');
-  late final _PyThread_GetInfo =
-      _PyThread_GetInfoPtr.asFunction<ffi.Pointer<PyObject> Function()>();
-
-  int PyThread_create_key() {
-    return _PyThread_create_key();
-  }
-
-  late final _PyThread_create_keyPtr =
-      _lookup<ffi.NativeFunction<ffi.Int Function()>>('PyThread_create_key');
-  late final _PyThread_create_key =
-      _PyThread_create_keyPtr.asFunction<int Function()>();
-
-  void PyThread_delete_key(
-    int key,
+  PyStatus PyConfig_SetString(
+    ffi.Pointer<PyConfig> config,
+    ffi.Pointer<ffi.Pointer<ffi.WChar>> config_str,
+    ffi.Pointer<ffi.WChar> str,
   ) {
-    return _PyThread_delete_key(
-      key,
+    return _PyConfig_SetString(
+      config,
+      config_str,
+      str,
     );
   }
 
-  late final _PyThread_delete_keyPtr =
-      _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Int)>>(
-          'PyThread_delete_key');
-  late final _PyThread_delete_key =
-      _PyThread_delete_keyPtr.asFunction<void Function(int)>();
-
-  int PyThread_set_key_value(
-    int key,
-    ffi.Pointer<ffi.Void> value,
-  ) {
-    return _PyThread_set_key_value(
-      key,
-      value,
-    );
-  }
-
-  late final _PyThread_set_key_valuePtr = _lookup<
-          ffi.NativeFunction<ffi.Int Function(ffi.Int, ffi.Pointer<ffi.Void>)>>(
-      'PyThread_set_key_value');
-  late final _PyThread_set_key_value = _PyThread_set_key_valuePtr.asFunction<
-      int Function(int, ffi.Pointer<ffi.Void>)>();
-
-  ffi.Pointer<ffi.Void> PyThread_get_key_value(
-    int key,
-  ) {
-    return _PyThread_get_key_value(
-      key,
-    );
-  }
-
-  late final _PyThread_get_key_valuePtr =
-      _lookup<ffi.NativeFunction<ffi.Pointer<ffi.Void> Function(ffi.Int)>>(
-          'PyThread_get_key_value');
-  late final _PyThread_get_key_value = _PyThread_get_key_valuePtr.asFunction<
-      ffi.Pointer<ffi.Void> Function(int)>();
-
-  void PyThread_delete_key_value(
-    int key,
-  ) {
-    return _PyThread_delete_key_value(
-      key,
-    );
-  }
-
-  late final _PyThread_delete_key_valuePtr =
-      _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Int)>>(
-          'PyThread_delete_key_value');
-  late final _PyThread_delete_key_value =
-      _PyThread_delete_key_valuePtr.asFunction<void Function(int)>();
-
-  void PyThread_ReInitTLS() {
-    return _PyThread_ReInitTLS();
-  }
-
-  late final _PyThread_ReInitTLSPtr =
-      _lookup<ffi.NativeFunction<ffi.Void Function()>>('PyThread_ReInitTLS');
-  late final _PyThread_ReInitTLS =
-      _PyThread_ReInitTLSPtr.asFunction<void Function()>();
-
-  ffi.Pointer<Py_tss_t> PyThread_tss_alloc() {
-    return _PyThread_tss_alloc();
-  }
-
-  late final _PyThread_tss_allocPtr =
-      _lookup<ffi.NativeFunction<ffi.Pointer<Py_tss_t> Function()>>(
-          'PyThread_tss_alloc');
-  late final _PyThread_tss_alloc =
-      _PyThread_tss_allocPtr.asFunction<ffi.Pointer<Py_tss_t> Function()>();
-
-  void PyThread_tss_free(
-    ffi.Pointer<Py_tss_t> key,
-  ) {
-    return _PyThread_tss_free(
-      key,
-    );
-  }
-
-  late final _PyThread_tss_freePtr =
-      _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Pointer<Py_tss_t>)>>(
-          'PyThread_tss_free');
-  late final _PyThread_tss_free =
-      _PyThread_tss_freePtr.asFunction<void Function(ffi.Pointer<Py_tss_t>)>();
-
-  int PyThread_tss_is_created(
-    ffi.Pointer<Py_tss_t> key,
-  ) {
-    return _PyThread_tss_is_created(
-      key,
-    );
-  }
-
-  late final _PyThread_tss_is_createdPtr =
-      _lookup<ffi.NativeFunction<ffi.Int Function(ffi.Pointer<Py_tss_t>)>>(
-          'PyThread_tss_is_created');
-  late final _PyThread_tss_is_created = _PyThread_tss_is_createdPtr.asFunction<
-      int Function(ffi.Pointer<Py_tss_t>)>();
-
-  int PyThread_tss_create(
-    ffi.Pointer<Py_tss_t> key,
-  ) {
-    return _PyThread_tss_create(
-      key,
-    );
-  }
-
-  late final _PyThread_tss_createPtr =
-      _lookup<ffi.NativeFunction<ffi.Int Function(ffi.Pointer<Py_tss_t>)>>(
-          'PyThread_tss_create');
-  late final _PyThread_tss_create =
-      _PyThread_tss_createPtr.asFunction<int Function(ffi.Pointer<Py_tss_t>)>();
-
-  void PyThread_tss_delete(
-    ffi.Pointer<Py_tss_t> key,
-  ) {
-    return _PyThread_tss_delete(
-      key,
-    );
-  }
-
-  late final _PyThread_tss_deletePtr =
-      _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Pointer<Py_tss_t>)>>(
-          'PyThread_tss_delete');
-  late final _PyThread_tss_delete = _PyThread_tss_deletePtr.asFunction<
-      void Function(ffi.Pointer<Py_tss_t>)>();
-
-  int PyThread_tss_set(
-    ffi.Pointer<Py_tss_t> key,
-    ffi.Pointer<ffi.Void> value,
-  ) {
-    return _PyThread_tss_set(
-      key,
-      value,
-    );
-  }
-
-  late final _PyThread_tss_setPtr = _lookup<
+  late final _PyConfig_SetStringPtr = _lookup<
       ffi.NativeFunction<
-          ffi.Int Function(ffi.Pointer<Py_tss_t>,
-              ffi.Pointer<ffi.Void>)>>('PyThread_tss_set');
-  late final _PyThread_tss_set = _PyThread_tss_setPtr.asFunction<
-      int Function(ffi.Pointer<Py_tss_t>, ffi.Pointer<ffi.Void>)>();
+          PyStatus Function(
+              ffi.Pointer<PyConfig>,
+              ffi.Pointer<ffi.Pointer<ffi.WChar>>,
+              ffi.Pointer<ffi.WChar>)>>('PyConfig_SetString');
+  late final _PyConfig_SetString = _PyConfig_SetStringPtr.asFunction<
+      PyStatus Function(ffi.Pointer<PyConfig>,
+          ffi.Pointer<ffi.Pointer<ffi.WChar>>, ffi.Pointer<ffi.WChar>)>();
 
-  ffi.Pointer<ffi.Void> PyThread_tss_get(
-    ffi.Pointer<Py_tss_t> key,
+  PyStatus PyConfig_SetBytesString(
+    ffi.Pointer<PyConfig> config,
+    ffi.Pointer<ffi.Pointer<ffi.WChar>> config_str,
+    ffi.Pointer<ffi.Char> str,
   ) {
-    return _PyThread_tss_get(
-      key,
+    return _PyConfig_SetBytesString(
+      config,
+      config_str,
+      str,
     );
   }
 
-  late final _PyThread_tss_getPtr = _lookup<
+  late final _PyConfig_SetBytesStringPtr = _lookup<
       ffi.NativeFunction<
-          ffi.Pointer<ffi.Void> Function(
-              ffi.Pointer<Py_tss_t>)>>('PyThread_tss_get');
-  late final _PyThread_tss_get = _PyThread_tss_getPtr.asFunction<
-      ffi.Pointer<ffi.Void> Function(ffi.Pointer<Py_tss_t>)>();
+          PyStatus Function(
+              ffi.Pointer<PyConfig>,
+              ffi.Pointer<ffi.Pointer<ffi.WChar>>,
+              ffi.Pointer<ffi.Char>)>>('PyConfig_SetBytesString');
+  late final _PyConfig_SetBytesString = _PyConfig_SetBytesStringPtr.asFunction<
+      PyStatus Function(ffi.Pointer<PyConfig>,
+          ffi.Pointer<ffi.Pointer<ffi.WChar>>, ffi.Pointer<ffi.Char>)>();
+
+  PyStatus PyConfig_Read(
+    ffi.Pointer<PyConfig> config,
+  ) {
+    return _PyConfig_Read(
+      config,
+    );
+  }
+
+  late final _PyConfig_ReadPtr =
+      _lookup<ffi.NativeFunction<PyStatus Function(ffi.Pointer<PyConfig>)>>(
+          'PyConfig_Read');
+  late final _PyConfig_Read =
+      _PyConfig_ReadPtr.asFunction<PyStatus Function(ffi.Pointer<PyConfig>)>();
+
+  PyStatus PyConfig_SetBytesArgv(
+    ffi.Pointer<PyConfig> config,
+    int argc,
+    ffi.Pointer<ffi.Pointer<ffi.Char>> argv,
+  ) {
+    return _PyConfig_SetBytesArgv(
+      config,
+      argc,
+      argv,
+    );
+  }
+
+  late final _PyConfig_SetBytesArgvPtr = _lookup<
+      ffi.NativeFunction<
+          PyStatus Function(ffi.Pointer<PyConfig>, Py_ssize_t,
+              ffi.Pointer<ffi.Pointer<ffi.Char>>)>>('PyConfig_SetBytesArgv');
+  late final _PyConfig_SetBytesArgv = _PyConfig_SetBytesArgvPtr.asFunction<
+      PyStatus Function(
+          ffi.Pointer<PyConfig>, int, ffi.Pointer<ffi.Pointer<ffi.Char>>)>();
+
+  PyStatus PyConfig_SetArgv(
+    ffi.Pointer<PyConfig> config,
+    int argc,
+    ffi.Pointer<ffi.Pointer<ffi.WChar>> argv,
+  ) {
+    return _PyConfig_SetArgv(
+      config,
+      argc,
+      argv,
+    );
+  }
+
+  late final _PyConfig_SetArgvPtr = _lookup<
+      ffi.NativeFunction<
+          PyStatus Function(ffi.Pointer<PyConfig>, Py_ssize_t,
+              ffi.Pointer<ffi.Pointer<ffi.WChar>>)>>('PyConfig_SetArgv');
+  late final _PyConfig_SetArgv = _PyConfig_SetArgvPtr.asFunction<
+      PyStatus Function(
+          ffi.Pointer<PyConfig>, int, ffi.Pointer<ffi.Pointer<ffi.WChar>>)>();
+
+  PyStatus PyConfig_SetWideStringList(
+    ffi.Pointer<PyConfig> config,
+    ffi.Pointer<PyWideStringList> list,
+    int length,
+    ffi.Pointer<ffi.Pointer<ffi.WChar>> items,
+  ) {
+    return _PyConfig_SetWideStringList(
+      config,
+      list,
+      length,
+      items,
+    );
+  }
+
+  late final _PyConfig_SetWideStringListPtr = _lookup<
+          ffi.NativeFunction<
+              PyStatus Function(
+                  ffi.Pointer<PyConfig>,
+                  ffi.Pointer<PyWideStringList>,
+                  Py_ssize_t,
+                  ffi.Pointer<ffi.Pointer<ffi.WChar>>)>>(
+      'PyConfig_SetWideStringList');
+  late final _PyConfig_SetWideStringList =
+      _PyConfig_SetWideStringListPtr.asFunction<
+          PyStatus Function(
+              ffi.Pointer<PyConfig>,
+              ffi.Pointer<PyWideStringList>,
+              int,
+              ffi.Pointer<ffi.Pointer<ffi.WChar>>)>();
+
+  void Py_GetArgcArgv(
+    ffi.Pointer<ffi.Int> argc,
+    ffi.Pointer<ffi.Pointer<ffi.Pointer<ffi.WChar>>> argv,
+  ) {
+    return _Py_GetArgcArgv(
+      argc,
+      argv,
+    );
+  }
+
+  late final _Py_GetArgcArgvPtr = _lookup<
+          ffi.NativeFunction<
+              ffi.Void Function(ffi.Pointer<ffi.Int>,
+                  ffi.Pointer<ffi.Pointer<ffi.Pointer<ffi.WChar>>>)>>(
+      'Py_GetArgcArgv');
+  late final _Py_GetArgcArgv = _Py_GetArgcArgvPtr.asFunction<
+      void Function(ffi.Pointer<ffi.Int>,
+          ffi.Pointer<ffi.Pointer<ffi.Pointer<ffi.WChar>>>)>();
 
   ffi.Pointer<PyInterpreterState> PyInterpreterState_New() {
     return _PyInterpreterState_New();
@@ -8191,6 +6435,16 @@ class DartPyC {
       'PyInterpreterState_Delete');
   late final _PyInterpreterState_Delete = _PyInterpreterState_DeletePtr
       .asFunction<void Function(ffi.Pointer<PyInterpreterState>)>();
+
+  ffi.Pointer<PyInterpreterState> PyInterpreterState_Get() {
+    return _PyInterpreterState_Get();
+  }
+
+  late final _PyInterpreterState_GetPtr =
+      _lookup<ffi.NativeFunction<ffi.Pointer<PyInterpreterState> Function()>>(
+          'PyInterpreterState_Get');
+  late final _PyInterpreterState_Get = _PyInterpreterState_GetPtr.asFunction<
+      ffi.Pointer<PyInterpreterState> Function()>();
 
   ffi.Pointer<PyObject> PyInterpreterState_GetDict(
     ffi.Pointer<PyInterpreterState> arg0,
@@ -8312,16 +6566,6 @@ class DartPyC {
   late final _PyThreadState_Delete = _PyThreadState_DeletePtr.asFunction<
       void Function(ffi.Pointer<PyThreadState>)>();
 
-  void PyThreadState_DeleteCurrent() {
-    return _PyThreadState_DeleteCurrent();
-  }
-
-  late final _PyThreadState_DeleteCurrentPtr =
-      _lookup<ffi.NativeFunction<ffi.Void Function()>>(
-          'PyThreadState_DeleteCurrent');
-  late final _PyThreadState_DeleteCurrent =
-      _PyThreadState_DeleteCurrentPtr.asFunction<void Function()>();
-
   ffi.Pointer<PyThreadState> PyThreadState_Get() {
     return _PyThreadState_Get();
   }
@@ -8374,6 +6618,52 @@ class DartPyC {
   late final _PyThreadState_SetAsyncExc = _PyThreadState_SetAsyncExcPtr
       .asFunction<int Function(int, ffi.Pointer<PyObject>)>();
 
+  ffi.Pointer<PyInterpreterState> PyThreadState_GetInterpreter(
+    ffi.Pointer<PyThreadState> tstate,
+  ) {
+    return _PyThreadState_GetInterpreter(
+      tstate,
+    );
+  }
+
+  late final _PyThreadState_GetInterpreterPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<PyInterpreterState> Function(
+              ffi.Pointer<PyThreadState>)>>('PyThreadState_GetInterpreter');
+  late final _PyThreadState_GetInterpreter =
+      _PyThreadState_GetInterpreterPtr.asFunction<
+          ffi.Pointer<PyInterpreterState> Function(
+              ffi.Pointer<PyThreadState>)>();
+
+  ffi.Pointer<PyFrameObject> PyThreadState_GetFrame(
+    ffi.Pointer<PyThreadState> tstate,
+  ) {
+    return _PyThreadState_GetFrame(
+      tstate,
+    );
+  }
+
+  late final _PyThreadState_GetFramePtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<PyFrameObject> Function(
+              ffi.Pointer<PyThreadState>)>>('PyThreadState_GetFrame');
+  late final _PyThreadState_GetFrame = _PyThreadState_GetFramePtr.asFunction<
+      ffi.Pointer<PyFrameObject> Function(ffi.Pointer<PyThreadState>)>();
+
+  int PyThreadState_GetID(
+    ffi.Pointer<PyThreadState> tstate,
+  ) {
+    return _PyThreadState_GetID(
+      tstate,
+    );
+  }
+
+  late final _PyThreadState_GetIDPtr = _lookup<
+          ffi.NativeFunction<ffi.Uint64 Function(ffi.Pointer<PyThreadState>)>>(
+      'PyThreadState_GetID');
+  late final _PyThreadState_GetID = _PyThreadState_GetIDPtr.asFunction<
+      int Function(ffi.Pointer<PyThreadState>)>();
+
   int PyGILState_Ensure() {
     return _PyGILState_Ensure();
   }
@@ -8407,1335 +6697,552 @@ class DartPyC {
   late final _PyGILState_GetThisThreadState = _PyGILState_GetThisThreadStatePtr
       .asFunction<ffi.Pointer<PyThreadState> Function()>();
 
-  late final ffi.Pointer<PyTypeObject> _PyGen_Type =
-      _lookup<PyTypeObject>('PyGen_Type');
-
-  PyTypeObject get PyGen_Type => _PyGen_Type.ref;
-
-  ffi.Pointer<PyObject> PyGen_New(
-    ffi.Pointer<_frame> arg0,
+  int PyInterpreterState_HasFeature(
+    ffi.Pointer<PyInterpreterState> interp,
+    int feature,
   ) {
-    return _PyGen_New(
+    return _PyInterpreterState_HasFeature(
+      interp,
+      feature,
+    );
+  }
+
+  late final _PyInterpreterState_HasFeaturePtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int Function(ffi.Pointer<PyInterpreterState>,
+              ffi.UnsignedLong)>>('_PyInterpreterState_HasFeature');
+  late final _PyInterpreterState_HasFeature = _PyInterpreterState_HasFeaturePtr
+      .asFunction<int Function(ffi.Pointer<PyInterpreterState>, int)>();
+
+  int PyInterpreterState_RequiresIDRef(
+    ffi.Pointer<PyInterpreterState> arg0,
+  ) {
+    return _PyInterpreterState_RequiresIDRef(
       arg0,
     );
   }
 
-  late final _PyGen_NewPtr = _lookup<
+  late final _PyInterpreterState_RequiresIDRefPtr = _lookup<
           ffi
-          .NativeFunction<ffi.Pointer<PyObject> Function(ffi.Pointer<_frame>)>>(
-      'PyGen_New');
-  late final _PyGen_New = _PyGen_NewPtr.asFunction<
-      ffi.Pointer<PyObject> Function(ffi.Pointer<_frame>)>();
+          .NativeFunction<ffi.Int Function(ffi.Pointer<PyInterpreterState>)>>(
+      '_PyInterpreterState_RequiresIDRef');
+  late final _PyInterpreterState_RequiresIDRef =
+      _PyInterpreterState_RequiresIDRefPtr.asFunction<
+          int Function(ffi.Pointer<PyInterpreterState>)>();
 
-  ffi.Pointer<PyObject> PyGen_NewWithQualName(
-    ffi.Pointer<_frame> arg0,
-    ffi.Pointer<PyObject> name,
-    ffi.Pointer<PyObject> qualname,
+  void PyInterpreterState_RequireIDRef(
+    ffi.Pointer<PyInterpreterState> arg0,
+    int arg1,
   ) {
-    return _PyGen_NewWithQualName(
+    return _PyInterpreterState_RequireIDRef(
       arg0,
-      name,
-      qualname,
+      arg1,
     );
   }
 
-  late final _PyGen_NewWithQualNamePtr = _lookup<
+  late final _PyInterpreterState_RequireIDRefPtr = _lookup<
       ffi.NativeFunction<
-          ffi.Pointer<PyObject> Function(
-              ffi.Pointer<_frame>,
-              ffi.Pointer<PyObject>,
-              ffi.Pointer<PyObject>)>>('PyGen_NewWithQualName');
-  late final _PyGen_NewWithQualName = _PyGen_NewWithQualNamePtr.asFunction<
-      ffi.Pointer<PyObject> Function(
-          ffi.Pointer<_frame>, ffi.Pointer<PyObject>, ffi.Pointer<PyObject>)>();
+          ffi.Void Function(ffi.Pointer<PyInterpreterState>,
+              ffi.Int)>>('_PyInterpreterState_RequireIDRef');
+  late final _PyInterpreterState_RequireIDRef =
+      _PyInterpreterState_RequireIDRefPtr.asFunction<
+          void Function(ffi.Pointer<PyInterpreterState>, int)>();
 
-  int PyGen_NeedsFinalizing(
-    ffi.Pointer<PyGenObject> arg0,
+  ffi.Pointer<PyObject> PyInterpreterState_GetMainModule(
+    ffi.Pointer<PyInterpreterState> arg0,
   ) {
-    return _PyGen_NeedsFinalizing(
+    return _PyInterpreterState_GetMainModule(
       arg0,
     );
   }
 
-  late final _PyGen_NeedsFinalizingPtr =
-      _lookup<ffi.NativeFunction<ffi.Int Function(ffi.Pointer<PyGenObject>)>>(
-          'PyGen_NeedsFinalizing');
-  late final _PyGen_NeedsFinalizing = _PyGen_NeedsFinalizingPtr.asFunction<
-      int Function(ffi.Pointer<PyGenObject>)>();
-
-  int PyGen_SetStopIterationValue(
-    ffi.Pointer<PyObject> arg0,
-  ) {
-    return _PyGen_SetStopIterationValue(
-      arg0,
-    );
-  }
-
-  late final _PyGen_SetStopIterationValuePtr =
-      _lookup<ffi.NativeFunction<ffi.Int Function(ffi.Pointer<PyObject>)>>(
-          '_PyGen_SetStopIterationValue');
-  late final _PyGen_SetStopIterationValue = _PyGen_SetStopIterationValuePtr
-      .asFunction<int Function(ffi.Pointer<PyObject>)>();
-
-  int PyGen_FetchStopIterationValue(
-    ffi.Pointer<ffi.Pointer<PyObject>> arg0,
-  ) {
-    return _PyGen_FetchStopIterationValue(
-      arg0,
-    );
-  }
-
-  late final _PyGen_FetchStopIterationValuePtr = _lookup<
+  late final _PyInterpreterState_GetMainModulePtr = _lookup<
           ffi.NativeFunction<
-              ffi.Int Function(ffi.Pointer<ffi.Pointer<PyObject>>)>>(
-      '_PyGen_FetchStopIterationValue');
-  late final _PyGen_FetchStopIterationValue = _PyGen_FetchStopIterationValuePtr
-      .asFunction<int Function(ffi.Pointer<ffi.Pointer<PyObject>>)>();
+              ffi.Pointer<PyObject> Function(ffi.Pointer<PyInterpreterState>)>>(
+      '_PyInterpreterState_GetMainModule');
+  late final _PyInterpreterState_GetMainModule =
+      _PyInterpreterState_GetMainModulePtr.asFunction<
+          ffi.Pointer<PyObject> Function(ffi.Pointer<PyInterpreterState>)>();
 
-  ffi.Pointer<PyObject> PyGen_Send(
-    ffi.Pointer<PyGenObject> arg0,
-    ffi.Pointer<PyObject> arg1,
+  ffi.Pointer<PyThreadState> PyThreadState_Prealloc(
+    ffi.Pointer<PyInterpreterState> arg0,
   ) {
-    return _PyGen_Send(
+    return _PyThreadState_Prealloc(
       arg0,
-      arg1,
     );
   }
 
-  late final _PyGen_SendPtr = _lookup<
+  late final _PyThreadState_PreallocPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<PyThreadState> Function(
+              ffi.Pointer<PyInterpreterState>)>>('_PyThreadState_Prealloc');
+  late final _PyThreadState_Prealloc = _PyThreadState_PreallocPtr.asFunction<
+      ffi.Pointer<PyThreadState> Function(ffi.Pointer<PyInterpreterState>)>();
+
+  ffi.Pointer<PyThreadState> PyThreadState_UncheckedGet() {
+    return _PyThreadState_UncheckedGet();
+  }
+
+  late final _PyThreadState_UncheckedGetPtr =
+      _lookup<ffi.NativeFunction<ffi.Pointer<PyThreadState> Function()>>(
+          '_PyThreadState_UncheckedGet');
+  late final _PyThreadState_UncheckedGet = _PyThreadState_UncheckedGetPtr
+      .asFunction<ffi.Pointer<PyThreadState> Function()>();
+
+  ffi.Pointer<PyObject> PyThreadState_GetDict1(
+    ffi.Pointer<PyThreadState> tstate,
+  ) {
+    return _PyThreadState_GetDict1(
+      tstate,
+    );
+  }
+
+  late final _PyThreadState_GetDict1Ptr = _lookup<
       ffi.NativeFunction<
           ffi.Pointer<PyObject> Function(
-              ffi.Pointer<PyGenObject>, ffi.Pointer<PyObject>)>>('_PyGen_Send');
-  late final _PyGen_Send = _PyGen_SendPtr.asFunction<
-      ffi.Pointer<PyObject> Function(
-          ffi.Pointer<PyGenObject>, ffi.Pointer<PyObject>)>();
+              ffi.Pointer<PyThreadState>)>>('_PyThreadState_GetDict');
+  late final _PyThreadState_GetDict1 = _PyThreadState_GetDict1Ptr.asFunction<
+      ffi.Pointer<PyObject> Function(ffi.Pointer<PyThreadState>)>();
 
-  ffi.Pointer<PyObject> PyGen_yf(
-    ffi.Pointer<PyGenObject> arg0,
+  void PyThreadState_EnterTracing(
+    ffi.Pointer<PyThreadState> tstate,
   ) {
-    return _PyGen_yf(
-      arg0,
+    return _PyThreadState_EnterTracing(
+      tstate,
     );
   }
 
-  late final _PyGen_yfPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<PyObject> Function(
-              ffi.Pointer<PyGenObject>)>>('_PyGen_yf');
-  late final _PyGen_yf = _PyGen_yfPtr.asFunction<
-      ffi.Pointer<PyObject> Function(ffi.Pointer<PyGenObject>)>();
+  late final _PyThreadState_EnterTracingPtr = _lookup<
+          ffi.NativeFunction<ffi.Void Function(ffi.Pointer<PyThreadState>)>>(
+      'PyThreadState_EnterTracing');
+  late final _PyThreadState_EnterTracing = _PyThreadState_EnterTracingPtr
+      .asFunction<void Function(ffi.Pointer<PyThreadState>)>();
 
-  void PyGen_Finalize(
-    ffi.Pointer<PyObject> self,
+  void PyThreadState_LeaveTracing(
+    ffi.Pointer<PyThreadState> tstate,
   ) {
-    return _PyGen_Finalize(
-      self,
+    return _PyThreadState_LeaveTracing(
+      tstate,
     );
   }
 
-  late final _PyGen_FinalizePtr =
-      _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Pointer<PyObject>)>>(
-          '_PyGen_Finalize');
-  late final _PyGen_Finalize =
-      _PyGen_FinalizePtr.asFunction<void Function(ffi.Pointer<PyObject>)>();
+  late final _PyThreadState_LeaveTracingPtr = _lookup<
+          ffi.NativeFunction<ffi.Void Function(ffi.Pointer<PyThreadState>)>>(
+      'PyThreadState_LeaveTracing');
+  late final _PyThreadState_LeaveTracing = _PyThreadState_LeaveTracingPtr
+      .asFunction<void Function(ffi.Pointer<PyThreadState>)>();
 
-  late final ffi.Pointer<PyTypeObject> _PyCoro_Type =
-      _lookup<PyTypeObject>('PyCoro_Type');
-
-  PyTypeObject get PyCoro_Type => _PyCoro_Type.ref;
-
-  late final ffi.Pointer<PyTypeObject> _PyCoroWrapper_Type =
-      _lookup<PyTypeObject>('_PyCoroWrapper_Type');
-
-  PyTypeObject get PyCoroWrapper_Type => _PyCoroWrapper_Type.ref;
-
-  late final ffi.Pointer<PyTypeObject> _PyAIterWrapper_Type =
-      _lookup<PyTypeObject>('_PyAIterWrapper_Type');
-
-  PyTypeObject get PyAIterWrapper_Type => _PyAIterWrapper_Type.ref;
-
-  ffi.Pointer<PyObject> PyCoro_GetAwaitableIter(
-    ffi.Pointer<PyObject> o,
-  ) {
-    return _PyCoro_GetAwaitableIter(
-      o,
-    );
+  int PyGILState_Check() {
+    return _PyGILState_Check();
   }
 
-  late final _PyCoro_GetAwaitableIterPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<PyObject> Function(
-              ffi.Pointer<PyObject>)>>('_PyCoro_GetAwaitableIter');
-  late final _PyCoro_GetAwaitableIter = _PyCoro_GetAwaitableIterPtr.asFunction<
-      ffi.Pointer<PyObject> Function(ffi.Pointer<PyObject>)>();
+  late final _PyGILState_CheckPtr =
+      _lookup<ffi.NativeFunction<ffi.Int Function()>>('PyGILState_Check');
+  late final _PyGILState_Check =
+      _PyGILState_CheckPtr.asFunction<int Function()>();
 
-  ffi.Pointer<PyObject> PyCoro_New(
-    ffi.Pointer<_frame> arg0,
-    ffi.Pointer<PyObject> name,
-    ffi.Pointer<PyObject> qualname,
-  ) {
-    return _PyCoro_New(
-      arg0,
-      name,
-      qualname,
-    );
+  ffi.Pointer<PyInterpreterState> PyGILState_GetInterpreterStateUnsafe() {
+    return _PyGILState_GetInterpreterStateUnsafe();
   }
 
-  late final _PyCoro_NewPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<PyObject> Function(ffi.Pointer<_frame>,
-              ffi.Pointer<PyObject>, ffi.Pointer<PyObject>)>>('PyCoro_New');
-  late final _PyCoro_New = _PyCoro_NewPtr.asFunction<
-      ffi.Pointer<PyObject> Function(
-          ffi.Pointer<_frame>, ffi.Pointer<PyObject>, ffi.Pointer<PyObject>)>();
+  late final _PyGILState_GetInterpreterStateUnsafePtr =
+      _lookup<ffi.NativeFunction<ffi.Pointer<PyInterpreterState> Function()>>(
+          '_PyGILState_GetInterpreterStateUnsafe');
+  late final _PyGILState_GetInterpreterStateUnsafe =
+      _PyGILState_GetInterpreterStateUnsafePtr.asFunction<
+          ffi.Pointer<PyInterpreterState> Function()>();
 
-  late final ffi.Pointer<PyTypeObject> _PyAsyncGen_Type =
-      _lookup<PyTypeObject>('PyAsyncGen_Type');
-
-  PyTypeObject get PyAsyncGen_Type => _PyAsyncGen_Type.ref;
-
-  late final ffi.Pointer<PyTypeObject> _PyAsyncGenASend_Type =
-      _lookup<PyTypeObject>('_PyAsyncGenASend_Type');
-
-  PyTypeObject get PyAsyncGenASend_Type => _PyAsyncGenASend_Type.ref;
-
-  late final ffi.Pointer<PyTypeObject> _PyAsyncGenWrappedValue_Type =
-      _lookup<PyTypeObject>('_PyAsyncGenWrappedValue_Type');
-
-  PyTypeObject get PyAsyncGenWrappedValue_Type =>
-      _PyAsyncGenWrappedValue_Type.ref;
-
-  late final ffi.Pointer<PyTypeObject> _PyAsyncGenAThrow_Type =
-      _lookup<PyTypeObject>('_PyAsyncGenAThrow_Type');
-
-  PyTypeObject get PyAsyncGenAThrow_Type => _PyAsyncGenAThrow_Type.ref;
-
-  ffi.Pointer<PyObject> PyAsyncGen_New(
-    ffi.Pointer<_frame> arg0,
-    ffi.Pointer<PyObject> name,
-    ffi.Pointer<PyObject> qualname,
-  ) {
-    return _PyAsyncGen_New(
-      arg0,
-      name,
-      qualname,
-    );
+  ffi.Pointer<PyObject> PyThread_CurrentFrames() {
+    return _PyThread_CurrentFrames();
   }
 
-  late final _PyAsyncGen_NewPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<PyObject> Function(ffi.Pointer<_frame>,
-              ffi.Pointer<PyObject>, ffi.Pointer<PyObject>)>>('PyAsyncGen_New');
-  late final _PyAsyncGen_New = _PyAsyncGen_NewPtr.asFunction<
-      ffi.Pointer<PyObject> Function(
-          ffi.Pointer<_frame>, ffi.Pointer<PyObject>, ffi.Pointer<PyObject>)>();
-
-  ffi.Pointer<PyObject> PyAsyncGenValueWrapperNew(
-    ffi.Pointer<PyObject> arg0,
-  ) {
-    return _PyAsyncGenValueWrapperNew(
-      arg0,
-    );
-  }
-
-  late final _PyAsyncGenValueWrapperNewPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<PyObject> Function(
-              ffi.Pointer<PyObject>)>>('_PyAsyncGenValueWrapperNew');
-  late final _PyAsyncGenValueWrapperNew = _PyAsyncGenValueWrapperNewPtr
-      .asFunction<ffi.Pointer<PyObject> Function(ffi.Pointer<PyObject>)>();
-
-  int PyAsyncGen_ClearFreeLists() {
-    return _PyAsyncGen_ClearFreeLists();
-  }
-
-  late final _PyAsyncGen_ClearFreeListsPtr =
-      _lookup<ffi.NativeFunction<ffi.Int Function()>>(
-          'PyAsyncGen_ClearFreeLists');
-  late final _PyAsyncGen_ClearFreeLists =
-      _PyAsyncGen_ClearFreeListsPtr.asFunction<int Function()>();
-
-  late final ffi.Pointer<PyTypeObject> _PyClassMethodDescr_Type =
-      _lookup<PyTypeObject>('PyClassMethodDescr_Type');
-
-  PyTypeObject get PyClassMethodDescr_Type => _PyClassMethodDescr_Type.ref;
-
-  late final ffi.Pointer<PyTypeObject> _PyGetSetDescr_Type =
-      _lookup<PyTypeObject>('PyGetSetDescr_Type');
-
-  PyTypeObject get PyGetSetDescr_Type => _PyGetSetDescr_Type.ref;
-
-  late final ffi.Pointer<PyTypeObject> _PyMemberDescr_Type =
-      _lookup<PyTypeObject>('PyMemberDescr_Type');
-
-  PyTypeObject get PyMemberDescr_Type => _PyMemberDescr_Type.ref;
-
-  late final ffi.Pointer<PyTypeObject> _PyMethodDescr_Type =
-      _lookup<PyTypeObject>('PyMethodDescr_Type');
-
-  PyTypeObject get PyMethodDescr_Type => _PyMethodDescr_Type.ref;
-
-  late final ffi.Pointer<PyTypeObject> _PyWrapperDescr_Type =
-      _lookup<PyTypeObject>('PyWrapperDescr_Type');
-
-  PyTypeObject get PyWrapperDescr_Type => _PyWrapperDescr_Type.ref;
-
-  late final ffi.Pointer<PyTypeObject> _PyDictProxy_Type =
-      _lookup<PyTypeObject>('PyDictProxy_Type');
-
-  PyTypeObject get PyDictProxy_Type => _PyDictProxy_Type.ref;
-
-  late final ffi.Pointer<PyTypeObject> _PyMethodWrapper_Type =
-      _lookup<PyTypeObject>('_PyMethodWrapper_Type');
-
-  PyTypeObject get PyMethodWrapper_Type => _PyMethodWrapper_Type.ref;
-
-  ffi.Pointer<PyObject> PyDescr_NewMethod(
-    ffi.Pointer<PyTypeObject> arg0,
-    ffi.Pointer<PyMethodDef> arg1,
-  ) {
-    return _PyDescr_NewMethod(
-      arg0,
-      arg1,
-    );
-  }
-
-  late final _PyDescr_NewMethodPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<PyObject> Function(ffi.Pointer<PyTypeObject>,
-              ffi.Pointer<PyMethodDef>)>>('PyDescr_NewMethod');
-  late final _PyDescr_NewMethod = _PyDescr_NewMethodPtr.asFunction<
-      ffi.Pointer<PyObject> Function(
-          ffi.Pointer<PyTypeObject>, ffi.Pointer<PyMethodDef>)>();
-
-  ffi.Pointer<PyObject> PyDescr_NewClassMethod(
-    ffi.Pointer<PyTypeObject> arg0,
-    ffi.Pointer<PyMethodDef> arg1,
-  ) {
-    return _PyDescr_NewClassMethod(
-      arg0,
-      arg1,
-    );
-  }
-
-  late final _PyDescr_NewClassMethodPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<PyObject> Function(ffi.Pointer<PyTypeObject>,
-              ffi.Pointer<PyMethodDef>)>>('PyDescr_NewClassMethod');
-  late final _PyDescr_NewClassMethod = _PyDescr_NewClassMethodPtr.asFunction<
-      ffi.Pointer<PyObject> Function(
-          ffi.Pointer<PyTypeObject>, ffi.Pointer<PyMethodDef>)>();
-
-  ffi.Pointer<PyObject> PyDescr_NewMember(
-    ffi.Pointer<PyTypeObject> arg0,
-    ffi.Pointer<PyMemberDef> arg1,
-  ) {
-    return _PyDescr_NewMember(
-      arg0,
-      arg1,
-    );
-  }
-
-  late final _PyDescr_NewMemberPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<PyObject> Function(ffi.Pointer<PyTypeObject>,
-              ffi.Pointer<PyMemberDef>)>>('PyDescr_NewMember');
-  late final _PyDescr_NewMember = _PyDescr_NewMemberPtr.asFunction<
-      ffi.Pointer<PyObject> Function(
-          ffi.Pointer<PyTypeObject>, ffi.Pointer<PyMemberDef>)>();
-
-  ffi.Pointer<PyObject> PyDescr_NewGetSet(
-    ffi.Pointer<PyTypeObject> arg0,
-    ffi.Pointer<PyGetSetDef> arg1,
-  ) {
-    return _PyDescr_NewGetSet(
-      arg0,
-      arg1,
-    );
-  }
-
-  late final _PyDescr_NewGetSetPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<PyObject> Function(ffi.Pointer<PyTypeObject>,
-              ffi.Pointer<PyGetSetDef>)>>('PyDescr_NewGetSet');
-  late final _PyDescr_NewGetSet = _PyDescr_NewGetSetPtr.asFunction<
-      ffi.Pointer<PyObject> Function(
-          ffi.Pointer<PyTypeObject>, ffi.Pointer<PyGetSetDef>)>();
-
-  ffi.Pointer<PyObject> PyDescr_NewWrapper(
-    ffi.Pointer<PyTypeObject> arg0,
-    ffi.Pointer<wrapperbase> arg1,
-    ffi.Pointer<ffi.Void> arg2,
-  ) {
-    return _PyDescr_NewWrapper(
-      arg0,
-      arg1,
-      arg2,
-    );
-  }
-
-  late final _PyDescr_NewWrapperPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<PyObject> Function(
-              ffi.Pointer<PyTypeObject>,
-              ffi.Pointer<wrapperbase>,
-              ffi.Pointer<ffi.Void>)>>('PyDescr_NewWrapper');
-  late final _PyDescr_NewWrapper = _PyDescr_NewWrapperPtr.asFunction<
-      ffi.Pointer<PyObject> Function(ffi.Pointer<PyTypeObject>,
-          ffi.Pointer<wrapperbase>, ffi.Pointer<ffi.Void>)>();
-
-  ffi.Pointer<PyObject> PyDictProxy_New(
-    ffi.Pointer<PyObject> arg0,
-  ) {
-    return _PyDictProxy_New(
-      arg0,
-    );
-  }
-
-  late final _PyDictProxy_NewPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<PyObject> Function(
-              ffi.Pointer<PyObject>)>>('PyDictProxy_New');
-  late final _PyDictProxy_New = _PyDictProxy_NewPtr.asFunction<
-      ffi.Pointer<PyObject> Function(ffi.Pointer<PyObject>)>();
-
-  ffi.Pointer<PyObject> PyWrapper_New(
-    ffi.Pointer<PyObject> arg0,
-    ffi.Pointer<PyObject> arg1,
-  ) {
-    return _PyWrapper_New(
-      arg0,
-      arg1,
-    );
-  }
-
-  late final _PyWrapper_NewPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<PyObject> Function(
-              ffi.Pointer<PyObject>, ffi.Pointer<PyObject>)>>('PyWrapper_New');
-  late final _PyWrapper_New = _PyWrapper_NewPtr.asFunction<
-      ffi.Pointer<PyObject> Function(
-          ffi.Pointer<PyObject>, ffi.Pointer<PyObject>)>();
-
-  late final ffi.Pointer<PyTypeObject> _PyProperty_Type =
-      _lookup<PyTypeObject>('PyProperty_Type');
-
-  PyTypeObject get PyProperty_Type => _PyProperty_Type.ref;
-
-  ffi.Pointer<PyObject> PyWarnings_Init() {
-    return _PyWarnings_Init();
-  }
-
-  late final _PyWarnings_InitPtr =
+  late final _PyThread_CurrentFramesPtr =
       _lookup<ffi.NativeFunction<ffi.Pointer<PyObject> Function()>>(
-          '_PyWarnings_Init');
-  late final _PyWarnings_Init =
-      _PyWarnings_InitPtr.asFunction<ffi.Pointer<PyObject> Function()>();
+          '_PyThread_CurrentFrames');
+  late final _PyThread_CurrentFrames =
+      _PyThread_CurrentFramesPtr.asFunction<ffi.Pointer<PyObject> Function()>();
 
-  int PyErr_WarnEx(
-    ffi.Pointer<PyObject> category,
-    ffi.Pointer<ffi.Char> message,
-    int stack_level,
+  ffi.Pointer<PyObject> PyThread_CurrentExceptions() {
+    return _PyThread_CurrentExceptions();
+  }
+
+  late final _PyThread_CurrentExceptionsPtr =
+      _lookup<ffi.NativeFunction<ffi.Pointer<PyObject> Function()>>(
+          '_PyThread_CurrentExceptions');
+  late final _PyThread_CurrentExceptions = _PyThread_CurrentExceptionsPtr
+      .asFunction<ffi.Pointer<PyObject> Function()>();
+
+  ffi.Pointer<PyInterpreterState> PyInterpreterState_Main() {
+    return _PyInterpreterState_Main();
+  }
+
+  late final _PyInterpreterState_MainPtr =
+      _lookup<ffi.NativeFunction<ffi.Pointer<PyInterpreterState> Function()>>(
+          'PyInterpreterState_Main');
+  late final _PyInterpreterState_Main = _PyInterpreterState_MainPtr.asFunction<
+      ffi.Pointer<PyInterpreterState> Function()>();
+
+  ffi.Pointer<PyInterpreterState> PyInterpreterState_Head() {
+    return _PyInterpreterState_Head();
+  }
+
+  late final _PyInterpreterState_HeadPtr =
+      _lookup<ffi.NativeFunction<ffi.Pointer<PyInterpreterState> Function()>>(
+          'PyInterpreterState_Head');
+  late final _PyInterpreterState_Head = _PyInterpreterState_HeadPtr.asFunction<
+      ffi.Pointer<PyInterpreterState> Function()>();
+
+  ffi.Pointer<PyInterpreterState> PyInterpreterState_Next(
+    ffi.Pointer<PyInterpreterState> arg0,
   ) {
-    return _PyErr_WarnEx(
-      category,
-      message,
-      stack_level,
+    return _PyInterpreterState_Next(
+      arg0,
     );
   }
 
-  late final _PyErr_WarnExPtr = _lookup<
+  late final _PyInterpreterState_NextPtr = _lookup<
       ffi.NativeFunction<
-          ffi.Int Function(ffi.Pointer<PyObject>, ffi.Pointer<ffi.Char>,
-              Py_ssize_t)>>('PyErr_WarnEx');
-  late final _PyErr_WarnEx = _PyErr_WarnExPtr.asFunction<
-      int Function(ffi.Pointer<PyObject>, ffi.Pointer<ffi.Char>, int)>();
+          ffi.Pointer<PyInterpreterState> Function(
+              ffi.Pointer<PyInterpreterState>)>>('PyInterpreterState_Next');
+  late final _PyInterpreterState_Next = _PyInterpreterState_NextPtr.asFunction<
+      ffi.Pointer<PyInterpreterState> Function(
+          ffi.Pointer<PyInterpreterState>)>();
 
-  int PyErr_WarnFormat(
-    ffi.Pointer<PyObject> category,
-    int stack_level,
-    ffi.Pointer<ffi.Char> format,
+  ffi.Pointer<PyThreadState> PyInterpreterState_ThreadHead(
+    ffi.Pointer<PyInterpreterState> arg0,
   ) {
-    return _PyErr_WarnFormat(
-      category,
-      stack_level,
-      format,
+    return _PyInterpreterState_ThreadHead(
+      arg0,
     );
   }
 
-  late final _PyErr_WarnFormatPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Int Function(ffi.Pointer<PyObject>, Py_ssize_t,
-              ffi.Pointer<ffi.Char>)>>('PyErr_WarnFormat');
-  late final _PyErr_WarnFormat = _PyErr_WarnFormatPtr.asFunction<
-      int Function(ffi.Pointer<PyObject>, int, ffi.Pointer<ffi.Char>)>();
-
-  int PyErr_ResourceWarning(
-    ffi.Pointer<PyObject> source,
-    int stack_level,
-    ffi.Pointer<ffi.Char> format,
-  ) {
-    return _PyErr_ResourceWarning(
-      source,
-      stack_level,
-      format,
-    );
-  }
-
-  late final _PyErr_ResourceWarningPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Int Function(ffi.Pointer<PyObject>, Py_ssize_t,
-              ffi.Pointer<ffi.Char>)>>('PyErr_ResourceWarning');
-  late final _PyErr_ResourceWarning = _PyErr_ResourceWarningPtr.asFunction<
-      int Function(ffi.Pointer<PyObject>, int, ffi.Pointer<ffi.Char>)>();
-
-  int PyErr_WarnExplicitObject(
-    ffi.Pointer<PyObject> category,
-    ffi.Pointer<PyObject> message,
-    ffi.Pointer<PyObject> filename,
-    int lineno,
-    ffi.Pointer<PyObject> module,
-    ffi.Pointer<PyObject> registry,
-  ) {
-    return _PyErr_WarnExplicitObject(
-      category,
-      message,
-      filename,
-      lineno,
-      module,
-      registry,
-    );
-  }
-
-  late final _PyErr_WarnExplicitObjectPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Int Function(
-              ffi.Pointer<PyObject>,
-              ffi.Pointer<PyObject>,
-              ffi.Pointer<PyObject>,
-              ffi.Int,
-              ffi.Pointer<PyObject>,
-              ffi.Pointer<PyObject>)>>('PyErr_WarnExplicitObject');
-  late final _PyErr_WarnExplicitObject =
-      _PyErr_WarnExplicitObjectPtr.asFunction<
-          int Function(
-              ffi.Pointer<PyObject>,
-              ffi.Pointer<PyObject>,
-              ffi.Pointer<PyObject>,
-              int,
-              ffi.Pointer<PyObject>,
-              ffi.Pointer<PyObject>)>();
-
-  int PyErr_WarnExplicit(
-    ffi.Pointer<PyObject> category,
-    ffi.Pointer<ffi.Char> message,
-    ffi.Pointer<ffi.Char> filename,
-    int lineno,
-    ffi.Pointer<ffi.Char> module,
-    ffi.Pointer<PyObject> registry,
-  ) {
-    return _PyErr_WarnExplicit(
-      category,
-      message,
-      filename,
-      lineno,
-      module,
-      registry,
-    );
-  }
-
-  late final _PyErr_WarnExplicitPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Int Function(
-              ffi.Pointer<PyObject>,
-              ffi.Pointer<ffi.Char>,
-              ffi.Pointer<ffi.Char>,
-              ffi.Int,
-              ffi.Pointer<ffi.Char>,
-              ffi.Pointer<PyObject>)>>('PyErr_WarnExplicit');
-  late final _PyErr_WarnExplicit = _PyErr_WarnExplicitPtr.asFunction<
-      int Function(
-          ffi.Pointer<PyObject>,
-          ffi.Pointer<ffi.Char>,
-          ffi.Pointer<ffi.Char>,
-          int,
-          ffi.Pointer<ffi.Char>,
-          ffi.Pointer<PyObject>)>();
-
-  int PyErr_WarnExplicitFormat(
-    ffi.Pointer<PyObject> category,
-    ffi.Pointer<ffi.Char> filename,
-    int lineno,
-    ffi.Pointer<ffi.Char> module,
-    ffi.Pointer<PyObject> registry,
-    ffi.Pointer<ffi.Char> format,
-  ) {
-    return _PyErr_WarnExplicitFormat(
-      category,
-      filename,
-      lineno,
-      module,
-      registry,
-      format,
-    );
-  }
-
-  late final _PyErr_WarnExplicitFormatPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Int Function(
-              ffi.Pointer<PyObject>,
-              ffi.Pointer<ffi.Char>,
-              ffi.Int,
-              ffi.Pointer<ffi.Char>,
-              ffi.Pointer<PyObject>,
-              ffi.Pointer<ffi.Char>)>>('PyErr_WarnExplicitFormat');
-  late final _PyErr_WarnExplicitFormat =
-      _PyErr_WarnExplicitFormatPtr.asFunction<
-          int Function(
-              ffi.Pointer<PyObject>,
-              ffi.Pointer<ffi.Char>,
-              int,
-              ffi.Pointer<ffi.Char>,
-              ffi.Pointer<PyObject>,
-              ffi.Pointer<ffi.Char>)>();
-
-  void PyErr_WarnUnawaitedCoroutine(
-    ffi.Pointer<PyObject> coro,
-  ) {
-    return _PyErr_WarnUnawaitedCoroutine(
-      coro,
-    );
-  }
-
-  late final _PyErr_WarnUnawaitedCoroutinePtr =
-      _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Pointer<PyObject>)>>(
-          '_PyErr_WarnUnawaitedCoroutine');
-  late final _PyErr_WarnUnawaitedCoroutine = _PyErr_WarnUnawaitedCoroutinePtr
-      .asFunction<void Function(ffi.Pointer<PyObject>)>();
-
-  late final ffi.Pointer<PyTypeObject> _PyWeakref_RefType =
-      _lookup<PyTypeObject>('_PyWeakref_RefType');
-
-  PyTypeObject get PyWeakref_RefType => _PyWeakref_RefType.ref;
-
-  late final ffi.Pointer<PyTypeObject> _PyWeakref_ProxyType =
-      _lookup<PyTypeObject>('_PyWeakref_ProxyType');
-
-  PyTypeObject get PyWeakref_ProxyType => _PyWeakref_ProxyType.ref;
-
-  late final ffi.Pointer<PyTypeObject> _PyWeakref_CallableProxyType =
-      _lookup<PyTypeObject>('_PyWeakref_CallableProxyType');
-
-  PyTypeObject get PyWeakref_CallableProxyType =>
-      _PyWeakref_CallableProxyType.ref;
-
-  ffi.Pointer<PyObject> PyWeakref_NewRef(
-    ffi.Pointer<PyObject> ob,
-    ffi.Pointer<PyObject> callback,
-  ) {
-    return _PyWeakref_NewRef(
-      ob,
-      callback,
-    );
-  }
-
-  late final _PyWeakref_NewRefPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<PyObject> Function(ffi.Pointer<PyObject>,
-              ffi.Pointer<PyObject>)>>('PyWeakref_NewRef');
-  late final _PyWeakref_NewRef = _PyWeakref_NewRefPtr.asFunction<
-      ffi.Pointer<PyObject> Function(
-          ffi.Pointer<PyObject>, ffi.Pointer<PyObject>)>();
-
-  ffi.Pointer<PyObject> PyWeakref_NewProxy(
-    ffi.Pointer<PyObject> ob,
-    ffi.Pointer<PyObject> callback,
-  ) {
-    return _PyWeakref_NewProxy(
-      ob,
-      callback,
-    );
-  }
-
-  late final _PyWeakref_NewProxyPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<PyObject> Function(ffi.Pointer<PyObject>,
-              ffi.Pointer<PyObject>)>>('PyWeakref_NewProxy');
-  late final _PyWeakref_NewProxy = _PyWeakref_NewProxyPtr.asFunction<
-      ffi.Pointer<PyObject> Function(
-          ffi.Pointer<PyObject>, ffi.Pointer<PyObject>)>();
-
-  ffi.Pointer<PyObject> PyWeakref_GetObject(
-    ffi.Pointer<PyObject> ref,
-  ) {
-    return _PyWeakref_GetObject(
-      ref,
-    );
-  }
-
-  late final _PyWeakref_GetObjectPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<PyObject> Function(
-              ffi.Pointer<PyObject>)>>('PyWeakref_GetObject');
-  late final _PyWeakref_GetObject = _PyWeakref_GetObjectPtr.asFunction<
-      ffi.Pointer<PyObject> Function(ffi.Pointer<PyObject>)>();
-
-  int PyWeakref_GetWeakrefCount(
-    ffi.Pointer<PyWeakReference> head,
-  ) {
-    return _PyWeakref_GetWeakrefCount(
-      head,
-    );
-  }
-
-  late final _PyWeakref_GetWeakrefCountPtr = _lookup<
-          ffi
-          .NativeFunction<Py_ssize_t Function(ffi.Pointer<PyWeakReference>)>>(
-      '_PyWeakref_GetWeakrefCount');
-  late final _PyWeakref_GetWeakrefCount = _PyWeakref_GetWeakrefCountPtr
-      .asFunction<int Function(ffi.Pointer<PyWeakReference>)>();
-
-  void PyWeakref_ClearRef(
-    ffi.Pointer<PyWeakReference> self,
-  ) {
-    return _PyWeakref_ClearRef(
-      self,
-    );
-  }
-
-  late final _PyWeakref_ClearRefPtr = _lookup<
-          ffi.NativeFunction<ffi.Void Function(ffi.Pointer<PyWeakReference>)>>(
-      '_PyWeakref_ClearRef');
-  late final _PyWeakref_ClearRef = _PyWeakref_ClearRefPtr.asFunction<
-      void Function(ffi.Pointer<PyWeakReference>)>();
-
-  late final ffi.Pointer<ffi.Pointer<ffi.Char>> _PyStructSequence_UnnamedField =
-      _lookup<ffi.Pointer<ffi.Char>>('PyStructSequence_UnnamedField');
-
-  ffi.Pointer<ffi.Char> get PyStructSequence_UnnamedField =>
-      _PyStructSequence_UnnamedField.value;
-
-  set PyStructSequence_UnnamedField(ffi.Pointer<ffi.Char> value) =>
-      _PyStructSequence_UnnamedField.value = value;
-
-  void PyStructSequence_InitType(
-    ffi.Pointer<PyTypeObject> type,
-    ffi.Pointer<PyStructSequence_Desc> desc,
-  ) {
-    return _PyStructSequence_InitType(
-      type,
-      desc,
-    );
-  }
-
-  late final _PyStructSequence_InitTypePtr = _lookup<
+  late final _PyInterpreterState_ThreadHeadPtr = _lookup<
           ffi.NativeFunction<
-              ffi.Void Function(ffi.Pointer<PyTypeObject>,
-                  ffi.Pointer<PyStructSequence_Desc>)>>(
-      'PyStructSequence_InitType');
-  late final _PyStructSequence_InitType =
-      _PyStructSequence_InitTypePtr.asFunction<
+              ffi.Pointer<PyThreadState> Function(
+                  ffi.Pointer<PyInterpreterState>)>>(
+      'PyInterpreterState_ThreadHead');
+  late final _PyInterpreterState_ThreadHead =
+      _PyInterpreterState_ThreadHeadPtr.asFunction<
+          ffi.Pointer<PyThreadState> Function(
+              ffi.Pointer<PyInterpreterState>)>();
+
+  ffi.Pointer<PyThreadState> PyThreadState_Next(
+    ffi.Pointer<PyThreadState> arg0,
+  ) {
+    return _PyThreadState_Next(
+      arg0,
+    );
+  }
+
+  late final _PyThreadState_NextPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<PyThreadState> Function(
+              ffi.Pointer<PyThreadState>)>>('PyThreadState_Next');
+  late final _PyThreadState_Next = _PyThreadState_NextPtr.asFunction<
+      ffi.Pointer<PyThreadState> Function(ffi.Pointer<PyThreadState>)>();
+
+  void PyThreadState_DeleteCurrent() {
+    return _PyThreadState_DeleteCurrent();
+  }
+
+  late final _PyThreadState_DeleteCurrentPtr =
+      _lookup<ffi.NativeFunction<ffi.Void Function()>>(
+          'PyThreadState_DeleteCurrent');
+  late final _PyThreadState_DeleteCurrent =
+      _PyThreadState_DeleteCurrentPtr.asFunction<void Function()>();
+
+  _PyFrameEvalFunction PyInterpreterState_GetEvalFrameFunc(
+    ffi.Pointer<PyInterpreterState> interp,
+  ) {
+    return _PyInterpreterState_GetEvalFrameFunc(
+      interp,
+    );
+  }
+
+  late final _PyInterpreterState_GetEvalFrameFuncPtr = _lookup<
+          ffi.NativeFunction<
+              _PyFrameEvalFunction Function(ffi.Pointer<PyInterpreterState>)>>(
+      '_PyInterpreterState_GetEvalFrameFunc');
+  late final _PyInterpreterState_GetEvalFrameFunc =
+      _PyInterpreterState_GetEvalFrameFuncPtr.asFunction<
+          _PyFrameEvalFunction Function(ffi.Pointer<PyInterpreterState>)>();
+
+  void PyInterpreterState_SetEvalFrameFunc(
+    ffi.Pointer<PyInterpreterState> interp,
+    _PyFrameEvalFunction eval_frame,
+  ) {
+    return _PyInterpreterState_SetEvalFrameFunc(
+      interp,
+      eval_frame,
+    );
+  }
+
+  late final _PyInterpreterState_SetEvalFrameFuncPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Void Function(ffi.Pointer<PyInterpreterState>,
+              _PyFrameEvalFunction)>>('_PyInterpreterState_SetEvalFrameFunc');
+  late final _PyInterpreterState_SetEvalFrameFunc =
+      _PyInterpreterState_SetEvalFrameFuncPtr.asFunction<
           void Function(
-              ffi.Pointer<PyTypeObject>, ffi.Pointer<PyStructSequence_Desc>)>();
+              ffi.Pointer<PyInterpreterState>, _PyFrameEvalFunction)>();
 
-  int PyStructSequence_InitType2(
-    ffi.Pointer<PyTypeObject> type,
-    ffi.Pointer<PyStructSequence_Desc> desc,
+  ffi.Pointer<PyConfig> PyInterpreterState_GetConfig(
+    ffi.Pointer<PyInterpreterState> interp,
   ) {
-    return _PyStructSequence_InitType2(
-      type,
-      desc,
+    return _PyInterpreterState_GetConfig(
+      interp,
     );
   }
 
-  late final _PyStructSequence_InitType2Ptr = _lookup<
+  late final _PyInterpreterState_GetConfigPtr = _lookup<
           ffi.NativeFunction<
-              ffi.Int Function(ffi.Pointer<PyTypeObject>,
-                  ffi.Pointer<PyStructSequence_Desc>)>>(
-      'PyStructSequence_InitType2');
-  late final _PyStructSequence_InitType2 =
-      _PyStructSequence_InitType2Ptr.asFunction<
-          int Function(
-              ffi.Pointer<PyTypeObject>, ffi.Pointer<PyStructSequence_Desc>)>();
+              ffi.Pointer<PyConfig> Function(ffi.Pointer<PyInterpreterState>)>>(
+      '_PyInterpreterState_GetConfig');
+  late final _PyInterpreterState_GetConfig =
+      _PyInterpreterState_GetConfigPtr.asFunction<
+          ffi.Pointer<PyConfig> Function(ffi.Pointer<PyInterpreterState>)>();
 
-  ffi.Pointer<PyTypeObject> PyStructSequence_NewType(
-    ffi.Pointer<PyStructSequence_Desc> desc,
+  int PyInterpreterState_GetConfigCopy(
+    ffi.Pointer<PyConfig> config,
   ) {
-    return _PyStructSequence_NewType(
-      desc,
+    return _PyInterpreterState_GetConfigCopy(
+      config,
     );
   }
 
-  late final _PyStructSequence_NewTypePtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<PyTypeObject> Function(
-              ffi.Pointer<PyStructSequence_Desc>)>>('PyStructSequence_NewType');
-  late final _PyStructSequence_NewType =
-      _PyStructSequence_NewTypePtr.asFunction<
-          ffi.Pointer<PyTypeObject> Function(
-              ffi.Pointer<PyStructSequence_Desc>)>();
+  late final _PyInterpreterState_GetConfigCopyPtr =
+      _lookup<ffi.NativeFunction<ffi.Int Function(ffi.Pointer<PyConfig>)>>(
+          '_PyInterpreterState_GetConfigCopy');
+  late final _PyInterpreterState_GetConfigCopy =
+      _PyInterpreterState_GetConfigCopyPtr.asFunction<
+          int Function(ffi.Pointer<PyConfig>)>();
 
-  ffi.Pointer<PyObject> PyStructSequence_New(
-    ffi.Pointer<PyTypeObject> type,
+  int PyInterpreterState_SetConfig(
+    ffi.Pointer<PyConfig> config,
   ) {
-    return _PyStructSequence_New(
-      type,
+    return _PyInterpreterState_SetConfig(
+      config,
     );
   }
 
-  late final _PyStructSequence_NewPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<PyObject> Function(
-              ffi.Pointer<PyTypeObject>)>>('PyStructSequence_New');
-  late final _PyStructSequence_New = _PyStructSequence_NewPtr.asFunction<
-      ffi.Pointer<PyObject> Function(ffi.Pointer<PyTypeObject>)>();
+  late final _PyInterpreterState_SetConfigPtr =
+      _lookup<ffi.NativeFunction<ffi.Int Function(ffi.Pointer<PyConfig>)>>(
+          '_PyInterpreterState_SetConfig');
+  late final _PyInterpreterState_SetConfig = _PyInterpreterState_SetConfigPtr
+      .asFunction<int Function(ffi.Pointer<PyConfig>)>();
 
-  void PyStructSequence_SetItem(
-    ffi.Pointer<PyObject> arg0,
-    int arg1,
-    ffi.Pointer<PyObject> arg2,
+  ffi.Pointer<PyConfig> Py_GetConfig() {
+    return _Py_GetConfig();
+  }
+
+  late final _Py_GetConfigPtr =
+      _lookup<ffi.NativeFunction<ffi.Pointer<PyConfig> Function()>>(
+          '_Py_GetConfig');
+  late final _Py_GetConfig =
+      _Py_GetConfigPtr.asFunction<ffi.Pointer<PyConfig> Function()>();
+
+  void PyCrossInterpreterData_Init(
+    ffi.Pointer<_PyCrossInterpreterData> data,
+    ffi.Pointer<PyInterpreterState> interp,
+    ffi.Pointer<ffi.Void> shared,
+    ffi.Pointer<PyObject> obj,
+    xid_newobjectfunc new_object,
   ) {
-    return _PyStructSequence_SetItem(
+    return _PyCrossInterpreterData_Init(
+      data,
+      interp,
+      shared,
+      obj,
+      new_object,
+    );
+  }
+
+  late final _PyCrossInterpreterData_InitPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Void Function(
+              ffi.Pointer<_PyCrossInterpreterData>,
+              ffi.Pointer<PyInterpreterState>,
+              ffi.Pointer<ffi.Void>,
+              ffi.Pointer<PyObject>,
+              xid_newobjectfunc)>>('_PyCrossInterpreterData_Init');
+  late final _PyCrossInterpreterData_Init =
+      _PyCrossInterpreterData_InitPtr.asFunction<
+          void Function(
+              ffi.Pointer<_PyCrossInterpreterData>,
+              ffi.Pointer<PyInterpreterState>,
+              ffi.Pointer<ffi.Void>,
+              ffi.Pointer<PyObject>,
+              xid_newobjectfunc)>();
+
+  int PyCrossInterpreterData_InitWithSize(
+    ffi.Pointer<_PyCrossInterpreterData> arg0,
+    ffi.Pointer<PyInterpreterState> interp,
+    int arg2,
+    ffi.Pointer<PyObject> arg3,
+    xid_newobjectfunc arg4,
+  ) {
+    return _PyCrossInterpreterData_InitWithSize(
       arg0,
-      arg1,
+      interp,
       arg2,
+      arg3,
+      arg4,
     );
   }
 
-  late final _PyStructSequence_SetItemPtr = _lookup<
+  late final _PyCrossInterpreterData_InitWithSizePtr = _lookup<
       ffi.NativeFunction<
-          ffi.Void Function(ffi.Pointer<PyObject>, Py_ssize_t,
-              ffi.Pointer<PyObject>)>>('PyStructSequence_SetItem');
-  late final _PyStructSequence_SetItem =
-      _PyStructSequence_SetItemPtr.asFunction<
-          void Function(ffi.Pointer<PyObject>, int, ffi.Pointer<PyObject>)>();
+          ffi.Int Function(
+              ffi.Pointer<_PyCrossInterpreterData>,
+              ffi.Pointer<PyInterpreterState>,
+              ffi.Size,
+              ffi.Pointer<PyObject>,
+              xid_newobjectfunc)>>('_PyCrossInterpreterData_InitWithSize');
+  late final _PyCrossInterpreterData_InitWithSize =
+      _PyCrossInterpreterData_InitWithSizePtr.asFunction<
+          int Function(
+              ffi.Pointer<_PyCrossInterpreterData>,
+              ffi.Pointer<PyInterpreterState>,
+              int,
+              ffi.Pointer<PyObject>,
+              xid_newobjectfunc)>();
 
-  ffi.Pointer<PyObject> PyStructSequence_GetItem(
-    ffi.Pointer<PyObject> arg0,
-    int arg1,
+  void PyCrossInterpreterData_Clear(
+    ffi.Pointer<PyInterpreterState> arg0,
+    ffi.Pointer<_PyCrossInterpreterData> arg1,
   ) {
-    return _PyStructSequence_GetItem(
+    return _PyCrossInterpreterData_Clear(
       arg0,
       arg1,
     );
   }
 
-  late final _PyStructSequence_GetItemPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<PyObject> Function(
-              ffi.Pointer<PyObject>, Py_ssize_t)>>('PyStructSequence_GetItem');
-  late final _PyStructSequence_GetItem = _PyStructSequence_GetItemPtr
-      .asFunction<ffi.Pointer<PyObject> Function(ffi.Pointer<PyObject>, int)>();
+  late final _PyCrossInterpreterData_ClearPtr = _lookup<
+          ffi.NativeFunction<
+              ffi.Void Function(ffi.Pointer<PyInterpreterState>,
+                  ffi.Pointer<_PyCrossInterpreterData>)>>(
+      '_PyCrossInterpreterData_Clear');
+  late final _PyCrossInterpreterData_Clear =
+      _PyCrossInterpreterData_ClearPtr.asFunction<
+          void Function(ffi.Pointer<PyInterpreterState>,
+              ffi.Pointer<_PyCrossInterpreterData>)>();
 
-  late final ffi.Pointer<PyTypeObject> _PyNamespace_Type =
-      _lookup<PyTypeObject>('_PyNamespace_Type');
-
-  PyTypeObject get PyNamespace_Type => _PyNamespace_Type.ref;
-
-  ffi.Pointer<PyObject> PyNamespace_New(
-    ffi.Pointer<PyObject> kwds,
+  int PyObject_GetCrossInterpreterData(
+    ffi.Pointer<PyObject> arg0,
+    ffi.Pointer<_PyCrossInterpreterData> arg1,
   ) {
-    return _PyNamespace_New(
-      kwds,
+    return _PyObject_GetCrossInterpreterData(
+      arg0,
+      arg1,
     );
   }
 
-  late final _PyNamespace_NewPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<PyObject> Function(
-              ffi.Pointer<PyObject>)>>('_PyNamespace_New');
-  late final _PyNamespace_New = _PyNamespace_NewPtr.asFunction<
-      ffi.Pointer<PyObject> Function(ffi.Pointer<PyObject>)>();
+  late final _PyObject_GetCrossInterpreterDataPtr = _lookup<
+          ffi.NativeFunction<
+              ffi.Int Function(ffi.Pointer<PyObject>,
+                  ffi.Pointer<_PyCrossInterpreterData>)>>(
+      '_PyObject_GetCrossInterpreterData');
+  late final _PyObject_GetCrossInterpreterData =
+      _PyObject_GetCrossInterpreterDataPtr.asFunction<
+          int Function(
+              ffi.Pointer<PyObject>, ffi.Pointer<_PyCrossInterpreterData>)>();
 
-  late final ffi.Pointer<PyTypeObject> _PyPickleBuffer_Type =
-      _lookup<PyTypeObject>('PyPickleBuffer_Type');
-
-  PyTypeObject get PyPickleBuffer_Type => _PyPickleBuffer_Type.ref;
-
-  ffi.Pointer<PyObject> PyPickleBuffer_FromObject(
-    ffi.Pointer<PyObject> arg0,
+  ffi.Pointer<PyObject> PyCrossInterpreterData_NewObject(
+    ffi.Pointer<_PyCrossInterpreterData> arg0,
   ) {
-    return _PyPickleBuffer_FromObject(
+    return _PyCrossInterpreterData_NewObject(
       arg0,
     );
   }
 
-  late final _PyPickleBuffer_FromObjectPtr = _lookup<
-      ffi.NativeFunction<
+  late final _PyCrossInterpreterData_NewObjectPtr = _lookup<
+          ffi.NativeFunction<
+              ffi.Pointer<PyObject> Function(
+                  ffi.Pointer<_PyCrossInterpreterData>)>>(
+      '_PyCrossInterpreterData_NewObject');
+  late final _PyCrossInterpreterData_NewObject =
+      _PyCrossInterpreterData_NewObjectPtr.asFunction<
           ffi.Pointer<PyObject> Function(
-              ffi.Pointer<PyObject>)>>('PyPickleBuffer_FromObject');
-  late final _PyPickleBuffer_FromObject = _PyPickleBuffer_FromObjectPtr
-      .asFunction<ffi.Pointer<PyObject> Function(ffi.Pointer<PyObject>)>();
+              ffi.Pointer<_PyCrossInterpreterData>)>();
 
-  ffi.Pointer<Py_buffer> PyPickleBuffer_GetBuffer(
-    ffi.Pointer<PyObject> arg0,
+  int PyCrossInterpreterData_Release(
+    ffi.Pointer<_PyCrossInterpreterData> arg0,
   ) {
-    return _PyPickleBuffer_GetBuffer(
+    return _PyCrossInterpreterData_Release(
       arg0,
     );
   }
 
-  late final _PyPickleBuffer_GetBufferPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<Py_buffer> Function(
-              ffi.Pointer<PyObject>)>>('PyPickleBuffer_GetBuffer');
-  late final _PyPickleBuffer_GetBuffer = _PyPickleBuffer_GetBufferPtr
-      .asFunction<ffi.Pointer<Py_buffer> Function(ffi.Pointer<PyObject>)>();
+  late final _PyCrossInterpreterData_ReleasePtr = _lookup<
+          ffi.NativeFunction<
+              ffi.Int Function(ffi.Pointer<_PyCrossInterpreterData>)>>(
+      '_PyCrossInterpreterData_Release');
+  late final _PyCrossInterpreterData_Release =
+      _PyCrossInterpreterData_ReleasePtr.asFunction<
+          int Function(ffi.Pointer<_PyCrossInterpreterData>)>();
 
-  int PyPickleBuffer_Release(
+  int PyObject_CheckCrossInterpreterData(
     ffi.Pointer<PyObject> arg0,
   ) {
-    return _PyPickleBuffer_Release(
+    return _PyObject_CheckCrossInterpreterData(
       arg0,
     );
   }
 
-  late final _PyPickleBuffer_ReleasePtr =
+  late final _PyObject_CheckCrossInterpreterDataPtr =
       _lookup<ffi.NativeFunction<ffi.Int Function(ffi.Pointer<PyObject>)>>(
-          'PyPickleBuffer_Release');
-  late final _PyPickleBuffer_Release = _PyPickleBuffer_ReleasePtr.asFunction<
-      int Function(ffi.Pointer<PyObject>)>();
+          '_PyObject_CheckCrossInterpreterData');
+  late final _PyObject_CheckCrossInterpreterData =
+      _PyObject_CheckCrossInterpreterDataPtr.asFunction<
+          int Function(ffi.Pointer<PyObject>)>();
 
-  int PyCodec_Register(
-    ffi.Pointer<PyObject> search_function,
+  int PyCrossInterpreterData_RegisterClass(
+    ffi.Pointer<PyTypeObject> arg0,
+    crossinterpdatafunc arg1,
   ) {
-    return _PyCodec_Register(
-      search_function,
+    return _PyCrossInterpreterData_RegisterClass(
+      arg0,
+      arg1,
     );
   }
 
-  late final _PyCodec_RegisterPtr =
-      _lookup<ffi.NativeFunction<ffi.Int Function(ffi.Pointer<PyObject>)>>(
-          'PyCodec_Register');
-  late final _PyCodec_Register =
-      _PyCodec_RegisterPtr.asFunction<int Function(ffi.Pointer<PyObject>)>();
-
-  ffi.Pointer<PyObject> PyCodec_Lookup(
-    ffi.Pointer<ffi.Char> encoding,
-  ) {
-    return _PyCodec_Lookup(
-      encoding,
-    );
-  }
-
-  late final _PyCodec_LookupPtr = _lookup<
+  late final _PyCrossInterpreterData_RegisterClassPtr = _lookup<
       ffi.NativeFunction<
-          ffi.Pointer<PyObject> Function(
-              ffi.Pointer<ffi.Char>)>>('_PyCodec_Lookup');
-  late final _PyCodec_Lookup = _PyCodec_LookupPtr.asFunction<
-      ffi.Pointer<PyObject> Function(ffi.Pointer<ffi.Char>)>();
+          ffi.Int Function(ffi.Pointer<PyTypeObject>,
+              crossinterpdatafunc)>>('_PyCrossInterpreterData_RegisterClass');
+  late final _PyCrossInterpreterData_RegisterClass =
+      _PyCrossInterpreterData_RegisterClassPtr.asFunction<
+          int Function(ffi.Pointer<PyTypeObject>, crossinterpdatafunc)>();
 
-  int PyCodec_Forget(
-    ffi.Pointer<ffi.Char> encoding,
+  int PyCrossInterpreterData_UnregisterClass(
+    ffi.Pointer<PyTypeObject> arg0,
   ) {
-    return _PyCodec_Forget(
-      encoding,
+    return _PyCrossInterpreterData_UnregisterClass(
+      arg0,
     );
   }
 
-  late final _PyCodec_ForgetPtr =
-      _lookup<ffi.NativeFunction<ffi.Int Function(ffi.Pointer<ffi.Char>)>>(
-          '_PyCodec_Forget');
-  late final _PyCodec_Forget =
-      _PyCodec_ForgetPtr.asFunction<int Function(ffi.Pointer<ffi.Char>)>();
+  late final _PyCrossInterpreterData_UnregisterClassPtr =
+      _lookup<ffi.NativeFunction<ffi.Int Function(ffi.Pointer<PyTypeObject>)>>(
+          '_PyCrossInterpreterData_UnregisterClass');
+  late final _PyCrossInterpreterData_UnregisterClass =
+      _PyCrossInterpreterData_UnregisterClassPtr.asFunction<
+          int Function(ffi.Pointer<PyTypeObject>)>();
 
-  int PyCodec_KnownEncoding(
-    ffi.Pointer<ffi.Char> encoding,
+  crossinterpdatafunc PyCrossInterpreterData_Lookup(
+    ffi.Pointer<PyObject> arg0,
   ) {
-    return _PyCodec_KnownEncoding(
-      encoding,
+    return _PyCrossInterpreterData_Lookup(
+      arg0,
     );
   }
 
-  late final _PyCodec_KnownEncodingPtr =
-      _lookup<ffi.NativeFunction<ffi.Int Function(ffi.Pointer<ffi.Char>)>>(
-          'PyCodec_KnownEncoding');
-  late final _PyCodec_KnownEncoding = _PyCodec_KnownEncodingPtr.asFunction<
-      int Function(ffi.Pointer<ffi.Char>)>();
-
-  ffi.Pointer<PyObject> PyCodec_Encode(
-    ffi.Pointer<PyObject> object,
-    ffi.Pointer<ffi.Char> encoding,
-    ffi.Pointer<ffi.Char> errors,
-  ) {
-    return _PyCodec_Encode(
-      object,
-      encoding,
-      errors,
-    );
-  }
-
-  late final _PyCodec_EncodePtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<PyObject> Function(ffi.Pointer<PyObject>,
-              ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Char>)>>('PyCodec_Encode');
-  late final _PyCodec_Encode = _PyCodec_EncodePtr.asFunction<
-      ffi.Pointer<PyObject> Function(ffi.Pointer<PyObject>,
-          ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Char>)>();
-
-  ffi.Pointer<PyObject> PyCodec_Decode(
-    ffi.Pointer<PyObject> object,
-    ffi.Pointer<ffi.Char> encoding,
-    ffi.Pointer<ffi.Char> errors,
-  ) {
-    return _PyCodec_Decode(
-      object,
-      encoding,
-      errors,
-    );
-  }
-
-  late final _PyCodec_DecodePtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<PyObject> Function(ffi.Pointer<PyObject>,
-              ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Char>)>>('PyCodec_Decode');
-  late final _PyCodec_Decode = _PyCodec_DecodePtr.asFunction<
-      ffi.Pointer<PyObject> Function(ffi.Pointer<PyObject>,
-          ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Char>)>();
-
-  ffi.Pointer<PyObject> PyCodec_LookupTextEncoding(
-    ffi.Pointer<ffi.Char> encoding,
-    ffi.Pointer<ffi.Char> alternate_command,
-  ) {
-    return _PyCodec_LookupTextEncoding(
-      encoding,
-      alternate_command,
-    );
-  }
-
-  late final _PyCodec_LookupTextEncodingPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<PyObject> Function(ffi.Pointer<ffi.Char>,
-              ffi.Pointer<ffi.Char>)>>('_PyCodec_LookupTextEncoding');
-  late final _PyCodec_LookupTextEncoding =
-      _PyCodec_LookupTextEncodingPtr.asFunction<
-          ffi.Pointer<PyObject> Function(
-              ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Char>)>();
-
-  ffi.Pointer<PyObject> PyCodec_EncodeText(
-    ffi.Pointer<PyObject> object,
-    ffi.Pointer<ffi.Char> encoding,
-    ffi.Pointer<ffi.Char> errors,
-  ) {
-    return _PyCodec_EncodeText(
-      object,
-      encoding,
-      errors,
-    );
-  }
-
-  late final _PyCodec_EncodeTextPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<PyObject> Function(
-              ffi.Pointer<PyObject>,
-              ffi.Pointer<ffi.Char>,
-              ffi.Pointer<ffi.Char>)>>('_PyCodec_EncodeText');
-  late final _PyCodec_EncodeText = _PyCodec_EncodeTextPtr.asFunction<
-      ffi.Pointer<PyObject> Function(ffi.Pointer<PyObject>,
-          ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Char>)>();
-
-  ffi.Pointer<PyObject> PyCodec_DecodeText(
-    ffi.Pointer<PyObject> object,
-    ffi.Pointer<ffi.Char> encoding,
-    ffi.Pointer<ffi.Char> errors,
-  ) {
-    return _PyCodec_DecodeText(
-      object,
-      encoding,
-      errors,
-    );
-  }
-
-  late final _PyCodec_DecodeTextPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<PyObject> Function(
-              ffi.Pointer<PyObject>,
-              ffi.Pointer<ffi.Char>,
-              ffi.Pointer<ffi.Char>)>>('_PyCodec_DecodeText');
-  late final _PyCodec_DecodeText = _PyCodec_DecodeTextPtr.asFunction<
-      ffi.Pointer<PyObject> Function(ffi.Pointer<PyObject>,
-          ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Char>)>();
-
-  ffi.Pointer<PyObject> PyCodecInfo_GetIncrementalDecoder(
-    ffi.Pointer<PyObject> codec_info,
-    ffi.Pointer<ffi.Char> errors,
-  ) {
-    return _PyCodecInfo_GetIncrementalDecoder(
-      codec_info,
-      errors,
-    );
-  }
-
-  late final _PyCodecInfo_GetIncrementalDecoderPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<PyObject> Function(ffi.Pointer<PyObject>,
-              ffi.Pointer<ffi.Char>)>>('_PyCodecInfo_GetIncrementalDecoder');
-  late final _PyCodecInfo_GetIncrementalDecoder =
-      _PyCodecInfo_GetIncrementalDecoderPtr.asFunction<
-          ffi.Pointer<PyObject> Function(
-              ffi.Pointer<PyObject>, ffi.Pointer<ffi.Char>)>();
-
-  ffi.Pointer<PyObject> PyCodecInfo_GetIncrementalEncoder(
-    ffi.Pointer<PyObject> codec_info,
-    ffi.Pointer<ffi.Char> errors,
-  ) {
-    return _PyCodecInfo_GetIncrementalEncoder(
-      codec_info,
-      errors,
-    );
-  }
-
-  late final _PyCodecInfo_GetIncrementalEncoderPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<PyObject> Function(ffi.Pointer<PyObject>,
-              ffi.Pointer<ffi.Char>)>>('_PyCodecInfo_GetIncrementalEncoder');
-  late final _PyCodecInfo_GetIncrementalEncoder =
-      _PyCodecInfo_GetIncrementalEncoderPtr.asFunction<
-          ffi.Pointer<PyObject> Function(
-              ffi.Pointer<PyObject>, ffi.Pointer<ffi.Char>)>();
-
-  ffi.Pointer<PyObject> PyCodec_Encoder(
-    ffi.Pointer<ffi.Char> encoding,
-  ) {
-    return _PyCodec_Encoder(
-      encoding,
-    );
-  }
-
-  late final _PyCodec_EncoderPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<PyObject> Function(
-              ffi.Pointer<ffi.Char>)>>('PyCodec_Encoder');
-  late final _PyCodec_Encoder = _PyCodec_EncoderPtr.asFunction<
-      ffi.Pointer<PyObject> Function(ffi.Pointer<ffi.Char>)>();
-
-  ffi.Pointer<PyObject> PyCodec_Decoder(
-    ffi.Pointer<ffi.Char> encoding,
-  ) {
-    return _PyCodec_Decoder(
-      encoding,
-    );
-  }
-
-  late final _PyCodec_DecoderPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<PyObject> Function(
-              ffi.Pointer<ffi.Char>)>>('PyCodec_Decoder');
-  late final _PyCodec_Decoder = _PyCodec_DecoderPtr.asFunction<
-      ffi.Pointer<PyObject> Function(ffi.Pointer<ffi.Char>)>();
-
-  ffi.Pointer<PyObject> PyCodec_IncrementalEncoder(
-    ffi.Pointer<ffi.Char> encoding,
-    ffi.Pointer<ffi.Char> errors,
-  ) {
-    return _PyCodec_IncrementalEncoder(
-      encoding,
-      errors,
-    );
-  }
-
-  late final _PyCodec_IncrementalEncoderPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<PyObject> Function(ffi.Pointer<ffi.Char>,
-              ffi.Pointer<ffi.Char>)>>('PyCodec_IncrementalEncoder');
-  late final _PyCodec_IncrementalEncoder =
-      _PyCodec_IncrementalEncoderPtr.asFunction<
-          ffi.Pointer<PyObject> Function(
-              ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Char>)>();
-
-  ffi.Pointer<PyObject> PyCodec_IncrementalDecoder(
-    ffi.Pointer<ffi.Char> encoding,
-    ffi.Pointer<ffi.Char> errors,
-  ) {
-    return _PyCodec_IncrementalDecoder(
-      encoding,
-      errors,
-    );
-  }
-
-  late final _PyCodec_IncrementalDecoderPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<PyObject> Function(ffi.Pointer<ffi.Char>,
-              ffi.Pointer<ffi.Char>)>>('PyCodec_IncrementalDecoder');
-  late final _PyCodec_IncrementalDecoder =
-      _PyCodec_IncrementalDecoderPtr.asFunction<
-          ffi.Pointer<PyObject> Function(
-              ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Char>)>();
-
-  ffi.Pointer<PyObject> PyCodec_StreamReader(
-    ffi.Pointer<ffi.Char> encoding,
-    ffi.Pointer<PyObject> stream,
-    ffi.Pointer<ffi.Char> errors,
-  ) {
-    return _PyCodec_StreamReader(
-      encoding,
-      stream,
-      errors,
-    );
-  }
-
-  late final _PyCodec_StreamReaderPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<PyObject> Function(
-              ffi.Pointer<ffi.Char>,
-              ffi.Pointer<PyObject>,
-              ffi.Pointer<ffi.Char>)>>('PyCodec_StreamReader');
-  late final _PyCodec_StreamReader = _PyCodec_StreamReaderPtr.asFunction<
-      ffi.Pointer<PyObject> Function(ffi.Pointer<ffi.Char>,
-          ffi.Pointer<PyObject>, ffi.Pointer<ffi.Char>)>();
-
-  ffi.Pointer<PyObject> PyCodec_StreamWriter(
-    ffi.Pointer<ffi.Char> encoding,
-    ffi.Pointer<PyObject> stream,
-    ffi.Pointer<ffi.Char> errors,
-  ) {
-    return _PyCodec_StreamWriter(
-      encoding,
-      stream,
-      errors,
-    );
-  }
-
-  late final _PyCodec_StreamWriterPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<PyObject> Function(
-              ffi.Pointer<ffi.Char>,
-              ffi.Pointer<PyObject>,
-              ffi.Pointer<ffi.Char>)>>('PyCodec_StreamWriter');
-  late final _PyCodec_StreamWriter = _PyCodec_StreamWriterPtr.asFunction<
-      ffi.Pointer<PyObject> Function(ffi.Pointer<ffi.Char>,
-          ffi.Pointer<PyObject>, ffi.Pointer<ffi.Char>)>();
-
-  int PyCodec_RegisterError(
-    ffi.Pointer<ffi.Char> name,
-    ffi.Pointer<PyObject> error,
-  ) {
-    return _PyCodec_RegisterError(
-      name,
-      error,
-    );
-  }
-
-  late final _PyCodec_RegisterErrorPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Int Function(ffi.Pointer<ffi.Char>,
-              ffi.Pointer<PyObject>)>>('PyCodec_RegisterError');
-  late final _PyCodec_RegisterError = _PyCodec_RegisterErrorPtr.asFunction<
-      int Function(ffi.Pointer<ffi.Char>, ffi.Pointer<PyObject>)>();
-
-  ffi.Pointer<PyObject> PyCodec_LookupError(
-    ffi.Pointer<ffi.Char> name,
-  ) {
-    return _PyCodec_LookupError(
-      name,
-    );
-  }
-
-  late final _PyCodec_LookupErrorPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<PyObject> Function(
-              ffi.Pointer<ffi.Char>)>>('PyCodec_LookupError');
-  late final _PyCodec_LookupError = _PyCodec_LookupErrorPtr.asFunction<
-      ffi.Pointer<PyObject> Function(ffi.Pointer<ffi.Char>)>();
-
-  ffi.Pointer<PyObject> PyCodec_StrictErrors(
-    ffi.Pointer<PyObject> exc,
-  ) {
-    return _PyCodec_StrictErrors(
-      exc,
-    );
-  }
-
-  late final _PyCodec_StrictErrorsPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<PyObject> Function(
-              ffi.Pointer<PyObject>)>>('PyCodec_StrictErrors');
-  late final _PyCodec_StrictErrors = _PyCodec_StrictErrorsPtr.asFunction<
-      ffi.Pointer<PyObject> Function(ffi.Pointer<PyObject>)>();
-
-  ffi.Pointer<PyObject> PyCodec_IgnoreErrors(
-    ffi.Pointer<PyObject> exc,
-  ) {
-    return _PyCodec_IgnoreErrors(
-      exc,
-    );
-  }
-
-  late final _PyCodec_IgnoreErrorsPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<PyObject> Function(
-              ffi.Pointer<PyObject>)>>('PyCodec_IgnoreErrors');
-  late final _PyCodec_IgnoreErrors = _PyCodec_IgnoreErrorsPtr.asFunction<
-      ffi.Pointer<PyObject> Function(ffi.Pointer<PyObject>)>();
-
-  ffi.Pointer<PyObject> PyCodec_ReplaceErrors(
-    ffi.Pointer<PyObject> exc,
-  ) {
-    return _PyCodec_ReplaceErrors(
-      exc,
-    );
-  }
-
-  late final _PyCodec_ReplaceErrorsPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<PyObject> Function(
-              ffi.Pointer<PyObject>)>>('PyCodec_ReplaceErrors');
-  late final _PyCodec_ReplaceErrors = _PyCodec_ReplaceErrorsPtr.asFunction<
-      ffi.Pointer<PyObject> Function(ffi.Pointer<PyObject>)>();
-
-  ffi.Pointer<PyObject> PyCodec_XMLCharRefReplaceErrors(
-    ffi.Pointer<PyObject> exc,
-  ) {
-    return _PyCodec_XMLCharRefReplaceErrors(
-      exc,
-    );
-  }
-
-  late final _PyCodec_XMLCharRefReplaceErrorsPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<PyObject> Function(
-              ffi.Pointer<PyObject>)>>('PyCodec_XMLCharRefReplaceErrors');
-  late final _PyCodec_XMLCharRefReplaceErrors =
-      _PyCodec_XMLCharRefReplaceErrorsPtr.asFunction<
-          ffi.Pointer<PyObject> Function(ffi.Pointer<PyObject>)>();
-
-  ffi.Pointer<PyObject> PyCodec_BackslashReplaceErrors(
-    ffi.Pointer<PyObject> exc,
-  ) {
-    return _PyCodec_BackslashReplaceErrors(
-      exc,
-    );
-  }
-
-  late final _PyCodec_BackslashReplaceErrorsPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<PyObject> Function(
-              ffi.Pointer<PyObject>)>>('PyCodec_BackslashReplaceErrors');
-  late final _PyCodec_BackslashReplaceErrors =
-      _PyCodec_BackslashReplaceErrorsPtr.asFunction<
-          ffi.Pointer<PyObject> Function(ffi.Pointer<PyObject>)>();
-
-  ffi.Pointer<PyObject> PyCodec_NameReplaceErrors(
-    ffi.Pointer<PyObject> exc,
-  ) {
-    return _PyCodec_NameReplaceErrors(
-      exc,
-    );
-  }
-
-  late final _PyCodec_NameReplaceErrorsPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<PyObject> Function(
-              ffi.Pointer<PyObject>)>>('PyCodec_NameReplaceErrors');
-  late final _PyCodec_NameReplaceErrors = _PyCodec_NameReplaceErrorsPtr
-      .asFunction<ffi.Pointer<PyObject> Function(ffi.Pointer<PyObject>)>();
-
-  late final ffi.Pointer<ffi.Pointer<ffi.Char>> _Py_hexdigits =
-      _lookup<ffi.Pointer<ffi.Char>>('Py_hexdigits');
-
-  ffi.Pointer<ffi.Char> get Py_hexdigits => _Py_hexdigits.value;
-
-  set Py_hexdigits(ffi.Pointer<ffi.Char> value) => _Py_hexdigits.value = value;
+  late final _PyCrossInterpreterData_LookupPtr = _lookup<
+          ffi
+          .NativeFunction<crossinterpdatafunc Function(ffi.Pointer<PyObject>)>>(
+      '_PyCrossInterpreterData_Lookup');
+  late final _PyCrossInterpreterData_Lookup = _PyCrossInterpreterData_LookupPtr
+      .asFunction<crossinterpdatafunc Function(ffi.Pointer<PyObject>)>();
 
   void PyErr_SetNone(
     ffi.Pointer<PyObject> arg0,
@@ -9846,6 +7353,54 @@ class DartPyC {
   late final _PyErr_Restore = _PyErr_RestorePtr.asFunction<
       void Function(ffi.Pointer<PyObject>, ffi.Pointer<PyObject>,
           ffi.Pointer<PyObject>)>();
+
+  ffi.Pointer<PyObject> PyErr_GetRaisedException() {
+    return _PyErr_GetRaisedException();
+  }
+
+  late final _PyErr_GetRaisedExceptionPtr =
+      _lookup<ffi.NativeFunction<ffi.Pointer<PyObject> Function()>>(
+          'PyErr_GetRaisedException');
+  late final _PyErr_GetRaisedException = _PyErr_GetRaisedExceptionPtr
+      .asFunction<ffi.Pointer<PyObject> Function()>();
+
+  void PyErr_SetRaisedException(
+    ffi.Pointer<PyObject> arg0,
+  ) {
+    return _PyErr_SetRaisedException(
+      arg0,
+    );
+  }
+
+  late final _PyErr_SetRaisedExceptionPtr =
+      _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Pointer<PyObject>)>>(
+          'PyErr_SetRaisedException');
+  late final _PyErr_SetRaisedException = _PyErr_SetRaisedExceptionPtr
+      .asFunction<void Function(ffi.Pointer<PyObject>)>();
+
+  ffi.Pointer<PyObject> PyErr_GetHandledException() {
+    return _PyErr_GetHandledException();
+  }
+
+  late final _PyErr_GetHandledExceptionPtr =
+      _lookup<ffi.NativeFunction<ffi.Pointer<PyObject> Function()>>(
+          'PyErr_GetHandledException');
+  late final _PyErr_GetHandledException = _PyErr_GetHandledExceptionPtr
+      .asFunction<ffi.Pointer<PyObject> Function()>();
+
+  void PyErr_SetHandledException(
+    ffi.Pointer<PyObject> arg0,
+  ) {
+    return _PyErr_SetHandledException(
+      arg0,
+    );
+  }
+
+  late final _PyErr_SetHandledExceptionPtr =
+      _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Pointer<PyObject>)>>(
+          'PyErr_SetHandledException');
+  late final _PyErr_SetHandledException = _PyErr_SetHandledExceptionPtr
+      .asFunction<void Function(ffi.Pointer<PyObject>)>();
 
   void PyErr_GetExcInfo(
     ffi.Pointer<ffi.Pointer<PyObject>> arg0,
@@ -10057,6 +7612,38 @@ class DartPyC {
   late final _PyException_SetContext = _PyException_SetContextPtr.asFunction<
       void Function(ffi.Pointer<PyObject>, ffi.Pointer<PyObject>)>();
 
+  ffi.Pointer<PyObject> PyException_GetArgs(
+    ffi.Pointer<PyObject> arg0,
+  ) {
+    return _PyException_GetArgs(
+      arg0,
+    );
+  }
+
+  late final _PyException_GetArgsPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<PyObject> Function(
+              ffi.Pointer<PyObject>)>>('PyException_GetArgs');
+  late final _PyException_GetArgs = _PyException_GetArgsPtr.asFunction<
+      ffi.Pointer<PyObject> Function(ffi.Pointer<PyObject>)>();
+
+  void PyException_SetArgs(
+    ffi.Pointer<PyObject> arg0,
+    ffi.Pointer<PyObject> arg1,
+  ) {
+    return _PyException_SetArgs(
+      arg0,
+      arg1,
+    );
+  }
+
+  late final _PyException_SetArgsPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Void Function(ffi.Pointer<PyObject>,
+              ffi.Pointer<PyObject>)>>('PyException_SetArgs');
+  late final _PyException_SetArgs = _PyException_SetArgsPtr.asFunction<
+      void Function(ffi.Pointer<PyObject>, ffi.Pointer<PyObject>)>();
+
   ffi.Pointer<ffi.Char> PyExceptionClass_Name(
     ffi.Pointer<PyObject> arg0,
   ) {
@@ -10087,6 +7674,15 @@ class DartPyC {
 
   set PyExc_Exception(ffi.Pointer<PyObject> value) =>
       _PyExc_Exception.value = value;
+
+  late final ffi.Pointer<ffi.Pointer<PyObject>> _PyExc_BaseExceptionGroup =
+      _lookup<ffi.Pointer<PyObject>>('PyExc_BaseExceptionGroup');
+
+  ffi.Pointer<PyObject> get PyExc_BaseExceptionGroup =>
+      _PyExc_BaseExceptionGroup.value;
+
+  set PyExc_BaseExceptionGroup(ffi.Pointer<PyObject> value) =>
+      _PyExc_BaseExceptionGroup.value = value;
 
   late final ffi.Pointer<ffi.Pointer<PyObject>> _PyExc_StopAsyncIteration =
       _lookup<ffi.Pointer<PyObject>>('PyExc_StopAsyncIteration');
@@ -10622,6 +8218,15 @@ class DartPyC {
   set PyExc_BytesWarning(ffi.Pointer<PyObject> value) =>
       _PyExc_BytesWarning.value = value;
 
+  late final ffi.Pointer<ffi.Pointer<PyObject>> _PyExc_EncodingWarning =
+      _lookup<ffi.Pointer<PyObject>>('PyExc_EncodingWarning');
+
+  ffi.Pointer<PyObject> get PyExc_EncodingWarning =>
+      _PyExc_EncodingWarning.value;
+
+  set PyExc_EncodingWarning(ffi.Pointer<PyObject> value) =>
+      _PyExc_EncodingWarning.value = value;
+
   late final ffi.Pointer<ffi.Pointer<PyObject>> _PyExc_ResourceWarning =
       _lookup<ffi.Pointer<PyObject>>('PyExc_ResourceWarning');
 
@@ -10925,6 +8530,20 @@ class DartPyC {
       _lookup<ffi.NativeFunction<ffi.Void Function()>>('PyErr_SetInterrupt');
   late final _PyErr_SetInterrupt =
       _PyErr_SetInterruptPtr.asFunction<void Function()>();
+
+  int PyErr_SetInterruptEx(
+    int signum,
+  ) {
+    return _PyErr_SetInterruptEx(
+      signum,
+    );
+  }
+
+  late final _PyErr_SetInterruptExPtr =
+      _lookup<ffi.NativeFunction<ffi.Int Function(ffi.Int)>>(
+          'PyErr_SetInterruptEx');
+  late final _PyErr_SetInterruptEx =
+      _PyErr_SetInterruptExPtr.asFunction<int Function(int)>();
 
   void PyErr_SyntaxLocation(
     ffi.Pointer<ffi.Char> filename,
@@ -11449,6 +9068,7676 @@ class DartPyC {
       int Function(ffi.Pointer<ffi.Char>, int, ffi.Pointer<ffi.Char>,
           ffi.Pointer<__va_list_tag>)>();
 
+  void PyErr_SetKeyError(
+    ffi.Pointer<PyObject> arg0,
+  ) {
+    return _PyErr_SetKeyError(
+      arg0,
+    );
+  }
+
+  late final _PyErr_SetKeyErrorPtr =
+      _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Pointer<PyObject>)>>(
+          '_PyErr_SetKeyError');
+  late final _PyErr_SetKeyError =
+      _PyErr_SetKeyErrorPtr.asFunction<void Function(ffi.Pointer<PyObject>)>();
+
+  ffi.Pointer<_PyErr_StackItem> PyErr_GetTopmostException(
+    ffi.Pointer<PyThreadState> tstate,
+  ) {
+    return _PyErr_GetTopmostException(
+      tstate,
+    );
+  }
+
+  late final _PyErr_GetTopmostExceptionPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<_PyErr_StackItem> Function(
+              ffi.Pointer<PyThreadState>)>>('_PyErr_GetTopmostException');
+  late final _PyErr_GetTopmostException =
+      _PyErr_GetTopmostExceptionPtr.asFunction<
+          ffi.Pointer<_PyErr_StackItem> Function(ffi.Pointer<PyThreadState>)>();
+
+  ffi.Pointer<PyObject> PyErr_GetHandledException1(
+    ffi.Pointer<PyThreadState> arg0,
+  ) {
+    return _PyErr_GetHandledException1(
+      arg0,
+    );
+  }
+
+  late final _PyErr_GetHandledException1Ptr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<PyObject> Function(
+              ffi.Pointer<PyThreadState>)>>('_PyErr_GetHandledException');
+  late final _PyErr_GetHandledException1 = _PyErr_GetHandledException1Ptr
+      .asFunction<ffi.Pointer<PyObject> Function(ffi.Pointer<PyThreadState>)>();
+
+  void PyErr_SetHandledException1(
+    ffi.Pointer<PyThreadState> arg0,
+    ffi.Pointer<PyObject> arg1,
+  ) {
+    return _PyErr_SetHandledException1(
+      arg0,
+      arg1,
+    );
+  }
+
+  late final _PyErr_SetHandledException1Ptr = _lookup<
+      ffi.NativeFunction<
+          ffi.Void Function(ffi.Pointer<PyThreadState>,
+              ffi.Pointer<PyObject>)>>('_PyErr_SetHandledException');
+  late final _PyErr_SetHandledException1 =
+      _PyErr_SetHandledException1Ptr.asFunction<
+          void Function(ffi.Pointer<PyThreadState>, ffi.Pointer<PyObject>)>();
+
+  void PyErr_GetExcInfo1(
+    ffi.Pointer<PyThreadState> arg0,
+    ffi.Pointer<ffi.Pointer<PyObject>> arg1,
+    ffi.Pointer<ffi.Pointer<PyObject>> arg2,
+    ffi.Pointer<ffi.Pointer<PyObject>> arg3,
+  ) {
+    return _PyErr_GetExcInfo1(
+      arg0,
+      arg1,
+      arg2,
+      arg3,
+    );
+  }
+
+  late final _PyErr_GetExcInfo1Ptr = _lookup<
+      ffi.NativeFunction<
+          ffi.Void Function(
+              ffi.Pointer<PyThreadState>,
+              ffi.Pointer<ffi.Pointer<PyObject>>,
+              ffi.Pointer<ffi.Pointer<PyObject>>,
+              ffi.Pointer<ffi.Pointer<PyObject>>)>>('_PyErr_GetExcInfo');
+  late final _PyErr_GetExcInfo1 = _PyErr_GetExcInfo1Ptr.asFunction<
+      void Function(
+          ffi.Pointer<PyThreadState>,
+          ffi.Pointer<ffi.Pointer<PyObject>>,
+          ffi.Pointer<ffi.Pointer<PyObject>>,
+          ffi.Pointer<ffi.Pointer<PyObject>>)>();
+
+  void PyErr_ChainExceptions(
+    ffi.Pointer<PyObject> arg0,
+    ffi.Pointer<PyObject> arg1,
+    ffi.Pointer<PyObject> arg2,
+  ) {
+    return _PyErr_ChainExceptions(
+      arg0,
+      arg1,
+      arg2,
+    );
+  }
+
+  late final _PyErr_ChainExceptionsPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Void Function(ffi.Pointer<PyObject>, ffi.Pointer<PyObject>,
+              ffi.Pointer<PyObject>)>>('_PyErr_ChainExceptions');
+  late final _PyErr_ChainExceptions = _PyErr_ChainExceptionsPtr.asFunction<
+      void Function(ffi.Pointer<PyObject>, ffi.Pointer<PyObject>,
+          ffi.Pointer<PyObject>)>();
+
+  void PyErr_ChainExceptions1(
+    ffi.Pointer<PyObject> arg0,
+  ) {
+    return _PyErr_ChainExceptions1(
+      arg0,
+    );
+  }
+
+  late final _PyErr_ChainExceptions1Ptr =
+      _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Pointer<PyObject>)>>(
+          '_PyErr_ChainExceptions1');
+  late final _PyErr_ChainExceptions1 = _PyErr_ChainExceptions1Ptr.asFunction<
+      void Function(ffi.Pointer<PyObject>)>();
+
+  ffi.Pointer<PyObject> PyErr_FormatFromCause(
+    ffi.Pointer<PyObject> exception,
+    ffi.Pointer<ffi.Char> format,
+  ) {
+    return _PyErr_FormatFromCause(
+      exception,
+      format,
+    );
+  }
+
+  late final _PyErr_FormatFromCausePtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<PyObject> Function(ffi.Pointer<PyObject>,
+              ffi.Pointer<ffi.Char>)>>('_PyErr_FormatFromCause');
+  late final _PyErr_FormatFromCause = _PyErr_FormatFromCausePtr.asFunction<
+      ffi.Pointer<PyObject> Function(
+          ffi.Pointer<PyObject>, ffi.Pointer<ffi.Char>)>();
+
+  int PyException_AddNote(
+    ffi.Pointer<PyObject> exc,
+    ffi.Pointer<PyObject> note,
+  ) {
+    return _PyException_AddNote(
+      exc,
+      note,
+    );
+  }
+
+  late final _PyException_AddNotePtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int Function(ffi.Pointer<PyObject>,
+              ffi.Pointer<PyObject>)>>('_PyException_AddNote');
+  late final _PyException_AddNote = _PyException_AddNotePtr.asFunction<
+      int Function(ffi.Pointer<PyObject>, ffi.Pointer<PyObject>)>();
+
+  ffi.Pointer<PyObject> PyUnstable_Exc_PrepReraiseStar(
+    ffi.Pointer<PyObject> orig,
+    ffi.Pointer<PyObject> excs,
+  ) {
+    return _PyUnstable_Exc_PrepReraiseStar(
+      orig,
+      excs,
+    );
+  }
+
+  late final _PyUnstable_Exc_PrepReraiseStarPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<PyObject> Function(ffi.Pointer<PyObject>,
+              ffi.Pointer<PyObject>)>>('PyUnstable_Exc_PrepReraiseStar');
+  late final _PyUnstable_Exc_PrepReraiseStar =
+      _PyUnstable_Exc_PrepReraiseStarPtr.asFunction<
+          ffi.Pointer<PyObject> Function(
+              ffi.Pointer<PyObject>, ffi.Pointer<PyObject>)>();
+
+  int PySignal_SetWakeupFd(
+    int fd,
+  ) {
+    return _PySignal_SetWakeupFd(
+      fd,
+    );
+  }
+
+  late final _PySignal_SetWakeupFdPtr =
+      _lookup<ffi.NativeFunction<ffi.Int Function(ffi.Int)>>(
+          'PySignal_SetWakeupFd');
+  late final _PySignal_SetWakeupFd =
+      _PySignal_SetWakeupFdPtr.asFunction<int Function(int)>();
+
+  int PyErr_CheckSignals1() {
+    return _PyErr_CheckSignals1();
+  }
+
+  late final _PyErr_CheckSignals1Ptr =
+      _lookup<ffi.NativeFunction<ffi.Int Function()>>('_PyErr_CheckSignals');
+  late final _PyErr_CheckSignals1 =
+      _PyErr_CheckSignals1Ptr.asFunction<int Function()>();
+
+  void PyErr_SyntaxLocationObject(
+    ffi.Pointer<PyObject> filename,
+    int lineno,
+    int col_offset,
+  ) {
+    return _PyErr_SyntaxLocationObject(
+      filename,
+      lineno,
+      col_offset,
+    );
+  }
+
+  late final _PyErr_SyntaxLocationObjectPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Void Function(ffi.Pointer<PyObject>, ffi.Int,
+              ffi.Int)>>('PyErr_SyntaxLocationObject');
+  late final _PyErr_SyntaxLocationObject = _PyErr_SyntaxLocationObjectPtr
+      .asFunction<void Function(ffi.Pointer<PyObject>, int, int)>();
+
+  void PyErr_RangedSyntaxLocationObject(
+    ffi.Pointer<PyObject> filename,
+    int lineno,
+    int col_offset,
+    int end_lineno,
+    int end_col_offset,
+  ) {
+    return _PyErr_RangedSyntaxLocationObject(
+      filename,
+      lineno,
+      col_offset,
+      end_lineno,
+      end_col_offset,
+    );
+  }
+
+  late final _PyErr_RangedSyntaxLocationObjectPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Void Function(ffi.Pointer<PyObject>, ffi.Int, ffi.Int, ffi.Int,
+              ffi.Int)>>('PyErr_RangedSyntaxLocationObject');
+  late final _PyErr_RangedSyntaxLocationObject =
+      _PyErr_RangedSyntaxLocationObjectPtr.asFunction<
+          void Function(ffi.Pointer<PyObject>, int, int, int, int)>();
+
+  ffi.Pointer<PyObject> PyErr_ProgramTextObject(
+    ffi.Pointer<PyObject> filename,
+    int lineno,
+  ) {
+    return _PyErr_ProgramTextObject(
+      filename,
+      lineno,
+    );
+  }
+
+  late final _PyErr_ProgramTextObjectPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<PyObject> Function(
+              ffi.Pointer<PyObject>, ffi.Int)>>('PyErr_ProgramTextObject');
+  late final _PyErr_ProgramTextObject = _PyErr_ProgramTextObjectPtr.asFunction<
+      ffi.Pointer<PyObject> Function(ffi.Pointer<PyObject>, int)>();
+
+  ffi.Pointer<PyObject> PyErr_ProgramDecodedTextObject(
+    ffi.Pointer<PyObject> filename,
+    int lineno,
+    ffi.Pointer<ffi.Char> encoding,
+  ) {
+    return _PyErr_ProgramDecodedTextObject(
+      filename,
+      lineno,
+      encoding,
+    );
+  }
+
+  late final _PyErr_ProgramDecodedTextObjectPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<PyObject> Function(ffi.Pointer<PyObject>, ffi.Int,
+              ffi.Pointer<ffi.Char>)>>('_PyErr_ProgramDecodedTextObject');
+  late final _PyErr_ProgramDecodedTextObject =
+      _PyErr_ProgramDecodedTextObjectPtr.asFunction<
+          ffi.Pointer<PyObject> Function(
+              ffi.Pointer<PyObject>, int, ffi.Pointer<ffi.Char>)>();
+
+  ffi.Pointer<PyObject> PyUnicodeTranslateError_Create(
+    ffi.Pointer<PyObject> object,
+    int start,
+    int end,
+    ffi.Pointer<ffi.Char> reason,
+  ) {
+    return _PyUnicodeTranslateError_Create(
+      object,
+      start,
+      end,
+      reason,
+    );
+  }
+
+  late final _PyUnicodeTranslateError_CreatePtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<PyObject> Function(
+              ffi.Pointer<PyObject>,
+              Py_ssize_t,
+              Py_ssize_t,
+              ffi.Pointer<ffi.Char>)>>('_PyUnicodeTranslateError_Create');
+  late final _PyUnicodeTranslateError_Create =
+      _PyUnicodeTranslateError_CreatePtr.asFunction<
+          ffi.Pointer<PyObject> Function(
+              ffi.Pointer<PyObject>, int, int, ffi.Pointer<ffi.Char>)>();
+
+  void PyErr_WriteUnraisableMsg(
+    ffi.Pointer<ffi.Char> err_msg,
+    ffi.Pointer<PyObject> obj,
+  ) {
+    return _PyErr_WriteUnraisableMsg(
+      err_msg,
+      obj,
+    );
+  }
+
+  late final _PyErr_WriteUnraisableMsgPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Void Function(ffi.Pointer<ffi.Char>,
+              ffi.Pointer<PyObject>)>>('_PyErr_WriteUnraisableMsg');
+  late final _PyErr_WriteUnraisableMsg =
+      _PyErr_WriteUnraisableMsgPtr.asFunction<
+          void Function(ffi.Pointer<ffi.Char>, ffi.Pointer<PyObject>)>();
+
+  void Py_FatalErrorFunc(
+    ffi.Pointer<ffi.Char> func,
+    ffi.Pointer<ffi.Char> message,
+  ) {
+    return _Py_FatalErrorFunc(
+      func,
+      message,
+    );
+  }
+
+  late final _Py_FatalErrorFuncPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Void Function(ffi.Pointer<ffi.Char>,
+              ffi.Pointer<ffi.Char>)>>('_Py_FatalErrorFunc');
+  late final _Py_FatalErrorFunc = _Py_FatalErrorFuncPtr.asFunction<
+      void Function(ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Char>)>();
+
+  void Py_FatalErrorFormat(
+    ffi.Pointer<ffi.Char> func,
+    ffi.Pointer<ffi.Char> format,
+  ) {
+    return _Py_FatalErrorFormat(
+      func,
+      format,
+    );
+  }
+
+  late final _Py_FatalErrorFormatPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Void Function(ffi.Pointer<ffi.Char>,
+              ffi.Pointer<ffi.Char>)>>('_Py_FatalErrorFormat');
+  late final _Py_FatalErrorFormat = _Py_FatalErrorFormatPtr.asFunction<
+      void Function(ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Char>)>();
+
+  ffi.Pointer<PyObject> PyErr_SetImportErrorWithNameFrom(
+    ffi.Pointer<PyObject> arg0,
+    ffi.Pointer<PyObject> arg1,
+    ffi.Pointer<PyObject> arg2,
+    ffi.Pointer<PyObject> arg3,
+  ) {
+    return _PyErr_SetImportErrorWithNameFrom(
+      arg0,
+      arg1,
+      arg2,
+      arg3,
+    );
+  }
+
+  late final _PyErr_SetImportErrorWithNameFromPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<PyObject> Function(
+              ffi.Pointer<PyObject>,
+              ffi.Pointer<PyObject>,
+              ffi.Pointer<PyObject>,
+              ffi.Pointer<PyObject>)>>('_PyErr_SetImportErrorWithNameFrom');
+  late final _PyErr_SetImportErrorWithNameFrom =
+      _PyErr_SetImportErrorWithNameFromPtr.asFunction<
+          ffi.Pointer<PyObject> Function(
+              ffi.Pointer<PyObject>,
+              ffi.Pointer<PyObject>,
+              ffi.Pointer<PyObject>,
+              ffi.Pointer<PyObject>)>();
+
+  ffi.Pointer<PyObject> PyLong_FromLong(
+    int arg0,
+  ) {
+    return _PyLong_FromLong(
+      arg0,
+    );
+  }
+
+  late final _PyLong_FromLongPtr =
+      _lookup<ffi.NativeFunction<ffi.Pointer<PyObject> Function(ffi.Long)>>(
+          'PyLong_FromLong');
+  late final _PyLong_FromLong =
+      _PyLong_FromLongPtr.asFunction<ffi.Pointer<PyObject> Function(int)>();
+
+  ffi.Pointer<PyObject> PyLong_FromUnsignedLong(
+    int arg0,
+  ) {
+    return _PyLong_FromUnsignedLong(
+      arg0,
+    );
+  }
+
+  late final _PyLong_FromUnsignedLongPtr = _lookup<
+          ffi.NativeFunction<ffi.Pointer<PyObject> Function(ffi.UnsignedLong)>>(
+      'PyLong_FromUnsignedLong');
+  late final _PyLong_FromUnsignedLong = _PyLong_FromUnsignedLongPtr.asFunction<
+      ffi.Pointer<PyObject> Function(int)>();
+
+  ffi.Pointer<PyObject> PyLong_FromSize_t(
+    int arg0,
+  ) {
+    return _PyLong_FromSize_t(
+      arg0,
+    );
+  }
+
+  late final _PyLong_FromSize_tPtr =
+      _lookup<ffi.NativeFunction<ffi.Pointer<PyObject> Function(ffi.Size)>>(
+          'PyLong_FromSize_t');
+  late final _PyLong_FromSize_t =
+      _PyLong_FromSize_tPtr.asFunction<ffi.Pointer<PyObject> Function(int)>();
+
+  ffi.Pointer<PyObject> PyLong_FromSsize_t(
+    int arg0,
+  ) {
+    return _PyLong_FromSsize_t(
+      arg0,
+    );
+  }
+
+  late final _PyLong_FromSsize_tPtr =
+      _lookup<ffi.NativeFunction<ffi.Pointer<PyObject> Function(Py_ssize_t)>>(
+          'PyLong_FromSsize_t');
+  late final _PyLong_FromSsize_t =
+      _PyLong_FromSsize_tPtr.asFunction<ffi.Pointer<PyObject> Function(int)>();
+
+  ffi.Pointer<PyObject> PyLong_FromDouble(
+    double arg0,
+  ) {
+    return _PyLong_FromDouble(
+      arg0,
+    );
+  }
+
+  late final _PyLong_FromDoublePtr =
+      _lookup<ffi.NativeFunction<ffi.Pointer<PyObject> Function(ffi.Double)>>(
+          'PyLong_FromDouble');
+  late final _PyLong_FromDouble = _PyLong_FromDoublePtr.asFunction<
+      ffi.Pointer<PyObject> Function(double)>();
+
+  int PyLong_AsLong(
+    ffi.Pointer<PyObject> arg0,
+  ) {
+    return _PyLong_AsLong(
+      arg0,
+    );
+  }
+
+  late final _PyLong_AsLongPtr =
+      _lookup<ffi.NativeFunction<ffi.Long Function(ffi.Pointer<PyObject>)>>(
+          'PyLong_AsLong');
+  late final _PyLong_AsLong =
+      _PyLong_AsLongPtr.asFunction<int Function(ffi.Pointer<PyObject>)>();
+
+  int PyLong_AsLongAndOverflow(
+    ffi.Pointer<PyObject> arg0,
+    ffi.Pointer<ffi.Int> arg1,
+  ) {
+    return _PyLong_AsLongAndOverflow(
+      arg0,
+      arg1,
+    );
+  }
+
+  late final _PyLong_AsLongAndOverflowPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Long Function(ffi.Pointer<PyObject>,
+              ffi.Pointer<ffi.Int>)>>('PyLong_AsLongAndOverflow');
+  late final _PyLong_AsLongAndOverflow = _PyLong_AsLongAndOverflowPtr
+      .asFunction<int Function(ffi.Pointer<PyObject>, ffi.Pointer<ffi.Int>)>();
+
+  int PyLong_AsSsize_t(
+    ffi.Pointer<PyObject> arg0,
+  ) {
+    return _PyLong_AsSsize_t(
+      arg0,
+    );
+  }
+
+  late final _PyLong_AsSsize_tPtr =
+      _lookup<ffi.NativeFunction<Py_ssize_t Function(ffi.Pointer<PyObject>)>>(
+          'PyLong_AsSsize_t');
+  late final _PyLong_AsSsize_t =
+      _PyLong_AsSsize_tPtr.asFunction<int Function(ffi.Pointer<PyObject>)>();
+
+  int PyLong_AsSize_t(
+    ffi.Pointer<PyObject> arg0,
+  ) {
+    return _PyLong_AsSize_t(
+      arg0,
+    );
+  }
+
+  late final _PyLong_AsSize_tPtr =
+      _lookup<ffi.NativeFunction<ffi.Size Function(ffi.Pointer<PyObject>)>>(
+          'PyLong_AsSize_t');
+  late final _PyLong_AsSize_t =
+      _PyLong_AsSize_tPtr.asFunction<int Function(ffi.Pointer<PyObject>)>();
+
+  int PyLong_AsUnsignedLong(
+    ffi.Pointer<PyObject> arg0,
+  ) {
+    return _PyLong_AsUnsignedLong(
+      arg0,
+    );
+  }
+
+  late final _PyLong_AsUnsignedLongPtr = _lookup<
+          ffi.NativeFunction<ffi.UnsignedLong Function(ffi.Pointer<PyObject>)>>(
+      'PyLong_AsUnsignedLong');
+  late final _PyLong_AsUnsignedLong = _PyLong_AsUnsignedLongPtr.asFunction<
+      int Function(ffi.Pointer<PyObject>)>();
+
+  int PyLong_AsUnsignedLongMask(
+    ffi.Pointer<PyObject> arg0,
+  ) {
+    return _PyLong_AsUnsignedLongMask(
+      arg0,
+    );
+  }
+
+  late final _PyLong_AsUnsignedLongMaskPtr = _lookup<
+          ffi.NativeFunction<ffi.UnsignedLong Function(ffi.Pointer<PyObject>)>>(
+      'PyLong_AsUnsignedLongMask');
+  late final _PyLong_AsUnsignedLongMask = _PyLong_AsUnsignedLongMaskPtr
+      .asFunction<int Function(ffi.Pointer<PyObject>)>();
+
+  ffi.Pointer<PyObject> PyLong_GetInfo() {
+    return _PyLong_GetInfo();
+  }
+
+  late final _PyLong_GetInfoPtr =
+      _lookup<ffi.NativeFunction<ffi.Pointer<PyObject> Function()>>(
+          'PyLong_GetInfo');
+  late final _PyLong_GetInfo =
+      _PyLong_GetInfoPtr.asFunction<ffi.Pointer<PyObject> Function()>();
+
+  double PyLong_AsDouble(
+    ffi.Pointer<PyObject> arg0,
+  ) {
+    return _PyLong_AsDouble(
+      arg0,
+    );
+  }
+
+  late final _PyLong_AsDoublePtr =
+      _lookup<ffi.NativeFunction<ffi.Double Function(ffi.Pointer<PyObject>)>>(
+          'PyLong_AsDouble');
+  late final _PyLong_AsDouble =
+      _PyLong_AsDoublePtr.asFunction<double Function(ffi.Pointer<PyObject>)>();
+
+  ffi.Pointer<PyObject> PyLong_FromVoidPtr(
+    ffi.Pointer<ffi.Void> arg0,
+  ) {
+    return _PyLong_FromVoidPtr(
+      arg0,
+    );
+  }
+
+  late final _PyLong_FromVoidPtrPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<PyObject> Function(
+              ffi.Pointer<ffi.Void>)>>('PyLong_FromVoidPtr');
+  late final _PyLong_FromVoidPtr = _PyLong_FromVoidPtrPtr.asFunction<
+      ffi.Pointer<PyObject> Function(ffi.Pointer<ffi.Void>)>();
+
+  ffi.Pointer<ffi.Void> PyLong_AsVoidPtr(
+    ffi.Pointer<PyObject> arg0,
+  ) {
+    return _PyLong_AsVoidPtr(
+      arg0,
+    );
+  }
+
+  late final _PyLong_AsVoidPtrPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<ffi.Void> Function(
+              ffi.Pointer<PyObject>)>>('PyLong_AsVoidPtr');
+  late final _PyLong_AsVoidPtr = _PyLong_AsVoidPtrPtr.asFunction<
+      ffi.Pointer<ffi.Void> Function(ffi.Pointer<PyObject>)>();
+
+  ffi.Pointer<PyObject> PyLong_FromLongLong(
+    int arg0,
+  ) {
+    return _PyLong_FromLongLong(
+      arg0,
+    );
+  }
+
+  late final _PyLong_FromLongLongPtr =
+      _lookup<ffi.NativeFunction<ffi.Pointer<PyObject> Function(ffi.LongLong)>>(
+          'PyLong_FromLongLong');
+  late final _PyLong_FromLongLong =
+      _PyLong_FromLongLongPtr.asFunction<ffi.Pointer<PyObject> Function(int)>();
+
+  ffi.Pointer<PyObject> PyLong_FromUnsignedLongLong(
+    int arg0,
+  ) {
+    return _PyLong_FromUnsignedLongLong(
+      arg0,
+    );
+  }
+
+  late final _PyLong_FromUnsignedLongLongPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<PyObject> Function(
+              ffi.UnsignedLongLong)>>('PyLong_FromUnsignedLongLong');
+  late final _PyLong_FromUnsignedLongLong = _PyLong_FromUnsignedLongLongPtr
+      .asFunction<ffi.Pointer<PyObject> Function(int)>();
+
+  int PyLong_AsLongLong(
+    ffi.Pointer<PyObject> arg0,
+  ) {
+    return _PyLong_AsLongLong(
+      arg0,
+    );
+  }
+
+  late final _PyLong_AsLongLongPtr =
+      _lookup<ffi.NativeFunction<ffi.LongLong Function(ffi.Pointer<PyObject>)>>(
+          'PyLong_AsLongLong');
+  late final _PyLong_AsLongLong =
+      _PyLong_AsLongLongPtr.asFunction<int Function(ffi.Pointer<PyObject>)>();
+
+  int PyLong_AsUnsignedLongLong(
+    ffi.Pointer<PyObject> arg0,
+  ) {
+    return _PyLong_AsUnsignedLongLong(
+      arg0,
+    );
+  }
+
+  late final _PyLong_AsUnsignedLongLongPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.UnsignedLongLong Function(
+              ffi.Pointer<PyObject>)>>('PyLong_AsUnsignedLongLong');
+  late final _PyLong_AsUnsignedLongLong = _PyLong_AsUnsignedLongLongPtr
+      .asFunction<int Function(ffi.Pointer<PyObject>)>();
+
+  int PyLong_AsUnsignedLongLongMask(
+    ffi.Pointer<PyObject> arg0,
+  ) {
+    return _PyLong_AsUnsignedLongLongMask(
+      arg0,
+    );
+  }
+
+  late final _PyLong_AsUnsignedLongLongMaskPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.UnsignedLongLong Function(
+              ffi.Pointer<PyObject>)>>('PyLong_AsUnsignedLongLongMask');
+  late final _PyLong_AsUnsignedLongLongMask = _PyLong_AsUnsignedLongLongMaskPtr
+      .asFunction<int Function(ffi.Pointer<PyObject>)>();
+
+  int PyLong_AsLongLongAndOverflow(
+    ffi.Pointer<PyObject> arg0,
+    ffi.Pointer<ffi.Int> arg1,
+  ) {
+    return _PyLong_AsLongLongAndOverflow(
+      arg0,
+      arg1,
+    );
+  }
+
+  late final _PyLong_AsLongLongAndOverflowPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.LongLong Function(ffi.Pointer<PyObject>,
+              ffi.Pointer<ffi.Int>)>>('PyLong_AsLongLongAndOverflow');
+  late final _PyLong_AsLongLongAndOverflow = _PyLong_AsLongLongAndOverflowPtr
+      .asFunction<int Function(ffi.Pointer<PyObject>, ffi.Pointer<ffi.Int>)>();
+
+  ffi.Pointer<PyObject> PyLong_FromString(
+    ffi.Pointer<ffi.Char> arg0,
+    ffi.Pointer<ffi.Pointer<ffi.Char>> arg1,
+    int arg2,
+  ) {
+    return _PyLong_FromString(
+      arg0,
+      arg1,
+      arg2,
+    );
+  }
+
+  late final _PyLong_FromStringPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<PyObject> Function(
+              ffi.Pointer<ffi.Char>,
+              ffi.Pointer<ffi.Pointer<ffi.Char>>,
+              ffi.Int)>>('PyLong_FromString');
+  late final _PyLong_FromString = _PyLong_FromStringPtr.asFunction<
+      ffi.Pointer<PyObject> Function(
+          ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Pointer<ffi.Char>>, int)>();
+
+  int PyOS_strtoul(
+    ffi.Pointer<ffi.Char> arg0,
+    ffi.Pointer<ffi.Pointer<ffi.Char>> arg1,
+    int arg2,
+  ) {
+    return _PyOS_strtoul(
+      arg0,
+      arg1,
+      arg2,
+    );
+  }
+
+  late final _PyOS_strtoulPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.UnsignedLong Function(ffi.Pointer<ffi.Char>,
+              ffi.Pointer<ffi.Pointer<ffi.Char>>, ffi.Int)>>('PyOS_strtoul');
+  late final _PyOS_strtoul = _PyOS_strtoulPtr.asFunction<
+      int Function(
+          ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Pointer<ffi.Char>>, int)>();
+
+  int PyOS_strtol(
+    ffi.Pointer<ffi.Char> arg0,
+    ffi.Pointer<ffi.Pointer<ffi.Char>> arg1,
+    int arg2,
+  ) {
+    return _PyOS_strtol(
+      arg0,
+      arg1,
+      arg2,
+    );
+  }
+
+  late final _PyOS_strtolPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Long Function(ffi.Pointer<ffi.Char>,
+              ffi.Pointer<ffi.Pointer<ffi.Char>>, ffi.Int)>>('PyOS_strtol');
+  late final _PyOS_strtol = _PyOS_strtolPtr.asFunction<
+      int Function(
+          ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Pointer<ffi.Char>>, int)>();
+
+  int PyLong_AsInt(
+    ffi.Pointer<PyObject> arg0,
+  ) {
+    return _PyLong_AsInt(
+      arg0,
+    );
+  }
+
+  late final _PyLong_AsIntPtr =
+      _lookup<ffi.NativeFunction<ffi.Int Function(ffi.Pointer<PyObject>)>>(
+          '_PyLong_AsInt');
+  late final _PyLong_AsInt =
+      _PyLong_AsIntPtr.asFunction<int Function(ffi.Pointer<PyObject>)>();
+
+  int PyLong_UnsignedShort_Converter(
+    ffi.Pointer<PyObject> arg0,
+    ffi.Pointer<ffi.Void> arg1,
+  ) {
+    return _PyLong_UnsignedShort_Converter(
+      arg0,
+      arg1,
+    );
+  }
+
+  late final _PyLong_UnsignedShort_ConverterPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int Function(ffi.Pointer<PyObject>,
+              ffi.Pointer<ffi.Void>)>>('_PyLong_UnsignedShort_Converter');
+  late final _PyLong_UnsignedShort_Converter =
+      _PyLong_UnsignedShort_ConverterPtr.asFunction<
+          int Function(ffi.Pointer<PyObject>, ffi.Pointer<ffi.Void>)>();
+
+  int PyLong_UnsignedInt_Converter(
+    ffi.Pointer<PyObject> arg0,
+    ffi.Pointer<ffi.Void> arg1,
+  ) {
+    return _PyLong_UnsignedInt_Converter(
+      arg0,
+      arg1,
+    );
+  }
+
+  late final _PyLong_UnsignedInt_ConverterPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int Function(ffi.Pointer<PyObject>,
+              ffi.Pointer<ffi.Void>)>>('_PyLong_UnsignedInt_Converter');
+  late final _PyLong_UnsignedInt_Converter = _PyLong_UnsignedInt_ConverterPtr
+      .asFunction<int Function(ffi.Pointer<PyObject>, ffi.Pointer<ffi.Void>)>();
+
+  int PyLong_UnsignedLong_Converter(
+    ffi.Pointer<PyObject> arg0,
+    ffi.Pointer<ffi.Void> arg1,
+  ) {
+    return _PyLong_UnsignedLong_Converter(
+      arg0,
+      arg1,
+    );
+  }
+
+  late final _PyLong_UnsignedLong_ConverterPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int Function(ffi.Pointer<PyObject>,
+              ffi.Pointer<ffi.Void>)>>('_PyLong_UnsignedLong_Converter');
+  late final _PyLong_UnsignedLong_Converter = _PyLong_UnsignedLong_ConverterPtr
+      .asFunction<int Function(ffi.Pointer<PyObject>, ffi.Pointer<ffi.Void>)>();
+
+  int PyLong_UnsignedLongLong_Converter(
+    ffi.Pointer<PyObject> arg0,
+    ffi.Pointer<ffi.Void> arg1,
+  ) {
+    return _PyLong_UnsignedLongLong_Converter(
+      arg0,
+      arg1,
+    );
+  }
+
+  late final _PyLong_UnsignedLongLong_ConverterPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int Function(ffi.Pointer<PyObject>,
+              ffi.Pointer<ffi.Void>)>>('_PyLong_UnsignedLongLong_Converter');
+  late final _PyLong_UnsignedLongLong_Converter =
+      _PyLong_UnsignedLongLong_ConverterPtr.asFunction<
+          int Function(ffi.Pointer<PyObject>, ffi.Pointer<ffi.Void>)>();
+
+  int PyLong_Size_t_Converter(
+    ffi.Pointer<PyObject> arg0,
+    ffi.Pointer<ffi.Void> arg1,
+  ) {
+    return _PyLong_Size_t_Converter(
+      arg0,
+      arg1,
+    );
+  }
+
+  late final _PyLong_Size_t_ConverterPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int Function(ffi.Pointer<PyObject>,
+              ffi.Pointer<ffi.Void>)>>('_PyLong_Size_t_Converter');
+  late final _PyLong_Size_t_Converter = _PyLong_Size_t_ConverterPtr.asFunction<
+      int Function(ffi.Pointer<PyObject>, ffi.Pointer<ffi.Void>)>();
+
+  double PyLong_Frexp(
+    ffi.Pointer<PyLongObject> a,
+    ffi.Pointer<Py_ssize_t> e,
+  ) {
+    return _PyLong_Frexp(
+      a,
+      e,
+    );
+  }
+
+  late final _PyLong_FrexpPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Double Function(ffi.Pointer<PyLongObject>,
+              ffi.Pointer<Py_ssize_t>)>>('_PyLong_Frexp');
+  late final _PyLong_Frexp = _PyLong_FrexpPtr.asFunction<
+      double Function(ffi.Pointer<PyLongObject>, ffi.Pointer<Py_ssize_t>)>();
+
+  ffi.Pointer<PyObject> PyLong_FromUnicodeObject(
+    ffi.Pointer<PyObject> u,
+    int base,
+  ) {
+    return _PyLong_FromUnicodeObject(
+      u,
+      base,
+    );
+  }
+
+  late final _PyLong_FromUnicodeObjectPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<PyObject> Function(
+              ffi.Pointer<PyObject>, ffi.Int)>>('PyLong_FromUnicodeObject');
+  late final _PyLong_FromUnicodeObject = _PyLong_FromUnicodeObjectPtr
+      .asFunction<ffi.Pointer<PyObject> Function(ffi.Pointer<PyObject>, int)>();
+
+  ffi.Pointer<PyObject> PyLong_FromBytes(
+    ffi.Pointer<ffi.Char> arg0,
+    int arg1,
+    int arg2,
+  ) {
+    return _PyLong_FromBytes(
+      arg0,
+      arg1,
+      arg2,
+    );
+  }
+
+  late final _PyLong_FromBytesPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<PyObject> Function(ffi.Pointer<ffi.Char>, Py_ssize_t,
+              ffi.Int)>>('_PyLong_FromBytes');
+  late final _PyLong_FromBytes = _PyLong_FromBytesPtr.asFunction<
+      ffi.Pointer<PyObject> Function(ffi.Pointer<ffi.Char>, int, int)>();
+
+  int PyLong_Sign(
+    ffi.Pointer<PyObject> v,
+  ) {
+    return _PyLong_Sign(
+      v,
+    );
+  }
+
+  late final _PyLong_SignPtr =
+      _lookup<ffi.NativeFunction<ffi.Int Function(ffi.Pointer<PyObject>)>>(
+          '_PyLong_Sign');
+  late final _PyLong_Sign =
+      _PyLong_SignPtr.asFunction<int Function(ffi.Pointer<PyObject>)>();
+
+  int PyLong_NumBits(
+    ffi.Pointer<PyObject> v,
+  ) {
+    return _PyLong_NumBits(
+      v,
+    );
+  }
+
+  late final _PyLong_NumBitsPtr =
+      _lookup<ffi.NativeFunction<ffi.Size Function(ffi.Pointer<PyObject>)>>(
+          '_PyLong_NumBits');
+  late final _PyLong_NumBits =
+      _PyLong_NumBitsPtr.asFunction<int Function(ffi.Pointer<PyObject>)>();
+
+  ffi.Pointer<PyObject> PyLong_DivmodNear(
+    ffi.Pointer<PyObject> arg0,
+    ffi.Pointer<PyObject> arg1,
+  ) {
+    return _PyLong_DivmodNear(
+      arg0,
+      arg1,
+    );
+  }
+
+  late final _PyLong_DivmodNearPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<PyObject> Function(ffi.Pointer<PyObject>,
+              ffi.Pointer<PyObject>)>>('_PyLong_DivmodNear');
+  late final _PyLong_DivmodNear = _PyLong_DivmodNearPtr.asFunction<
+      ffi.Pointer<PyObject> Function(
+          ffi.Pointer<PyObject>, ffi.Pointer<PyObject>)>();
+
+  ffi.Pointer<PyObject> PyLong_FromByteArray(
+    ffi.Pointer<ffi.UnsignedChar> bytes,
+    int n,
+    int little_endian,
+    int is_signed,
+  ) {
+    return _PyLong_FromByteArray(
+      bytes,
+      n,
+      little_endian,
+      is_signed,
+    );
+  }
+
+  late final _PyLong_FromByteArrayPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<PyObject> Function(ffi.Pointer<ffi.UnsignedChar>,
+              ffi.Size, ffi.Int, ffi.Int)>>('_PyLong_FromByteArray');
+  late final _PyLong_FromByteArray = _PyLong_FromByteArrayPtr.asFunction<
+      ffi.Pointer<PyObject> Function(
+          ffi.Pointer<ffi.UnsignedChar>, int, int, int)>();
+
+  int PyLong_AsByteArray(
+    ffi.Pointer<PyLongObject> v,
+    ffi.Pointer<ffi.UnsignedChar> bytes,
+    int n,
+    int little_endian,
+    int is_signed,
+  ) {
+    return _PyLong_AsByteArray(
+      v,
+      bytes,
+      n,
+      little_endian,
+      is_signed,
+    );
+  }
+
+  late final _PyLong_AsByteArrayPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int Function(
+              ffi.Pointer<PyLongObject>,
+              ffi.Pointer<ffi.UnsignedChar>,
+              ffi.Size,
+              ffi.Int,
+              ffi.Int)>>('_PyLong_AsByteArray');
+  late final _PyLong_AsByteArray = _PyLong_AsByteArrayPtr.asFunction<
+      int Function(ffi.Pointer<PyLongObject>, ffi.Pointer<ffi.UnsignedChar>,
+          int, int, int)>();
+
+  ffi.Pointer<PyObject> PyLong_Format(
+    ffi.Pointer<PyObject> obj,
+    int base,
+  ) {
+    return _PyLong_Format(
+      obj,
+      base,
+    );
+  }
+
+  late final _PyLong_FormatPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<PyObject> Function(
+              ffi.Pointer<PyObject>, ffi.Int)>>('_PyLong_Format');
+  late final _PyLong_Format = _PyLong_FormatPtr.asFunction<
+      ffi.Pointer<PyObject> Function(ffi.Pointer<PyObject>, int)>();
+
+  ffi.Pointer<PyObject> PyLong_GCD(
+    ffi.Pointer<PyObject> arg0,
+    ffi.Pointer<PyObject> arg1,
+  ) {
+    return _PyLong_GCD(
+      arg0,
+      arg1,
+    );
+  }
+
+  late final _PyLong_GCDPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<PyObject> Function(
+              ffi.Pointer<PyObject>, ffi.Pointer<PyObject>)>>('_PyLong_GCD');
+  late final _PyLong_GCD = _PyLong_GCDPtr.asFunction<
+      ffi.Pointer<PyObject> Function(
+          ffi.Pointer<PyObject>, ffi.Pointer<PyObject>)>();
+
+  ffi.Pointer<PyObject> PyLong_Rshift(
+    ffi.Pointer<PyObject> arg0,
+    int arg1,
+  ) {
+    return _PyLong_Rshift(
+      arg0,
+      arg1,
+    );
+  }
+
+  late final _PyLong_RshiftPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<PyObject> Function(
+              ffi.Pointer<PyObject>, ffi.Size)>>('_PyLong_Rshift');
+  late final _PyLong_Rshift = _PyLong_RshiftPtr.asFunction<
+      ffi.Pointer<PyObject> Function(ffi.Pointer<PyObject>, int)>();
+
+  ffi.Pointer<PyObject> PyLong_Lshift(
+    ffi.Pointer<PyObject> arg0,
+    int arg1,
+  ) {
+    return _PyLong_Lshift(
+      arg0,
+      arg1,
+    );
+  }
+
+  late final _PyLong_LshiftPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<PyObject> Function(
+              ffi.Pointer<PyObject>, ffi.Size)>>('_PyLong_Lshift');
+  late final _PyLong_Lshift = _PyLong_LshiftPtr.asFunction<
+      ffi.Pointer<PyObject> Function(ffi.Pointer<PyObject>, int)>();
+
+  int PyUnstable_Long_IsCompact(
+    ffi.Pointer<PyLongObject> op,
+  ) {
+    return _PyUnstable_Long_IsCompact(
+      op,
+    );
+  }
+
+  late final _PyUnstable_Long_IsCompactPtr =
+      _lookup<ffi.NativeFunction<ffi.Int Function(ffi.Pointer<PyLongObject>)>>(
+          'PyUnstable_Long_IsCompact');
+  late final _PyUnstable_Long_IsCompact = _PyUnstable_Long_IsCompactPtr
+      .asFunction<int Function(ffi.Pointer<PyLongObject>)>();
+
+  int PyUnstable_Long_CompactValue(
+    ffi.Pointer<PyLongObject> op,
+  ) {
+    return _PyUnstable_Long_CompactValue(
+      op,
+    );
+  }
+
+  late final _PyUnstable_Long_CompactValuePtr = _lookup<
+          ffi.NativeFunction<Py_ssize_t Function(ffi.Pointer<PyLongObject>)>>(
+      'PyUnstable_Long_CompactValue');
+  late final _PyUnstable_Long_CompactValue = _PyUnstable_Long_CompactValuePtr
+      .asFunction<int Function(ffi.Pointer<PyLongObject>)>();
+
+  ffi.Pointer<PyLongObject> PyLong_New(
+    int arg0,
+  ) {
+    return _PyLong_New(
+      arg0,
+    );
+  }
+
+  late final _PyLong_NewPtr = _lookup<
+          ffi.NativeFunction<ffi.Pointer<PyLongObject> Function(Py_ssize_t)>>(
+      '_PyLong_New');
+  late final _PyLong_New =
+      _PyLong_NewPtr.asFunction<ffi.Pointer<PyLongObject> Function(int)>();
+
+  ffi.Pointer<PyObject> PyLong_Copy(
+    ffi.Pointer<PyLongObject> src,
+  ) {
+    return _PyLong_Copy(
+      src,
+    );
+  }
+
+  late final _PyLong_CopyPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<PyObject> Function(
+              ffi.Pointer<PyLongObject>)>>('_PyLong_Copy');
+  late final _PyLong_Copy = _PyLong_CopyPtr.asFunction<
+      ffi.Pointer<PyObject> Function(ffi.Pointer<PyLongObject>)>();
+
+  ffi.Pointer<PyLongObject> PyLong_FromDigits(
+    int negative,
+    int digit_count,
+    ffi.Pointer<digit> digits,
+  ) {
+    return _PyLong_FromDigits(
+      negative,
+      digit_count,
+      digits,
+    );
+  }
+
+  late final _PyLong_FromDigitsPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<PyLongObject> Function(
+              ffi.Int, Py_ssize_t, ffi.Pointer<digit>)>>('_PyLong_FromDigits');
+  late final _PyLong_FromDigits = _PyLong_FromDigitsPtr.asFunction<
+      ffi.Pointer<PyLongObject> Function(int, int, ffi.Pointer<digit>)>();
+
+  late final ffi.Pointer<PyLongObject> _Py_FalseStruct =
+      _lookup<PyLongObject>('_Py_FalseStruct');
+
+  PyLongObject get Py_FalseStruct => _Py_FalseStruct.ref;
+
+  late final ffi.Pointer<PyLongObject> _Py_TrueStruct =
+      _lookup<PyLongObject>('_Py_TrueStruct');
+
+  PyLongObject get Py_TrueStruct => _Py_TrueStruct.ref;
+
+  int Py_IsTrue(
+    ffi.Pointer<PyObject> x,
+  ) {
+    return _Py_IsTrue(
+      x,
+    );
+  }
+
+  late final _Py_IsTruePtr =
+      _lookup<ffi.NativeFunction<ffi.Int Function(ffi.Pointer<PyObject>)>>(
+          'Py_IsTrue');
+  late final _Py_IsTrue =
+      _Py_IsTruePtr.asFunction<int Function(ffi.Pointer<PyObject>)>();
+
+  int Py_IsFalse(
+    ffi.Pointer<PyObject> x,
+  ) {
+    return _Py_IsFalse(
+      x,
+    );
+  }
+
+  late final _Py_IsFalsePtr =
+      _lookup<ffi.NativeFunction<ffi.Int Function(ffi.Pointer<PyObject>)>>(
+          'Py_IsFalse');
+  late final _Py_IsFalse =
+      _Py_IsFalsePtr.asFunction<int Function(ffi.Pointer<PyObject>)>();
+
+  ffi.Pointer<PyObject> PyBool_FromLong(
+    int arg0,
+  ) {
+    return _PyBool_FromLong(
+      arg0,
+    );
+  }
+
+  late final _PyBool_FromLongPtr =
+      _lookup<ffi.NativeFunction<ffi.Pointer<PyObject> Function(ffi.Long)>>(
+          'PyBool_FromLong');
+  late final _PyBool_FromLong =
+      _PyBool_FromLongPtr.asFunction<ffi.Pointer<PyObject> Function(int)>();
+
+  late final ffi.Pointer<PyTypeObject> _PyFloat_Type =
+      _lookup<PyTypeObject>('PyFloat_Type');
+
+  PyTypeObject get PyFloat_Type => _PyFloat_Type.ref;
+
+  double PyFloat_GetMax() {
+    return _PyFloat_GetMax();
+  }
+
+  late final _PyFloat_GetMaxPtr =
+      _lookup<ffi.NativeFunction<ffi.Double Function()>>('PyFloat_GetMax');
+  late final _PyFloat_GetMax =
+      _PyFloat_GetMaxPtr.asFunction<double Function()>();
+
+  double PyFloat_GetMin() {
+    return _PyFloat_GetMin();
+  }
+
+  late final _PyFloat_GetMinPtr =
+      _lookup<ffi.NativeFunction<ffi.Double Function()>>('PyFloat_GetMin');
+  late final _PyFloat_GetMin =
+      _PyFloat_GetMinPtr.asFunction<double Function()>();
+
+  ffi.Pointer<PyObject> PyFloat_GetInfo() {
+    return _PyFloat_GetInfo();
+  }
+
+  late final _PyFloat_GetInfoPtr =
+      _lookup<ffi.NativeFunction<ffi.Pointer<PyObject> Function()>>(
+          'PyFloat_GetInfo');
+  late final _PyFloat_GetInfo =
+      _PyFloat_GetInfoPtr.asFunction<ffi.Pointer<PyObject> Function()>();
+
+  ffi.Pointer<PyObject> PyFloat_FromString(
+    ffi.Pointer<PyObject> arg0,
+  ) {
+    return _PyFloat_FromString(
+      arg0,
+    );
+  }
+
+  late final _PyFloat_FromStringPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<PyObject> Function(
+              ffi.Pointer<PyObject>)>>('PyFloat_FromString');
+  late final _PyFloat_FromString = _PyFloat_FromStringPtr.asFunction<
+      ffi.Pointer<PyObject> Function(ffi.Pointer<PyObject>)>();
+
+  ffi.Pointer<PyObject> PyFloat_FromDouble(
+    double arg0,
+  ) {
+    return _PyFloat_FromDouble(
+      arg0,
+    );
+  }
+
+  late final _PyFloat_FromDoublePtr =
+      _lookup<ffi.NativeFunction<ffi.Pointer<PyObject> Function(ffi.Double)>>(
+          'PyFloat_FromDouble');
+  late final _PyFloat_FromDouble = _PyFloat_FromDoublePtr.asFunction<
+      ffi.Pointer<PyObject> Function(double)>();
+
+  double PyFloat_AsDouble(
+    ffi.Pointer<PyObject> arg0,
+  ) {
+    return _PyFloat_AsDouble(
+      arg0,
+    );
+  }
+
+  late final _PyFloat_AsDoublePtr =
+      _lookup<ffi.NativeFunction<ffi.Double Function(ffi.Pointer<PyObject>)>>(
+          'PyFloat_AsDouble');
+  late final _PyFloat_AsDouble =
+      _PyFloat_AsDoublePtr.asFunction<double Function(ffi.Pointer<PyObject>)>();
+
+  int PyFloat_Pack2(
+    double x,
+    ffi.Pointer<ffi.Char> p,
+    int le,
+  ) {
+    return _PyFloat_Pack2(
+      x,
+      p,
+      le,
+    );
+  }
+
+  late final _PyFloat_Pack2Ptr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int Function(
+              ffi.Double, ffi.Pointer<ffi.Char>, ffi.Int)>>('PyFloat_Pack2');
+  late final _PyFloat_Pack2 = _PyFloat_Pack2Ptr.asFunction<
+      int Function(double, ffi.Pointer<ffi.Char>, int)>();
+
+  int PyFloat_Pack4(
+    double x,
+    ffi.Pointer<ffi.Char> p,
+    int le,
+  ) {
+    return _PyFloat_Pack4(
+      x,
+      p,
+      le,
+    );
+  }
+
+  late final _PyFloat_Pack4Ptr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int Function(
+              ffi.Double, ffi.Pointer<ffi.Char>, ffi.Int)>>('PyFloat_Pack4');
+  late final _PyFloat_Pack4 = _PyFloat_Pack4Ptr.asFunction<
+      int Function(double, ffi.Pointer<ffi.Char>, int)>();
+
+  int PyFloat_Pack8(
+    double x,
+    ffi.Pointer<ffi.Char> p,
+    int le,
+  ) {
+    return _PyFloat_Pack8(
+      x,
+      p,
+      le,
+    );
+  }
+
+  late final _PyFloat_Pack8Ptr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int Function(
+              ffi.Double, ffi.Pointer<ffi.Char>, ffi.Int)>>('PyFloat_Pack8');
+  late final _PyFloat_Pack8 = _PyFloat_Pack8Ptr.asFunction<
+      int Function(double, ffi.Pointer<ffi.Char>, int)>();
+
+  double PyFloat_Unpack2(
+    ffi.Pointer<ffi.Char> p,
+    int le,
+  ) {
+    return _PyFloat_Unpack2(
+      p,
+      le,
+    );
+  }
+
+  late final _PyFloat_Unpack2Ptr = _lookup<
+          ffi
+          .NativeFunction<ffi.Double Function(ffi.Pointer<ffi.Char>, ffi.Int)>>(
+      'PyFloat_Unpack2');
+  late final _PyFloat_Unpack2 = _PyFloat_Unpack2Ptr.asFunction<
+      double Function(ffi.Pointer<ffi.Char>, int)>();
+
+  double PyFloat_Unpack4(
+    ffi.Pointer<ffi.Char> p,
+    int le,
+  ) {
+    return _PyFloat_Unpack4(
+      p,
+      le,
+    );
+  }
+
+  late final _PyFloat_Unpack4Ptr = _lookup<
+          ffi
+          .NativeFunction<ffi.Double Function(ffi.Pointer<ffi.Char>, ffi.Int)>>(
+      'PyFloat_Unpack4');
+  late final _PyFloat_Unpack4 = _PyFloat_Unpack4Ptr.asFunction<
+      double Function(ffi.Pointer<ffi.Char>, int)>();
+
+  double PyFloat_Unpack8(
+    ffi.Pointer<ffi.Char> p,
+    int le,
+  ) {
+    return _PyFloat_Unpack8(
+      p,
+      le,
+    );
+  }
+
+  late final _PyFloat_Unpack8Ptr = _lookup<
+          ffi
+          .NativeFunction<ffi.Double Function(ffi.Pointer<ffi.Char>, ffi.Int)>>(
+      'PyFloat_Unpack8');
+  late final _PyFloat_Unpack8 = _PyFloat_Unpack8Ptr.asFunction<
+      double Function(ffi.Pointer<ffi.Char>, int)>();
+
+  late final ffi.Pointer<PyTypeObject> _PyComplex_Type =
+      _lookup<PyTypeObject>('PyComplex_Type');
+
+  PyTypeObject get PyComplex_Type => _PyComplex_Type.ref;
+
+  ffi.Pointer<PyObject> PyComplex_FromDoubles(
+    double real,
+    double imag,
+  ) {
+    return _PyComplex_FromDoubles(
+      real,
+      imag,
+    );
+  }
+
+  late final _PyComplex_FromDoublesPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<PyObject> Function(
+              ffi.Double, ffi.Double)>>('PyComplex_FromDoubles');
+  late final _PyComplex_FromDoubles = _PyComplex_FromDoublesPtr.asFunction<
+      ffi.Pointer<PyObject> Function(double, double)>();
+
+  double PyComplex_RealAsDouble(
+    ffi.Pointer<PyObject> op,
+  ) {
+    return _PyComplex_RealAsDouble(
+      op,
+    );
+  }
+
+  late final _PyComplex_RealAsDoublePtr =
+      _lookup<ffi.NativeFunction<ffi.Double Function(ffi.Pointer<PyObject>)>>(
+          'PyComplex_RealAsDouble');
+  late final _PyComplex_RealAsDouble = _PyComplex_RealAsDoublePtr.asFunction<
+      double Function(ffi.Pointer<PyObject>)>();
+
+  double PyComplex_ImagAsDouble(
+    ffi.Pointer<PyObject> op,
+  ) {
+    return _PyComplex_ImagAsDouble(
+      op,
+    );
+  }
+
+  late final _PyComplex_ImagAsDoublePtr =
+      _lookup<ffi.NativeFunction<ffi.Double Function(ffi.Pointer<PyObject>)>>(
+          'PyComplex_ImagAsDouble');
+  late final _PyComplex_ImagAsDouble = _PyComplex_ImagAsDoublePtr.asFunction<
+      double Function(ffi.Pointer<PyObject>)>();
+
+  Py_complex Py_c_sum(
+    Py_complex arg0,
+    Py_complex arg1,
+  ) {
+    return _Py_c_sum(
+      arg0,
+      arg1,
+    );
+  }
+
+  late final _Py_c_sumPtr =
+      _lookup<ffi.NativeFunction<Py_complex Function(Py_complex, Py_complex)>>(
+          '_Py_c_sum');
+  late final _Py_c_sum =
+      _Py_c_sumPtr.asFunction<Py_complex Function(Py_complex, Py_complex)>();
+
+  Py_complex Py_c_diff(
+    Py_complex arg0,
+    Py_complex arg1,
+  ) {
+    return _Py_c_diff(
+      arg0,
+      arg1,
+    );
+  }
+
+  late final _Py_c_diffPtr =
+      _lookup<ffi.NativeFunction<Py_complex Function(Py_complex, Py_complex)>>(
+          '_Py_c_diff');
+  late final _Py_c_diff =
+      _Py_c_diffPtr.asFunction<Py_complex Function(Py_complex, Py_complex)>();
+
+  Py_complex Py_c_neg(
+    Py_complex arg0,
+  ) {
+    return _Py_c_neg(
+      arg0,
+    );
+  }
+
+  late final _Py_c_negPtr =
+      _lookup<ffi.NativeFunction<Py_complex Function(Py_complex)>>('_Py_c_neg');
+  late final _Py_c_neg =
+      _Py_c_negPtr.asFunction<Py_complex Function(Py_complex)>();
+
+  Py_complex Py_c_prod(
+    Py_complex arg0,
+    Py_complex arg1,
+  ) {
+    return _Py_c_prod(
+      arg0,
+      arg1,
+    );
+  }
+
+  late final _Py_c_prodPtr =
+      _lookup<ffi.NativeFunction<Py_complex Function(Py_complex, Py_complex)>>(
+          '_Py_c_prod');
+  late final _Py_c_prod =
+      _Py_c_prodPtr.asFunction<Py_complex Function(Py_complex, Py_complex)>();
+
+  Py_complex Py_c_quot(
+    Py_complex arg0,
+    Py_complex arg1,
+  ) {
+    return _Py_c_quot(
+      arg0,
+      arg1,
+    );
+  }
+
+  late final _Py_c_quotPtr =
+      _lookup<ffi.NativeFunction<Py_complex Function(Py_complex, Py_complex)>>(
+          '_Py_c_quot');
+  late final _Py_c_quot =
+      _Py_c_quotPtr.asFunction<Py_complex Function(Py_complex, Py_complex)>();
+
+  Py_complex Py_c_pow(
+    Py_complex arg0,
+    Py_complex arg1,
+  ) {
+    return _Py_c_pow(
+      arg0,
+      arg1,
+    );
+  }
+
+  late final _Py_c_powPtr =
+      _lookup<ffi.NativeFunction<Py_complex Function(Py_complex, Py_complex)>>(
+          '_Py_c_pow');
+  late final _Py_c_pow =
+      _Py_c_powPtr.asFunction<Py_complex Function(Py_complex, Py_complex)>();
+
+  double Py_c_abs(
+    Py_complex arg0,
+  ) {
+    return _Py_c_abs(
+      arg0,
+    );
+  }
+
+  late final _Py_c_absPtr =
+      _lookup<ffi.NativeFunction<ffi.Double Function(Py_complex)>>('_Py_c_abs');
+  late final _Py_c_abs = _Py_c_absPtr.asFunction<double Function(Py_complex)>();
+
+  ffi.Pointer<PyObject> PyComplex_FromCComplex(
+    Py_complex arg0,
+  ) {
+    return _PyComplex_FromCComplex(
+      arg0,
+    );
+  }
+
+  late final _PyComplex_FromCComplexPtr =
+      _lookup<ffi.NativeFunction<ffi.Pointer<PyObject> Function(Py_complex)>>(
+          'PyComplex_FromCComplex');
+  late final _PyComplex_FromCComplex = _PyComplex_FromCComplexPtr.asFunction<
+      ffi.Pointer<PyObject> Function(Py_complex)>();
+
+  Py_complex PyComplex_AsCComplex(
+    ffi.Pointer<PyObject> op,
+  ) {
+    return _PyComplex_AsCComplex(
+      op,
+    );
+  }
+
+  late final _PyComplex_AsCComplexPtr =
+      _lookup<ffi.NativeFunction<Py_complex Function(ffi.Pointer<PyObject>)>>(
+          'PyComplex_AsCComplex');
+  late final _PyComplex_AsCComplex = _PyComplex_AsCComplexPtr.asFunction<
+      Py_complex Function(ffi.Pointer<PyObject>)>();
+
+  late final ffi.Pointer<PyTypeObject> _PyRange_Type =
+      _lookup<PyTypeObject>('PyRange_Type');
+
+  PyTypeObject get PyRange_Type => _PyRange_Type.ref;
+
+  late final ffi.Pointer<PyTypeObject> _PyRangeIter_Type =
+      _lookup<PyTypeObject>('PyRangeIter_Type');
+
+  PyTypeObject get PyRangeIter_Type => _PyRangeIter_Type.ref;
+
+  late final ffi.Pointer<PyTypeObject> _PyLongRangeIter_Type =
+      _lookup<PyTypeObject>('PyLongRangeIter_Type');
+
+  PyTypeObject get PyLongRangeIter_Type => _PyLongRangeIter_Type.ref;
+
+  late final ffi.Pointer<PyTypeObject> _PyMemoryView_Type =
+      _lookup<PyTypeObject>('PyMemoryView_Type');
+
+  PyTypeObject get PyMemoryView_Type => _PyMemoryView_Type.ref;
+
+  ffi.Pointer<PyObject> PyMemoryView_FromObject(
+    ffi.Pointer<PyObject> base,
+  ) {
+    return _PyMemoryView_FromObject(
+      base,
+    );
+  }
+
+  late final _PyMemoryView_FromObjectPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<PyObject> Function(
+              ffi.Pointer<PyObject>)>>('PyMemoryView_FromObject');
+  late final _PyMemoryView_FromObject = _PyMemoryView_FromObjectPtr.asFunction<
+      ffi.Pointer<PyObject> Function(ffi.Pointer<PyObject>)>();
+
+  ffi.Pointer<PyObject> PyMemoryView_FromMemory(
+    ffi.Pointer<ffi.Char> mem,
+    int size,
+    int flags,
+  ) {
+    return _PyMemoryView_FromMemory(
+      mem,
+      size,
+      flags,
+    );
+  }
+
+  late final _PyMemoryView_FromMemoryPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<PyObject> Function(ffi.Pointer<ffi.Char>, Py_ssize_t,
+              ffi.Int)>>('PyMemoryView_FromMemory');
+  late final _PyMemoryView_FromMemory = _PyMemoryView_FromMemoryPtr.asFunction<
+      ffi.Pointer<PyObject> Function(ffi.Pointer<ffi.Char>, int, int)>();
+
+  ffi.Pointer<PyObject> PyMemoryView_FromBuffer(
+    ffi.Pointer<Py_buffer> info,
+  ) {
+    return _PyMemoryView_FromBuffer(
+      info,
+    );
+  }
+
+  late final _PyMemoryView_FromBufferPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<PyObject> Function(
+              ffi.Pointer<Py_buffer>)>>('PyMemoryView_FromBuffer');
+  late final _PyMemoryView_FromBuffer = _PyMemoryView_FromBufferPtr.asFunction<
+      ffi.Pointer<PyObject> Function(ffi.Pointer<Py_buffer>)>();
+
+  ffi.Pointer<PyObject> PyMemoryView_GetContiguous(
+    ffi.Pointer<PyObject> base,
+    int buffertype,
+    int order,
+  ) {
+    return _PyMemoryView_GetContiguous(
+      base,
+      buffertype,
+      order,
+    );
+  }
+
+  late final _PyMemoryView_GetContiguousPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<PyObject> Function(ffi.Pointer<PyObject>, ffi.Int,
+              ffi.Char)>>('PyMemoryView_GetContiguous');
+  late final _PyMemoryView_GetContiguous =
+      _PyMemoryView_GetContiguousPtr.asFunction<
+          ffi.Pointer<PyObject> Function(ffi.Pointer<PyObject>, int, int)>();
+
+  late final ffi.Pointer<PyTypeObject> _PyManagedBuffer_Type =
+      _lookup<PyTypeObject>('_PyManagedBuffer_Type');
+
+  PyTypeObject get PyManagedBuffer_Type => _PyManagedBuffer_Type.ref;
+
+  late final ffi.Pointer<PyTypeObject> _PyTuple_Type =
+      _lookup<PyTypeObject>('PyTuple_Type');
+
+  PyTypeObject get PyTuple_Type => _PyTuple_Type.ref;
+
+  late final ffi.Pointer<PyTypeObject> _PyTupleIter_Type =
+      _lookup<PyTypeObject>('PyTupleIter_Type');
+
+  PyTypeObject get PyTupleIter_Type => _PyTupleIter_Type.ref;
+
+  ffi.Pointer<PyObject> PyTuple_New(
+    int size,
+  ) {
+    return _PyTuple_New(
+      size,
+    );
+  }
+
+  late final _PyTuple_NewPtr =
+      _lookup<ffi.NativeFunction<ffi.Pointer<PyObject> Function(Py_ssize_t)>>(
+          'PyTuple_New');
+  late final _PyTuple_New =
+      _PyTuple_NewPtr.asFunction<ffi.Pointer<PyObject> Function(int)>();
+
+  int PyTuple_Size(
+    ffi.Pointer<PyObject> arg0,
+  ) {
+    return _PyTuple_Size(
+      arg0,
+    );
+  }
+
+  late final _PyTuple_SizePtr =
+      _lookup<ffi.NativeFunction<Py_ssize_t Function(ffi.Pointer<PyObject>)>>(
+          'PyTuple_Size');
+  late final _PyTuple_Size =
+      _PyTuple_SizePtr.asFunction<int Function(ffi.Pointer<PyObject>)>();
+
+  ffi.Pointer<PyObject> PyTuple_GetItem(
+    ffi.Pointer<PyObject> arg0,
+    int arg1,
+  ) {
+    return _PyTuple_GetItem(
+      arg0,
+      arg1,
+    );
+  }
+
+  late final _PyTuple_GetItemPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<PyObject> Function(
+              ffi.Pointer<PyObject>, Py_ssize_t)>>('PyTuple_GetItem');
+  late final _PyTuple_GetItem = _PyTuple_GetItemPtr.asFunction<
+      ffi.Pointer<PyObject> Function(ffi.Pointer<PyObject>, int)>();
+
+  int PyTuple_SetItem(
+    ffi.Pointer<PyObject> arg0,
+    int arg1,
+    ffi.Pointer<PyObject> arg2,
+  ) {
+    return _PyTuple_SetItem(
+      arg0,
+      arg1,
+      arg2,
+    );
+  }
+
+  late final _PyTuple_SetItemPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int Function(ffi.Pointer<PyObject>, Py_ssize_t,
+              ffi.Pointer<PyObject>)>>('PyTuple_SetItem');
+  late final _PyTuple_SetItem = _PyTuple_SetItemPtr.asFunction<
+      int Function(ffi.Pointer<PyObject>, int, ffi.Pointer<PyObject>)>();
+
+  ffi.Pointer<PyObject> PyTuple_GetSlice(
+    ffi.Pointer<PyObject> arg0,
+    int arg1,
+    int arg2,
+  ) {
+    return _PyTuple_GetSlice(
+      arg0,
+      arg1,
+      arg2,
+    );
+  }
+
+  late final _PyTuple_GetSlicePtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<PyObject> Function(ffi.Pointer<PyObject>, Py_ssize_t,
+              Py_ssize_t)>>('PyTuple_GetSlice');
+  late final _PyTuple_GetSlice = _PyTuple_GetSlicePtr.asFunction<
+      ffi.Pointer<PyObject> Function(ffi.Pointer<PyObject>, int, int)>();
+
+  ffi.Pointer<PyObject> PyTuple_Pack(
+    int arg0,
+  ) {
+    return _PyTuple_Pack(
+      arg0,
+    );
+  }
+
+  late final _PyTuple_PackPtr =
+      _lookup<ffi.NativeFunction<ffi.Pointer<PyObject> Function(Py_ssize_t)>>(
+          'PyTuple_Pack');
+  late final _PyTuple_Pack =
+      _PyTuple_PackPtr.asFunction<ffi.Pointer<PyObject> Function(int)>();
+
+  int PyTuple_Resize(
+    ffi.Pointer<ffi.Pointer<PyObject>> arg0,
+    int arg1,
+  ) {
+    return _PyTuple_Resize(
+      arg0,
+      arg1,
+    );
+  }
+
+  late final _PyTuple_ResizePtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int Function(ffi.Pointer<ffi.Pointer<PyObject>>,
+              Py_ssize_t)>>('_PyTuple_Resize');
+  late final _PyTuple_Resize = _PyTuple_ResizePtr.asFunction<
+      int Function(ffi.Pointer<ffi.Pointer<PyObject>>, int)>();
+
+  void PyTuple_MaybeUntrack(
+    ffi.Pointer<PyObject> arg0,
+  ) {
+    return _PyTuple_MaybeUntrack(
+      arg0,
+    );
+  }
+
+  late final _PyTuple_MaybeUntrackPtr =
+      _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Pointer<PyObject>)>>(
+          '_PyTuple_MaybeUntrack');
+  late final _PyTuple_MaybeUntrack = _PyTuple_MaybeUntrackPtr.asFunction<
+      void Function(ffi.Pointer<PyObject>)>();
+
+  void PyTuple_DebugMallocStats(
+    ffi.Pointer<FILE> out,
+  ) {
+    return _PyTuple_DebugMallocStats(
+      out,
+    );
+  }
+
+  late final _PyTuple_DebugMallocStatsPtr =
+      _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Pointer<FILE>)>>(
+          '_PyTuple_DebugMallocStats');
+  late final _PyTuple_DebugMallocStats = _PyTuple_DebugMallocStatsPtr
+      .asFunction<void Function(ffi.Pointer<FILE>)>();
+
+  late final ffi.Pointer<PyTypeObject> _PyList_Type =
+      _lookup<PyTypeObject>('PyList_Type');
+
+  PyTypeObject get PyList_Type => _PyList_Type.ref;
+
+  late final ffi.Pointer<PyTypeObject> _PyListIter_Type =
+      _lookup<PyTypeObject>('PyListIter_Type');
+
+  PyTypeObject get PyListIter_Type => _PyListIter_Type.ref;
+
+  late final ffi.Pointer<PyTypeObject> _PyListRevIter_Type =
+      _lookup<PyTypeObject>('PyListRevIter_Type');
+
+  PyTypeObject get PyListRevIter_Type => _PyListRevIter_Type.ref;
+
+  ffi.Pointer<PyObject> PyList_New(
+    int size,
+  ) {
+    return _PyList_New(
+      size,
+    );
+  }
+
+  late final _PyList_NewPtr =
+      _lookup<ffi.NativeFunction<ffi.Pointer<PyObject> Function(Py_ssize_t)>>(
+          'PyList_New');
+  late final _PyList_New =
+      _PyList_NewPtr.asFunction<ffi.Pointer<PyObject> Function(int)>();
+
+  int PyList_Size(
+    ffi.Pointer<PyObject> arg0,
+  ) {
+    return _PyList_Size(
+      arg0,
+    );
+  }
+
+  late final _PyList_SizePtr =
+      _lookup<ffi.NativeFunction<Py_ssize_t Function(ffi.Pointer<PyObject>)>>(
+          'PyList_Size');
+  late final _PyList_Size =
+      _PyList_SizePtr.asFunction<int Function(ffi.Pointer<PyObject>)>();
+
+  ffi.Pointer<PyObject> PyList_GetItem(
+    ffi.Pointer<PyObject> arg0,
+    int arg1,
+  ) {
+    return _PyList_GetItem(
+      arg0,
+      arg1,
+    );
+  }
+
+  late final _PyList_GetItemPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<PyObject> Function(
+              ffi.Pointer<PyObject>, Py_ssize_t)>>('PyList_GetItem');
+  late final _PyList_GetItem = _PyList_GetItemPtr.asFunction<
+      ffi.Pointer<PyObject> Function(ffi.Pointer<PyObject>, int)>();
+
+  int PyList_SetItem(
+    ffi.Pointer<PyObject> arg0,
+    int arg1,
+    ffi.Pointer<PyObject> arg2,
+  ) {
+    return _PyList_SetItem(
+      arg0,
+      arg1,
+      arg2,
+    );
+  }
+
+  late final _PyList_SetItemPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int Function(ffi.Pointer<PyObject>, Py_ssize_t,
+              ffi.Pointer<PyObject>)>>('PyList_SetItem');
+  late final _PyList_SetItem = _PyList_SetItemPtr.asFunction<
+      int Function(ffi.Pointer<PyObject>, int, ffi.Pointer<PyObject>)>();
+
+  int PyList_Insert(
+    ffi.Pointer<PyObject> arg0,
+    int arg1,
+    ffi.Pointer<PyObject> arg2,
+  ) {
+    return _PyList_Insert(
+      arg0,
+      arg1,
+      arg2,
+    );
+  }
+
+  late final _PyList_InsertPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int Function(ffi.Pointer<PyObject>, Py_ssize_t,
+              ffi.Pointer<PyObject>)>>('PyList_Insert');
+  late final _PyList_Insert = _PyList_InsertPtr.asFunction<
+      int Function(ffi.Pointer<PyObject>, int, ffi.Pointer<PyObject>)>();
+
+  int PyList_Append(
+    ffi.Pointer<PyObject> arg0,
+    ffi.Pointer<PyObject> arg1,
+  ) {
+    return _PyList_Append(
+      arg0,
+      arg1,
+    );
+  }
+
+  late final _PyList_AppendPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int Function(
+              ffi.Pointer<PyObject>, ffi.Pointer<PyObject>)>>('PyList_Append');
+  late final _PyList_Append = _PyList_AppendPtr.asFunction<
+      int Function(ffi.Pointer<PyObject>, ffi.Pointer<PyObject>)>();
+
+  ffi.Pointer<PyObject> PyList_GetSlice(
+    ffi.Pointer<PyObject> arg0,
+    int arg1,
+    int arg2,
+  ) {
+    return _PyList_GetSlice(
+      arg0,
+      arg1,
+      arg2,
+    );
+  }
+
+  late final _PyList_GetSlicePtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<PyObject> Function(ffi.Pointer<PyObject>, Py_ssize_t,
+              Py_ssize_t)>>('PyList_GetSlice');
+  late final _PyList_GetSlice = _PyList_GetSlicePtr.asFunction<
+      ffi.Pointer<PyObject> Function(ffi.Pointer<PyObject>, int, int)>();
+
+  int PyList_SetSlice(
+    ffi.Pointer<PyObject> arg0,
+    int arg1,
+    int arg2,
+    ffi.Pointer<PyObject> arg3,
+  ) {
+    return _PyList_SetSlice(
+      arg0,
+      arg1,
+      arg2,
+      arg3,
+    );
+  }
+
+  late final _PyList_SetSlicePtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int Function(ffi.Pointer<PyObject>, Py_ssize_t, Py_ssize_t,
+              ffi.Pointer<PyObject>)>>('PyList_SetSlice');
+  late final _PyList_SetSlice = _PyList_SetSlicePtr.asFunction<
+      int Function(ffi.Pointer<PyObject>, int, int, ffi.Pointer<PyObject>)>();
+
+  int PyList_Sort(
+    ffi.Pointer<PyObject> arg0,
+  ) {
+    return _PyList_Sort(
+      arg0,
+    );
+  }
+
+  late final _PyList_SortPtr =
+      _lookup<ffi.NativeFunction<ffi.Int Function(ffi.Pointer<PyObject>)>>(
+          'PyList_Sort');
+  late final _PyList_Sort =
+      _PyList_SortPtr.asFunction<int Function(ffi.Pointer<PyObject>)>();
+
+  int PyList_Reverse(
+    ffi.Pointer<PyObject> arg0,
+  ) {
+    return _PyList_Reverse(
+      arg0,
+    );
+  }
+
+  late final _PyList_ReversePtr =
+      _lookup<ffi.NativeFunction<ffi.Int Function(ffi.Pointer<PyObject>)>>(
+          'PyList_Reverse');
+  late final _PyList_Reverse =
+      _PyList_ReversePtr.asFunction<int Function(ffi.Pointer<PyObject>)>();
+
+  ffi.Pointer<PyObject> PyList_AsTuple(
+    ffi.Pointer<PyObject> arg0,
+  ) {
+    return _PyList_AsTuple(
+      arg0,
+    );
+  }
+
+  late final _PyList_AsTuplePtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<PyObject> Function(
+              ffi.Pointer<PyObject>)>>('PyList_AsTuple');
+  late final _PyList_AsTuple = _PyList_AsTuplePtr.asFunction<
+      ffi.Pointer<PyObject> Function(ffi.Pointer<PyObject>)>();
+
+  ffi.Pointer<PyObject> PyList_Extend(
+    ffi.Pointer<PyListObject> arg0,
+    ffi.Pointer<PyObject> arg1,
+  ) {
+    return _PyList_Extend(
+      arg0,
+      arg1,
+    );
+  }
+
+  late final _PyList_ExtendPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<PyObject> Function(ffi.Pointer<PyListObject>,
+              ffi.Pointer<PyObject>)>>('_PyList_Extend');
+  late final _PyList_Extend = _PyList_ExtendPtr.asFunction<
+      ffi.Pointer<PyObject> Function(
+          ffi.Pointer<PyListObject>, ffi.Pointer<PyObject>)>();
+
+  void PyList_DebugMallocStats(
+    ffi.Pointer<FILE> out,
+  ) {
+    return _PyList_DebugMallocStats(
+      out,
+    );
+  }
+
+  late final _PyList_DebugMallocStatsPtr =
+      _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Pointer<FILE>)>>(
+          '_PyList_DebugMallocStats');
+  late final _PyList_DebugMallocStats = _PyList_DebugMallocStatsPtr.asFunction<
+      void Function(ffi.Pointer<FILE>)>();
+
+  late final ffi.Pointer<PyTypeObject> _PyDict_Type =
+      _lookup<PyTypeObject>('PyDict_Type');
+
+  PyTypeObject get PyDict_Type => _PyDict_Type.ref;
+
+  ffi.Pointer<PyObject> PyDict_New() {
+    return _PyDict_New();
+  }
+
+  late final _PyDict_NewPtr =
+      _lookup<ffi.NativeFunction<ffi.Pointer<PyObject> Function()>>(
+          'PyDict_New');
+  late final _PyDict_New =
+      _PyDict_NewPtr.asFunction<ffi.Pointer<PyObject> Function()>();
+
+  ffi.Pointer<PyObject> PyDict_GetItem(
+    ffi.Pointer<PyObject> mp,
+    ffi.Pointer<PyObject> key,
+  ) {
+    return _PyDict_GetItem(
+      mp,
+      key,
+    );
+  }
+
+  late final _PyDict_GetItemPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<PyObject> Function(
+              ffi.Pointer<PyObject>, ffi.Pointer<PyObject>)>>('PyDict_GetItem');
+  late final _PyDict_GetItem = _PyDict_GetItemPtr.asFunction<
+      ffi.Pointer<PyObject> Function(
+          ffi.Pointer<PyObject>, ffi.Pointer<PyObject>)>();
+
+  ffi.Pointer<PyObject> PyDict_GetItemWithError(
+    ffi.Pointer<PyObject> mp,
+    ffi.Pointer<PyObject> key,
+  ) {
+    return _PyDict_GetItemWithError(
+      mp,
+      key,
+    );
+  }
+
+  late final _PyDict_GetItemWithErrorPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<PyObject> Function(ffi.Pointer<PyObject>,
+              ffi.Pointer<PyObject>)>>('PyDict_GetItemWithError');
+  late final _PyDict_GetItemWithError = _PyDict_GetItemWithErrorPtr.asFunction<
+      ffi.Pointer<PyObject> Function(
+          ffi.Pointer<PyObject>, ffi.Pointer<PyObject>)>();
+
+  int PyDict_SetItem(
+    ffi.Pointer<PyObject> mp,
+    ffi.Pointer<PyObject> key,
+    ffi.Pointer<PyObject> item,
+  ) {
+    return _PyDict_SetItem(
+      mp,
+      key,
+      item,
+    );
+  }
+
+  late final _PyDict_SetItemPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int Function(ffi.Pointer<PyObject>, ffi.Pointer<PyObject>,
+              ffi.Pointer<PyObject>)>>('PyDict_SetItem');
+  late final _PyDict_SetItem = _PyDict_SetItemPtr.asFunction<
+      int Function(ffi.Pointer<PyObject>, ffi.Pointer<PyObject>,
+          ffi.Pointer<PyObject>)>();
+
+  int PyDict_DelItem(
+    ffi.Pointer<PyObject> mp,
+    ffi.Pointer<PyObject> key,
+  ) {
+    return _PyDict_DelItem(
+      mp,
+      key,
+    );
+  }
+
+  late final _PyDict_DelItemPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int Function(
+              ffi.Pointer<PyObject>, ffi.Pointer<PyObject>)>>('PyDict_DelItem');
+  late final _PyDict_DelItem = _PyDict_DelItemPtr.asFunction<
+      int Function(ffi.Pointer<PyObject>, ffi.Pointer<PyObject>)>();
+
+  void PyDict_Clear(
+    ffi.Pointer<PyObject> mp,
+  ) {
+    return _PyDict_Clear(
+      mp,
+    );
+  }
+
+  late final _PyDict_ClearPtr =
+      _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Pointer<PyObject>)>>(
+          'PyDict_Clear');
+  late final _PyDict_Clear =
+      _PyDict_ClearPtr.asFunction<void Function(ffi.Pointer<PyObject>)>();
+
+  int PyDict_Next(
+    ffi.Pointer<PyObject> mp,
+    ffi.Pointer<Py_ssize_t> pos,
+    ffi.Pointer<ffi.Pointer<PyObject>> key,
+    ffi.Pointer<ffi.Pointer<PyObject>> value,
+  ) {
+    return _PyDict_Next(
+      mp,
+      pos,
+      key,
+      value,
+    );
+  }
+
+  late final _PyDict_NextPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int Function(
+              ffi.Pointer<PyObject>,
+              ffi.Pointer<Py_ssize_t>,
+              ffi.Pointer<ffi.Pointer<PyObject>>,
+              ffi.Pointer<ffi.Pointer<PyObject>>)>>('PyDict_Next');
+  late final _PyDict_Next = _PyDict_NextPtr.asFunction<
+      int Function(
+          ffi.Pointer<PyObject>,
+          ffi.Pointer<Py_ssize_t>,
+          ffi.Pointer<ffi.Pointer<PyObject>>,
+          ffi.Pointer<ffi.Pointer<PyObject>>)>();
+
+  ffi.Pointer<PyObject> PyDict_Keys(
+    ffi.Pointer<PyObject> mp,
+  ) {
+    return _PyDict_Keys(
+      mp,
+    );
+  }
+
+  late final _PyDict_KeysPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<PyObject> Function(
+              ffi.Pointer<PyObject>)>>('PyDict_Keys');
+  late final _PyDict_Keys = _PyDict_KeysPtr.asFunction<
+      ffi.Pointer<PyObject> Function(ffi.Pointer<PyObject>)>();
+
+  ffi.Pointer<PyObject> PyDict_Values(
+    ffi.Pointer<PyObject> mp,
+  ) {
+    return _PyDict_Values(
+      mp,
+    );
+  }
+
+  late final _PyDict_ValuesPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<PyObject> Function(
+              ffi.Pointer<PyObject>)>>('PyDict_Values');
+  late final _PyDict_Values = _PyDict_ValuesPtr.asFunction<
+      ffi.Pointer<PyObject> Function(ffi.Pointer<PyObject>)>();
+
+  ffi.Pointer<PyObject> PyDict_Items(
+    ffi.Pointer<PyObject> mp,
+  ) {
+    return _PyDict_Items(
+      mp,
+    );
+  }
+
+  late final _PyDict_ItemsPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<PyObject> Function(
+              ffi.Pointer<PyObject>)>>('PyDict_Items');
+  late final _PyDict_Items = _PyDict_ItemsPtr.asFunction<
+      ffi.Pointer<PyObject> Function(ffi.Pointer<PyObject>)>();
+
+  int PyDict_Size(
+    ffi.Pointer<PyObject> mp,
+  ) {
+    return _PyDict_Size(
+      mp,
+    );
+  }
+
+  late final _PyDict_SizePtr =
+      _lookup<ffi.NativeFunction<Py_ssize_t Function(ffi.Pointer<PyObject>)>>(
+          'PyDict_Size');
+  late final _PyDict_Size =
+      _PyDict_SizePtr.asFunction<int Function(ffi.Pointer<PyObject>)>();
+
+  ffi.Pointer<PyObject> PyDict_Copy(
+    ffi.Pointer<PyObject> mp,
+  ) {
+    return _PyDict_Copy(
+      mp,
+    );
+  }
+
+  late final _PyDict_CopyPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<PyObject> Function(
+              ffi.Pointer<PyObject>)>>('PyDict_Copy');
+  late final _PyDict_Copy = _PyDict_CopyPtr.asFunction<
+      ffi.Pointer<PyObject> Function(ffi.Pointer<PyObject>)>();
+
+  int PyDict_Contains(
+    ffi.Pointer<PyObject> mp,
+    ffi.Pointer<PyObject> key,
+  ) {
+    return _PyDict_Contains(
+      mp,
+      key,
+    );
+  }
+
+  late final _PyDict_ContainsPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int Function(ffi.Pointer<PyObject>,
+              ffi.Pointer<PyObject>)>>('PyDict_Contains');
+  late final _PyDict_Contains = _PyDict_ContainsPtr.asFunction<
+      int Function(ffi.Pointer<PyObject>, ffi.Pointer<PyObject>)>();
+
+  int PyDict_Update(
+    ffi.Pointer<PyObject> mp,
+    ffi.Pointer<PyObject> other,
+  ) {
+    return _PyDict_Update(
+      mp,
+      other,
+    );
+  }
+
+  late final _PyDict_UpdatePtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int Function(
+              ffi.Pointer<PyObject>, ffi.Pointer<PyObject>)>>('PyDict_Update');
+  late final _PyDict_Update = _PyDict_UpdatePtr.asFunction<
+      int Function(ffi.Pointer<PyObject>, ffi.Pointer<PyObject>)>();
+
+  int PyDict_Merge(
+    ffi.Pointer<PyObject> mp,
+    ffi.Pointer<PyObject> other,
+    int override,
+  ) {
+    return _PyDict_Merge(
+      mp,
+      other,
+      override,
+    );
+  }
+
+  late final _PyDict_MergePtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int Function(ffi.Pointer<PyObject>, ffi.Pointer<PyObject>,
+              ffi.Int)>>('PyDict_Merge');
+  late final _PyDict_Merge = _PyDict_MergePtr.asFunction<
+      int Function(ffi.Pointer<PyObject>, ffi.Pointer<PyObject>, int)>();
+
+  int PyDict_MergeFromSeq2(
+    ffi.Pointer<PyObject> d,
+    ffi.Pointer<PyObject> seq2,
+    int override,
+  ) {
+    return _PyDict_MergeFromSeq2(
+      d,
+      seq2,
+      override,
+    );
+  }
+
+  late final _PyDict_MergeFromSeq2Ptr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int Function(ffi.Pointer<PyObject>, ffi.Pointer<PyObject>,
+              ffi.Int)>>('PyDict_MergeFromSeq2');
+  late final _PyDict_MergeFromSeq2 = _PyDict_MergeFromSeq2Ptr.asFunction<
+      int Function(ffi.Pointer<PyObject>, ffi.Pointer<PyObject>, int)>();
+
+  ffi.Pointer<PyObject> PyDict_GetItemString(
+    ffi.Pointer<PyObject> dp,
+    ffi.Pointer<ffi.Char> key,
+  ) {
+    return _PyDict_GetItemString(
+      dp,
+      key,
+    );
+  }
+
+  late final _PyDict_GetItemStringPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<PyObject> Function(ffi.Pointer<PyObject>,
+              ffi.Pointer<ffi.Char>)>>('PyDict_GetItemString');
+  late final _PyDict_GetItemString = _PyDict_GetItemStringPtr.asFunction<
+      ffi.Pointer<PyObject> Function(
+          ffi.Pointer<PyObject>, ffi.Pointer<ffi.Char>)>();
+
+  int PyDict_SetItemString(
+    ffi.Pointer<PyObject> dp,
+    ffi.Pointer<ffi.Char> key,
+    ffi.Pointer<PyObject> item,
+  ) {
+    return _PyDict_SetItemString(
+      dp,
+      key,
+      item,
+    );
+  }
+
+  late final _PyDict_SetItemStringPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int Function(ffi.Pointer<PyObject>, ffi.Pointer<ffi.Char>,
+              ffi.Pointer<PyObject>)>>('PyDict_SetItemString');
+  late final _PyDict_SetItemString = _PyDict_SetItemStringPtr.asFunction<
+      int Function(ffi.Pointer<PyObject>, ffi.Pointer<ffi.Char>,
+          ffi.Pointer<PyObject>)>();
+
+  int PyDict_DelItemString(
+    ffi.Pointer<PyObject> dp,
+    ffi.Pointer<ffi.Char> key,
+  ) {
+    return _PyDict_DelItemString(
+      dp,
+      key,
+    );
+  }
+
+  late final _PyDict_DelItemStringPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int Function(ffi.Pointer<PyObject>,
+              ffi.Pointer<ffi.Char>)>>('PyDict_DelItemString');
+  late final _PyDict_DelItemString = _PyDict_DelItemStringPtr.asFunction<
+      int Function(ffi.Pointer<PyObject>, ffi.Pointer<ffi.Char>)>();
+
+  ffi.Pointer<PyObject> PyObject_GenericGetDict(
+    ffi.Pointer<PyObject> arg0,
+    ffi.Pointer<ffi.Void> arg1,
+  ) {
+    return _PyObject_GenericGetDict(
+      arg0,
+      arg1,
+    );
+  }
+
+  late final _PyObject_GenericGetDictPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<PyObject> Function(ffi.Pointer<PyObject>,
+              ffi.Pointer<ffi.Void>)>>('PyObject_GenericGetDict');
+  late final _PyObject_GenericGetDict = _PyObject_GenericGetDictPtr.asFunction<
+      ffi.Pointer<PyObject> Function(
+          ffi.Pointer<PyObject>, ffi.Pointer<ffi.Void>)>();
+
+  late final ffi.Pointer<PyTypeObject> _PyDictKeys_Type =
+      _lookup<PyTypeObject>('PyDictKeys_Type');
+
+  PyTypeObject get PyDictKeys_Type => _PyDictKeys_Type.ref;
+
+  late final ffi.Pointer<PyTypeObject> _PyDictValues_Type =
+      _lookup<PyTypeObject>('PyDictValues_Type');
+
+  PyTypeObject get PyDictValues_Type => _PyDictValues_Type.ref;
+
+  late final ffi.Pointer<PyTypeObject> _PyDictItems_Type =
+      _lookup<PyTypeObject>('PyDictItems_Type');
+
+  PyTypeObject get PyDictItems_Type => _PyDictItems_Type.ref;
+
+  late final ffi.Pointer<PyTypeObject> _PyDictIterKey_Type =
+      _lookup<PyTypeObject>('PyDictIterKey_Type');
+
+  PyTypeObject get PyDictIterKey_Type => _PyDictIterKey_Type.ref;
+
+  late final ffi.Pointer<PyTypeObject> _PyDictIterValue_Type =
+      _lookup<PyTypeObject>('PyDictIterValue_Type');
+
+  PyTypeObject get PyDictIterValue_Type => _PyDictIterValue_Type.ref;
+
+  late final ffi.Pointer<PyTypeObject> _PyDictIterItem_Type =
+      _lookup<PyTypeObject>('PyDictIterItem_Type');
+
+  PyTypeObject get PyDictIterItem_Type => _PyDictIterItem_Type.ref;
+
+  late final ffi.Pointer<PyTypeObject> _PyDictRevIterKey_Type =
+      _lookup<PyTypeObject>('PyDictRevIterKey_Type');
+
+  PyTypeObject get PyDictRevIterKey_Type => _PyDictRevIterKey_Type.ref;
+
+  late final ffi.Pointer<PyTypeObject> _PyDictRevIterItem_Type =
+      _lookup<PyTypeObject>('PyDictRevIterItem_Type');
+
+  PyTypeObject get PyDictRevIterItem_Type => _PyDictRevIterItem_Type.ref;
+
+  late final ffi.Pointer<PyTypeObject> _PyDictRevIterValue_Type =
+      _lookup<PyTypeObject>('PyDictRevIterValue_Type');
+
+  PyTypeObject get PyDictRevIterValue_Type => _PyDictRevIterValue_Type.ref;
+
+  ffi.Pointer<PyObject> PyDict_GetItem_KnownHash(
+    ffi.Pointer<PyObject> mp,
+    ffi.Pointer<PyObject> key,
+    int hash,
+  ) {
+    return _PyDict_GetItem_KnownHash(
+      mp,
+      key,
+      hash,
+    );
+  }
+
+  late final _PyDict_GetItem_KnownHashPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<PyObject> Function(ffi.Pointer<PyObject>,
+              ffi.Pointer<PyObject>, Py_hash_t)>>('_PyDict_GetItem_KnownHash');
+  late final _PyDict_GetItem_KnownHash =
+      _PyDict_GetItem_KnownHashPtr.asFunction<
+          ffi.Pointer<PyObject> Function(
+              ffi.Pointer<PyObject>, ffi.Pointer<PyObject>, int)>();
+
+  ffi.Pointer<PyObject> PyDict_GetItemWithError1(
+    ffi.Pointer<PyObject> dp,
+    ffi.Pointer<PyObject> key,
+  ) {
+    return _PyDict_GetItemWithError1(
+      dp,
+      key,
+    );
+  }
+
+  late final _PyDict_GetItemWithError1Ptr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<PyObject> Function(ffi.Pointer<PyObject>,
+              ffi.Pointer<PyObject>)>>('_PyDict_GetItemWithError');
+  late final _PyDict_GetItemWithError1 =
+      _PyDict_GetItemWithError1Ptr.asFunction<
+          ffi.Pointer<PyObject> Function(
+              ffi.Pointer<PyObject>, ffi.Pointer<PyObject>)>();
+
+  ffi.Pointer<PyObject> PyDict_GetItemIdWithError(
+    ffi.Pointer<PyObject> dp,
+    ffi.Pointer<_Py_Identifier> key,
+  ) {
+    return _PyDict_GetItemIdWithError(
+      dp,
+      key,
+    );
+  }
+
+  late final _PyDict_GetItemIdWithErrorPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<PyObject> Function(ffi.Pointer<PyObject>,
+              ffi.Pointer<_Py_Identifier>)>>('_PyDict_GetItemIdWithError');
+  late final _PyDict_GetItemIdWithError =
+      _PyDict_GetItemIdWithErrorPtr.asFunction<
+          ffi.Pointer<PyObject> Function(
+              ffi.Pointer<PyObject>, ffi.Pointer<_Py_Identifier>)>();
+
+  ffi.Pointer<PyObject> PyDict_GetItemStringWithError(
+    ffi.Pointer<PyObject> arg0,
+    ffi.Pointer<ffi.Char> arg1,
+  ) {
+    return _PyDict_GetItemStringWithError(
+      arg0,
+      arg1,
+    );
+  }
+
+  late final _PyDict_GetItemStringWithErrorPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<PyObject> Function(ffi.Pointer<PyObject>,
+              ffi.Pointer<ffi.Char>)>>('_PyDict_GetItemStringWithError');
+  late final _PyDict_GetItemStringWithError =
+      _PyDict_GetItemStringWithErrorPtr.asFunction<
+          ffi.Pointer<PyObject> Function(
+              ffi.Pointer<PyObject>, ffi.Pointer<ffi.Char>)>();
+
+  ffi.Pointer<PyObject> PyDict_SetDefault(
+    ffi.Pointer<PyObject> mp,
+    ffi.Pointer<PyObject> key,
+    ffi.Pointer<PyObject> defaultobj,
+  ) {
+    return _PyDict_SetDefault(
+      mp,
+      key,
+      defaultobj,
+    );
+  }
+
+  late final _PyDict_SetDefaultPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<PyObject> Function(
+              ffi.Pointer<PyObject>,
+              ffi.Pointer<PyObject>,
+              ffi.Pointer<PyObject>)>>('PyDict_SetDefault');
+  late final _PyDict_SetDefault = _PyDict_SetDefaultPtr.asFunction<
+      ffi.Pointer<PyObject> Function(ffi.Pointer<PyObject>,
+          ffi.Pointer<PyObject>, ffi.Pointer<PyObject>)>();
+
+  int PyDict_SetItem_KnownHash(
+    ffi.Pointer<PyObject> mp,
+    ffi.Pointer<PyObject> key,
+    ffi.Pointer<PyObject> item,
+    int hash,
+  ) {
+    return _PyDict_SetItem_KnownHash(
+      mp,
+      key,
+      item,
+      hash,
+    );
+  }
+
+  late final _PyDict_SetItem_KnownHashPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int Function(ffi.Pointer<PyObject>, ffi.Pointer<PyObject>,
+              ffi.Pointer<PyObject>, Py_hash_t)>>('_PyDict_SetItem_KnownHash');
+  late final _PyDict_SetItem_KnownHash =
+      _PyDict_SetItem_KnownHashPtr.asFunction<
+          int Function(ffi.Pointer<PyObject>, ffi.Pointer<PyObject>,
+              ffi.Pointer<PyObject>, int)>();
+
+  int PyDict_DelItem_KnownHash(
+    ffi.Pointer<PyObject> mp,
+    ffi.Pointer<PyObject> key,
+    int hash,
+  ) {
+    return _PyDict_DelItem_KnownHash(
+      mp,
+      key,
+      hash,
+    );
+  }
+
+  late final _PyDict_DelItem_KnownHashPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int Function(ffi.Pointer<PyObject>, ffi.Pointer<PyObject>,
+              Py_hash_t)>>('_PyDict_DelItem_KnownHash');
+  late final _PyDict_DelItem_KnownHash =
+      _PyDict_DelItem_KnownHashPtr.asFunction<
+          int Function(ffi.Pointer<PyObject>, ffi.Pointer<PyObject>, int)>();
+
+  int PyDict_DelItemIf(
+    ffi.Pointer<PyObject> mp,
+    ffi.Pointer<PyObject> key,
+    ffi.Pointer<
+            ffi.NativeFunction<ffi.Int Function(ffi.Pointer<PyObject> value)>>
+        predicate,
+  ) {
+    return _PyDict_DelItemIf(
+      mp,
+      key,
+      predicate,
+    );
+  }
+
+  late final _PyDict_DelItemIfPtr = _lookup<
+          ffi.NativeFunction<
+              ffi.Int Function(
+                  ffi.Pointer<PyObject>,
+                  ffi.Pointer<PyObject>,
+                  ffi.Pointer<
+                      ffi.NativeFunction<
+                          ffi.Int Function(ffi.Pointer<PyObject> value)>>)>>(
+      '_PyDict_DelItemIf');
+  late final _PyDict_DelItemIf = _PyDict_DelItemIfPtr.asFunction<
+      int Function(
+          ffi.Pointer<PyObject>,
+          ffi.Pointer<PyObject>,
+          ffi.Pointer<
+              ffi.NativeFunction<
+                  ffi.Int Function(ffi.Pointer<PyObject> value)>>)>();
+
+  int PyDict_Next1(
+    ffi.Pointer<PyObject> mp,
+    ffi.Pointer<Py_ssize_t> pos,
+    ffi.Pointer<ffi.Pointer<PyObject>> key,
+    ffi.Pointer<ffi.Pointer<PyObject>> value,
+    ffi.Pointer<Py_hash_t> hash,
+  ) {
+    return _PyDict_Next1(
+      mp,
+      pos,
+      key,
+      value,
+      hash,
+    );
+  }
+
+  late final _PyDict_Next1Ptr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int Function(
+              ffi.Pointer<PyObject>,
+              ffi.Pointer<Py_ssize_t>,
+              ffi.Pointer<ffi.Pointer<PyObject>>,
+              ffi.Pointer<ffi.Pointer<PyObject>>,
+              ffi.Pointer<Py_hash_t>)>>('_PyDict_Next');
+  late final _PyDict_Next1 = _PyDict_Next1Ptr.asFunction<
+      int Function(
+          ffi.Pointer<PyObject>,
+          ffi.Pointer<Py_ssize_t>,
+          ffi.Pointer<ffi.Pointer<PyObject>>,
+          ffi.Pointer<ffi.Pointer<PyObject>>,
+          ffi.Pointer<Py_hash_t>)>();
+
+  int PyDict_Contains_KnownHash(
+    ffi.Pointer<PyObject> arg0,
+    ffi.Pointer<PyObject> arg1,
+    int arg2,
+  ) {
+    return _PyDict_Contains_KnownHash(
+      arg0,
+      arg1,
+      arg2,
+    );
+  }
+
+  late final _PyDict_Contains_KnownHashPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int Function(ffi.Pointer<PyObject>, ffi.Pointer<PyObject>,
+              Py_hash_t)>>('_PyDict_Contains_KnownHash');
+  late final _PyDict_Contains_KnownHash =
+      _PyDict_Contains_KnownHashPtr.asFunction<
+          int Function(ffi.Pointer<PyObject>, ffi.Pointer<PyObject>, int)>();
+
+  int PyDict_ContainsId(
+    ffi.Pointer<PyObject> arg0,
+    ffi.Pointer<_Py_Identifier> arg1,
+  ) {
+    return _PyDict_ContainsId(
+      arg0,
+      arg1,
+    );
+  }
+
+  late final _PyDict_ContainsIdPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int Function(ffi.Pointer<PyObject>,
+              ffi.Pointer<_Py_Identifier>)>>('_PyDict_ContainsId');
+  late final _PyDict_ContainsId = _PyDict_ContainsIdPtr.asFunction<
+      int Function(ffi.Pointer<PyObject>, ffi.Pointer<_Py_Identifier>)>();
+
+  ffi.Pointer<PyObject> PyDict_NewPresized(
+    int minused,
+  ) {
+    return _PyDict_NewPresized(
+      minused,
+    );
+  }
+
+  late final _PyDict_NewPresizedPtr =
+      _lookup<ffi.NativeFunction<ffi.Pointer<PyObject> Function(Py_ssize_t)>>(
+          '_PyDict_NewPresized');
+  late final _PyDict_NewPresized =
+      _PyDict_NewPresizedPtr.asFunction<ffi.Pointer<PyObject> Function(int)>();
+
+  void PyDict_MaybeUntrack(
+    ffi.Pointer<PyObject> mp,
+  ) {
+    return _PyDict_MaybeUntrack(
+      mp,
+    );
+  }
+
+  late final _PyDict_MaybeUntrackPtr =
+      _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Pointer<PyObject>)>>(
+          '_PyDict_MaybeUntrack');
+  late final _PyDict_MaybeUntrack = _PyDict_MaybeUntrackPtr.asFunction<
+      void Function(ffi.Pointer<PyObject>)>();
+
+  int PyDict_HasOnlyStringKeys(
+    ffi.Pointer<PyObject> mp,
+  ) {
+    return _PyDict_HasOnlyStringKeys(
+      mp,
+    );
+  }
+
+  late final _PyDict_HasOnlyStringKeysPtr =
+      _lookup<ffi.NativeFunction<ffi.Int Function(ffi.Pointer<PyObject>)>>(
+          '_PyDict_HasOnlyStringKeys');
+  late final _PyDict_HasOnlyStringKeys = _PyDict_HasOnlyStringKeysPtr
+      .asFunction<int Function(ffi.Pointer<PyObject>)>();
+
+  int PyDict_SizeOf(
+    ffi.Pointer<PyDictObject> arg0,
+  ) {
+    return _PyDict_SizeOf(
+      arg0,
+    );
+  }
+
+  late final _PyDict_SizeOfPtr = _lookup<
+          ffi.NativeFunction<Py_ssize_t Function(ffi.Pointer<PyDictObject>)>>(
+      '_PyDict_SizeOf');
+  late final _PyDict_SizeOf =
+      _PyDict_SizeOfPtr.asFunction<int Function(ffi.Pointer<PyDictObject>)>();
+
+  ffi.Pointer<PyObject> PyDict_Pop(
+    ffi.Pointer<PyObject> arg0,
+    ffi.Pointer<PyObject> arg1,
+    ffi.Pointer<PyObject> arg2,
+  ) {
+    return _PyDict_Pop(
+      arg0,
+      arg1,
+      arg2,
+    );
+  }
+
+  late final _PyDict_PopPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<PyObject> Function(ffi.Pointer<PyObject>,
+              ffi.Pointer<PyObject>, ffi.Pointer<PyObject>)>>('_PyDict_Pop');
+  late final _PyDict_Pop = _PyDict_PopPtr.asFunction<
+      ffi.Pointer<PyObject> Function(ffi.Pointer<PyObject>,
+          ffi.Pointer<PyObject>, ffi.Pointer<PyObject>)>();
+
+  int PyDict_MergeEx(
+    ffi.Pointer<PyObject> mp,
+    ffi.Pointer<PyObject> other,
+    int override,
+  ) {
+    return _PyDict_MergeEx(
+      mp,
+      other,
+      override,
+    );
+  }
+
+  late final _PyDict_MergeExPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int Function(ffi.Pointer<PyObject>, ffi.Pointer<PyObject>,
+              ffi.Int)>>('_PyDict_MergeEx');
+  late final _PyDict_MergeEx = _PyDict_MergeExPtr.asFunction<
+      int Function(ffi.Pointer<PyObject>, ffi.Pointer<PyObject>, int)>();
+
+  int PyDict_SetItemId(
+    ffi.Pointer<PyObject> dp,
+    ffi.Pointer<_Py_Identifier> key,
+    ffi.Pointer<PyObject> item,
+  ) {
+    return _PyDict_SetItemId(
+      dp,
+      key,
+      item,
+    );
+  }
+
+  late final _PyDict_SetItemIdPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int Function(ffi.Pointer<PyObject>, ffi.Pointer<_Py_Identifier>,
+              ffi.Pointer<PyObject>)>>('_PyDict_SetItemId');
+  late final _PyDict_SetItemId = _PyDict_SetItemIdPtr.asFunction<
+      int Function(ffi.Pointer<PyObject>, ffi.Pointer<_Py_Identifier>,
+          ffi.Pointer<PyObject>)>();
+
+  int PyDict_DelItemId(
+    ffi.Pointer<PyObject> mp,
+    ffi.Pointer<_Py_Identifier> key,
+  ) {
+    return _PyDict_DelItemId(
+      mp,
+      key,
+    );
+  }
+
+  late final _PyDict_DelItemIdPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int Function(ffi.Pointer<PyObject>,
+              ffi.Pointer<_Py_Identifier>)>>('_PyDict_DelItemId');
+  late final _PyDict_DelItemId = _PyDict_DelItemIdPtr.asFunction<
+      int Function(ffi.Pointer<PyObject>, ffi.Pointer<_Py_Identifier>)>();
+
+  void PyDict_DebugMallocStats(
+    ffi.Pointer<FILE> out,
+  ) {
+    return _PyDict_DebugMallocStats(
+      out,
+    );
+  }
+
+  late final _PyDict_DebugMallocStatsPtr =
+      _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Pointer<FILE>)>>(
+          '_PyDict_DebugMallocStats');
+  late final _PyDict_DebugMallocStats = _PyDict_DebugMallocStatsPtr.asFunction<
+      void Function(ffi.Pointer<FILE>)>();
+
+  ffi.Pointer<PyObject> PyDictView_New(
+    ffi.Pointer<PyObject> arg0,
+    ffi.Pointer<PyTypeObject> arg1,
+  ) {
+    return _PyDictView_New(
+      arg0,
+      arg1,
+    );
+  }
+
+  late final _PyDictView_NewPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<PyObject> Function(ffi.Pointer<PyObject>,
+              ffi.Pointer<PyTypeObject>)>>('_PyDictView_New');
+  late final _PyDictView_New = _PyDictView_NewPtr.asFunction<
+      ffi.Pointer<PyObject> Function(
+          ffi.Pointer<PyObject>, ffi.Pointer<PyTypeObject>)>();
+
+  ffi.Pointer<PyObject> PyDictView_Intersect(
+    ffi.Pointer<PyObject> self,
+    ffi.Pointer<PyObject> other,
+  ) {
+    return _PyDictView_Intersect(
+      self,
+      other,
+    );
+  }
+
+  late final _PyDictView_IntersectPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<PyObject> Function(ffi.Pointer<PyObject>,
+              ffi.Pointer<PyObject>)>>('_PyDictView_Intersect');
+  late final _PyDictView_Intersect = _PyDictView_IntersectPtr.asFunction<
+      ffi.Pointer<PyObject> Function(
+          ffi.Pointer<PyObject>, ffi.Pointer<PyObject>)>();
+
+  int PyDict_AddWatcher(
+    PyDict_WatchCallback callback,
+  ) {
+    return _PyDict_AddWatcher(
+      callback,
+    );
+  }
+
+  late final _PyDict_AddWatcherPtr =
+      _lookup<ffi.NativeFunction<ffi.Int Function(PyDict_WatchCallback)>>(
+          'PyDict_AddWatcher');
+  late final _PyDict_AddWatcher =
+      _PyDict_AddWatcherPtr.asFunction<int Function(PyDict_WatchCallback)>();
+
+  int PyDict_ClearWatcher(
+    int watcher_id,
+  ) {
+    return _PyDict_ClearWatcher(
+      watcher_id,
+    );
+  }
+
+  late final _PyDict_ClearWatcherPtr =
+      _lookup<ffi.NativeFunction<ffi.Int Function(ffi.Int)>>(
+          'PyDict_ClearWatcher');
+  late final _PyDict_ClearWatcher =
+      _PyDict_ClearWatcherPtr.asFunction<int Function(int)>();
+
+  int PyDict_Watch(
+    int watcher_id,
+    ffi.Pointer<PyObject> dict,
+  ) {
+    return _PyDict_Watch(
+      watcher_id,
+      dict,
+    );
+  }
+
+  late final _PyDict_WatchPtr = _lookup<
+          ffi.NativeFunction<ffi.Int Function(ffi.Int, ffi.Pointer<PyObject>)>>(
+      'PyDict_Watch');
+  late final _PyDict_Watch =
+      _PyDict_WatchPtr.asFunction<int Function(int, ffi.Pointer<PyObject>)>();
+
+  int PyDict_Unwatch(
+    int watcher_id,
+    ffi.Pointer<PyObject> dict,
+  ) {
+    return _PyDict_Unwatch(
+      watcher_id,
+      dict,
+    );
+  }
+
+  late final _PyDict_UnwatchPtr = _lookup<
+          ffi.NativeFunction<ffi.Int Function(ffi.Int, ffi.Pointer<PyObject>)>>(
+      'PyDict_Unwatch');
+  late final _PyDict_Unwatch =
+      _PyDict_UnwatchPtr.asFunction<int Function(int, ffi.Pointer<PyObject>)>();
+
+  late final ffi.Pointer<PyTypeObject> _PyODict_Type =
+      _lookup<PyTypeObject>('PyODict_Type');
+
+  PyTypeObject get PyODict_Type => _PyODict_Type.ref;
+
+  late final ffi.Pointer<PyTypeObject> _PyODictIter_Type =
+      _lookup<PyTypeObject>('PyODictIter_Type');
+
+  PyTypeObject get PyODictIter_Type => _PyODictIter_Type.ref;
+
+  late final ffi.Pointer<PyTypeObject> _PyODictKeys_Type =
+      _lookup<PyTypeObject>('PyODictKeys_Type');
+
+  PyTypeObject get PyODictKeys_Type => _PyODictKeys_Type.ref;
+
+  late final ffi.Pointer<PyTypeObject> _PyODictItems_Type =
+      _lookup<PyTypeObject>('PyODictItems_Type');
+
+  PyTypeObject get PyODictItems_Type => _PyODictItems_Type.ref;
+
+  late final ffi.Pointer<PyTypeObject> _PyODictValues_Type =
+      _lookup<PyTypeObject>('PyODictValues_Type');
+
+  PyTypeObject get PyODictValues_Type => _PyODictValues_Type.ref;
+
+  ffi.Pointer<PyObject> PyODict_New() {
+    return _PyODict_New();
+  }
+
+  late final _PyODict_NewPtr =
+      _lookup<ffi.NativeFunction<ffi.Pointer<PyObject> Function()>>(
+          'PyODict_New');
+  late final _PyODict_New =
+      _PyODict_NewPtr.asFunction<ffi.Pointer<PyObject> Function()>();
+
+  int PyODict_SetItem(
+    ffi.Pointer<PyObject> od,
+    ffi.Pointer<PyObject> key,
+    ffi.Pointer<PyObject> item,
+  ) {
+    return _PyODict_SetItem(
+      od,
+      key,
+      item,
+    );
+  }
+
+  late final _PyODict_SetItemPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int Function(ffi.Pointer<PyObject>, ffi.Pointer<PyObject>,
+              ffi.Pointer<PyObject>)>>('PyODict_SetItem');
+  late final _PyODict_SetItem = _PyODict_SetItemPtr.asFunction<
+      int Function(ffi.Pointer<PyObject>, ffi.Pointer<PyObject>,
+          ffi.Pointer<PyObject>)>();
+
+  int PyODict_DelItem(
+    ffi.Pointer<PyObject> od,
+    ffi.Pointer<PyObject> key,
+  ) {
+    return _PyODict_DelItem(
+      od,
+      key,
+    );
+  }
+
+  late final _PyODict_DelItemPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int Function(ffi.Pointer<PyObject>,
+              ffi.Pointer<PyObject>)>>('PyODict_DelItem');
+  late final _PyODict_DelItem = _PyODict_DelItemPtr.asFunction<
+      int Function(ffi.Pointer<PyObject>, ffi.Pointer<PyObject>)>();
+
+  late final ffi.Pointer<PyTypeObject> _PyEnum_Type =
+      _lookup<PyTypeObject>('PyEnum_Type');
+
+  PyTypeObject get PyEnum_Type => _PyEnum_Type.ref;
+
+  late final ffi.Pointer<PyTypeObject> _PyReversed_Type =
+      _lookup<PyTypeObject>('PyReversed_Type');
+
+  PyTypeObject get PyReversed_Type => _PyReversed_Type.ref;
+
+  late final ffi.Pointer<PyTypeObject> _PySet_Type =
+      _lookup<PyTypeObject>('PySet_Type');
+
+  PyTypeObject get PySet_Type => _PySet_Type.ref;
+
+  late final ffi.Pointer<PyTypeObject> _PyFrozenSet_Type =
+      _lookup<PyTypeObject>('PyFrozenSet_Type');
+
+  PyTypeObject get PyFrozenSet_Type => _PyFrozenSet_Type.ref;
+
+  late final ffi.Pointer<PyTypeObject> _PySetIter_Type =
+      _lookup<PyTypeObject>('PySetIter_Type');
+
+  PyTypeObject get PySetIter_Type => _PySetIter_Type.ref;
+
+  ffi.Pointer<PyObject> PySet_New(
+    ffi.Pointer<PyObject> arg0,
+  ) {
+    return _PySet_New(
+      arg0,
+    );
+  }
+
+  late final _PySet_NewPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<PyObject> Function(ffi.Pointer<PyObject>)>>('PySet_New');
+  late final _PySet_New = _PySet_NewPtr.asFunction<
+      ffi.Pointer<PyObject> Function(ffi.Pointer<PyObject>)>();
+
+  ffi.Pointer<PyObject> PyFrozenSet_New(
+    ffi.Pointer<PyObject> arg0,
+  ) {
+    return _PyFrozenSet_New(
+      arg0,
+    );
+  }
+
+  late final _PyFrozenSet_NewPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<PyObject> Function(
+              ffi.Pointer<PyObject>)>>('PyFrozenSet_New');
+  late final _PyFrozenSet_New = _PyFrozenSet_NewPtr.asFunction<
+      ffi.Pointer<PyObject> Function(ffi.Pointer<PyObject>)>();
+
+  int PySet_Add(
+    ffi.Pointer<PyObject> set1,
+    ffi.Pointer<PyObject> key,
+  ) {
+    return _PySet_Add(
+      set1,
+      key,
+    );
+  }
+
+  late final _PySet_AddPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int Function(
+              ffi.Pointer<PyObject>, ffi.Pointer<PyObject>)>>('PySet_Add');
+  late final _PySet_Add = _PySet_AddPtr.asFunction<
+      int Function(ffi.Pointer<PyObject>, ffi.Pointer<PyObject>)>();
+
+  int PySet_Clear(
+    ffi.Pointer<PyObject> set1,
+  ) {
+    return _PySet_Clear(
+      set1,
+    );
+  }
+
+  late final _PySet_ClearPtr =
+      _lookup<ffi.NativeFunction<ffi.Int Function(ffi.Pointer<PyObject>)>>(
+          'PySet_Clear');
+  late final _PySet_Clear =
+      _PySet_ClearPtr.asFunction<int Function(ffi.Pointer<PyObject>)>();
+
+  int PySet_Contains(
+    ffi.Pointer<PyObject> anyset,
+    ffi.Pointer<PyObject> key,
+  ) {
+    return _PySet_Contains(
+      anyset,
+      key,
+    );
+  }
+
+  late final _PySet_ContainsPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int Function(
+              ffi.Pointer<PyObject>, ffi.Pointer<PyObject>)>>('PySet_Contains');
+  late final _PySet_Contains = _PySet_ContainsPtr.asFunction<
+      int Function(ffi.Pointer<PyObject>, ffi.Pointer<PyObject>)>();
+
+  int PySet_Discard(
+    ffi.Pointer<PyObject> set1,
+    ffi.Pointer<PyObject> key,
+  ) {
+    return _PySet_Discard(
+      set1,
+      key,
+    );
+  }
+
+  late final _PySet_DiscardPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int Function(
+              ffi.Pointer<PyObject>, ffi.Pointer<PyObject>)>>('PySet_Discard');
+  late final _PySet_Discard = _PySet_DiscardPtr.asFunction<
+      int Function(ffi.Pointer<PyObject>, ffi.Pointer<PyObject>)>();
+
+  ffi.Pointer<PyObject> PySet_Pop(
+    ffi.Pointer<PyObject> set1,
+  ) {
+    return _PySet_Pop(
+      set1,
+    );
+  }
+
+  late final _PySet_PopPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<PyObject> Function(ffi.Pointer<PyObject>)>>('PySet_Pop');
+  late final _PySet_Pop = _PySet_PopPtr.asFunction<
+      ffi.Pointer<PyObject> Function(ffi.Pointer<PyObject>)>();
+
+  int PySet_Size(
+    ffi.Pointer<PyObject> anyset,
+  ) {
+    return _PySet_Size(
+      anyset,
+    );
+  }
+
+  late final _PySet_SizePtr =
+      _lookup<ffi.NativeFunction<Py_ssize_t Function(ffi.Pointer<PyObject>)>>(
+          'PySet_Size');
+  late final _PySet_Size =
+      _PySet_SizePtr.asFunction<int Function(ffi.Pointer<PyObject>)>();
+
+  late final ffi.Pointer<ffi.Pointer<PyObject>> _PySet_Dummy =
+      _lookup<ffi.Pointer<PyObject>>('_PySet_Dummy');
+
+  ffi.Pointer<PyObject> get PySet_Dummy => _PySet_Dummy.value;
+
+  set PySet_Dummy(ffi.Pointer<PyObject> value) => _PySet_Dummy.value = value;
+
+  int PySet_NextEntry(
+    ffi.Pointer<PyObject> set1,
+    ffi.Pointer<Py_ssize_t> pos,
+    ffi.Pointer<ffi.Pointer<PyObject>> key,
+    ffi.Pointer<Py_hash_t> hash,
+  ) {
+    return _PySet_NextEntry(
+      set1,
+      pos,
+      key,
+      hash,
+    );
+  }
+
+  late final _PySet_NextEntryPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int Function(
+              ffi.Pointer<PyObject>,
+              ffi.Pointer<Py_ssize_t>,
+              ffi.Pointer<ffi.Pointer<PyObject>>,
+              ffi.Pointer<Py_hash_t>)>>('_PySet_NextEntry');
+  late final _PySet_NextEntry = _PySet_NextEntryPtr.asFunction<
+      int Function(ffi.Pointer<PyObject>, ffi.Pointer<Py_ssize_t>,
+          ffi.Pointer<ffi.Pointer<PyObject>>, ffi.Pointer<Py_hash_t>)>();
+
+  int PySet_Update(
+    ffi.Pointer<PyObject> set1,
+    ffi.Pointer<PyObject> iterable,
+  ) {
+    return _PySet_Update(
+      set1,
+      iterable,
+    );
+  }
+
+  late final _PySet_UpdatePtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int Function(
+              ffi.Pointer<PyObject>, ffi.Pointer<PyObject>)>>('_PySet_Update');
+  late final _PySet_Update = _PySet_UpdatePtr.asFunction<
+      int Function(ffi.Pointer<PyObject>, ffi.Pointer<PyObject>)>();
+
+  late final ffi.Pointer<PyTypeObject> _PyCFunction_Type =
+      _lookup<PyTypeObject>('PyCFunction_Type');
+
+  PyTypeObject get PyCFunction_Type => _PyCFunction_Type.ref;
+
+  PyCFunction PyCFunction_GetFunction(
+    ffi.Pointer<PyObject> arg0,
+  ) {
+    return _PyCFunction_GetFunction(
+      arg0,
+    );
+  }
+
+  late final _PyCFunction_GetFunctionPtr =
+      _lookup<ffi.NativeFunction<PyCFunction Function(ffi.Pointer<PyObject>)>>(
+          'PyCFunction_GetFunction');
+  late final _PyCFunction_GetFunction = _PyCFunction_GetFunctionPtr.asFunction<
+      PyCFunction Function(ffi.Pointer<PyObject>)>();
+
+  ffi.Pointer<PyObject> PyCFunction_GetSelf(
+    ffi.Pointer<PyObject> arg0,
+  ) {
+    return _PyCFunction_GetSelf(
+      arg0,
+    );
+  }
+
+  late final _PyCFunction_GetSelfPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<PyObject> Function(
+              ffi.Pointer<PyObject>)>>('PyCFunction_GetSelf');
+  late final _PyCFunction_GetSelf = _PyCFunction_GetSelfPtr.asFunction<
+      ffi.Pointer<PyObject> Function(ffi.Pointer<PyObject>)>();
+
+  int PyCFunction_GetFlags(
+    ffi.Pointer<PyObject> arg0,
+  ) {
+    return _PyCFunction_GetFlags(
+      arg0,
+    );
+  }
+
+  late final _PyCFunction_GetFlagsPtr =
+      _lookup<ffi.NativeFunction<ffi.Int Function(ffi.Pointer<PyObject>)>>(
+          'PyCFunction_GetFlags');
+  late final _PyCFunction_GetFlags = _PyCFunction_GetFlagsPtr.asFunction<
+      int Function(ffi.Pointer<PyObject>)>();
+
+  ffi.Pointer<PyObject> PyCFunction_Call(
+    ffi.Pointer<PyObject> arg0,
+    ffi.Pointer<PyObject> arg1,
+    ffi.Pointer<PyObject> arg2,
+  ) {
+    return _PyCFunction_Call(
+      arg0,
+      arg1,
+      arg2,
+    );
+  }
+
+  late final _PyCFunction_CallPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<PyObject> Function(
+              ffi.Pointer<PyObject>,
+              ffi.Pointer<PyObject>,
+              ffi.Pointer<PyObject>)>>('PyCFunction_Call');
+  late final _PyCFunction_Call = _PyCFunction_CallPtr.asFunction<
+      ffi.Pointer<PyObject> Function(ffi.Pointer<PyObject>,
+          ffi.Pointer<PyObject>, ffi.Pointer<PyObject>)>();
+
+  ffi.Pointer<PyObject> PyCFunction_New(
+    ffi.Pointer<PyMethodDef> arg0,
+    ffi.Pointer<PyObject> arg1,
+  ) {
+    return _PyCFunction_New(
+      arg0,
+      arg1,
+    );
+  }
+
+  late final _PyCFunction_NewPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<PyObject> Function(ffi.Pointer<PyMethodDef>,
+              ffi.Pointer<PyObject>)>>('PyCFunction_New');
+  late final _PyCFunction_New = _PyCFunction_NewPtr.asFunction<
+      ffi.Pointer<PyObject> Function(
+          ffi.Pointer<PyMethodDef>, ffi.Pointer<PyObject>)>();
+
+  ffi.Pointer<PyObject> PyCFunction_NewEx(
+    ffi.Pointer<PyMethodDef> arg0,
+    ffi.Pointer<PyObject> arg1,
+    ffi.Pointer<PyObject> arg2,
+  ) {
+    return _PyCFunction_NewEx(
+      arg0,
+      arg1,
+      arg2,
+    );
+  }
+
+  late final _PyCFunction_NewExPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<PyObject> Function(
+              ffi.Pointer<PyMethodDef>,
+              ffi.Pointer<PyObject>,
+              ffi.Pointer<PyObject>)>>('PyCFunction_NewEx');
+  late final _PyCFunction_NewEx = _PyCFunction_NewExPtr.asFunction<
+      ffi.Pointer<PyObject> Function(ffi.Pointer<PyMethodDef>,
+          ffi.Pointer<PyObject>, ffi.Pointer<PyObject>)>();
+
+  ffi.Pointer<PyObject> PyCMethod_New(
+    ffi.Pointer<PyMethodDef> arg0,
+    ffi.Pointer<PyObject> arg1,
+    ffi.Pointer<PyObject> arg2,
+    ffi.Pointer<PyTypeObject> arg3,
+  ) {
+    return _PyCMethod_New(
+      arg0,
+      arg1,
+      arg2,
+      arg3,
+    );
+  }
+
+  late final _PyCMethod_NewPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<PyObject> Function(
+              ffi.Pointer<PyMethodDef>,
+              ffi.Pointer<PyObject>,
+              ffi.Pointer<PyObject>,
+              ffi.Pointer<PyTypeObject>)>>('PyCMethod_New');
+  late final _PyCMethod_New = _PyCMethod_NewPtr.asFunction<
+      ffi.Pointer<PyObject> Function(
+          ffi.Pointer<PyMethodDef>,
+          ffi.Pointer<PyObject>,
+          ffi.Pointer<PyObject>,
+          ffi.Pointer<PyTypeObject>)>();
+
+  late final ffi.Pointer<PyTypeObject> _PyCMethod_Type =
+      _lookup<PyTypeObject>('PyCMethod_Type');
+
+  PyTypeObject get PyCMethod_Type => _PyCMethod_Type.ref;
+
+  late final ffi.Pointer<PyTypeObject> _PyModule_Type =
+      _lookup<PyTypeObject>('PyModule_Type');
+
+  PyTypeObject get PyModule_Type => _PyModule_Type.ref;
+
+  ffi.Pointer<PyObject> PyModule_NewObject(
+    ffi.Pointer<PyObject> name,
+  ) {
+    return _PyModule_NewObject(
+      name,
+    );
+  }
+
+  late final _PyModule_NewObjectPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<PyObject> Function(
+              ffi.Pointer<PyObject>)>>('PyModule_NewObject');
+  late final _PyModule_NewObject = _PyModule_NewObjectPtr.asFunction<
+      ffi.Pointer<PyObject> Function(ffi.Pointer<PyObject>)>();
+
+  ffi.Pointer<PyObject> PyModule_New(
+    ffi.Pointer<ffi.Char> name,
+  ) {
+    return _PyModule_New(
+      name,
+    );
+  }
+
+  late final _PyModule_NewPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<PyObject> Function(
+              ffi.Pointer<ffi.Char>)>>('PyModule_New');
+  late final _PyModule_New = _PyModule_NewPtr.asFunction<
+      ffi.Pointer<PyObject> Function(ffi.Pointer<ffi.Char>)>();
+
+  ffi.Pointer<PyObject> PyModule_GetDict(
+    ffi.Pointer<PyObject> arg0,
+  ) {
+    return _PyModule_GetDict(
+      arg0,
+    );
+  }
+
+  late final _PyModule_GetDictPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<PyObject> Function(
+              ffi.Pointer<PyObject>)>>('PyModule_GetDict');
+  late final _PyModule_GetDict = _PyModule_GetDictPtr.asFunction<
+      ffi.Pointer<PyObject> Function(ffi.Pointer<PyObject>)>();
+
+  ffi.Pointer<PyObject> PyModule_GetNameObject(
+    ffi.Pointer<PyObject> arg0,
+  ) {
+    return _PyModule_GetNameObject(
+      arg0,
+    );
+  }
+
+  late final _PyModule_GetNameObjectPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<PyObject> Function(
+              ffi.Pointer<PyObject>)>>('PyModule_GetNameObject');
+  late final _PyModule_GetNameObject = _PyModule_GetNameObjectPtr.asFunction<
+      ffi.Pointer<PyObject> Function(ffi.Pointer<PyObject>)>();
+
+  ffi.Pointer<ffi.Char> PyModule_GetName(
+    ffi.Pointer<PyObject> arg0,
+  ) {
+    return _PyModule_GetName(
+      arg0,
+    );
+  }
+
+  late final _PyModule_GetNamePtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<ffi.Char> Function(
+              ffi.Pointer<PyObject>)>>('PyModule_GetName');
+  late final _PyModule_GetName = _PyModule_GetNamePtr.asFunction<
+      ffi.Pointer<ffi.Char> Function(ffi.Pointer<PyObject>)>();
+
+  ffi.Pointer<ffi.Char> PyModule_GetFilename(
+    ffi.Pointer<PyObject> arg0,
+  ) {
+    return _PyModule_GetFilename(
+      arg0,
+    );
+  }
+
+  late final _PyModule_GetFilenamePtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<ffi.Char> Function(
+              ffi.Pointer<PyObject>)>>('PyModule_GetFilename');
+  late final _PyModule_GetFilename = _PyModule_GetFilenamePtr.asFunction<
+      ffi.Pointer<ffi.Char> Function(ffi.Pointer<PyObject>)>();
+
+  ffi.Pointer<PyObject> PyModule_GetFilenameObject(
+    ffi.Pointer<PyObject> arg0,
+  ) {
+    return _PyModule_GetFilenameObject(
+      arg0,
+    );
+  }
+
+  late final _PyModule_GetFilenameObjectPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<PyObject> Function(
+              ffi.Pointer<PyObject>)>>('PyModule_GetFilenameObject');
+  late final _PyModule_GetFilenameObject = _PyModule_GetFilenameObjectPtr
+      .asFunction<ffi.Pointer<PyObject> Function(ffi.Pointer<PyObject>)>();
+
+  void PyModule_Clear(
+    ffi.Pointer<PyObject> arg0,
+  ) {
+    return _PyModule_Clear(
+      arg0,
+    );
+  }
+
+  late final _PyModule_ClearPtr =
+      _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Pointer<PyObject>)>>(
+          '_PyModule_Clear');
+  late final _PyModule_Clear =
+      _PyModule_ClearPtr.asFunction<void Function(ffi.Pointer<PyObject>)>();
+
+  void PyModule_ClearDict(
+    ffi.Pointer<PyObject> arg0,
+  ) {
+    return _PyModule_ClearDict(
+      arg0,
+    );
+  }
+
+  late final _PyModule_ClearDictPtr =
+      _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Pointer<PyObject>)>>(
+          '_PyModule_ClearDict');
+  late final _PyModule_ClearDict =
+      _PyModule_ClearDictPtr.asFunction<void Function(ffi.Pointer<PyObject>)>();
+
+  int PyModuleSpec_IsInitializing(
+    ffi.Pointer<PyObject> arg0,
+  ) {
+    return _PyModuleSpec_IsInitializing(
+      arg0,
+    );
+  }
+
+  late final _PyModuleSpec_IsInitializingPtr =
+      _lookup<ffi.NativeFunction<ffi.Int Function(ffi.Pointer<PyObject>)>>(
+          '_PyModuleSpec_IsInitializing');
+  late final _PyModuleSpec_IsInitializing = _PyModuleSpec_IsInitializingPtr
+      .asFunction<int Function(ffi.Pointer<PyObject>)>();
+
+  ffi.Pointer<PyModuleDef> PyModule_GetDef(
+    ffi.Pointer<PyObject> arg0,
+  ) {
+    return _PyModule_GetDef(
+      arg0,
+    );
+  }
+
+  late final _PyModule_GetDefPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<PyModuleDef> Function(
+              ffi.Pointer<PyObject>)>>('PyModule_GetDef');
+  late final _PyModule_GetDef = _PyModule_GetDefPtr.asFunction<
+      ffi.Pointer<PyModuleDef> Function(ffi.Pointer<PyObject>)>();
+
+  ffi.Pointer<ffi.Void> PyModule_GetState(
+    ffi.Pointer<PyObject> arg0,
+  ) {
+    return _PyModule_GetState(
+      arg0,
+    );
+  }
+
+  late final _PyModule_GetStatePtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<ffi.Void> Function(
+              ffi.Pointer<PyObject>)>>('PyModule_GetState');
+  late final _PyModule_GetState = _PyModule_GetStatePtr.asFunction<
+      ffi.Pointer<ffi.Void> Function(ffi.Pointer<PyObject>)>();
+
+  ffi.Pointer<PyObject> PyModuleDef_Init(
+    ffi.Pointer<PyModuleDef> arg0,
+  ) {
+    return _PyModuleDef_Init(
+      arg0,
+    );
+  }
+
+  late final _PyModuleDef_InitPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<PyObject> Function(
+              ffi.Pointer<PyModuleDef>)>>('PyModuleDef_Init');
+  late final _PyModuleDef_Init = _PyModuleDef_InitPtr.asFunction<
+      ffi.Pointer<PyObject> Function(ffi.Pointer<PyModuleDef>)>();
+
+  late final ffi.Pointer<PyTypeObject> _PyModuleDef_Type =
+      _lookup<PyTypeObject>('PyModuleDef_Type');
+
+  PyTypeObject get PyModuleDef_Type => _PyModuleDef_Type.ref;
+
+  late final ffi.Pointer<PyTypeObject> _PyFunction_Type =
+      _lookup<PyTypeObject>('PyFunction_Type');
+
+  PyTypeObject get PyFunction_Type => _PyFunction_Type.ref;
+
+  ffi.Pointer<PyObject> PyFunction_New(
+    ffi.Pointer<PyObject> arg0,
+    ffi.Pointer<PyObject> arg1,
+  ) {
+    return _PyFunction_New(
+      arg0,
+      arg1,
+    );
+  }
+
+  late final _PyFunction_NewPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<PyObject> Function(
+              ffi.Pointer<PyObject>, ffi.Pointer<PyObject>)>>('PyFunction_New');
+  late final _PyFunction_New = _PyFunction_NewPtr.asFunction<
+      ffi.Pointer<PyObject> Function(
+          ffi.Pointer<PyObject>, ffi.Pointer<PyObject>)>();
+
+  ffi.Pointer<PyObject> PyFunction_NewWithQualName(
+    ffi.Pointer<PyObject> arg0,
+    ffi.Pointer<PyObject> arg1,
+    ffi.Pointer<PyObject> arg2,
+  ) {
+    return _PyFunction_NewWithQualName(
+      arg0,
+      arg1,
+      arg2,
+    );
+  }
+
+  late final _PyFunction_NewWithQualNamePtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<PyObject> Function(
+              ffi.Pointer<PyObject>,
+              ffi.Pointer<PyObject>,
+              ffi.Pointer<PyObject>)>>('PyFunction_NewWithQualName');
+  late final _PyFunction_NewWithQualName =
+      _PyFunction_NewWithQualNamePtr.asFunction<
+          ffi.Pointer<PyObject> Function(ffi.Pointer<PyObject>,
+              ffi.Pointer<PyObject>, ffi.Pointer<PyObject>)>();
+
+  ffi.Pointer<PyObject> PyFunction_GetCode(
+    ffi.Pointer<PyObject> arg0,
+  ) {
+    return _PyFunction_GetCode(
+      arg0,
+    );
+  }
+
+  late final _PyFunction_GetCodePtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<PyObject> Function(
+              ffi.Pointer<PyObject>)>>('PyFunction_GetCode');
+  late final _PyFunction_GetCode = _PyFunction_GetCodePtr.asFunction<
+      ffi.Pointer<PyObject> Function(ffi.Pointer<PyObject>)>();
+
+  ffi.Pointer<PyObject> PyFunction_GetGlobals(
+    ffi.Pointer<PyObject> arg0,
+  ) {
+    return _PyFunction_GetGlobals(
+      arg0,
+    );
+  }
+
+  late final _PyFunction_GetGlobalsPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<PyObject> Function(
+              ffi.Pointer<PyObject>)>>('PyFunction_GetGlobals');
+  late final _PyFunction_GetGlobals = _PyFunction_GetGlobalsPtr.asFunction<
+      ffi.Pointer<PyObject> Function(ffi.Pointer<PyObject>)>();
+
+  ffi.Pointer<PyObject> PyFunction_GetModule(
+    ffi.Pointer<PyObject> arg0,
+  ) {
+    return _PyFunction_GetModule(
+      arg0,
+    );
+  }
+
+  late final _PyFunction_GetModulePtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<PyObject> Function(
+              ffi.Pointer<PyObject>)>>('PyFunction_GetModule');
+  late final _PyFunction_GetModule = _PyFunction_GetModulePtr.asFunction<
+      ffi.Pointer<PyObject> Function(ffi.Pointer<PyObject>)>();
+
+  ffi.Pointer<PyObject> PyFunction_GetDefaults(
+    ffi.Pointer<PyObject> arg0,
+  ) {
+    return _PyFunction_GetDefaults(
+      arg0,
+    );
+  }
+
+  late final _PyFunction_GetDefaultsPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<PyObject> Function(
+              ffi.Pointer<PyObject>)>>('PyFunction_GetDefaults');
+  late final _PyFunction_GetDefaults = _PyFunction_GetDefaultsPtr.asFunction<
+      ffi.Pointer<PyObject> Function(ffi.Pointer<PyObject>)>();
+
+  int PyFunction_SetDefaults(
+    ffi.Pointer<PyObject> arg0,
+    ffi.Pointer<PyObject> arg1,
+  ) {
+    return _PyFunction_SetDefaults(
+      arg0,
+      arg1,
+    );
+  }
+
+  late final _PyFunction_SetDefaultsPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int Function(ffi.Pointer<PyObject>,
+              ffi.Pointer<PyObject>)>>('PyFunction_SetDefaults');
+  late final _PyFunction_SetDefaults = _PyFunction_SetDefaultsPtr.asFunction<
+      int Function(ffi.Pointer<PyObject>, ffi.Pointer<PyObject>)>();
+
+  void PyFunction_SetVectorcall(
+    ffi.Pointer<PyFunctionObject> arg0,
+    vectorcallfunc arg1,
+  ) {
+    return _PyFunction_SetVectorcall(
+      arg0,
+      arg1,
+    );
+  }
+
+  late final _PyFunction_SetVectorcallPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Void Function(ffi.Pointer<PyFunctionObject>,
+              vectorcallfunc)>>('PyFunction_SetVectorcall');
+  late final _PyFunction_SetVectorcall =
+      _PyFunction_SetVectorcallPtr.asFunction<
+          void Function(ffi.Pointer<PyFunctionObject>, vectorcallfunc)>();
+
+  ffi.Pointer<PyObject> PyFunction_GetKwDefaults(
+    ffi.Pointer<PyObject> arg0,
+  ) {
+    return _PyFunction_GetKwDefaults(
+      arg0,
+    );
+  }
+
+  late final _PyFunction_GetKwDefaultsPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<PyObject> Function(
+              ffi.Pointer<PyObject>)>>('PyFunction_GetKwDefaults');
+  late final _PyFunction_GetKwDefaults = _PyFunction_GetKwDefaultsPtr
+      .asFunction<ffi.Pointer<PyObject> Function(ffi.Pointer<PyObject>)>();
+
+  int PyFunction_SetKwDefaults(
+    ffi.Pointer<PyObject> arg0,
+    ffi.Pointer<PyObject> arg1,
+  ) {
+    return _PyFunction_SetKwDefaults(
+      arg0,
+      arg1,
+    );
+  }
+
+  late final _PyFunction_SetKwDefaultsPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int Function(ffi.Pointer<PyObject>,
+              ffi.Pointer<PyObject>)>>('PyFunction_SetKwDefaults');
+  late final _PyFunction_SetKwDefaults = _PyFunction_SetKwDefaultsPtr
+      .asFunction<int Function(ffi.Pointer<PyObject>, ffi.Pointer<PyObject>)>();
+
+  ffi.Pointer<PyObject> PyFunction_GetClosure(
+    ffi.Pointer<PyObject> arg0,
+  ) {
+    return _PyFunction_GetClosure(
+      arg0,
+    );
+  }
+
+  late final _PyFunction_GetClosurePtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<PyObject> Function(
+              ffi.Pointer<PyObject>)>>('PyFunction_GetClosure');
+  late final _PyFunction_GetClosure = _PyFunction_GetClosurePtr.asFunction<
+      ffi.Pointer<PyObject> Function(ffi.Pointer<PyObject>)>();
+
+  int PyFunction_SetClosure(
+    ffi.Pointer<PyObject> arg0,
+    ffi.Pointer<PyObject> arg1,
+  ) {
+    return _PyFunction_SetClosure(
+      arg0,
+      arg1,
+    );
+  }
+
+  late final _PyFunction_SetClosurePtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int Function(ffi.Pointer<PyObject>,
+              ffi.Pointer<PyObject>)>>('PyFunction_SetClosure');
+  late final _PyFunction_SetClosure = _PyFunction_SetClosurePtr.asFunction<
+      int Function(ffi.Pointer<PyObject>, ffi.Pointer<PyObject>)>();
+
+  ffi.Pointer<PyObject> PyFunction_GetAnnotations(
+    ffi.Pointer<PyObject> arg0,
+  ) {
+    return _PyFunction_GetAnnotations(
+      arg0,
+    );
+  }
+
+  late final _PyFunction_GetAnnotationsPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<PyObject> Function(
+              ffi.Pointer<PyObject>)>>('PyFunction_GetAnnotations');
+  late final _PyFunction_GetAnnotations = _PyFunction_GetAnnotationsPtr
+      .asFunction<ffi.Pointer<PyObject> Function(ffi.Pointer<PyObject>)>();
+
+  int PyFunction_SetAnnotations(
+    ffi.Pointer<PyObject> arg0,
+    ffi.Pointer<PyObject> arg1,
+  ) {
+    return _PyFunction_SetAnnotations(
+      arg0,
+      arg1,
+    );
+  }
+
+  late final _PyFunction_SetAnnotationsPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int Function(ffi.Pointer<PyObject>,
+              ffi.Pointer<PyObject>)>>('PyFunction_SetAnnotations');
+  late final _PyFunction_SetAnnotations = _PyFunction_SetAnnotationsPtr
+      .asFunction<int Function(ffi.Pointer<PyObject>, ffi.Pointer<PyObject>)>();
+
+  ffi.Pointer<PyObject> PyFunction_Vectorcall(
+    ffi.Pointer<PyObject> func,
+    ffi.Pointer<ffi.Pointer<PyObject>> stack,
+    int nargsf,
+    ffi.Pointer<PyObject> kwnames,
+  ) {
+    return _PyFunction_Vectorcall(
+      func,
+      stack,
+      nargsf,
+      kwnames,
+    );
+  }
+
+  late final _PyFunction_VectorcallPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<PyObject> Function(
+              ffi.Pointer<PyObject>,
+              ffi.Pointer<ffi.Pointer<PyObject>>,
+              ffi.Size,
+              ffi.Pointer<PyObject>)>>('_PyFunction_Vectorcall');
+  late final _PyFunction_Vectorcall = _PyFunction_VectorcallPtr.asFunction<
+      ffi.Pointer<PyObject> Function(ffi.Pointer<PyObject>,
+          ffi.Pointer<ffi.Pointer<PyObject>>, int, ffi.Pointer<PyObject>)>();
+
+  late final ffi.Pointer<PyTypeObject> _PyClassMethod_Type =
+      _lookup<PyTypeObject>('PyClassMethod_Type');
+
+  PyTypeObject get PyClassMethod_Type => _PyClassMethod_Type.ref;
+
+  late final ffi.Pointer<PyTypeObject> _PyStaticMethod_Type =
+      _lookup<PyTypeObject>('PyStaticMethod_Type');
+
+  PyTypeObject get PyStaticMethod_Type => _PyStaticMethod_Type.ref;
+
+  ffi.Pointer<PyObject> PyClassMethod_New(
+    ffi.Pointer<PyObject> arg0,
+  ) {
+    return _PyClassMethod_New(
+      arg0,
+    );
+  }
+
+  late final _PyClassMethod_NewPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<PyObject> Function(
+              ffi.Pointer<PyObject>)>>('PyClassMethod_New');
+  late final _PyClassMethod_New = _PyClassMethod_NewPtr.asFunction<
+      ffi.Pointer<PyObject> Function(ffi.Pointer<PyObject>)>();
+
+  ffi.Pointer<PyObject> PyStaticMethod_New(
+    ffi.Pointer<PyObject> arg0,
+  ) {
+    return _PyStaticMethod_New(
+      arg0,
+    );
+  }
+
+  late final _PyStaticMethod_NewPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<PyObject> Function(
+              ffi.Pointer<PyObject>)>>('PyStaticMethod_New');
+  late final _PyStaticMethod_New = _PyStaticMethod_NewPtr.asFunction<
+      ffi.Pointer<PyObject> Function(ffi.Pointer<PyObject>)>();
+
+  int PyFunction_AddWatcher(
+    PyFunction_WatchCallback callback,
+  ) {
+    return _PyFunction_AddWatcher(
+      callback,
+    );
+  }
+
+  late final _PyFunction_AddWatcherPtr =
+      _lookup<ffi.NativeFunction<ffi.Int Function(PyFunction_WatchCallback)>>(
+          'PyFunction_AddWatcher');
+  late final _PyFunction_AddWatcher = _PyFunction_AddWatcherPtr.asFunction<
+      int Function(PyFunction_WatchCallback)>();
+
+  int PyFunction_ClearWatcher(
+    int watcher_id,
+  ) {
+    return _PyFunction_ClearWatcher(
+      watcher_id,
+    );
+  }
+
+  late final _PyFunction_ClearWatcherPtr =
+      _lookup<ffi.NativeFunction<ffi.Int Function(ffi.Int)>>(
+          'PyFunction_ClearWatcher');
+  late final _PyFunction_ClearWatcher =
+      _PyFunction_ClearWatcherPtr.asFunction<int Function(int)>();
+
+  late final ffi.Pointer<PyTypeObject> _PyMethod_Type =
+      _lookup<PyTypeObject>('PyMethod_Type');
+
+  PyTypeObject get PyMethod_Type => _PyMethod_Type.ref;
+
+  ffi.Pointer<PyObject> PyMethod_New(
+    ffi.Pointer<PyObject> arg0,
+    ffi.Pointer<PyObject> arg1,
+  ) {
+    return _PyMethod_New(
+      arg0,
+      arg1,
+    );
+  }
+
+  late final _PyMethod_NewPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<PyObject> Function(
+              ffi.Pointer<PyObject>, ffi.Pointer<PyObject>)>>('PyMethod_New');
+  late final _PyMethod_New = _PyMethod_NewPtr.asFunction<
+      ffi.Pointer<PyObject> Function(
+          ffi.Pointer<PyObject>, ffi.Pointer<PyObject>)>();
+
+  ffi.Pointer<PyObject> PyMethod_Function(
+    ffi.Pointer<PyObject> arg0,
+  ) {
+    return _PyMethod_Function(
+      arg0,
+    );
+  }
+
+  late final _PyMethod_FunctionPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<PyObject> Function(
+              ffi.Pointer<PyObject>)>>('PyMethod_Function');
+  late final _PyMethod_Function = _PyMethod_FunctionPtr.asFunction<
+      ffi.Pointer<PyObject> Function(ffi.Pointer<PyObject>)>();
+
+  ffi.Pointer<PyObject> PyMethod_Self(
+    ffi.Pointer<PyObject> arg0,
+  ) {
+    return _PyMethod_Self(
+      arg0,
+    );
+  }
+
+  late final _PyMethod_SelfPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<PyObject> Function(
+              ffi.Pointer<PyObject>)>>('PyMethod_Self');
+  late final _PyMethod_Self = _PyMethod_SelfPtr.asFunction<
+      ffi.Pointer<PyObject> Function(ffi.Pointer<PyObject>)>();
+
+  late final ffi.Pointer<PyTypeObject> _PyInstanceMethod_Type =
+      _lookup<PyTypeObject>('PyInstanceMethod_Type');
+
+  PyTypeObject get PyInstanceMethod_Type => _PyInstanceMethod_Type.ref;
+
+  ffi.Pointer<PyObject> PyInstanceMethod_New(
+    ffi.Pointer<PyObject> arg0,
+  ) {
+    return _PyInstanceMethod_New(
+      arg0,
+    );
+  }
+
+  late final _PyInstanceMethod_NewPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<PyObject> Function(
+              ffi.Pointer<PyObject>)>>('PyInstanceMethod_New');
+  late final _PyInstanceMethod_New = _PyInstanceMethod_NewPtr.asFunction<
+      ffi.Pointer<PyObject> Function(ffi.Pointer<PyObject>)>();
+
+  ffi.Pointer<PyObject> PyInstanceMethod_Function(
+    ffi.Pointer<PyObject> arg0,
+  ) {
+    return _PyInstanceMethod_Function(
+      arg0,
+    );
+  }
+
+  late final _PyInstanceMethod_FunctionPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<PyObject> Function(
+              ffi.Pointer<PyObject>)>>('PyInstanceMethod_Function');
+  late final _PyInstanceMethod_Function = _PyInstanceMethod_FunctionPtr
+      .asFunction<ffi.Pointer<PyObject> Function(ffi.Pointer<PyObject>)>();
+
+  ffi.Pointer<PyObject> PyFile_FromFd(
+    int arg0,
+    ffi.Pointer<ffi.Char> arg1,
+    ffi.Pointer<ffi.Char> arg2,
+    int arg3,
+    ffi.Pointer<ffi.Char> arg4,
+    ffi.Pointer<ffi.Char> arg5,
+    ffi.Pointer<ffi.Char> arg6,
+    int arg7,
+  ) {
+    return _PyFile_FromFd(
+      arg0,
+      arg1,
+      arg2,
+      arg3,
+      arg4,
+      arg5,
+      arg6,
+      arg7,
+    );
+  }
+
+  late final _PyFile_FromFdPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<PyObject> Function(
+              ffi.Int,
+              ffi.Pointer<ffi.Char>,
+              ffi.Pointer<ffi.Char>,
+              ffi.Int,
+              ffi.Pointer<ffi.Char>,
+              ffi.Pointer<ffi.Char>,
+              ffi.Pointer<ffi.Char>,
+              ffi.Int)>>('PyFile_FromFd');
+  late final _PyFile_FromFd = _PyFile_FromFdPtr.asFunction<
+      ffi.Pointer<PyObject> Function(
+          int,
+          ffi.Pointer<ffi.Char>,
+          ffi.Pointer<ffi.Char>,
+          int,
+          ffi.Pointer<ffi.Char>,
+          ffi.Pointer<ffi.Char>,
+          ffi.Pointer<ffi.Char>,
+          int)>();
+
+  ffi.Pointer<PyObject> PyFile_GetLine(
+    ffi.Pointer<PyObject> arg0,
+    int arg1,
+  ) {
+    return _PyFile_GetLine(
+      arg0,
+      arg1,
+    );
+  }
+
+  late final _PyFile_GetLinePtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<PyObject> Function(
+              ffi.Pointer<PyObject>, ffi.Int)>>('PyFile_GetLine');
+  late final _PyFile_GetLine = _PyFile_GetLinePtr.asFunction<
+      ffi.Pointer<PyObject> Function(ffi.Pointer<PyObject>, int)>();
+
+  int PyFile_WriteObject(
+    ffi.Pointer<PyObject> arg0,
+    ffi.Pointer<PyObject> arg1,
+    int arg2,
+  ) {
+    return _PyFile_WriteObject(
+      arg0,
+      arg1,
+      arg2,
+    );
+  }
+
+  late final _PyFile_WriteObjectPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int Function(ffi.Pointer<PyObject>, ffi.Pointer<PyObject>,
+              ffi.Int)>>('PyFile_WriteObject');
+  late final _PyFile_WriteObject = _PyFile_WriteObjectPtr.asFunction<
+      int Function(ffi.Pointer<PyObject>, ffi.Pointer<PyObject>, int)>();
+
+  int PyFile_WriteString(
+    ffi.Pointer<ffi.Char> arg0,
+    ffi.Pointer<PyObject> arg1,
+  ) {
+    return _PyFile_WriteString(
+      arg0,
+      arg1,
+    );
+  }
+
+  late final _PyFile_WriteStringPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int Function(ffi.Pointer<ffi.Char>,
+              ffi.Pointer<PyObject>)>>('PyFile_WriteString');
+  late final _PyFile_WriteString = _PyFile_WriteStringPtr.asFunction<
+      int Function(ffi.Pointer<ffi.Char>, ffi.Pointer<PyObject>)>();
+
+  int PyObject_AsFileDescriptor(
+    ffi.Pointer<PyObject> arg0,
+  ) {
+    return _PyObject_AsFileDescriptor(
+      arg0,
+    );
+  }
+
+  late final _PyObject_AsFileDescriptorPtr =
+      _lookup<ffi.NativeFunction<ffi.Int Function(ffi.Pointer<PyObject>)>>(
+          'PyObject_AsFileDescriptor');
+  late final _PyObject_AsFileDescriptor = _PyObject_AsFileDescriptorPtr
+      .asFunction<int Function(ffi.Pointer<PyObject>)>();
+
+  late final ffi.Pointer<ffi.Pointer<ffi.Char>> _Py_FileSystemDefaultEncoding =
+      _lookup<ffi.Pointer<ffi.Char>>('Py_FileSystemDefaultEncoding');
+
+  ffi.Pointer<ffi.Char> get Py_FileSystemDefaultEncoding =>
+      _Py_FileSystemDefaultEncoding.value;
+
+  set Py_FileSystemDefaultEncoding(ffi.Pointer<ffi.Char> value) =>
+      _Py_FileSystemDefaultEncoding.value = value;
+
+  late final ffi.Pointer<ffi.Pointer<ffi.Char>>
+      _Py_FileSystemDefaultEncodeErrors =
+      _lookup<ffi.Pointer<ffi.Char>>('Py_FileSystemDefaultEncodeErrors');
+
+  ffi.Pointer<ffi.Char> get Py_FileSystemDefaultEncodeErrors =>
+      _Py_FileSystemDefaultEncodeErrors.value;
+
+  set Py_FileSystemDefaultEncodeErrors(ffi.Pointer<ffi.Char> value) =>
+      _Py_FileSystemDefaultEncodeErrors.value = value;
+
+  late final ffi.Pointer<ffi.Int> _Py_HasFileSystemDefaultEncoding =
+      _lookup<ffi.Int>('Py_HasFileSystemDefaultEncoding');
+
+  int get Py_HasFileSystemDefaultEncoding =>
+      _Py_HasFileSystemDefaultEncoding.value;
+
+  set Py_HasFileSystemDefaultEncoding(int value) =>
+      _Py_HasFileSystemDefaultEncoding.value = value;
+
+  late final ffi.Pointer<ffi.Int> _Py_UTF8Mode =
+      _lookup<ffi.Int>('Py_UTF8Mode');
+
+  int get Py_UTF8Mode => _Py_UTF8Mode.value;
+
+  set Py_UTF8Mode(int value) => _Py_UTF8Mode.value = value;
+
+  ffi.Pointer<ffi.Char> Py_UniversalNewlineFgets(
+    ffi.Pointer<ffi.Char> arg0,
+    int arg1,
+    ffi.Pointer<FILE> arg2,
+    ffi.Pointer<PyObject> arg3,
+  ) {
+    return _Py_UniversalNewlineFgets(
+      arg0,
+      arg1,
+      arg2,
+      arg3,
+    );
+  }
+
+  late final _Py_UniversalNewlineFgetsPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<ffi.Char> Function(
+              ffi.Pointer<ffi.Char>,
+              ffi.Int,
+              ffi.Pointer<FILE>,
+              ffi.Pointer<PyObject>)>>('Py_UniversalNewlineFgets');
+  late final _Py_UniversalNewlineFgets =
+      _Py_UniversalNewlineFgetsPtr.asFunction<
+          ffi.Pointer<ffi.Char> Function(ffi.Pointer<ffi.Char>, int,
+              ffi.Pointer<FILE>, ffi.Pointer<PyObject>)>();
+
+  ffi.Pointer<ffi.Char> Py_UniversalNewlineFgetsWithSize(
+    ffi.Pointer<ffi.Char> arg0,
+    int arg1,
+    ffi.Pointer<FILE> arg2,
+    ffi.Pointer<PyObject> arg3,
+    ffi.Pointer<ffi.Size> arg4,
+  ) {
+    return _Py_UniversalNewlineFgetsWithSize(
+      arg0,
+      arg1,
+      arg2,
+      arg3,
+      arg4,
+    );
+  }
+
+  late final _Py_UniversalNewlineFgetsWithSizePtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<ffi.Char> Function(
+              ffi.Pointer<ffi.Char>,
+              ffi.Int,
+              ffi.Pointer<FILE>,
+              ffi.Pointer<PyObject>,
+              ffi.Pointer<ffi.Size>)>>('_Py_UniversalNewlineFgetsWithSize');
+  late final _Py_UniversalNewlineFgetsWithSize =
+      _Py_UniversalNewlineFgetsWithSizePtr.asFunction<
+          ffi.Pointer<ffi.Char> Function(
+              ffi.Pointer<ffi.Char>,
+              int,
+              ffi.Pointer<FILE>,
+              ffi.Pointer<PyObject>,
+              ffi.Pointer<ffi.Size>)>();
+
+  ffi.Pointer<PyObject> PyFile_NewStdPrinter(
+    int arg0,
+  ) {
+    return _PyFile_NewStdPrinter(
+      arg0,
+    );
+  }
+
+  late final _PyFile_NewStdPrinterPtr =
+      _lookup<ffi.NativeFunction<ffi.Pointer<PyObject> Function(ffi.Int)>>(
+          'PyFile_NewStdPrinter');
+  late final _PyFile_NewStdPrinter = _PyFile_NewStdPrinterPtr.asFunction<
+      ffi.Pointer<PyObject> Function(int)>();
+
+  late final ffi.Pointer<PyTypeObject> _PyStdPrinter_Type =
+      _lookup<PyTypeObject>('PyStdPrinter_Type');
+
+  PyTypeObject get PyStdPrinter_Type => _PyStdPrinter_Type.ref;
+
+  ffi.Pointer<PyObject> PyFile_OpenCode(
+    ffi.Pointer<ffi.Char> utf8path,
+  ) {
+    return _PyFile_OpenCode(
+      utf8path,
+    );
+  }
+
+  late final _PyFile_OpenCodePtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<PyObject> Function(
+              ffi.Pointer<ffi.Char>)>>('PyFile_OpenCode');
+  late final _PyFile_OpenCode = _PyFile_OpenCodePtr.asFunction<
+      ffi.Pointer<PyObject> Function(ffi.Pointer<ffi.Char>)>();
+
+  ffi.Pointer<PyObject> PyFile_OpenCodeObject(
+    ffi.Pointer<PyObject> path,
+  ) {
+    return _PyFile_OpenCodeObject(
+      path,
+    );
+  }
+
+  late final _PyFile_OpenCodeObjectPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<PyObject> Function(
+              ffi.Pointer<PyObject>)>>('PyFile_OpenCodeObject');
+  late final _PyFile_OpenCodeObject = _PyFile_OpenCodeObjectPtr.asFunction<
+      ffi.Pointer<PyObject> Function(ffi.Pointer<PyObject>)>();
+
+  int PyFile_SetOpenCodeHook(
+    Py_OpenCodeHookFunction hook,
+    ffi.Pointer<ffi.Void> userData,
+  ) {
+    return _PyFile_SetOpenCodeHook(
+      hook,
+      userData,
+    );
+  }
+
+  late final _PyFile_SetOpenCodeHookPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int Function(Py_OpenCodeHookFunction,
+              ffi.Pointer<ffi.Void>)>>('PyFile_SetOpenCodeHook');
+  late final _PyFile_SetOpenCodeHook = _PyFile_SetOpenCodeHookPtr.asFunction<
+      int Function(Py_OpenCodeHookFunction, ffi.Pointer<ffi.Void>)>();
+
+  int PyLong_FileDescriptor_Converter(
+    ffi.Pointer<PyObject> arg0,
+    ffi.Pointer<ffi.Void> arg1,
+  ) {
+    return _PyLong_FileDescriptor_Converter(
+      arg0,
+      arg1,
+    );
+  }
+
+  late final _PyLong_FileDescriptor_ConverterPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int Function(ffi.Pointer<PyObject>,
+              ffi.Pointer<ffi.Void>)>>('_PyLong_FileDescriptor_Converter');
+  late final _PyLong_FileDescriptor_Converter =
+      _PyLong_FileDescriptor_ConverterPtr.asFunction<
+          int Function(ffi.Pointer<PyObject>, ffi.Pointer<ffi.Void>)>();
+
+  late final ffi.Pointer<PyTypeObject> _PyCapsule_Type =
+      _lookup<PyTypeObject>('PyCapsule_Type');
+
+  PyTypeObject get PyCapsule_Type => _PyCapsule_Type.ref;
+
+  ffi.Pointer<PyObject> PyCapsule_New(
+    ffi.Pointer<ffi.Void> pointer,
+    ffi.Pointer<ffi.Char> name,
+    PyCapsule_Destructor destructor,
+  ) {
+    return _PyCapsule_New(
+      pointer,
+      name,
+      destructor,
+    );
+  }
+
+  late final _PyCapsule_NewPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<PyObject> Function(ffi.Pointer<ffi.Void>,
+              ffi.Pointer<ffi.Char>, PyCapsule_Destructor)>>('PyCapsule_New');
+  late final _PyCapsule_New = _PyCapsule_NewPtr.asFunction<
+      ffi.Pointer<PyObject> Function(ffi.Pointer<ffi.Void>,
+          ffi.Pointer<ffi.Char>, PyCapsule_Destructor)>();
+
+  ffi.Pointer<ffi.Void> PyCapsule_GetPointer(
+    ffi.Pointer<PyObject> capsule,
+    ffi.Pointer<ffi.Char> name,
+  ) {
+    return _PyCapsule_GetPointer(
+      capsule,
+      name,
+    );
+  }
+
+  late final _PyCapsule_GetPointerPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<ffi.Void> Function(ffi.Pointer<PyObject>,
+              ffi.Pointer<ffi.Char>)>>('PyCapsule_GetPointer');
+  late final _PyCapsule_GetPointer = _PyCapsule_GetPointerPtr.asFunction<
+      ffi.Pointer<ffi.Void> Function(
+          ffi.Pointer<PyObject>, ffi.Pointer<ffi.Char>)>();
+
+  PyCapsule_Destructor PyCapsule_GetDestructor(
+    ffi.Pointer<PyObject> capsule,
+  ) {
+    return _PyCapsule_GetDestructor(
+      capsule,
+    );
+  }
+
+  late final _PyCapsule_GetDestructorPtr = _lookup<
+      ffi.NativeFunction<
+          PyCapsule_Destructor Function(
+              ffi.Pointer<PyObject>)>>('PyCapsule_GetDestructor');
+  late final _PyCapsule_GetDestructor = _PyCapsule_GetDestructorPtr.asFunction<
+      PyCapsule_Destructor Function(ffi.Pointer<PyObject>)>();
+
+  ffi.Pointer<ffi.Char> PyCapsule_GetName(
+    ffi.Pointer<PyObject> capsule,
+  ) {
+    return _PyCapsule_GetName(
+      capsule,
+    );
+  }
+
+  late final _PyCapsule_GetNamePtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<ffi.Char> Function(
+              ffi.Pointer<PyObject>)>>('PyCapsule_GetName');
+  late final _PyCapsule_GetName = _PyCapsule_GetNamePtr.asFunction<
+      ffi.Pointer<ffi.Char> Function(ffi.Pointer<PyObject>)>();
+
+  ffi.Pointer<ffi.Void> PyCapsule_GetContext(
+    ffi.Pointer<PyObject> capsule,
+  ) {
+    return _PyCapsule_GetContext(
+      capsule,
+    );
+  }
+
+  late final _PyCapsule_GetContextPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<ffi.Void> Function(
+              ffi.Pointer<PyObject>)>>('PyCapsule_GetContext');
+  late final _PyCapsule_GetContext = _PyCapsule_GetContextPtr.asFunction<
+      ffi.Pointer<ffi.Void> Function(ffi.Pointer<PyObject>)>();
+
+  int PyCapsule_IsValid(
+    ffi.Pointer<PyObject> capsule,
+    ffi.Pointer<ffi.Char> name,
+  ) {
+    return _PyCapsule_IsValid(
+      capsule,
+      name,
+    );
+  }
+
+  late final _PyCapsule_IsValidPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int Function(ffi.Pointer<PyObject>,
+              ffi.Pointer<ffi.Char>)>>('PyCapsule_IsValid');
+  late final _PyCapsule_IsValid = _PyCapsule_IsValidPtr.asFunction<
+      int Function(ffi.Pointer<PyObject>, ffi.Pointer<ffi.Char>)>();
+
+  int PyCapsule_SetPointer(
+    ffi.Pointer<PyObject> capsule,
+    ffi.Pointer<ffi.Void> pointer,
+  ) {
+    return _PyCapsule_SetPointer(
+      capsule,
+      pointer,
+    );
+  }
+
+  late final _PyCapsule_SetPointerPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int Function(ffi.Pointer<PyObject>,
+              ffi.Pointer<ffi.Void>)>>('PyCapsule_SetPointer');
+  late final _PyCapsule_SetPointer = _PyCapsule_SetPointerPtr.asFunction<
+      int Function(ffi.Pointer<PyObject>, ffi.Pointer<ffi.Void>)>();
+
+  int PyCapsule_SetDestructor(
+    ffi.Pointer<PyObject> capsule,
+    PyCapsule_Destructor destructor,
+  ) {
+    return _PyCapsule_SetDestructor(
+      capsule,
+      destructor,
+    );
+  }
+
+  late final _PyCapsule_SetDestructorPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int Function(ffi.Pointer<PyObject>,
+              PyCapsule_Destructor)>>('PyCapsule_SetDestructor');
+  late final _PyCapsule_SetDestructor = _PyCapsule_SetDestructorPtr.asFunction<
+      int Function(ffi.Pointer<PyObject>, PyCapsule_Destructor)>();
+
+  int PyCapsule_SetName(
+    ffi.Pointer<PyObject> capsule,
+    ffi.Pointer<ffi.Char> name,
+  ) {
+    return _PyCapsule_SetName(
+      capsule,
+      name,
+    );
+  }
+
+  late final _PyCapsule_SetNamePtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int Function(ffi.Pointer<PyObject>,
+              ffi.Pointer<ffi.Char>)>>('PyCapsule_SetName');
+  late final _PyCapsule_SetName = _PyCapsule_SetNamePtr.asFunction<
+      int Function(ffi.Pointer<PyObject>, ffi.Pointer<ffi.Char>)>();
+
+  int PyCapsule_SetContext(
+    ffi.Pointer<PyObject> capsule,
+    ffi.Pointer<ffi.Void> context,
+  ) {
+    return _PyCapsule_SetContext(
+      capsule,
+      context,
+    );
+  }
+
+  late final _PyCapsule_SetContextPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int Function(ffi.Pointer<PyObject>,
+              ffi.Pointer<ffi.Void>)>>('PyCapsule_SetContext');
+  late final _PyCapsule_SetContext = _PyCapsule_SetContextPtr.asFunction<
+      int Function(ffi.Pointer<PyObject>, ffi.Pointer<ffi.Void>)>();
+
+  ffi.Pointer<ffi.Void> PyCapsule_Import(
+    ffi.Pointer<ffi.Char> name,
+    int no_block,
+  ) {
+    return _PyCapsule_Import(
+      name,
+      no_block,
+    );
+  }
+
+  late final _PyCapsule_ImportPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<ffi.Void> Function(
+              ffi.Pointer<ffi.Char>, ffi.Int)>>('PyCapsule_Import');
+  late final _PyCapsule_Import = _PyCapsule_ImportPtr.asFunction<
+      ffi.Pointer<ffi.Void> Function(ffi.Pointer<ffi.Char>, int)>();
+
+  late final ffi.Pointer<PyTypeObject> _PyCode_Type =
+      _lookup<PyTypeObject>('PyCode_Type');
+
+  PyTypeObject get PyCode_Type => _PyCode_Type.ref;
+
+  ffi.Pointer<PyCodeObject> PyUnstable_Code_New(
+    int arg0,
+    int arg1,
+    int arg2,
+    int arg3,
+    int arg4,
+    ffi.Pointer<PyObject> arg5,
+    ffi.Pointer<PyObject> arg6,
+    ffi.Pointer<PyObject> arg7,
+    ffi.Pointer<PyObject> arg8,
+    ffi.Pointer<PyObject> arg9,
+    ffi.Pointer<PyObject> arg10,
+    ffi.Pointer<PyObject> arg11,
+    ffi.Pointer<PyObject> arg12,
+    ffi.Pointer<PyObject> arg13,
+    int arg14,
+    ffi.Pointer<PyObject> arg15,
+    ffi.Pointer<PyObject> arg16,
+  ) {
+    return _PyUnstable_Code_New(
+      arg0,
+      arg1,
+      arg2,
+      arg3,
+      arg4,
+      arg5,
+      arg6,
+      arg7,
+      arg8,
+      arg9,
+      arg10,
+      arg11,
+      arg12,
+      arg13,
+      arg14,
+      arg15,
+      arg16,
+    );
+  }
+
+  late final _PyUnstable_Code_NewPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<PyCodeObject> Function(
+              ffi.Int,
+              ffi.Int,
+              ffi.Int,
+              ffi.Int,
+              ffi.Int,
+              ffi.Pointer<PyObject>,
+              ffi.Pointer<PyObject>,
+              ffi.Pointer<PyObject>,
+              ffi.Pointer<PyObject>,
+              ffi.Pointer<PyObject>,
+              ffi.Pointer<PyObject>,
+              ffi.Pointer<PyObject>,
+              ffi.Pointer<PyObject>,
+              ffi.Pointer<PyObject>,
+              ffi.Int,
+              ffi.Pointer<PyObject>,
+              ffi.Pointer<PyObject>)>>('PyUnstable_Code_New');
+  late final _PyUnstable_Code_New = _PyUnstable_Code_NewPtr.asFunction<
+      ffi.Pointer<PyCodeObject> Function(
+          int,
+          int,
+          int,
+          int,
+          int,
+          ffi.Pointer<PyObject>,
+          ffi.Pointer<PyObject>,
+          ffi.Pointer<PyObject>,
+          ffi.Pointer<PyObject>,
+          ffi.Pointer<PyObject>,
+          ffi.Pointer<PyObject>,
+          ffi.Pointer<PyObject>,
+          ffi.Pointer<PyObject>,
+          ffi.Pointer<PyObject>,
+          int,
+          ffi.Pointer<PyObject>,
+          ffi.Pointer<PyObject>)>();
+
+  ffi.Pointer<PyCodeObject> PyUnstable_Code_NewWithPosOnlyArgs(
+    int arg0,
+    int arg1,
+    int arg2,
+    int arg3,
+    int arg4,
+    int arg5,
+    ffi.Pointer<PyObject> arg6,
+    ffi.Pointer<PyObject> arg7,
+    ffi.Pointer<PyObject> arg8,
+    ffi.Pointer<PyObject> arg9,
+    ffi.Pointer<PyObject> arg10,
+    ffi.Pointer<PyObject> arg11,
+    ffi.Pointer<PyObject> arg12,
+    ffi.Pointer<PyObject> arg13,
+    ffi.Pointer<PyObject> arg14,
+    int arg15,
+    ffi.Pointer<PyObject> arg16,
+    ffi.Pointer<PyObject> arg17,
+  ) {
+    return _PyUnstable_Code_NewWithPosOnlyArgs(
+      arg0,
+      arg1,
+      arg2,
+      arg3,
+      arg4,
+      arg5,
+      arg6,
+      arg7,
+      arg8,
+      arg9,
+      arg10,
+      arg11,
+      arg12,
+      arg13,
+      arg14,
+      arg15,
+      arg16,
+      arg17,
+    );
+  }
+
+  late final _PyUnstable_Code_NewWithPosOnlyArgsPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<PyCodeObject> Function(
+              ffi.Int,
+              ffi.Int,
+              ffi.Int,
+              ffi.Int,
+              ffi.Int,
+              ffi.Int,
+              ffi.Pointer<PyObject>,
+              ffi.Pointer<PyObject>,
+              ffi.Pointer<PyObject>,
+              ffi.Pointer<PyObject>,
+              ffi.Pointer<PyObject>,
+              ffi.Pointer<PyObject>,
+              ffi.Pointer<PyObject>,
+              ffi.Pointer<PyObject>,
+              ffi.Pointer<PyObject>,
+              ffi.Int,
+              ffi.Pointer<PyObject>,
+              ffi.Pointer<PyObject>)>>('PyUnstable_Code_NewWithPosOnlyArgs');
+  late final _PyUnstable_Code_NewWithPosOnlyArgs =
+      _PyUnstable_Code_NewWithPosOnlyArgsPtr.asFunction<
+          ffi.Pointer<PyCodeObject> Function(
+              int,
+              int,
+              int,
+              int,
+              int,
+              int,
+              ffi.Pointer<PyObject>,
+              ffi.Pointer<PyObject>,
+              ffi.Pointer<PyObject>,
+              ffi.Pointer<PyObject>,
+              ffi.Pointer<PyObject>,
+              ffi.Pointer<PyObject>,
+              ffi.Pointer<PyObject>,
+              ffi.Pointer<PyObject>,
+              ffi.Pointer<PyObject>,
+              int,
+              ffi.Pointer<PyObject>,
+              ffi.Pointer<PyObject>)>();
+
+  ffi.Pointer<PyCodeObject> PyCode_NewEmpty(
+    ffi.Pointer<ffi.Char> filename,
+    ffi.Pointer<ffi.Char> funcname,
+    int firstlineno,
+  ) {
+    return _PyCode_NewEmpty(
+      filename,
+      funcname,
+      firstlineno,
+    );
+  }
+
+  late final _PyCode_NewEmptyPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<PyCodeObject> Function(ffi.Pointer<ffi.Char>,
+              ffi.Pointer<ffi.Char>, ffi.Int)>>('PyCode_NewEmpty');
+  late final _PyCode_NewEmpty = _PyCode_NewEmptyPtr.asFunction<
+      ffi.Pointer<PyCodeObject> Function(
+          ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Char>, int)>();
+
+  int PyCode_Addr2Line(
+    ffi.Pointer<PyCodeObject> arg0,
+    int arg1,
+  ) {
+    return _PyCode_Addr2Line(
+      arg0,
+      arg1,
+    );
+  }
+
+  late final _PyCode_Addr2LinePtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int Function(
+              ffi.Pointer<PyCodeObject>, ffi.Int)>>('PyCode_Addr2Line');
+  late final _PyCode_Addr2Line = _PyCode_Addr2LinePtr.asFunction<
+      int Function(ffi.Pointer<PyCodeObject>, int)>();
+
+  int PyCode_Addr2Location(
+    ffi.Pointer<PyCodeObject> arg0,
+    int arg1,
+    ffi.Pointer<ffi.Int> arg2,
+    ffi.Pointer<ffi.Int> arg3,
+    ffi.Pointer<ffi.Int> arg4,
+    ffi.Pointer<ffi.Int> arg5,
+  ) {
+    return _PyCode_Addr2Location(
+      arg0,
+      arg1,
+      arg2,
+      arg3,
+      arg4,
+      arg5,
+    );
+  }
+
+  late final _PyCode_Addr2LocationPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int Function(
+              ffi.Pointer<PyCodeObject>,
+              ffi.Int,
+              ffi.Pointer<ffi.Int>,
+              ffi.Pointer<ffi.Int>,
+              ffi.Pointer<ffi.Int>,
+              ffi.Pointer<ffi.Int>)>>('PyCode_Addr2Location');
+  late final _PyCode_Addr2Location = _PyCode_Addr2LocationPtr.asFunction<
+      int Function(ffi.Pointer<PyCodeObject>, int, ffi.Pointer<ffi.Int>,
+          ffi.Pointer<ffi.Int>, ffi.Pointer<ffi.Int>, ffi.Pointer<ffi.Int>)>();
+
+  int PyCode_AddWatcher(
+    PyCode_WatchCallback callback,
+  ) {
+    return _PyCode_AddWatcher(
+      callback,
+    );
+  }
+
+  late final _PyCode_AddWatcherPtr =
+      _lookup<ffi.NativeFunction<ffi.Int Function(PyCode_WatchCallback)>>(
+          'PyCode_AddWatcher');
+  late final _PyCode_AddWatcher =
+      _PyCode_AddWatcherPtr.asFunction<int Function(PyCode_WatchCallback)>();
+
+  int PyCode_ClearWatcher(
+    int watcher_id,
+  ) {
+    return _PyCode_ClearWatcher(
+      watcher_id,
+    );
+  }
+
+  late final _PyCode_ClearWatcherPtr =
+      _lookup<ffi.NativeFunction<ffi.Int Function(ffi.Int)>>(
+          'PyCode_ClearWatcher');
+  late final _PyCode_ClearWatcher =
+      _PyCode_ClearWatcherPtr.asFunction<int Function(int)>();
+
+  int PyCode_CheckLineNumber(
+    int lasti,
+    ffi.Pointer<PyCodeAddressRange> bounds,
+  ) {
+    return _PyCode_CheckLineNumber(
+      lasti,
+      bounds,
+    );
+  }
+
+  late final _PyCode_CheckLineNumberPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int Function(ffi.Int,
+              ffi.Pointer<PyCodeAddressRange>)>>('_PyCode_CheckLineNumber');
+  late final _PyCode_CheckLineNumber = _PyCode_CheckLineNumberPtr.asFunction<
+      int Function(int, ffi.Pointer<PyCodeAddressRange>)>();
+
+  ffi.Pointer<PyObject> PyCode_ConstantKey(
+    ffi.Pointer<PyObject> obj,
+  ) {
+    return _PyCode_ConstantKey(
+      obj,
+    );
+  }
+
+  late final _PyCode_ConstantKeyPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<PyObject> Function(
+              ffi.Pointer<PyObject>)>>('_PyCode_ConstantKey');
+  late final _PyCode_ConstantKey = _PyCode_ConstantKeyPtr.asFunction<
+      ffi.Pointer<PyObject> Function(ffi.Pointer<PyObject>)>();
+
+  ffi.Pointer<PyObject> PyCode_Optimize(
+    ffi.Pointer<PyObject> code,
+    ffi.Pointer<PyObject> consts,
+    ffi.Pointer<PyObject> names,
+    ffi.Pointer<PyObject> lnotab,
+  ) {
+    return _PyCode_Optimize(
+      code,
+      consts,
+      names,
+      lnotab,
+    );
+  }
+
+  late final _PyCode_OptimizePtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<PyObject> Function(
+              ffi.Pointer<PyObject>,
+              ffi.Pointer<PyObject>,
+              ffi.Pointer<PyObject>,
+              ffi.Pointer<PyObject>)>>('PyCode_Optimize');
+  late final _PyCode_Optimize = _PyCode_OptimizePtr.asFunction<
+      ffi.Pointer<PyObject> Function(
+          ffi.Pointer<PyObject>,
+          ffi.Pointer<PyObject>,
+          ffi.Pointer<PyObject>,
+          ffi.Pointer<PyObject>)>();
+
+  int PyUnstable_Code_GetExtra(
+    ffi.Pointer<PyObject> code,
+    int index,
+    ffi.Pointer<ffi.Pointer<ffi.Void>> extra,
+  ) {
+    return _PyUnstable_Code_GetExtra(
+      code,
+      index,
+      extra,
+    );
+  }
+
+  late final _PyUnstable_Code_GetExtraPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int Function(ffi.Pointer<PyObject>, Py_ssize_t,
+              ffi.Pointer<ffi.Pointer<ffi.Void>>)>>('PyUnstable_Code_GetExtra');
+  late final _PyUnstable_Code_GetExtra =
+      _PyUnstable_Code_GetExtraPtr.asFunction<
+          int Function(ffi.Pointer<PyObject>, int,
+              ffi.Pointer<ffi.Pointer<ffi.Void>>)>();
+
+  int PyUnstable_Code_SetExtra(
+    ffi.Pointer<PyObject> code,
+    int index,
+    ffi.Pointer<ffi.Void> extra,
+  ) {
+    return _PyUnstable_Code_SetExtra(
+      code,
+      index,
+      extra,
+    );
+  }
+
+  late final _PyUnstable_Code_SetExtraPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int Function(ffi.Pointer<PyObject>, Py_ssize_t,
+              ffi.Pointer<ffi.Void>)>>('PyUnstable_Code_SetExtra');
+  late final _PyUnstable_Code_SetExtra =
+      _PyUnstable_Code_SetExtraPtr.asFunction<
+          int Function(ffi.Pointer<PyObject>, int, ffi.Pointer<ffi.Void>)>();
+
+  ffi.Pointer<PyObject> PyCode_GetCode(
+    ffi.Pointer<PyCodeObject> code,
+  ) {
+    return _PyCode_GetCode(
+      code,
+    );
+  }
+
+  late final _PyCode_GetCodePtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<PyObject> Function(
+              ffi.Pointer<PyCodeObject>)>>('PyCode_GetCode');
+  late final _PyCode_GetCode = _PyCode_GetCodePtr.asFunction<
+      ffi.Pointer<PyObject> Function(ffi.Pointer<PyCodeObject>)>();
+
+  ffi.Pointer<PyObject> PyCode_GetVarnames(
+    ffi.Pointer<PyCodeObject> code,
+  ) {
+    return _PyCode_GetVarnames(
+      code,
+    );
+  }
+
+  late final _PyCode_GetVarnamesPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<PyObject> Function(
+              ffi.Pointer<PyCodeObject>)>>('PyCode_GetVarnames');
+  late final _PyCode_GetVarnames = _PyCode_GetVarnamesPtr.asFunction<
+      ffi.Pointer<PyObject> Function(ffi.Pointer<PyCodeObject>)>();
+
+  ffi.Pointer<PyObject> PyCode_GetCellvars(
+    ffi.Pointer<PyCodeObject> code,
+  ) {
+    return _PyCode_GetCellvars(
+      code,
+    );
+  }
+
+  late final _PyCode_GetCellvarsPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<PyObject> Function(
+              ffi.Pointer<PyCodeObject>)>>('PyCode_GetCellvars');
+  late final _PyCode_GetCellvars = _PyCode_GetCellvarsPtr.asFunction<
+      ffi.Pointer<PyObject> Function(ffi.Pointer<PyCodeObject>)>();
+
+  ffi.Pointer<PyObject> PyCode_GetFreevars(
+    ffi.Pointer<PyCodeObject> code,
+  ) {
+    return _PyCode_GetFreevars(
+      code,
+    );
+  }
+
+  late final _PyCode_GetFreevarsPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<PyObject> Function(
+              ffi.Pointer<PyCodeObject>)>>('PyCode_GetFreevars');
+  late final _PyCode_GetFreevars = _PyCode_GetFreevarsPtr.asFunction<
+      ffi.Pointer<PyObject> Function(ffi.Pointer<PyCodeObject>)>();
+
+  int PyFrame_GetLineNumber(
+    ffi.Pointer<PyFrameObject> arg0,
+  ) {
+    return _PyFrame_GetLineNumber(
+      arg0,
+    );
+  }
+
+  late final _PyFrame_GetLineNumberPtr =
+      _lookup<ffi.NativeFunction<ffi.Int Function(ffi.Pointer<PyFrameObject>)>>(
+          'PyFrame_GetLineNumber');
+  late final _PyFrame_GetLineNumber = _PyFrame_GetLineNumberPtr.asFunction<
+      int Function(ffi.Pointer<PyFrameObject>)>();
+
+  ffi.Pointer<PyCodeObject> PyFrame_GetCode(
+    ffi.Pointer<PyFrameObject> frame,
+  ) {
+    return _PyFrame_GetCode(
+      frame,
+    );
+  }
+
+  late final _PyFrame_GetCodePtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<PyCodeObject> Function(
+              ffi.Pointer<PyFrameObject>)>>('PyFrame_GetCode');
+  late final _PyFrame_GetCode = _PyFrame_GetCodePtr.asFunction<
+      ffi.Pointer<PyCodeObject> Function(ffi.Pointer<PyFrameObject>)>();
+
+  late final ffi.Pointer<PyTypeObject> _PyFrame_Type =
+      _lookup<PyTypeObject>('PyFrame_Type');
+
+  PyTypeObject get PyFrame_Type => _PyFrame_Type.ref;
+
+  ffi.Pointer<PyFrameObject> PyFrame_GetBack(
+    ffi.Pointer<PyFrameObject> frame,
+  ) {
+    return _PyFrame_GetBack(
+      frame,
+    );
+  }
+
+  late final _PyFrame_GetBackPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<PyFrameObject> Function(
+              ffi.Pointer<PyFrameObject>)>>('PyFrame_GetBack');
+  late final _PyFrame_GetBack = _PyFrame_GetBackPtr.asFunction<
+      ffi.Pointer<PyFrameObject> Function(ffi.Pointer<PyFrameObject>)>();
+
+  ffi.Pointer<PyObject> PyFrame_GetLocals(
+    ffi.Pointer<PyFrameObject> frame,
+  ) {
+    return _PyFrame_GetLocals(
+      frame,
+    );
+  }
+
+  late final _PyFrame_GetLocalsPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<PyObject> Function(
+              ffi.Pointer<PyFrameObject>)>>('PyFrame_GetLocals');
+  late final _PyFrame_GetLocals = _PyFrame_GetLocalsPtr.asFunction<
+      ffi.Pointer<PyObject> Function(ffi.Pointer<PyFrameObject>)>();
+
+  ffi.Pointer<PyObject> PyFrame_GetGlobals(
+    ffi.Pointer<PyFrameObject> frame,
+  ) {
+    return _PyFrame_GetGlobals(
+      frame,
+    );
+  }
+
+  late final _PyFrame_GetGlobalsPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<PyObject> Function(
+              ffi.Pointer<PyFrameObject>)>>('PyFrame_GetGlobals');
+  late final _PyFrame_GetGlobals = _PyFrame_GetGlobalsPtr.asFunction<
+      ffi.Pointer<PyObject> Function(ffi.Pointer<PyFrameObject>)>();
+
+  ffi.Pointer<PyObject> PyFrame_GetBuiltins(
+    ffi.Pointer<PyFrameObject> frame,
+  ) {
+    return _PyFrame_GetBuiltins(
+      frame,
+    );
+  }
+
+  late final _PyFrame_GetBuiltinsPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<PyObject> Function(
+              ffi.Pointer<PyFrameObject>)>>('PyFrame_GetBuiltins');
+  late final _PyFrame_GetBuiltins = _PyFrame_GetBuiltinsPtr.asFunction<
+      ffi.Pointer<PyObject> Function(ffi.Pointer<PyFrameObject>)>();
+
+  ffi.Pointer<PyObject> PyFrame_GetGenerator(
+    ffi.Pointer<PyFrameObject> frame,
+  ) {
+    return _PyFrame_GetGenerator(
+      frame,
+    );
+  }
+
+  late final _PyFrame_GetGeneratorPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<PyObject> Function(
+              ffi.Pointer<PyFrameObject>)>>('PyFrame_GetGenerator');
+  late final _PyFrame_GetGenerator = _PyFrame_GetGeneratorPtr.asFunction<
+      ffi.Pointer<PyObject> Function(ffi.Pointer<PyFrameObject>)>();
+
+  int PyFrame_GetLasti(
+    ffi.Pointer<PyFrameObject> frame,
+  ) {
+    return _PyFrame_GetLasti(
+      frame,
+    );
+  }
+
+  late final _PyFrame_GetLastiPtr =
+      _lookup<ffi.NativeFunction<ffi.Int Function(ffi.Pointer<PyFrameObject>)>>(
+          'PyFrame_GetLasti');
+  late final _PyFrame_GetLasti = _PyFrame_GetLastiPtr.asFunction<
+      int Function(ffi.Pointer<PyFrameObject>)>();
+
+  ffi.Pointer<PyObject> PyFrame_GetVar(
+    ffi.Pointer<PyFrameObject> frame,
+    ffi.Pointer<PyObject> name,
+  ) {
+    return _PyFrame_GetVar(
+      frame,
+      name,
+    );
+  }
+
+  late final _PyFrame_GetVarPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<PyObject> Function(ffi.Pointer<PyFrameObject>,
+              ffi.Pointer<PyObject>)>>('PyFrame_GetVar');
+  late final _PyFrame_GetVar = _PyFrame_GetVarPtr.asFunction<
+      ffi.Pointer<PyObject> Function(
+          ffi.Pointer<PyFrameObject>, ffi.Pointer<PyObject>)>();
+
+  ffi.Pointer<PyObject> PyFrame_GetVarString(
+    ffi.Pointer<PyFrameObject> frame,
+    ffi.Pointer<ffi.Char> name,
+  ) {
+    return _PyFrame_GetVarString(
+      frame,
+      name,
+    );
+  }
+
+  late final _PyFrame_GetVarStringPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<PyObject> Function(ffi.Pointer<PyFrameObject>,
+              ffi.Pointer<ffi.Char>)>>('PyFrame_GetVarString');
+  late final _PyFrame_GetVarString = _PyFrame_GetVarStringPtr.asFunction<
+      ffi.Pointer<PyObject> Function(
+          ffi.Pointer<PyFrameObject>, ffi.Pointer<ffi.Char>)>();
+
+  ffi.Pointer<PyObject> PyUnstable_InterpreterFrame_GetCode(
+    ffi.Pointer<_PyInterpreterFrame> frame,
+  ) {
+    return _PyUnstable_InterpreterFrame_GetCode(
+      frame,
+    );
+  }
+
+  late final _PyUnstable_InterpreterFrame_GetCodePtr = _lookup<
+          ffi.NativeFunction<
+              ffi.Pointer<PyObject> Function(
+                  ffi.Pointer<_PyInterpreterFrame>)>>(
+      'PyUnstable_InterpreterFrame_GetCode');
+  late final _PyUnstable_InterpreterFrame_GetCode =
+      _PyUnstable_InterpreterFrame_GetCodePtr.asFunction<
+          ffi.Pointer<PyObject> Function(ffi.Pointer<_PyInterpreterFrame>)>();
+
+  int PyUnstable_InterpreterFrame_GetLasti(
+    ffi.Pointer<_PyInterpreterFrame> frame,
+  ) {
+    return _PyUnstable_InterpreterFrame_GetLasti(
+      frame,
+    );
+  }
+
+  late final _PyUnstable_InterpreterFrame_GetLastiPtr = _lookup<
+          ffi
+          .NativeFunction<ffi.Int Function(ffi.Pointer<_PyInterpreterFrame>)>>(
+      'PyUnstable_InterpreterFrame_GetLasti');
+  late final _PyUnstable_InterpreterFrame_GetLasti =
+      _PyUnstable_InterpreterFrame_GetLastiPtr.asFunction<
+          int Function(ffi.Pointer<_PyInterpreterFrame>)>();
+
+  int PyUnstable_InterpreterFrame_GetLine(
+    ffi.Pointer<_PyInterpreterFrame> frame,
+  ) {
+    return _PyUnstable_InterpreterFrame_GetLine(
+      frame,
+    );
+  }
+
+  late final _PyUnstable_InterpreterFrame_GetLinePtr = _lookup<
+          ffi
+          .NativeFunction<ffi.Int Function(ffi.Pointer<_PyInterpreterFrame>)>>(
+      'PyUnstable_InterpreterFrame_GetLine');
+  late final _PyUnstable_InterpreterFrame_GetLine =
+      _PyUnstable_InterpreterFrame_GetLinePtr.asFunction<
+          int Function(ffi.Pointer<_PyInterpreterFrame>)>();
+
+  int PyTraceBack_Here(
+    ffi.Pointer<PyFrameObject> arg0,
+  ) {
+    return _PyTraceBack_Here(
+      arg0,
+    );
+  }
+
+  late final _PyTraceBack_HerePtr =
+      _lookup<ffi.NativeFunction<ffi.Int Function(ffi.Pointer<PyFrameObject>)>>(
+          'PyTraceBack_Here');
+  late final _PyTraceBack_Here = _PyTraceBack_HerePtr.asFunction<
+      int Function(ffi.Pointer<PyFrameObject>)>();
+
+  int PyTraceBack_Print(
+    ffi.Pointer<PyObject> arg0,
+    ffi.Pointer<PyObject> arg1,
+  ) {
+    return _PyTraceBack_Print(
+      arg0,
+      arg1,
+    );
+  }
+
+  late final _PyTraceBack_PrintPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int Function(ffi.Pointer<PyObject>,
+              ffi.Pointer<PyObject>)>>('PyTraceBack_Print');
+  late final _PyTraceBack_Print = _PyTraceBack_PrintPtr.asFunction<
+      int Function(ffi.Pointer<PyObject>, ffi.Pointer<PyObject>)>();
+
+  late final ffi.Pointer<PyTypeObject> _PyTraceBack_Type =
+      _lookup<PyTypeObject>('PyTraceBack_Type');
+
+  PyTypeObject get PyTraceBack_Type => _PyTraceBack_Type.ref;
+
+  int Py_DisplaySourceLine(
+    ffi.Pointer<PyObject> arg0,
+    ffi.Pointer<PyObject> arg1,
+    int arg2,
+    int arg3,
+    ffi.Pointer<ffi.Int> arg4,
+    ffi.Pointer<ffi.Pointer<PyObject>> arg5,
+  ) {
+    return _Py_DisplaySourceLine(
+      arg0,
+      arg1,
+      arg2,
+      arg3,
+      arg4,
+      arg5,
+    );
+  }
+
+  late final _Py_DisplaySourceLinePtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int Function(
+              ffi.Pointer<PyObject>,
+              ffi.Pointer<PyObject>,
+              ffi.Int,
+              ffi.Int,
+              ffi.Pointer<ffi.Int>,
+              ffi.Pointer<ffi.Pointer<PyObject>>)>>('_Py_DisplaySourceLine');
+  late final _Py_DisplaySourceLine = _Py_DisplaySourceLinePtr.asFunction<
+      int Function(ffi.Pointer<PyObject>, ffi.Pointer<PyObject>, int, int,
+          ffi.Pointer<ffi.Int>, ffi.Pointer<ffi.Pointer<PyObject>>)>();
+
+  void PyTraceback_Add(
+    ffi.Pointer<ffi.Char> arg0,
+    ffi.Pointer<ffi.Char> arg1,
+    int arg2,
+  ) {
+    return _PyTraceback_Add(
+      arg0,
+      arg1,
+      arg2,
+    );
+  }
+
+  late final _PyTraceback_AddPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Void Function(ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Char>,
+              ffi.Int)>>('_PyTraceback_Add');
+  late final _PyTraceback_Add = _PyTraceback_AddPtr.asFunction<
+      void Function(ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Char>, int)>();
+
+  late final ffi.Pointer<PyObject> _Py_EllipsisObject =
+      _lookup<PyObject>('_Py_EllipsisObject');
+
+  PyObject get Py_EllipsisObject => _Py_EllipsisObject.ref;
+
+  late final ffi.Pointer<PyTypeObject> _PySlice_Type =
+      _lookup<PyTypeObject>('PySlice_Type');
+
+  PyTypeObject get PySlice_Type => _PySlice_Type.ref;
+
+  late final ffi.Pointer<PyTypeObject> _PyEllipsis_Type =
+      _lookup<PyTypeObject>('PyEllipsis_Type');
+
+  PyTypeObject get PyEllipsis_Type => _PyEllipsis_Type.ref;
+
+  ffi.Pointer<PyObject> PySlice_New(
+    ffi.Pointer<PyObject> start,
+    ffi.Pointer<PyObject> stop,
+    ffi.Pointer<PyObject> step,
+  ) {
+    return _PySlice_New(
+      start,
+      stop,
+      step,
+    );
+  }
+
+  late final _PySlice_NewPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<PyObject> Function(ffi.Pointer<PyObject>,
+              ffi.Pointer<PyObject>, ffi.Pointer<PyObject>)>>('PySlice_New');
+  late final _PySlice_New = _PySlice_NewPtr.asFunction<
+      ffi.Pointer<PyObject> Function(ffi.Pointer<PyObject>,
+          ffi.Pointer<PyObject>, ffi.Pointer<PyObject>)>();
+
+  ffi.Pointer<PyObject> PySlice_FromIndices(
+    int start,
+    int stop,
+  ) {
+    return _PySlice_FromIndices(
+      start,
+      stop,
+    );
+  }
+
+  late final _PySlice_FromIndicesPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<PyObject> Function(
+              Py_ssize_t, Py_ssize_t)>>('_PySlice_FromIndices');
+  late final _PySlice_FromIndices = _PySlice_FromIndicesPtr.asFunction<
+      ffi.Pointer<PyObject> Function(int, int)>();
+
+  int PySlice_GetLongIndices(
+    ffi.Pointer<PySliceObject> self,
+    ffi.Pointer<PyObject> length,
+    ffi.Pointer<ffi.Pointer<PyObject>> start_ptr,
+    ffi.Pointer<ffi.Pointer<PyObject>> stop_ptr,
+    ffi.Pointer<ffi.Pointer<PyObject>> step_ptr,
+  ) {
+    return _PySlice_GetLongIndices(
+      self,
+      length,
+      start_ptr,
+      stop_ptr,
+      step_ptr,
+    );
+  }
+
+  late final _PySlice_GetLongIndicesPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int Function(
+              ffi.Pointer<PySliceObject>,
+              ffi.Pointer<PyObject>,
+              ffi.Pointer<ffi.Pointer<PyObject>>,
+              ffi.Pointer<ffi.Pointer<PyObject>>,
+              ffi.Pointer<ffi.Pointer<PyObject>>)>>('_PySlice_GetLongIndices');
+  late final _PySlice_GetLongIndices = _PySlice_GetLongIndicesPtr.asFunction<
+      int Function(
+          ffi.Pointer<PySliceObject>,
+          ffi.Pointer<PyObject>,
+          ffi.Pointer<ffi.Pointer<PyObject>>,
+          ffi.Pointer<ffi.Pointer<PyObject>>,
+          ffi.Pointer<ffi.Pointer<PyObject>>)>();
+
+  int PySlice_GetIndices(
+    ffi.Pointer<PyObject> r,
+    int length,
+    ffi.Pointer<Py_ssize_t> start,
+    ffi.Pointer<Py_ssize_t> stop,
+    ffi.Pointer<Py_ssize_t> step,
+  ) {
+    return _PySlice_GetIndices(
+      r,
+      length,
+      start,
+      stop,
+      step,
+    );
+  }
+
+  late final _PySlice_GetIndicesPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int Function(
+              ffi.Pointer<PyObject>,
+              Py_ssize_t,
+              ffi.Pointer<Py_ssize_t>,
+              ffi.Pointer<Py_ssize_t>,
+              ffi.Pointer<Py_ssize_t>)>>('PySlice_GetIndices');
+  late final _PySlice_GetIndices = _PySlice_GetIndicesPtr.asFunction<
+      int Function(ffi.Pointer<PyObject>, int, ffi.Pointer<Py_ssize_t>,
+          ffi.Pointer<Py_ssize_t>, ffi.Pointer<Py_ssize_t>)>();
+
+  int PySlice_GetIndicesEx(
+    ffi.Pointer<PyObject> r,
+    int length,
+    ffi.Pointer<Py_ssize_t> start,
+    ffi.Pointer<Py_ssize_t> stop,
+    ffi.Pointer<Py_ssize_t> step,
+    ffi.Pointer<Py_ssize_t> slicelength,
+  ) {
+    return _PySlice_GetIndicesEx(
+      r,
+      length,
+      start,
+      stop,
+      step,
+      slicelength,
+    );
+  }
+
+  late final _PySlice_GetIndicesExPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int Function(
+              ffi.Pointer<PyObject>,
+              Py_ssize_t,
+              ffi.Pointer<Py_ssize_t>,
+              ffi.Pointer<Py_ssize_t>,
+              ffi.Pointer<Py_ssize_t>,
+              ffi.Pointer<Py_ssize_t>)>>('PySlice_GetIndicesEx');
+  late final _PySlice_GetIndicesEx = _PySlice_GetIndicesExPtr.asFunction<
+      int Function(
+          ffi.Pointer<PyObject>,
+          int,
+          ffi.Pointer<Py_ssize_t>,
+          ffi.Pointer<Py_ssize_t>,
+          ffi.Pointer<Py_ssize_t>,
+          ffi.Pointer<Py_ssize_t>)>();
+
+  int PySlice_Unpack(
+    ffi.Pointer<PyObject> slice,
+    ffi.Pointer<Py_ssize_t> start,
+    ffi.Pointer<Py_ssize_t> stop,
+    ffi.Pointer<Py_ssize_t> step,
+  ) {
+    return _PySlice_Unpack(
+      slice,
+      start,
+      stop,
+      step,
+    );
+  }
+
+  late final _PySlice_UnpackPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int Function(
+              ffi.Pointer<PyObject>,
+              ffi.Pointer<Py_ssize_t>,
+              ffi.Pointer<Py_ssize_t>,
+              ffi.Pointer<Py_ssize_t>)>>('PySlice_Unpack');
+  late final _PySlice_Unpack = _PySlice_UnpackPtr.asFunction<
+      int Function(ffi.Pointer<PyObject>, ffi.Pointer<Py_ssize_t>,
+          ffi.Pointer<Py_ssize_t>, ffi.Pointer<Py_ssize_t>)>();
+
+  int PySlice_AdjustIndices(
+    int length,
+    ffi.Pointer<Py_ssize_t> start,
+    ffi.Pointer<Py_ssize_t> stop,
+    int step,
+  ) {
+    return _PySlice_AdjustIndices(
+      length,
+      start,
+      stop,
+      step,
+    );
+  }
+
+  late final _PySlice_AdjustIndicesPtr = _lookup<
+      ffi.NativeFunction<
+          Py_ssize_t Function(Py_ssize_t, ffi.Pointer<Py_ssize_t>,
+              ffi.Pointer<Py_ssize_t>, Py_ssize_t)>>('PySlice_AdjustIndices');
+  late final _PySlice_AdjustIndices = _PySlice_AdjustIndicesPtr.asFunction<
+      int Function(
+          int, ffi.Pointer<Py_ssize_t>, ffi.Pointer<Py_ssize_t>, int)>();
+
+  late final ffi.Pointer<PyTypeObject> _PyCell_Type =
+      _lookup<PyTypeObject>('PyCell_Type');
+
+  PyTypeObject get PyCell_Type => _PyCell_Type.ref;
+
+  ffi.Pointer<PyObject> PyCell_New(
+    ffi.Pointer<PyObject> arg0,
+  ) {
+    return _PyCell_New(
+      arg0,
+    );
+  }
+
+  late final _PyCell_NewPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<PyObject> Function(ffi.Pointer<PyObject>)>>('PyCell_New');
+  late final _PyCell_New = _PyCell_NewPtr.asFunction<
+      ffi.Pointer<PyObject> Function(ffi.Pointer<PyObject>)>();
+
+  ffi.Pointer<PyObject> PyCell_Get(
+    ffi.Pointer<PyObject> arg0,
+  ) {
+    return _PyCell_Get(
+      arg0,
+    );
+  }
+
+  late final _PyCell_GetPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<PyObject> Function(ffi.Pointer<PyObject>)>>('PyCell_Get');
+  late final _PyCell_Get = _PyCell_GetPtr.asFunction<
+      ffi.Pointer<PyObject> Function(ffi.Pointer<PyObject>)>();
+
+  int PyCell_Set(
+    ffi.Pointer<PyObject> arg0,
+    ffi.Pointer<PyObject> arg1,
+  ) {
+    return _PyCell_Set(
+      arg0,
+      arg1,
+    );
+  }
+
+  late final _PyCell_SetPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int Function(
+              ffi.Pointer<PyObject>, ffi.Pointer<PyObject>)>>('PyCell_Set');
+  late final _PyCell_Set = _PyCell_SetPtr.asFunction<
+      int Function(ffi.Pointer<PyObject>, ffi.Pointer<PyObject>)>();
+
+  late final ffi.Pointer<PyTypeObject> _PySeqIter_Type =
+      _lookup<PyTypeObject>('PySeqIter_Type');
+
+  PyTypeObject get PySeqIter_Type => _PySeqIter_Type.ref;
+
+  late final ffi.Pointer<PyTypeObject> _PyCallIter_Type =
+      _lookup<PyTypeObject>('PyCallIter_Type');
+
+  PyTypeObject get PyCallIter_Type => _PyCallIter_Type.ref;
+
+  ffi.Pointer<PyObject> PySeqIter_New(
+    ffi.Pointer<PyObject> arg0,
+  ) {
+    return _PySeqIter_New(
+      arg0,
+    );
+  }
+
+  late final _PySeqIter_NewPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<PyObject> Function(
+              ffi.Pointer<PyObject>)>>('PySeqIter_New');
+  late final _PySeqIter_New = _PySeqIter_NewPtr.asFunction<
+      ffi.Pointer<PyObject> Function(ffi.Pointer<PyObject>)>();
+
+  ffi.Pointer<PyObject> PyCallIter_New(
+    ffi.Pointer<PyObject> arg0,
+    ffi.Pointer<PyObject> arg1,
+  ) {
+    return _PyCallIter_New(
+      arg0,
+      arg1,
+    );
+  }
+
+  late final _PyCallIter_NewPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<PyObject> Function(
+              ffi.Pointer<PyObject>, ffi.Pointer<PyObject>)>>('PyCallIter_New');
+  late final _PyCallIter_New = _PyCallIter_NewPtr.asFunction<
+      ffi.Pointer<PyObject> Function(
+          ffi.Pointer<PyObject>, ffi.Pointer<PyObject>)>();
+
+  late final ffi.Pointer<PyTypeObject> _PyGen_Type =
+      _lookup<PyTypeObject>('PyGen_Type');
+
+  PyTypeObject get PyGen_Type => _PyGen_Type.ref;
+
+  ffi.Pointer<PyObject> PyGen_New(
+    ffi.Pointer<PyFrameObject> arg0,
+  ) {
+    return _PyGen_New(
+      arg0,
+    );
+  }
+
+  late final _PyGen_NewPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<PyObject> Function(
+              ffi.Pointer<PyFrameObject>)>>('PyGen_New');
+  late final _PyGen_New = _PyGen_NewPtr.asFunction<
+      ffi.Pointer<PyObject> Function(ffi.Pointer<PyFrameObject>)>();
+
+  ffi.Pointer<PyObject> PyGen_NewWithQualName(
+    ffi.Pointer<PyFrameObject> arg0,
+    ffi.Pointer<PyObject> name,
+    ffi.Pointer<PyObject> qualname,
+  ) {
+    return _PyGen_NewWithQualName(
+      arg0,
+      name,
+      qualname,
+    );
+  }
+
+  late final _PyGen_NewWithQualNamePtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<PyObject> Function(
+              ffi.Pointer<PyFrameObject>,
+              ffi.Pointer<PyObject>,
+              ffi.Pointer<PyObject>)>>('PyGen_NewWithQualName');
+  late final _PyGen_NewWithQualName = _PyGen_NewWithQualNamePtr.asFunction<
+      ffi.Pointer<PyObject> Function(ffi.Pointer<PyFrameObject>,
+          ffi.Pointer<PyObject>, ffi.Pointer<PyObject>)>();
+
+  int PyGen_SetStopIterationValue(
+    ffi.Pointer<PyObject> arg0,
+  ) {
+    return _PyGen_SetStopIterationValue(
+      arg0,
+    );
+  }
+
+  late final _PyGen_SetStopIterationValuePtr =
+      _lookup<ffi.NativeFunction<ffi.Int Function(ffi.Pointer<PyObject>)>>(
+          '_PyGen_SetStopIterationValue');
+  late final _PyGen_SetStopIterationValue = _PyGen_SetStopIterationValuePtr
+      .asFunction<int Function(ffi.Pointer<PyObject>)>();
+
+  int PyGen_FetchStopIterationValue(
+    ffi.Pointer<ffi.Pointer<PyObject>> arg0,
+  ) {
+    return _PyGen_FetchStopIterationValue(
+      arg0,
+    );
+  }
+
+  late final _PyGen_FetchStopIterationValuePtr = _lookup<
+          ffi.NativeFunction<
+              ffi.Int Function(ffi.Pointer<ffi.Pointer<PyObject>>)>>(
+      '_PyGen_FetchStopIterationValue');
+  late final _PyGen_FetchStopIterationValue = _PyGen_FetchStopIterationValuePtr
+      .asFunction<int Function(ffi.Pointer<ffi.Pointer<PyObject>>)>();
+
+  void PyGen_Finalize(
+    ffi.Pointer<PyObject> self,
+  ) {
+    return _PyGen_Finalize(
+      self,
+    );
+  }
+
+  late final _PyGen_FinalizePtr =
+      _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Pointer<PyObject>)>>(
+          '_PyGen_Finalize');
+  late final _PyGen_Finalize =
+      _PyGen_FinalizePtr.asFunction<void Function(ffi.Pointer<PyObject>)>();
+
+  ffi.Pointer<PyCodeObject> PyGen_GetCode(
+    ffi.Pointer<PyGenObject> gen,
+  ) {
+    return _PyGen_GetCode(
+      gen,
+    );
+  }
+
+  late final _PyGen_GetCodePtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<PyCodeObject> Function(
+              ffi.Pointer<PyGenObject>)>>('PyGen_GetCode');
+  late final _PyGen_GetCode = _PyGen_GetCodePtr.asFunction<
+      ffi.Pointer<PyCodeObject> Function(ffi.Pointer<PyGenObject>)>();
+
+  late final ffi.Pointer<PyTypeObject> _PyCoro_Type =
+      _lookup<PyTypeObject>('PyCoro_Type');
+
+  PyTypeObject get PyCoro_Type => _PyCoro_Type.ref;
+
+  late final ffi.Pointer<PyTypeObject> _PyCoroWrapper_Type =
+      _lookup<PyTypeObject>('_PyCoroWrapper_Type');
+
+  PyTypeObject get PyCoroWrapper_Type => _PyCoroWrapper_Type.ref;
+
+  ffi.Pointer<PyObject> PyCoro_New(
+    ffi.Pointer<PyFrameObject> arg0,
+    ffi.Pointer<PyObject> name,
+    ffi.Pointer<PyObject> qualname,
+  ) {
+    return _PyCoro_New(
+      arg0,
+      name,
+      qualname,
+    );
+  }
+
+  late final _PyCoro_NewPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<PyObject> Function(ffi.Pointer<PyFrameObject>,
+              ffi.Pointer<PyObject>, ffi.Pointer<PyObject>)>>('PyCoro_New');
+  late final _PyCoro_New = _PyCoro_NewPtr.asFunction<
+      ffi.Pointer<PyObject> Function(ffi.Pointer<PyFrameObject>,
+          ffi.Pointer<PyObject>, ffi.Pointer<PyObject>)>();
+
+  late final ffi.Pointer<PyTypeObject> _PyAsyncGen_Type =
+      _lookup<PyTypeObject>('PyAsyncGen_Type');
+
+  PyTypeObject get PyAsyncGen_Type => _PyAsyncGen_Type.ref;
+
+  late final ffi.Pointer<PyTypeObject> _PyAsyncGenASend_Type =
+      _lookup<PyTypeObject>('_PyAsyncGenASend_Type');
+
+  PyTypeObject get PyAsyncGenASend_Type => _PyAsyncGenASend_Type.ref;
+
+  late final ffi.Pointer<PyTypeObject> _PyAsyncGenWrappedValue_Type =
+      _lookup<PyTypeObject>('_PyAsyncGenWrappedValue_Type');
+
+  PyTypeObject get PyAsyncGenWrappedValue_Type =>
+      _PyAsyncGenWrappedValue_Type.ref;
+
+  late final ffi.Pointer<PyTypeObject> _PyAsyncGenAThrow_Type =
+      _lookup<PyTypeObject>('_PyAsyncGenAThrow_Type');
+
+  PyTypeObject get PyAsyncGenAThrow_Type => _PyAsyncGenAThrow_Type.ref;
+
+  ffi.Pointer<PyObject> PyAsyncGen_New(
+    ffi.Pointer<PyFrameObject> arg0,
+    ffi.Pointer<PyObject> name,
+    ffi.Pointer<PyObject> qualname,
+  ) {
+    return _PyAsyncGen_New(
+      arg0,
+      name,
+      qualname,
+    );
+  }
+
+  late final _PyAsyncGen_NewPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<PyObject> Function(ffi.Pointer<PyFrameObject>,
+              ffi.Pointer<PyObject>, ffi.Pointer<PyObject>)>>('PyAsyncGen_New');
+  late final _PyAsyncGen_New = _PyAsyncGen_NewPtr.asFunction<
+      ffi.Pointer<PyObject> Function(ffi.Pointer<PyFrameObject>,
+          ffi.Pointer<PyObject>, ffi.Pointer<PyObject>)>();
+
+  late final ffi.Pointer<PyTypeObject> _PyClassMethodDescr_Type =
+      _lookup<PyTypeObject>('PyClassMethodDescr_Type');
+
+  PyTypeObject get PyClassMethodDescr_Type => _PyClassMethodDescr_Type.ref;
+
+  late final ffi.Pointer<PyTypeObject> _PyGetSetDescr_Type =
+      _lookup<PyTypeObject>('PyGetSetDescr_Type');
+
+  PyTypeObject get PyGetSetDescr_Type => _PyGetSetDescr_Type.ref;
+
+  late final ffi.Pointer<PyTypeObject> _PyMemberDescr_Type =
+      _lookup<PyTypeObject>('PyMemberDescr_Type');
+
+  PyTypeObject get PyMemberDescr_Type => _PyMemberDescr_Type.ref;
+
+  late final ffi.Pointer<PyTypeObject> _PyMethodDescr_Type =
+      _lookup<PyTypeObject>('PyMethodDescr_Type');
+
+  PyTypeObject get PyMethodDescr_Type => _PyMethodDescr_Type.ref;
+
+  late final ffi.Pointer<PyTypeObject> _PyWrapperDescr_Type =
+      _lookup<PyTypeObject>('PyWrapperDescr_Type');
+
+  PyTypeObject get PyWrapperDescr_Type => _PyWrapperDescr_Type.ref;
+
+  late final ffi.Pointer<PyTypeObject> _PyDictProxy_Type =
+      _lookup<PyTypeObject>('PyDictProxy_Type');
+
+  PyTypeObject get PyDictProxy_Type => _PyDictProxy_Type.ref;
+
+  late final ffi.Pointer<PyTypeObject> _PyProperty_Type =
+      _lookup<PyTypeObject>('PyProperty_Type');
+
+  PyTypeObject get PyProperty_Type => _PyProperty_Type.ref;
+
+  ffi.Pointer<PyObject> PyDescr_NewMethod(
+    ffi.Pointer<PyTypeObject> arg0,
+    ffi.Pointer<PyMethodDef> arg1,
+  ) {
+    return _PyDescr_NewMethod(
+      arg0,
+      arg1,
+    );
+  }
+
+  late final _PyDescr_NewMethodPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<PyObject> Function(ffi.Pointer<PyTypeObject>,
+              ffi.Pointer<PyMethodDef>)>>('PyDescr_NewMethod');
+  late final _PyDescr_NewMethod = _PyDescr_NewMethodPtr.asFunction<
+      ffi.Pointer<PyObject> Function(
+          ffi.Pointer<PyTypeObject>, ffi.Pointer<PyMethodDef>)>();
+
+  ffi.Pointer<PyObject> PyDescr_NewClassMethod(
+    ffi.Pointer<PyTypeObject> arg0,
+    ffi.Pointer<PyMethodDef> arg1,
+  ) {
+    return _PyDescr_NewClassMethod(
+      arg0,
+      arg1,
+    );
+  }
+
+  late final _PyDescr_NewClassMethodPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<PyObject> Function(ffi.Pointer<PyTypeObject>,
+              ffi.Pointer<PyMethodDef>)>>('PyDescr_NewClassMethod');
+  late final _PyDescr_NewClassMethod = _PyDescr_NewClassMethodPtr.asFunction<
+      ffi.Pointer<PyObject> Function(
+          ffi.Pointer<PyTypeObject>, ffi.Pointer<PyMethodDef>)>();
+
+  ffi.Pointer<PyObject> PyDescr_NewMember(
+    ffi.Pointer<PyTypeObject> arg0,
+    ffi.Pointer<PyMemberDef> arg1,
+  ) {
+    return _PyDescr_NewMember(
+      arg0,
+      arg1,
+    );
+  }
+
+  late final _PyDescr_NewMemberPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<PyObject> Function(ffi.Pointer<PyTypeObject>,
+              ffi.Pointer<PyMemberDef>)>>('PyDescr_NewMember');
+  late final _PyDescr_NewMember = _PyDescr_NewMemberPtr.asFunction<
+      ffi.Pointer<PyObject> Function(
+          ffi.Pointer<PyTypeObject>, ffi.Pointer<PyMemberDef>)>();
+
+  ffi.Pointer<PyObject> PyDescr_NewGetSet(
+    ffi.Pointer<PyTypeObject> arg0,
+    ffi.Pointer<PyGetSetDef> arg1,
+  ) {
+    return _PyDescr_NewGetSet(
+      arg0,
+      arg1,
+    );
+  }
+
+  late final _PyDescr_NewGetSetPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<PyObject> Function(ffi.Pointer<PyTypeObject>,
+              ffi.Pointer<PyGetSetDef>)>>('PyDescr_NewGetSet');
+  late final _PyDescr_NewGetSet = _PyDescr_NewGetSetPtr.asFunction<
+      ffi.Pointer<PyObject> Function(
+          ffi.Pointer<PyTypeObject>, ffi.Pointer<PyGetSetDef>)>();
+
+  ffi.Pointer<PyObject> PyDictProxy_New(
+    ffi.Pointer<PyObject> arg0,
+  ) {
+    return _PyDictProxy_New(
+      arg0,
+    );
+  }
+
+  late final _PyDictProxy_NewPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<PyObject> Function(
+              ffi.Pointer<PyObject>)>>('PyDictProxy_New');
+  late final _PyDictProxy_New = _PyDictProxy_NewPtr.asFunction<
+      ffi.Pointer<PyObject> Function(ffi.Pointer<PyObject>)>();
+
+  ffi.Pointer<PyObject> PyWrapper_New(
+    ffi.Pointer<PyObject> arg0,
+    ffi.Pointer<PyObject> arg1,
+  ) {
+    return _PyWrapper_New(
+      arg0,
+      arg1,
+    );
+  }
+
+  late final _PyWrapper_NewPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<PyObject> Function(
+              ffi.Pointer<PyObject>, ffi.Pointer<PyObject>)>>('PyWrapper_New');
+  late final _PyWrapper_New = _PyWrapper_NewPtr.asFunction<
+      ffi.Pointer<PyObject> Function(
+          ffi.Pointer<PyObject>, ffi.Pointer<PyObject>)>();
+
+  ffi.Pointer<PyObject> PyMember_GetOne(
+    ffi.Pointer<ffi.Char> arg0,
+    ffi.Pointer<PyMemberDef> arg1,
+  ) {
+    return _PyMember_GetOne(
+      arg0,
+      arg1,
+    );
+  }
+
+  late final _PyMember_GetOnePtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<PyObject> Function(ffi.Pointer<ffi.Char>,
+              ffi.Pointer<PyMemberDef>)>>('PyMember_GetOne');
+  late final _PyMember_GetOne = _PyMember_GetOnePtr.asFunction<
+      ffi.Pointer<PyObject> Function(
+          ffi.Pointer<ffi.Char>, ffi.Pointer<PyMemberDef>)>();
+
+  int PyMember_SetOne(
+    ffi.Pointer<ffi.Char> arg0,
+    ffi.Pointer<PyMemberDef> arg1,
+    ffi.Pointer<PyObject> arg2,
+  ) {
+    return _PyMember_SetOne(
+      arg0,
+      arg1,
+      arg2,
+    );
+  }
+
+  late final _PyMember_SetOnePtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int Function(ffi.Pointer<ffi.Char>, ffi.Pointer<PyMemberDef>,
+              ffi.Pointer<PyObject>)>>('PyMember_SetOne');
+  late final _PyMember_SetOne = _PyMember_SetOnePtr.asFunction<
+      int Function(ffi.Pointer<ffi.Char>, ffi.Pointer<PyMemberDef>,
+          ffi.Pointer<PyObject>)>();
+
+  late final ffi.Pointer<PyTypeObject> _PyMethodWrapper_Type =
+      _lookup<PyTypeObject>('_PyMethodWrapper_Type');
+
+  PyTypeObject get PyMethodWrapper_Type => _PyMethodWrapper_Type.ref;
+
+  ffi.Pointer<PyObject> PyDescr_NewWrapper(
+    ffi.Pointer<PyTypeObject> arg0,
+    ffi.Pointer<wrapperbase> arg1,
+    ffi.Pointer<ffi.Void> arg2,
+  ) {
+    return _PyDescr_NewWrapper(
+      arg0,
+      arg1,
+      arg2,
+    );
+  }
+
+  late final _PyDescr_NewWrapperPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<PyObject> Function(
+              ffi.Pointer<PyTypeObject>,
+              ffi.Pointer<wrapperbase>,
+              ffi.Pointer<ffi.Void>)>>('PyDescr_NewWrapper');
+  late final _PyDescr_NewWrapper = _PyDescr_NewWrapperPtr.asFunction<
+      ffi.Pointer<PyObject> Function(ffi.Pointer<PyTypeObject>,
+          ffi.Pointer<wrapperbase>, ffi.Pointer<ffi.Void>)>();
+
+  int PyDescr_IsData(
+    ffi.Pointer<PyObject> arg0,
+  ) {
+    return _PyDescr_IsData(
+      arg0,
+    );
+  }
+
+  late final _PyDescr_IsDataPtr =
+      _lookup<ffi.NativeFunction<ffi.Int Function(ffi.Pointer<PyObject>)>>(
+          'PyDescr_IsData');
+  late final _PyDescr_IsData =
+      _PyDescr_IsDataPtr.asFunction<int Function(ffi.Pointer<PyObject>)>();
+
+  ffi.Pointer<PyObject> Py_GenericAlias(
+    ffi.Pointer<PyObject> arg0,
+    ffi.Pointer<PyObject> arg1,
+  ) {
+    return _Py_GenericAlias(
+      arg0,
+      arg1,
+    );
+  }
+
+  late final _Py_GenericAliasPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<PyObject> Function(ffi.Pointer<PyObject>,
+              ffi.Pointer<PyObject>)>>('Py_GenericAlias');
+  late final _Py_GenericAlias = _Py_GenericAliasPtr.asFunction<
+      ffi.Pointer<PyObject> Function(
+          ffi.Pointer<PyObject>, ffi.Pointer<PyObject>)>();
+
+  late final ffi.Pointer<PyTypeObject> _Py_GenericAliasType =
+      _lookup<PyTypeObject>('Py_GenericAliasType');
+
+  PyTypeObject get Py_GenericAliasType => _Py_GenericAliasType.ref;
+
+  int PyErr_WarnEx(
+    ffi.Pointer<PyObject> category,
+    ffi.Pointer<ffi.Char> message,
+    int stack_level,
+  ) {
+    return _PyErr_WarnEx(
+      category,
+      message,
+      stack_level,
+    );
+  }
+
+  late final _PyErr_WarnExPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int Function(ffi.Pointer<PyObject>, ffi.Pointer<ffi.Char>,
+              Py_ssize_t)>>('PyErr_WarnEx');
+  late final _PyErr_WarnEx = _PyErr_WarnExPtr.asFunction<
+      int Function(ffi.Pointer<PyObject>, ffi.Pointer<ffi.Char>, int)>();
+
+  int PyErr_WarnFormat(
+    ffi.Pointer<PyObject> category,
+    int stack_level,
+    ffi.Pointer<ffi.Char> format,
+  ) {
+    return _PyErr_WarnFormat(
+      category,
+      stack_level,
+      format,
+    );
+  }
+
+  late final _PyErr_WarnFormatPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int Function(ffi.Pointer<PyObject>, Py_ssize_t,
+              ffi.Pointer<ffi.Char>)>>('PyErr_WarnFormat');
+  late final _PyErr_WarnFormat = _PyErr_WarnFormatPtr.asFunction<
+      int Function(ffi.Pointer<PyObject>, int, ffi.Pointer<ffi.Char>)>();
+
+  int PyErr_ResourceWarning(
+    ffi.Pointer<PyObject> source,
+    int stack_level,
+    ffi.Pointer<ffi.Char> format,
+  ) {
+    return _PyErr_ResourceWarning(
+      source,
+      stack_level,
+      format,
+    );
+  }
+
+  late final _PyErr_ResourceWarningPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int Function(ffi.Pointer<PyObject>, Py_ssize_t,
+              ffi.Pointer<ffi.Char>)>>('PyErr_ResourceWarning');
+  late final _PyErr_ResourceWarning = _PyErr_ResourceWarningPtr.asFunction<
+      int Function(ffi.Pointer<PyObject>, int, ffi.Pointer<ffi.Char>)>();
+
+  int PyErr_WarnExplicit(
+    ffi.Pointer<PyObject> category,
+    ffi.Pointer<ffi.Char> message,
+    ffi.Pointer<ffi.Char> filename,
+    int lineno,
+    ffi.Pointer<ffi.Char> module,
+    ffi.Pointer<PyObject> registry,
+  ) {
+    return _PyErr_WarnExplicit(
+      category,
+      message,
+      filename,
+      lineno,
+      module,
+      registry,
+    );
+  }
+
+  late final _PyErr_WarnExplicitPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int Function(
+              ffi.Pointer<PyObject>,
+              ffi.Pointer<ffi.Char>,
+              ffi.Pointer<ffi.Char>,
+              ffi.Int,
+              ffi.Pointer<ffi.Char>,
+              ffi.Pointer<PyObject>)>>('PyErr_WarnExplicit');
+  late final _PyErr_WarnExplicit = _PyErr_WarnExplicitPtr.asFunction<
+      int Function(
+          ffi.Pointer<PyObject>,
+          ffi.Pointer<ffi.Char>,
+          ffi.Pointer<ffi.Char>,
+          int,
+          ffi.Pointer<ffi.Char>,
+          ffi.Pointer<PyObject>)>();
+
+  int PyErr_WarnExplicitObject(
+    ffi.Pointer<PyObject> category,
+    ffi.Pointer<PyObject> message,
+    ffi.Pointer<PyObject> filename,
+    int lineno,
+    ffi.Pointer<PyObject> module,
+    ffi.Pointer<PyObject> registry,
+  ) {
+    return _PyErr_WarnExplicitObject(
+      category,
+      message,
+      filename,
+      lineno,
+      module,
+      registry,
+    );
+  }
+
+  late final _PyErr_WarnExplicitObjectPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int Function(
+              ffi.Pointer<PyObject>,
+              ffi.Pointer<PyObject>,
+              ffi.Pointer<PyObject>,
+              ffi.Int,
+              ffi.Pointer<PyObject>,
+              ffi.Pointer<PyObject>)>>('PyErr_WarnExplicitObject');
+  late final _PyErr_WarnExplicitObject =
+      _PyErr_WarnExplicitObjectPtr.asFunction<
+          int Function(
+              ffi.Pointer<PyObject>,
+              ffi.Pointer<PyObject>,
+              ffi.Pointer<PyObject>,
+              int,
+              ffi.Pointer<PyObject>,
+              ffi.Pointer<PyObject>)>();
+
+  int PyErr_WarnExplicitFormat(
+    ffi.Pointer<PyObject> category,
+    ffi.Pointer<ffi.Char> filename,
+    int lineno,
+    ffi.Pointer<ffi.Char> module,
+    ffi.Pointer<PyObject> registry,
+    ffi.Pointer<ffi.Char> format,
+  ) {
+    return _PyErr_WarnExplicitFormat(
+      category,
+      filename,
+      lineno,
+      module,
+      registry,
+      format,
+    );
+  }
+
+  late final _PyErr_WarnExplicitFormatPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int Function(
+              ffi.Pointer<PyObject>,
+              ffi.Pointer<ffi.Char>,
+              ffi.Int,
+              ffi.Pointer<ffi.Char>,
+              ffi.Pointer<PyObject>,
+              ffi.Pointer<ffi.Char>)>>('PyErr_WarnExplicitFormat');
+  late final _PyErr_WarnExplicitFormat =
+      _PyErr_WarnExplicitFormatPtr.asFunction<
+          int Function(
+              ffi.Pointer<PyObject>,
+              ffi.Pointer<ffi.Char>,
+              int,
+              ffi.Pointer<ffi.Char>,
+              ffi.Pointer<PyObject>,
+              ffi.Pointer<ffi.Char>)>();
+
+  late final ffi.Pointer<PyTypeObject> _PyWeakref_RefType =
+      _lookup<PyTypeObject>('_PyWeakref_RefType');
+
+  PyTypeObject get PyWeakref_RefType => _PyWeakref_RefType.ref;
+
+  late final ffi.Pointer<PyTypeObject> _PyWeakref_ProxyType =
+      _lookup<PyTypeObject>('_PyWeakref_ProxyType');
+
+  PyTypeObject get PyWeakref_ProxyType => _PyWeakref_ProxyType.ref;
+
+  late final ffi.Pointer<PyTypeObject> _PyWeakref_CallableProxyType =
+      _lookup<PyTypeObject>('_PyWeakref_CallableProxyType');
+
+  PyTypeObject get PyWeakref_CallableProxyType =>
+      _PyWeakref_CallableProxyType.ref;
+
+  ffi.Pointer<PyObject> PyWeakref_NewRef(
+    ffi.Pointer<PyObject> ob,
+    ffi.Pointer<PyObject> callback,
+  ) {
+    return _PyWeakref_NewRef(
+      ob,
+      callback,
+    );
+  }
+
+  late final _PyWeakref_NewRefPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<PyObject> Function(ffi.Pointer<PyObject>,
+              ffi.Pointer<PyObject>)>>('PyWeakref_NewRef');
+  late final _PyWeakref_NewRef = _PyWeakref_NewRefPtr.asFunction<
+      ffi.Pointer<PyObject> Function(
+          ffi.Pointer<PyObject>, ffi.Pointer<PyObject>)>();
+
+  ffi.Pointer<PyObject> PyWeakref_NewProxy(
+    ffi.Pointer<PyObject> ob,
+    ffi.Pointer<PyObject> callback,
+  ) {
+    return _PyWeakref_NewProxy(
+      ob,
+      callback,
+    );
+  }
+
+  late final _PyWeakref_NewProxyPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<PyObject> Function(ffi.Pointer<PyObject>,
+              ffi.Pointer<PyObject>)>>('PyWeakref_NewProxy');
+  late final _PyWeakref_NewProxy = _PyWeakref_NewProxyPtr.asFunction<
+      ffi.Pointer<PyObject> Function(
+          ffi.Pointer<PyObject>, ffi.Pointer<PyObject>)>();
+
+  ffi.Pointer<PyObject> PyWeakref_GetObject(
+    ffi.Pointer<PyObject> ref,
+  ) {
+    return _PyWeakref_GetObject(
+      ref,
+    );
+  }
+
+  late final _PyWeakref_GetObjectPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<PyObject> Function(
+              ffi.Pointer<PyObject>)>>('PyWeakref_GetObject');
+  late final _PyWeakref_GetObject = _PyWeakref_GetObjectPtr.asFunction<
+      ffi.Pointer<PyObject> Function(ffi.Pointer<PyObject>)>();
+
+  int PyWeakref_GetWeakrefCount(
+    ffi.Pointer<PyWeakReference> head,
+  ) {
+    return _PyWeakref_GetWeakrefCount(
+      head,
+    );
+  }
+
+  late final _PyWeakref_GetWeakrefCountPtr = _lookup<
+          ffi
+          .NativeFunction<Py_ssize_t Function(ffi.Pointer<PyWeakReference>)>>(
+      '_PyWeakref_GetWeakrefCount');
+  late final _PyWeakref_GetWeakrefCount = _PyWeakref_GetWeakrefCountPtr
+      .asFunction<int Function(ffi.Pointer<PyWeakReference>)>();
+
+  void PyWeakref_ClearRef(
+    ffi.Pointer<PyWeakReference> self,
+  ) {
+    return _PyWeakref_ClearRef(
+      self,
+    );
+  }
+
+  late final _PyWeakref_ClearRefPtr = _lookup<
+          ffi.NativeFunction<ffi.Void Function(ffi.Pointer<PyWeakReference>)>>(
+      '_PyWeakref_ClearRef');
+  late final _PyWeakref_ClearRef = _PyWeakref_ClearRefPtr.asFunction<
+      void Function(ffi.Pointer<PyWeakReference>)>();
+
+  late final ffi.Pointer<ffi.Pointer<ffi.Char>> _PyStructSequence_UnnamedField =
+      _lookup<ffi.Pointer<ffi.Char>>('PyStructSequence_UnnamedField');
+
+  ffi.Pointer<ffi.Char> get PyStructSequence_UnnamedField =>
+      _PyStructSequence_UnnamedField.value;
+
+  void PyStructSequence_InitType(
+    ffi.Pointer<PyTypeObject> type,
+    ffi.Pointer<PyStructSequence_Desc> desc,
+  ) {
+    return _PyStructSequence_InitType(
+      type,
+      desc,
+    );
+  }
+
+  late final _PyStructSequence_InitTypePtr = _lookup<
+          ffi.NativeFunction<
+              ffi.Void Function(ffi.Pointer<PyTypeObject>,
+                  ffi.Pointer<PyStructSequence_Desc>)>>(
+      'PyStructSequence_InitType');
+  late final _PyStructSequence_InitType =
+      _PyStructSequence_InitTypePtr.asFunction<
+          void Function(
+              ffi.Pointer<PyTypeObject>, ffi.Pointer<PyStructSequence_Desc>)>();
+
+  int PyStructSequence_InitType2(
+    ffi.Pointer<PyTypeObject> type,
+    ffi.Pointer<PyStructSequence_Desc> desc,
+  ) {
+    return _PyStructSequence_InitType2(
+      type,
+      desc,
+    );
+  }
+
+  late final _PyStructSequence_InitType2Ptr = _lookup<
+          ffi.NativeFunction<
+              ffi.Int Function(ffi.Pointer<PyTypeObject>,
+                  ffi.Pointer<PyStructSequence_Desc>)>>(
+      'PyStructSequence_InitType2');
+  late final _PyStructSequence_InitType2 =
+      _PyStructSequence_InitType2Ptr.asFunction<
+          int Function(
+              ffi.Pointer<PyTypeObject>, ffi.Pointer<PyStructSequence_Desc>)>();
+
+  ffi.Pointer<PyTypeObject> PyStructSequence_NewType(
+    ffi.Pointer<PyStructSequence_Desc> desc,
+  ) {
+    return _PyStructSequence_NewType(
+      desc,
+    );
+  }
+
+  late final _PyStructSequence_NewTypePtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<PyTypeObject> Function(
+              ffi.Pointer<PyStructSequence_Desc>)>>('PyStructSequence_NewType');
+  late final _PyStructSequence_NewType =
+      _PyStructSequence_NewTypePtr.asFunction<
+          ffi.Pointer<PyTypeObject> Function(
+              ffi.Pointer<PyStructSequence_Desc>)>();
+
+  ffi.Pointer<PyObject> PyStructSequence_New(
+    ffi.Pointer<PyTypeObject> type,
+  ) {
+    return _PyStructSequence_New(
+      type,
+    );
+  }
+
+  late final _PyStructSequence_NewPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<PyObject> Function(
+              ffi.Pointer<PyTypeObject>)>>('PyStructSequence_New');
+  late final _PyStructSequence_New = _PyStructSequence_NewPtr.asFunction<
+      ffi.Pointer<PyObject> Function(ffi.Pointer<PyTypeObject>)>();
+
+  void PyStructSequence_SetItem(
+    ffi.Pointer<PyObject> arg0,
+    int arg1,
+    ffi.Pointer<PyObject> arg2,
+  ) {
+    return _PyStructSequence_SetItem(
+      arg0,
+      arg1,
+      arg2,
+    );
+  }
+
+  late final _PyStructSequence_SetItemPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Void Function(ffi.Pointer<PyObject>, Py_ssize_t,
+              ffi.Pointer<PyObject>)>>('PyStructSequence_SetItem');
+  late final _PyStructSequence_SetItem =
+      _PyStructSequence_SetItemPtr.asFunction<
+          void Function(ffi.Pointer<PyObject>, int, ffi.Pointer<PyObject>)>();
+
+  ffi.Pointer<PyObject> PyStructSequence_GetItem(
+    ffi.Pointer<PyObject> arg0,
+    int arg1,
+  ) {
+    return _PyStructSequence_GetItem(
+      arg0,
+      arg1,
+    );
+  }
+
+  late final _PyStructSequence_GetItemPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<PyObject> Function(
+              ffi.Pointer<PyObject>, Py_ssize_t)>>('PyStructSequence_GetItem');
+  late final _PyStructSequence_GetItem = _PyStructSequence_GetItemPtr
+      .asFunction<ffi.Pointer<PyObject> Function(ffi.Pointer<PyObject>, int)>();
+
+  late final ffi.Pointer<PyTypeObject> _PyPickleBuffer_Type =
+      _lookup<PyTypeObject>('PyPickleBuffer_Type');
+
+  PyTypeObject get PyPickleBuffer_Type => _PyPickleBuffer_Type.ref;
+
+  ffi.Pointer<PyObject> PyPickleBuffer_FromObject(
+    ffi.Pointer<PyObject> arg0,
+  ) {
+    return _PyPickleBuffer_FromObject(
+      arg0,
+    );
+  }
+
+  late final _PyPickleBuffer_FromObjectPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<PyObject> Function(
+              ffi.Pointer<PyObject>)>>('PyPickleBuffer_FromObject');
+  late final _PyPickleBuffer_FromObject = _PyPickleBuffer_FromObjectPtr
+      .asFunction<ffi.Pointer<PyObject> Function(ffi.Pointer<PyObject>)>();
+
+  ffi.Pointer<Py_buffer> PyPickleBuffer_GetBuffer(
+    ffi.Pointer<PyObject> arg0,
+  ) {
+    return _PyPickleBuffer_GetBuffer(
+      arg0,
+    );
+  }
+
+  late final _PyPickleBuffer_GetBufferPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<Py_buffer> Function(
+              ffi.Pointer<PyObject>)>>('PyPickleBuffer_GetBuffer');
+  late final _PyPickleBuffer_GetBuffer = _PyPickleBuffer_GetBufferPtr
+      .asFunction<ffi.Pointer<Py_buffer> Function(ffi.Pointer<PyObject>)>();
+
+  int PyPickleBuffer_Release(
+    ffi.Pointer<PyObject> arg0,
+  ) {
+    return _PyPickleBuffer_Release(
+      arg0,
+    );
+  }
+
+  late final _PyPickleBuffer_ReleasePtr =
+      _lookup<ffi.NativeFunction<ffi.Int Function(ffi.Pointer<PyObject>)>>(
+          'PyPickleBuffer_Release');
+  late final _PyPickleBuffer_Release = _PyPickleBuffer_ReleasePtr.asFunction<
+      int Function(ffi.Pointer<PyObject>)>();
+
+  ffi.Pointer<PyObject> PyLong_FromTime_t(
+    int sec,
+  ) {
+    return _PyLong_FromTime_t(
+      sec,
+    );
+  }
+
+  late final _PyLong_FromTime_tPtr =
+      _lookup<ffi.NativeFunction<ffi.Pointer<PyObject> Function(time_t)>>(
+          '_PyLong_FromTime_t');
+  late final _PyLong_FromTime_t =
+      _PyLong_FromTime_tPtr.asFunction<ffi.Pointer<PyObject> Function(int)>();
+
+  int PyLong_AsTime_t(
+    ffi.Pointer<PyObject> obj,
+  ) {
+    return _PyLong_AsTime_t(
+      obj,
+    );
+  }
+
+  late final _PyLong_AsTime_tPtr =
+      _lookup<ffi.NativeFunction<time_t Function(ffi.Pointer<PyObject>)>>(
+          '_PyLong_AsTime_t');
+  late final _PyLong_AsTime_t =
+      _PyLong_AsTime_tPtr.asFunction<int Function(ffi.Pointer<PyObject>)>();
+
+  int PyTime_ObjectToTime_t(
+    ffi.Pointer<PyObject> obj,
+    ffi.Pointer<time_t> sec,
+    int arg2,
+  ) {
+    return _PyTime_ObjectToTime_t(
+      obj,
+      sec,
+      arg2,
+    );
+  }
+
+  late final _PyTime_ObjectToTime_tPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int Function(ffi.Pointer<PyObject>, ffi.Pointer<time_t>,
+              ffi.Int32)>>('_PyTime_ObjectToTime_t');
+  late final _PyTime_ObjectToTime_t = _PyTime_ObjectToTime_tPtr.asFunction<
+      int Function(ffi.Pointer<PyObject>, ffi.Pointer<time_t>, int)>();
+
+  int PyTime_ObjectToTimeval(
+    ffi.Pointer<PyObject> obj,
+    ffi.Pointer<time_t> sec,
+    ffi.Pointer<ffi.Long> usec,
+    int arg3,
+  ) {
+    return _PyTime_ObjectToTimeval(
+      obj,
+      sec,
+      usec,
+      arg3,
+    );
+  }
+
+  late final _PyTime_ObjectToTimevalPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int Function(ffi.Pointer<PyObject>, ffi.Pointer<time_t>,
+              ffi.Pointer<ffi.Long>, ffi.Int32)>>('_PyTime_ObjectToTimeval');
+  late final _PyTime_ObjectToTimeval = _PyTime_ObjectToTimevalPtr.asFunction<
+      int Function(ffi.Pointer<PyObject>, ffi.Pointer<time_t>,
+          ffi.Pointer<ffi.Long>, int)>();
+
+  int PyTime_ObjectToTimespec(
+    ffi.Pointer<PyObject> obj,
+    ffi.Pointer<time_t> sec,
+    ffi.Pointer<ffi.Long> nsec,
+    int arg3,
+  ) {
+    return _PyTime_ObjectToTimespec(
+      obj,
+      sec,
+      nsec,
+      arg3,
+    );
+  }
+
+  late final _PyTime_ObjectToTimespecPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int Function(ffi.Pointer<PyObject>, ffi.Pointer<time_t>,
+              ffi.Pointer<ffi.Long>, ffi.Int32)>>('_PyTime_ObjectToTimespec');
+  late final _PyTime_ObjectToTimespec = _PyTime_ObjectToTimespecPtr.asFunction<
+      int Function(ffi.Pointer<PyObject>, ffi.Pointer<time_t>,
+          ffi.Pointer<ffi.Long>, int)>();
+
+  int PyTime_FromSeconds(
+    int seconds,
+  ) {
+    return _PyTime_FromSeconds(
+      seconds,
+    );
+  }
+
+  late final _PyTime_FromSecondsPtr =
+      _lookup<ffi.NativeFunction<_PyTime_t Function(ffi.Int)>>(
+          '_PyTime_FromSeconds');
+  late final _PyTime_FromSeconds =
+      _PyTime_FromSecondsPtr.asFunction<int Function(int)>();
+
+  int PyTime_FromNanoseconds(
+    int ns,
+  ) {
+    return _PyTime_FromNanoseconds(
+      ns,
+    );
+  }
+
+  late final _PyTime_FromNanosecondsPtr =
+      _lookup<ffi.NativeFunction<_PyTime_t Function(_PyTime_t)>>(
+          '_PyTime_FromNanoseconds');
+  late final _PyTime_FromNanoseconds =
+      _PyTime_FromNanosecondsPtr.asFunction<int Function(int)>();
+
+  int PyTime_FromMicrosecondsClamp(
+    int us,
+  ) {
+    return _PyTime_FromMicrosecondsClamp(
+      us,
+    );
+  }
+
+  late final _PyTime_FromMicrosecondsClampPtr =
+      _lookup<ffi.NativeFunction<_PyTime_t Function(_PyTime_t)>>(
+          '_PyTime_FromMicrosecondsClamp');
+  late final _PyTime_FromMicrosecondsClamp =
+      _PyTime_FromMicrosecondsClampPtr.asFunction<int Function(int)>();
+
+  int PyTime_FromNanosecondsObject(
+    ffi.Pointer<_PyTime_t> t,
+    ffi.Pointer<PyObject> obj,
+  ) {
+    return _PyTime_FromNanosecondsObject(
+      t,
+      obj,
+    );
+  }
+
+  late final _PyTime_FromNanosecondsObjectPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int Function(ffi.Pointer<_PyTime_t>,
+              ffi.Pointer<PyObject>)>>('_PyTime_FromNanosecondsObject');
+  late final _PyTime_FromNanosecondsObject =
+      _PyTime_FromNanosecondsObjectPtr.asFunction<
+          int Function(ffi.Pointer<_PyTime_t>, ffi.Pointer<PyObject>)>();
+
+  int PyTime_FromSecondsObject(
+    ffi.Pointer<_PyTime_t> t,
+    ffi.Pointer<PyObject> obj,
+    int round,
+  ) {
+    return _PyTime_FromSecondsObject(
+      t,
+      obj,
+      round,
+    );
+  }
+
+  late final _PyTime_FromSecondsObjectPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int Function(ffi.Pointer<_PyTime_t>, ffi.Pointer<PyObject>,
+              ffi.Int32)>>('_PyTime_FromSecondsObject');
+  late final _PyTime_FromSecondsObject =
+      _PyTime_FromSecondsObjectPtr.asFunction<
+          int Function(ffi.Pointer<_PyTime_t>, ffi.Pointer<PyObject>, int)>();
+
+  int PyTime_FromMillisecondsObject(
+    ffi.Pointer<_PyTime_t> t,
+    ffi.Pointer<PyObject> obj,
+    int round,
+  ) {
+    return _PyTime_FromMillisecondsObject(
+      t,
+      obj,
+      round,
+    );
+  }
+
+  late final _PyTime_FromMillisecondsObjectPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int Function(ffi.Pointer<_PyTime_t>, ffi.Pointer<PyObject>,
+              ffi.Int32)>>('_PyTime_FromMillisecondsObject');
+  late final _PyTime_FromMillisecondsObject =
+      _PyTime_FromMillisecondsObjectPtr.asFunction<
+          int Function(ffi.Pointer<_PyTime_t>, ffi.Pointer<PyObject>, int)>();
+
+  double PyTime_AsSecondsDouble(
+    int t,
+  ) {
+    return _PyTime_AsSecondsDouble(
+      t,
+    );
+  }
+
+  late final _PyTime_AsSecondsDoublePtr =
+      _lookup<ffi.NativeFunction<ffi.Double Function(_PyTime_t)>>(
+          '_PyTime_AsSecondsDouble');
+  late final _PyTime_AsSecondsDouble =
+      _PyTime_AsSecondsDoublePtr.asFunction<double Function(int)>();
+
+  int PyTime_AsMilliseconds(
+    int t,
+    int round,
+  ) {
+    return _PyTime_AsMilliseconds(
+      t,
+      round,
+    );
+  }
+
+  late final _PyTime_AsMillisecondsPtr =
+      _lookup<ffi.NativeFunction<_PyTime_t Function(_PyTime_t, ffi.Int32)>>(
+          '_PyTime_AsMilliseconds');
+  late final _PyTime_AsMilliseconds =
+      _PyTime_AsMillisecondsPtr.asFunction<int Function(int, int)>();
+
+  int PyTime_AsMicroseconds(
+    int t,
+    int round,
+  ) {
+    return _PyTime_AsMicroseconds(
+      t,
+      round,
+    );
+  }
+
+  late final _PyTime_AsMicrosecondsPtr =
+      _lookup<ffi.NativeFunction<_PyTime_t Function(_PyTime_t, ffi.Int32)>>(
+          '_PyTime_AsMicroseconds');
+  late final _PyTime_AsMicroseconds =
+      _PyTime_AsMicrosecondsPtr.asFunction<int Function(int, int)>();
+
+  int PyTime_AsNanoseconds(
+    int t,
+  ) {
+    return _PyTime_AsNanoseconds(
+      t,
+    );
+  }
+
+  late final _PyTime_AsNanosecondsPtr =
+      _lookup<ffi.NativeFunction<_PyTime_t Function(_PyTime_t)>>(
+          '_PyTime_AsNanoseconds');
+  late final _PyTime_AsNanoseconds =
+      _PyTime_AsNanosecondsPtr.asFunction<int Function(int)>();
+
+  ffi.Pointer<PyObject> PyTime_AsNanosecondsObject(
+    int t,
+  ) {
+    return _PyTime_AsNanosecondsObject(
+      t,
+    );
+  }
+
+  late final _PyTime_AsNanosecondsObjectPtr =
+      _lookup<ffi.NativeFunction<ffi.Pointer<PyObject> Function(_PyTime_t)>>(
+          '_PyTime_AsNanosecondsObject');
+  late final _PyTime_AsNanosecondsObject = _PyTime_AsNanosecondsObjectPtr
+      .asFunction<ffi.Pointer<PyObject> Function(int)>();
+
+  int PyTime_FromTimeval(
+    ffi.Pointer<_PyTime_t> tp,
+    ffi.Pointer<timeval> tv,
+  ) {
+    return _PyTime_FromTimeval(
+      tp,
+      tv,
+    );
+  }
+
+  late final _PyTime_FromTimevalPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int Function(ffi.Pointer<_PyTime_t>,
+              ffi.Pointer<timeval>)>>('_PyTime_FromTimeval');
+  late final _PyTime_FromTimeval = _PyTime_FromTimevalPtr.asFunction<
+      int Function(ffi.Pointer<_PyTime_t>, ffi.Pointer<timeval>)>();
+
+  int PyTime_AsTimeval(
+    int t,
+    ffi.Pointer<timeval> tv,
+    int round,
+  ) {
+    return _PyTime_AsTimeval(
+      t,
+      tv,
+      round,
+    );
+  }
+
+  late final _PyTime_AsTimevalPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int Function(_PyTime_t, ffi.Pointer<timeval>,
+              ffi.Int32)>>('_PyTime_AsTimeval');
+  late final _PyTime_AsTimeval = _PyTime_AsTimevalPtr.asFunction<
+      int Function(int, ffi.Pointer<timeval>, int)>();
+
+  void PyTime_AsTimeval_clamp(
+    int t,
+    ffi.Pointer<timeval> tv,
+    int round,
+  ) {
+    return _PyTime_AsTimeval_clamp(
+      t,
+      tv,
+      round,
+    );
+  }
+
+  late final _PyTime_AsTimeval_clampPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Void Function(_PyTime_t, ffi.Pointer<timeval>,
+              ffi.Int32)>>('_PyTime_AsTimeval_clamp');
+  late final _PyTime_AsTimeval_clamp = _PyTime_AsTimeval_clampPtr.asFunction<
+      void Function(int, ffi.Pointer<timeval>, int)>();
+
+  int PyTime_AsTimevalTime_t(
+    int t,
+    ffi.Pointer<time_t> secs,
+    ffi.Pointer<ffi.Int> us,
+    int round,
+  ) {
+    return _PyTime_AsTimevalTime_t(
+      t,
+      secs,
+      us,
+      round,
+    );
+  }
+
+  late final _PyTime_AsTimevalTime_tPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int Function(_PyTime_t, ffi.Pointer<time_t>, ffi.Pointer<ffi.Int>,
+              ffi.Int32)>>('_PyTime_AsTimevalTime_t');
+  late final _PyTime_AsTimevalTime_t = _PyTime_AsTimevalTime_tPtr.asFunction<
+      int Function(int, ffi.Pointer<time_t>, ffi.Pointer<ffi.Int>, int)>();
+
+  int PyTime_FromTimespec(
+    ffi.Pointer<_PyTime_t> tp,
+    ffi.Pointer<timespec> ts,
+  ) {
+    return _PyTime_FromTimespec(
+      tp,
+      ts,
+    );
+  }
+
+  late final _PyTime_FromTimespecPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int Function(ffi.Pointer<_PyTime_t>,
+              ffi.Pointer<timespec>)>>('_PyTime_FromTimespec');
+  late final _PyTime_FromTimespec = _PyTime_FromTimespecPtr.asFunction<
+      int Function(ffi.Pointer<_PyTime_t>, ffi.Pointer<timespec>)>();
+
+  int PyTime_AsTimespec(
+    int t,
+    ffi.Pointer<timespec> ts,
+  ) {
+    return _PyTime_AsTimespec(
+      t,
+      ts,
+    );
+  }
+
+  late final _PyTime_AsTimespecPtr = _lookup<
+          ffi
+          .NativeFunction<ffi.Int Function(_PyTime_t, ffi.Pointer<timespec>)>>(
+      '_PyTime_AsTimespec');
+  late final _PyTime_AsTimespec = _PyTime_AsTimespecPtr.asFunction<
+      int Function(int, ffi.Pointer<timespec>)>();
+
+  void PyTime_AsTimespec_clamp(
+    int t,
+    ffi.Pointer<timespec> ts,
+  ) {
+    return _PyTime_AsTimespec_clamp(
+      t,
+      ts,
+    );
+  }
+
+  late final _PyTime_AsTimespec_clampPtr = _lookup<
+          ffi
+          .NativeFunction<ffi.Void Function(_PyTime_t, ffi.Pointer<timespec>)>>(
+      '_PyTime_AsTimespec_clamp');
+  late final _PyTime_AsTimespec_clamp = _PyTime_AsTimespec_clampPtr.asFunction<
+      void Function(int, ffi.Pointer<timespec>)>();
+
+  int PyTime_Add(
+    int t1,
+    int t2,
+  ) {
+    return _PyTime_Add(
+      t1,
+      t2,
+    );
+  }
+
+  late final _PyTime_AddPtr =
+      _lookup<ffi.NativeFunction<_PyTime_t Function(_PyTime_t, _PyTime_t)>>(
+          '_PyTime_Add');
+  late final _PyTime_Add = _PyTime_AddPtr.asFunction<int Function(int, int)>();
+
+  int PyTime_MulDiv(
+    int ticks,
+    int mul,
+    int div,
+  ) {
+    return _PyTime_MulDiv(
+      ticks,
+      mul,
+      div,
+    );
+  }
+
+  late final _PyTime_MulDivPtr = _lookup<
+          ffi
+          .NativeFunction<_PyTime_t Function(_PyTime_t, _PyTime_t, _PyTime_t)>>(
+      '_PyTime_MulDiv');
+  late final _PyTime_MulDiv =
+      _PyTime_MulDivPtr.asFunction<int Function(int, int, int)>();
+
+  int PyTime_GetSystemClock() {
+    return _PyTime_GetSystemClock();
+  }
+
+  late final _PyTime_GetSystemClockPtr =
+      _lookup<ffi.NativeFunction<_PyTime_t Function()>>(
+          '_PyTime_GetSystemClock');
+  late final _PyTime_GetSystemClock =
+      _PyTime_GetSystemClockPtr.asFunction<int Function()>();
+
+  int PyTime_GetSystemClockWithInfo(
+    ffi.Pointer<_PyTime_t> t,
+    ffi.Pointer<_Py_clock_info_t> info,
+  ) {
+    return _PyTime_GetSystemClockWithInfo(
+      t,
+      info,
+    );
+  }
+
+  late final _PyTime_GetSystemClockWithInfoPtr = _lookup<
+          ffi.NativeFunction<
+              ffi.Int Function(
+                  ffi.Pointer<_PyTime_t>, ffi.Pointer<_Py_clock_info_t>)>>(
+      '_PyTime_GetSystemClockWithInfo');
+  late final _PyTime_GetSystemClockWithInfo =
+      _PyTime_GetSystemClockWithInfoPtr.asFunction<
+          int Function(
+              ffi.Pointer<_PyTime_t>, ffi.Pointer<_Py_clock_info_t>)>();
+
+  int PyTime_GetMonotonicClock() {
+    return _PyTime_GetMonotonicClock();
+  }
+
+  late final _PyTime_GetMonotonicClockPtr =
+      _lookup<ffi.NativeFunction<_PyTime_t Function()>>(
+          '_PyTime_GetMonotonicClock');
+  late final _PyTime_GetMonotonicClock =
+      _PyTime_GetMonotonicClockPtr.asFunction<int Function()>();
+
+  int PyTime_GetMonotonicClockWithInfo(
+    ffi.Pointer<_PyTime_t> t,
+    ffi.Pointer<_Py_clock_info_t> info,
+  ) {
+    return _PyTime_GetMonotonicClockWithInfo(
+      t,
+      info,
+    );
+  }
+
+  late final _PyTime_GetMonotonicClockWithInfoPtr = _lookup<
+          ffi.NativeFunction<
+              ffi.Int Function(
+                  ffi.Pointer<_PyTime_t>, ffi.Pointer<_Py_clock_info_t>)>>(
+      '_PyTime_GetMonotonicClockWithInfo');
+  late final _PyTime_GetMonotonicClockWithInfo =
+      _PyTime_GetMonotonicClockWithInfoPtr.asFunction<
+          int Function(
+              ffi.Pointer<_PyTime_t>, ffi.Pointer<_Py_clock_info_t>)>();
+
+  int PyTime_localtime(
+    int t,
+    ffi.Pointer<tm> tm,
+  ) {
+    return _PyTime_localtime(
+      t,
+      tm,
+    );
+  }
+
+  late final _PyTime_localtimePtr =
+      _lookup<ffi.NativeFunction<ffi.Int Function(time_t, ffi.Pointer<tm>)>>(
+          '_PyTime_localtime');
+  late final _PyTime_localtime =
+      _PyTime_localtimePtr.asFunction<int Function(int, ffi.Pointer<tm>)>();
+
+  int PyTime_gmtime(
+    int t,
+    ffi.Pointer<tm> tm,
+  ) {
+    return _PyTime_gmtime(
+      t,
+      tm,
+    );
+  }
+
+  late final _PyTime_gmtimePtr =
+      _lookup<ffi.NativeFunction<ffi.Int Function(time_t, ffi.Pointer<tm>)>>(
+          '_PyTime_gmtime');
+  late final _PyTime_gmtime =
+      _PyTime_gmtimePtr.asFunction<int Function(int, ffi.Pointer<tm>)>();
+
+  int PyTime_GetPerfCounter() {
+    return _PyTime_GetPerfCounter();
+  }
+
+  late final _PyTime_GetPerfCounterPtr =
+      _lookup<ffi.NativeFunction<_PyTime_t Function()>>(
+          '_PyTime_GetPerfCounter');
+  late final _PyTime_GetPerfCounter =
+      _PyTime_GetPerfCounterPtr.asFunction<int Function()>();
+
+  int PyTime_GetPerfCounterWithInfo(
+    ffi.Pointer<_PyTime_t> t,
+    ffi.Pointer<_Py_clock_info_t> info,
+  ) {
+    return _PyTime_GetPerfCounterWithInfo(
+      t,
+      info,
+    );
+  }
+
+  late final _PyTime_GetPerfCounterWithInfoPtr = _lookup<
+          ffi.NativeFunction<
+              ffi.Int Function(
+                  ffi.Pointer<_PyTime_t>, ffi.Pointer<_Py_clock_info_t>)>>(
+      '_PyTime_GetPerfCounterWithInfo');
+  late final _PyTime_GetPerfCounterWithInfo =
+      _PyTime_GetPerfCounterWithInfoPtr.asFunction<
+          int Function(
+              ffi.Pointer<_PyTime_t>, ffi.Pointer<_Py_clock_info_t>)>();
+
+  int PyDeadline_Init(
+    int timeout,
+  ) {
+    return _PyDeadline_Init(
+      timeout,
+    );
+  }
+
+  late final _PyDeadline_InitPtr =
+      _lookup<ffi.NativeFunction<_PyTime_t Function(_PyTime_t)>>(
+          '_PyDeadline_Init');
+  late final _PyDeadline_Init =
+      _PyDeadline_InitPtr.asFunction<int Function(int)>();
+
+  int PyDeadline_Get(
+    int deadline,
+  ) {
+    return _PyDeadline_Get(
+      deadline,
+    );
+  }
+
+  late final _PyDeadline_GetPtr =
+      _lookup<ffi.NativeFunction<_PyTime_t Function(_PyTime_t)>>(
+          '_PyDeadline_Get');
+  late final _PyDeadline_Get =
+      _PyDeadline_GetPtr.asFunction<int Function(int)>();
+
+  int PyCodec_Register(
+    ffi.Pointer<PyObject> search_function,
+  ) {
+    return _PyCodec_Register(
+      search_function,
+    );
+  }
+
+  late final _PyCodec_RegisterPtr =
+      _lookup<ffi.NativeFunction<ffi.Int Function(ffi.Pointer<PyObject>)>>(
+          'PyCodec_Register');
+  late final _PyCodec_Register =
+      _PyCodec_RegisterPtr.asFunction<int Function(ffi.Pointer<PyObject>)>();
+
+  int PyCodec_Unregister(
+    ffi.Pointer<PyObject> search_function,
+  ) {
+    return _PyCodec_Unregister(
+      search_function,
+    );
+  }
+
+  late final _PyCodec_UnregisterPtr =
+      _lookup<ffi.NativeFunction<ffi.Int Function(ffi.Pointer<PyObject>)>>(
+          'PyCodec_Unregister');
+  late final _PyCodec_Unregister =
+      _PyCodec_UnregisterPtr.asFunction<int Function(ffi.Pointer<PyObject>)>();
+
+  ffi.Pointer<PyObject> PyCodec_Lookup(
+    ffi.Pointer<ffi.Char> encoding,
+  ) {
+    return _PyCodec_Lookup(
+      encoding,
+    );
+  }
+
+  late final _PyCodec_LookupPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<PyObject> Function(
+              ffi.Pointer<ffi.Char>)>>('_PyCodec_Lookup');
+  late final _PyCodec_Lookup = _PyCodec_LookupPtr.asFunction<
+      ffi.Pointer<PyObject> Function(ffi.Pointer<ffi.Char>)>();
+
+  int PyCodec_Forget(
+    ffi.Pointer<ffi.Char> encoding,
+  ) {
+    return _PyCodec_Forget(
+      encoding,
+    );
+  }
+
+  late final _PyCodec_ForgetPtr =
+      _lookup<ffi.NativeFunction<ffi.Int Function(ffi.Pointer<ffi.Char>)>>(
+          '_PyCodec_Forget');
+  late final _PyCodec_Forget =
+      _PyCodec_ForgetPtr.asFunction<int Function(ffi.Pointer<ffi.Char>)>();
+
+  int PyCodec_KnownEncoding(
+    ffi.Pointer<ffi.Char> encoding,
+  ) {
+    return _PyCodec_KnownEncoding(
+      encoding,
+    );
+  }
+
+  late final _PyCodec_KnownEncodingPtr =
+      _lookup<ffi.NativeFunction<ffi.Int Function(ffi.Pointer<ffi.Char>)>>(
+          'PyCodec_KnownEncoding');
+  late final _PyCodec_KnownEncoding = _PyCodec_KnownEncodingPtr.asFunction<
+      int Function(ffi.Pointer<ffi.Char>)>();
+
+  ffi.Pointer<PyObject> PyCodec_Encode(
+    ffi.Pointer<PyObject> object,
+    ffi.Pointer<ffi.Char> encoding,
+    ffi.Pointer<ffi.Char> errors,
+  ) {
+    return _PyCodec_Encode(
+      object,
+      encoding,
+      errors,
+    );
+  }
+
+  late final _PyCodec_EncodePtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<PyObject> Function(ffi.Pointer<PyObject>,
+              ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Char>)>>('PyCodec_Encode');
+  late final _PyCodec_Encode = _PyCodec_EncodePtr.asFunction<
+      ffi.Pointer<PyObject> Function(ffi.Pointer<PyObject>,
+          ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Char>)>();
+
+  ffi.Pointer<PyObject> PyCodec_Decode(
+    ffi.Pointer<PyObject> object,
+    ffi.Pointer<ffi.Char> encoding,
+    ffi.Pointer<ffi.Char> errors,
+  ) {
+    return _PyCodec_Decode(
+      object,
+      encoding,
+      errors,
+    );
+  }
+
+  late final _PyCodec_DecodePtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<PyObject> Function(ffi.Pointer<PyObject>,
+              ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Char>)>>('PyCodec_Decode');
+  late final _PyCodec_Decode = _PyCodec_DecodePtr.asFunction<
+      ffi.Pointer<PyObject> Function(ffi.Pointer<PyObject>,
+          ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Char>)>();
+
+  ffi.Pointer<PyObject> PyCodec_LookupTextEncoding(
+    ffi.Pointer<ffi.Char> encoding,
+    ffi.Pointer<ffi.Char> alternate_command,
+  ) {
+    return _PyCodec_LookupTextEncoding(
+      encoding,
+      alternate_command,
+    );
+  }
+
+  late final _PyCodec_LookupTextEncodingPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<PyObject> Function(ffi.Pointer<ffi.Char>,
+              ffi.Pointer<ffi.Char>)>>('_PyCodec_LookupTextEncoding');
+  late final _PyCodec_LookupTextEncoding =
+      _PyCodec_LookupTextEncodingPtr.asFunction<
+          ffi.Pointer<PyObject> Function(
+              ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Char>)>();
+
+  ffi.Pointer<PyObject> PyCodec_EncodeText(
+    ffi.Pointer<PyObject> object,
+    ffi.Pointer<ffi.Char> encoding,
+    ffi.Pointer<ffi.Char> errors,
+  ) {
+    return _PyCodec_EncodeText(
+      object,
+      encoding,
+      errors,
+    );
+  }
+
+  late final _PyCodec_EncodeTextPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<PyObject> Function(
+              ffi.Pointer<PyObject>,
+              ffi.Pointer<ffi.Char>,
+              ffi.Pointer<ffi.Char>)>>('_PyCodec_EncodeText');
+  late final _PyCodec_EncodeText = _PyCodec_EncodeTextPtr.asFunction<
+      ffi.Pointer<PyObject> Function(ffi.Pointer<PyObject>,
+          ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Char>)>();
+
+  ffi.Pointer<PyObject> PyCodec_DecodeText(
+    ffi.Pointer<PyObject> object,
+    ffi.Pointer<ffi.Char> encoding,
+    ffi.Pointer<ffi.Char> errors,
+  ) {
+    return _PyCodec_DecodeText(
+      object,
+      encoding,
+      errors,
+    );
+  }
+
+  late final _PyCodec_DecodeTextPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<PyObject> Function(
+              ffi.Pointer<PyObject>,
+              ffi.Pointer<ffi.Char>,
+              ffi.Pointer<ffi.Char>)>>('_PyCodec_DecodeText');
+  late final _PyCodec_DecodeText = _PyCodec_DecodeTextPtr.asFunction<
+      ffi.Pointer<PyObject> Function(ffi.Pointer<PyObject>,
+          ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Char>)>();
+
+  ffi.Pointer<PyObject> PyCodecInfo_GetIncrementalDecoder(
+    ffi.Pointer<PyObject> codec_info,
+    ffi.Pointer<ffi.Char> errors,
+  ) {
+    return _PyCodecInfo_GetIncrementalDecoder(
+      codec_info,
+      errors,
+    );
+  }
+
+  late final _PyCodecInfo_GetIncrementalDecoderPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<PyObject> Function(ffi.Pointer<PyObject>,
+              ffi.Pointer<ffi.Char>)>>('_PyCodecInfo_GetIncrementalDecoder');
+  late final _PyCodecInfo_GetIncrementalDecoder =
+      _PyCodecInfo_GetIncrementalDecoderPtr.asFunction<
+          ffi.Pointer<PyObject> Function(
+              ffi.Pointer<PyObject>, ffi.Pointer<ffi.Char>)>();
+
+  ffi.Pointer<PyObject> PyCodecInfo_GetIncrementalEncoder(
+    ffi.Pointer<PyObject> codec_info,
+    ffi.Pointer<ffi.Char> errors,
+  ) {
+    return _PyCodecInfo_GetIncrementalEncoder(
+      codec_info,
+      errors,
+    );
+  }
+
+  late final _PyCodecInfo_GetIncrementalEncoderPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<PyObject> Function(ffi.Pointer<PyObject>,
+              ffi.Pointer<ffi.Char>)>>('_PyCodecInfo_GetIncrementalEncoder');
+  late final _PyCodecInfo_GetIncrementalEncoder =
+      _PyCodecInfo_GetIncrementalEncoderPtr.asFunction<
+          ffi.Pointer<PyObject> Function(
+              ffi.Pointer<PyObject>, ffi.Pointer<ffi.Char>)>();
+
+  ffi.Pointer<PyObject> PyCodec_Encoder(
+    ffi.Pointer<ffi.Char> encoding,
+  ) {
+    return _PyCodec_Encoder(
+      encoding,
+    );
+  }
+
+  late final _PyCodec_EncoderPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<PyObject> Function(
+              ffi.Pointer<ffi.Char>)>>('PyCodec_Encoder');
+  late final _PyCodec_Encoder = _PyCodec_EncoderPtr.asFunction<
+      ffi.Pointer<PyObject> Function(ffi.Pointer<ffi.Char>)>();
+
+  ffi.Pointer<PyObject> PyCodec_Decoder(
+    ffi.Pointer<ffi.Char> encoding,
+  ) {
+    return _PyCodec_Decoder(
+      encoding,
+    );
+  }
+
+  late final _PyCodec_DecoderPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<PyObject> Function(
+              ffi.Pointer<ffi.Char>)>>('PyCodec_Decoder');
+  late final _PyCodec_Decoder = _PyCodec_DecoderPtr.asFunction<
+      ffi.Pointer<PyObject> Function(ffi.Pointer<ffi.Char>)>();
+
+  ffi.Pointer<PyObject> PyCodec_IncrementalEncoder(
+    ffi.Pointer<ffi.Char> encoding,
+    ffi.Pointer<ffi.Char> errors,
+  ) {
+    return _PyCodec_IncrementalEncoder(
+      encoding,
+      errors,
+    );
+  }
+
+  late final _PyCodec_IncrementalEncoderPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<PyObject> Function(ffi.Pointer<ffi.Char>,
+              ffi.Pointer<ffi.Char>)>>('PyCodec_IncrementalEncoder');
+  late final _PyCodec_IncrementalEncoder =
+      _PyCodec_IncrementalEncoderPtr.asFunction<
+          ffi.Pointer<PyObject> Function(
+              ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Char>)>();
+
+  ffi.Pointer<PyObject> PyCodec_IncrementalDecoder(
+    ffi.Pointer<ffi.Char> encoding,
+    ffi.Pointer<ffi.Char> errors,
+  ) {
+    return _PyCodec_IncrementalDecoder(
+      encoding,
+      errors,
+    );
+  }
+
+  late final _PyCodec_IncrementalDecoderPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<PyObject> Function(ffi.Pointer<ffi.Char>,
+              ffi.Pointer<ffi.Char>)>>('PyCodec_IncrementalDecoder');
+  late final _PyCodec_IncrementalDecoder =
+      _PyCodec_IncrementalDecoderPtr.asFunction<
+          ffi.Pointer<PyObject> Function(
+              ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Char>)>();
+
+  ffi.Pointer<PyObject> PyCodec_StreamReader(
+    ffi.Pointer<ffi.Char> encoding,
+    ffi.Pointer<PyObject> stream,
+    ffi.Pointer<ffi.Char> errors,
+  ) {
+    return _PyCodec_StreamReader(
+      encoding,
+      stream,
+      errors,
+    );
+  }
+
+  late final _PyCodec_StreamReaderPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<PyObject> Function(
+              ffi.Pointer<ffi.Char>,
+              ffi.Pointer<PyObject>,
+              ffi.Pointer<ffi.Char>)>>('PyCodec_StreamReader');
+  late final _PyCodec_StreamReader = _PyCodec_StreamReaderPtr.asFunction<
+      ffi.Pointer<PyObject> Function(ffi.Pointer<ffi.Char>,
+          ffi.Pointer<PyObject>, ffi.Pointer<ffi.Char>)>();
+
+  ffi.Pointer<PyObject> PyCodec_StreamWriter(
+    ffi.Pointer<ffi.Char> encoding,
+    ffi.Pointer<PyObject> stream,
+    ffi.Pointer<ffi.Char> errors,
+  ) {
+    return _PyCodec_StreamWriter(
+      encoding,
+      stream,
+      errors,
+    );
+  }
+
+  late final _PyCodec_StreamWriterPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<PyObject> Function(
+              ffi.Pointer<ffi.Char>,
+              ffi.Pointer<PyObject>,
+              ffi.Pointer<ffi.Char>)>>('PyCodec_StreamWriter');
+  late final _PyCodec_StreamWriter = _PyCodec_StreamWriterPtr.asFunction<
+      ffi.Pointer<PyObject> Function(ffi.Pointer<ffi.Char>,
+          ffi.Pointer<PyObject>, ffi.Pointer<ffi.Char>)>();
+
+  int PyCodec_RegisterError(
+    ffi.Pointer<ffi.Char> name,
+    ffi.Pointer<PyObject> error,
+  ) {
+    return _PyCodec_RegisterError(
+      name,
+      error,
+    );
+  }
+
+  late final _PyCodec_RegisterErrorPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int Function(ffi.Pointer<ffi.Char>,
+              ffi.Pointer<PyObject>)>>('PyCodec_RegisterError');
+  late final _PyCodec_RegisterError = _PyCodec_RegisterErrorPtr.asFunction<
+      int Function(ffi.Pointer<ffi.Char>, ffi.Pointer<PyObject>)>();
+
+  ffi.Pointer<PyObject> PyCodec_LookupError(
+    ffi.Pointer<ffi.Char> name,
+  ) {
+    return _PyCodec_LookupError(
+      name,
+    );
+  }
+
+  late final _PyCodec_LookupErrorPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<PyObject> Function(
+              ffi.Pointer<ffi.Char>)>>('PyCodec_LookupError');
+  late final _PyCodec_LookupError = _PyCodec_LookupErrorPtr.asFunction<
+      ffi.Pointer<PyObject> Function(ffi.Pointer<ffi.Char>)>();
+
+  ffi.Pointer<PyObject> PyCodec_StrictErrors(
+    ffi.Pointer<PyObject> exc,
+  ) {
+    return _PyCodec_StrictErrors(
+      exc,
+    );
+  }
+
+  late final _PyCodec_StrictErrorsPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<PyObject> Function(
+              ffi.Pointer<PyObject>)>>('PyCodec_StrictErrors');
+  late final _PyCodec_StrictErrors = _PyCodec_StrictErrorsPtr.asFunction<
+      ffi.Pointer<PyObject> Function(ffi.Pointer<PyObject>)>();
+
+  ffi.Pointer<PyObject> PyCodec_IgnoreErrors(
+    ffi.Pointer<PyObject> exc,
+  ) {
+    return _PyCodec_IgnoreErrors(
+      exc,
+    );
+  }
+
+  late final _PyCodec_IgnoreErrorsPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<PyObject> Function(
+              ffi.Pointer<PyObject>)>>('PyCodec_IgnoreErrors');
+  late final _PyCodec_IgnoreErrors = _PyCodec_IgnoreErrorsPtr.asFunction<
+      ffi.Pointer<PyObject> Function(ffi.Pointer<PyObject>)>();
+
+  ffi.Pointer<PyObject> PyCodec_ReplaceErrors(
+    ffi.Pointer<PyObject> exc,
+  ) {
+    return _PyCodec_ReplaceErrors(
+      exc,
+    );
+  }
+
+  late final _PyCodec_ReplaceErrorsPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<PyObject> Function(
+              ffi.Pointer<PyObject>)>>('PyCodec_ReplaceErrors');
+  late final _PyCodec_ReplaceErrors = _PyCodec_ReplaceErrorsPtr.asFunction<
+      ffi.Pointer<PyObject> Function(ffi.Pointer<PyObject>)>();
+
+  ffi.Pointer<PyObject> PyCodec_XMLCharRefReplaceErrors(
+    ffi.Pointer<PyObject> exc,
+  ) {
+    return _PyCodec_XMLCharRefReplaceErrors(
+      exc,
+    );
+  }
+
+  late final _PyCodec_XMLCharRefReplaceErrorsPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<PyObject> Function(
+              ffi.Pointer<PyObject>)>>('PyCodec_XMLCharRefReplaceErrors');
+  late final _PyCodec_XMLCharRefReplaceErrors =
+      _PyCodec_XMLCharRefReplaceErrorsPtr.asFunction<
+          ffi.Pointer<PyObject> Function(ffi.Pointer<PyObject>)>();
+
+  ffi.Pointer<PyObject> PyCodec_BackslashReplaceErrors(
+    ffi.Pointer<PyObject> exc,
+  ) {
+    return _PyCodec_BackslashReplaceErrors(
+      exc,
+    );
+  }
+
+  late final _PyCodec_BackslashReplaceErrorsPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<PyObject> Function(
+              ffi.Pointer<PyObject>)>>('PyCodec_BackslashReplaceErrors');
+  late final _PyCodec_BackslashReplaceErrors =
+      _PyCodec_BackslashReplaceErrorsPtr.asFunction<
+          ffi.Pointer<PyObject> Function(ffi.Pointer<PyObject>)>();
+
+  ffi.Pointer<PyObject> PyCodec_NameReplaceErrors(
+    ffi.Pointer<PyObject> exc,
+  ) {
+    return _PyCodec_NameReplaceErrors(
+      exc,
+    );
+  }
+
+  late final _PyCodec_NameReplaceErrorsPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<PyObject> Function(
+              ffi.Pointer<PyObject>)>>('PyCodec_NameReplaceErrors');
+  late final _PyCodec_NameReplaceErrors = _PyCodec_NameReplaceErrorsPtr
+      .asFunction<ffi.Pointer<PyObject> Function(ffi.Pointer<PyObject>)>();
+
+  late final ffi.Pointer<ffi.Pointer<ffi.Char>> _Py_hexdigits =
+      _lookup<ffi.Pointer<ffi.Char>>('Py_hexdigits');
+
+  ffi.Pointer<ffi.Char> get Py_hexdigits => _Py_hexdigits.value;
+
+  set Py_hexdigits(ffi.Pointer<ffi.Char> value) => _Py_hexdigits.value = value;
+
+  void PyThread_init_thread() {
+    return _PyThread_init_thread();
+  }
+
+  late final _PyThread_init_threadPtr =
+      _lookup<ffi.NativeFunction<ffi.Void Function()>>('PyThread_init_thread');
+  late final _PyThread_init_thread =
+      _PyThread_init_threadPtr.asFunction<void Function()>();
+
+  int PyThread_start_new_thread(
+    ffi.Pointer<ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ffi.Void>)>>
+        arg0,
+    ffi.Pointer<ffi.Void> arg1,
+  ) {
+    return _PyThread_start_new_thread(
+      arg0,
+      arg1,
+    );
+  }
+
+  late final _PyThread_start_new_threadPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.UnsignedLong Function(
+              ffi.Pointer<
+                  ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ffi.Void>)>>,
+              ffi.Pointer<ffi.Void>)>>('PyThread_start_new_thread');
+  late final _PyThread_start_new_thread =
+      _PyThread_start_new_threadPtr.asFunction<
+          int Function(
+              ffi.Pointer<
+                  ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ffi.Void>)>>,
+              ffi.Pointer<ffi.Void>)>();
+
+  void PyThread_exit_thread() {
+    return _PyThread_exit_thread();
+  }
+
+  late final _PyThread_exit_threadPtr =
+      _lookup<ffi.NativeFunction<ffi.Void Function()>>('PyThread_exit_thread');
+  late final _PyThread_exit_thread =
+      _PyThread_exit_threadPtr.asFunction<void Function()>();
+
+  int PyThread_get_thread_ident() {
+    return _PyThread_get_thread_ident();
+  }
+
+  late final _PyThread_get_thread_identPtr =
+      _lookup<ffi.NativeFunction<ffi.UnsignedLong Function()>>(
+          'PyThread_get_thread_ident');
+  late final _PyThread_get_thread_ident =
+      _PyThread_get_thread_identPtr.asFunction<int Function()>();
+
+  int PyThread_get_thread_native_id() {
+    return _PyThread_get_thread_native_id();
+  }
+
+  late final _PyThread_get_thread_native_idPtr =
+      _lookup<ffi.NativeFunction<ffi.UnsignedLong Function()>>(
+          'PyThread_get_thread_native_id');
+  late final _PyThread_get_thread_native_id =
+      _PyThread_get_thread_native_idPtr.asFunction<int Function()>();
+
+  PyThread_type_lock PyThread_allocate_lock() {
+    return _PyThread_allocate_lock();
+  }
+
+  late final _PyThread_allocate_lockPtr =
+      _lookup<ffi.NativeFunction<PyThread_type_lock Function()>>(
+          'PyThread_allocate_lock');
+  late final _PyThread_allocate_lock =
+      _PyThread_allocate_lockPtr.asFunction<PyThread_type_lock Function()>();
+
+  void PyThread_free_lock(
+    PyThread_type_lock arg0,
+  ) {
+    return _PyThread_free_lock(
+      arg0,
+    );
+  }
+
+  late final _PyThread_free_lockPtr =
+      _lookup<ffi.NativeFunction<ffi.Void Function(PyThread_type_lock)>>(
+          'PyThread_free_lock');
+  late final _PyThread_free_lock =
+      _PyThread_free_lockPtr.asFunction<void Function(PyThread_type_lock)>();
+
+  int PyThread_acquire_lock(
+    PyThread_type_lock arg0,
+    int arg1,
+  ) {
+    return _PyThread_acquire_lock(
+      arg0,
+      arg1,
+    );
+  }
+
+  late final _PyThread_acquire_lockPtr = _lookup<
+          ffi.NativeFunction<ffi.Int Function(PyThread_type_lock, ffi.Int)>>(
+      'PyThread_acquire_lock');
+  late final _PyThread_acquire_lock = _PyThread_acquire_lockPtr.asFunction<
+      int Function(PyThread_type_lock, int)>();
+
+  int PyThread_acquire_lock_timed(
+    PyThread_type_lock arg0,
+    int microseconds,
+    int intr_flag,
+  ) {
+    return _PyThread_acquire_lock_timed(
+      arg0,
+      microseconds,
+      intr_flag,
+    );
+  }
+
+  late final _PyThread_acquire_lock_timedPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int32 Function(PyThread_type_lock, ffi.LongLong,
+              ffi.Int)>>('PyThread_acquire_lock_timed');
+  late final _PyThread_acquire_lock_timed = _PyThread_acquire_lock_timedPtr
+      .asFunction<int Function(PyThread_type_lock, int, int)>();
+
+  void PyThread_release_lock(
+    PyThread_type_lock arg0,
+  ) {
+    return _PyThread_release_lock(
+      arg0,
+    );
+  }
+
+  late final _PyThread_release_lockPtr =
+      _lookup<ffi.NativeFunction<ffi.Void Function(PyThread_type_lock)>>(
+          'PyThread_release_lock');
+  late final _PyThread_release_lock =
+      _PyThread_release_lockPtr.asFunction<void Function(PyThread_type_lock)>();
+
+  int PyThread_get_stacksize() {
+    return _PyThread_get_stacksize();
+  }
+
+  late final _PyThread_get_stacksizePtr =
+      _lookup<ffi.NativeFunction<ffi.Size Function()>>(
+          'PyThread_get_stacksize');
+  late final _PyThread_get_stacksize =
+      _PyThread_get_stacksizePtr.asFunction<int Function()>();
+
+  int PyThread_set_stacksize(
+    int arg0,
+  ) {
+    return _PyThread_set_stacksize(
+      arg0,
+    );
+  }
+
+  late final _PyThread_set_stacksizePtr =
+      _lookup<ffi.NativeFunction<ffi.Int Function(ffi.Size)>>(
+          'PyThread_set_stacksize');
+  late final _PyThread_set_stacksize =
+      _PyThread_set_stacksizePtr.asFunction<int Function(int)>();
+
+  ffi.Pointer<PyObject> PyThread_GetInfo() {
+    return _PyThread_GetInfo();
+  }
+
+  late final _PyThread_GetInfoPtr =
+      _lookup<ffi.NativeFunction<ffi.Pointer<PyObject> Function()>>(
+          'PyThread_GetInfo');
+  late final _PyThread_GetInfo =
+      _PyThread_GetInfoPtr.asFunction<ffi.Pointer<PyObject> Function()>();
+
+  int PyThread_create_key() {
+    return _PyThread_create_key();
+  }
+
+  late final _PyThread_create_keyPtr =
+      _lookup<ffi.NativeFunction<ffi.Int Function()>>('PyThread_create_key');
+  late final _PyThread_create_key =
+      _PyThread_create_keyPtr.asFunction<int Function()>();
+
+  void PyThread_delete_key(
+    int key,
+  ) {
+    return _PyThread_delete_key(
+      key,
+    );
+  }
+
+  late final _PyThread_delete_keyPtr =
+      _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Int)>>(
+          'PyThread_delete_key');
+  late final _PyThread_delete_key =
+      _PyThread_delete_keyPtr.asFunction<void Function(int)>();
+
+  int PyThread_set_key_value(
+    int key,
+    ffi.Pointer<ffi.Void> value,
+  ) {
+    return _PyThread_set_key_value(
+      key,
+      value,
+    );
+  }
+
+  late final _PyThread_set_key_valuePtr = _lookup<
+          ffi.NativeFunction<ffi.Int Function(ffi.Int, ffi.Pointer<ffi.Void>)>>(
+      'PyThread_set_key_value');
+  late final _PyThread_set_key_value = _PyThread_set_key_valuePtr.asFunction<
+      int Function(int, ffi.Pointer<ffi.Void>)>();
+
+  ffi.Pointer<ffi.Void> PyThread_get_key_value(
+    int key,
+  ) {
+    return _PyThread_get_key_value(
+      key,
+    );
+  }
+
+  late final _PyThread_get_key_valuePtr =
+      _lookup<ffi.NativeFunction<ffi.Pointer<ffi.Void> Function(ffi.Int)>>(
+          'PyThread_get_key_value');
+  late final _PyThread_get_key_value = _PyThread_get_key_valuePtr.asFunction<
+      ffi.Pointer<ffi.Void> Function(int)>();
+
+  void PyThread_delete_key_value(
+    int key,
+  ) {
+    return _PyThread_delete_key_value(
+      key,
+    );
+  }
+
+  late final _PyThread_delete_key_valuePtr =
+      _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Int)>>(
+          'PyThread_delete_key_value');
+  late final _PyThread_delete_key_value =
+      _PyThread_delete_key_valuePtr.asFunction<void Function(int)>();
+
+  void PyThread_ReInitTLS() {
+    return _PyThread_ReInitTLS();
+  }
+
+  late final _PyThread_ReInitTLSPtr =
+      _lookup<ffi.NativeFunction<ffi.Void Function()>>('PyThread_ReInitTLS');
+  late final _PyThread_ReInitTLS =
+      _PyThread_ReInitTLSPtr.asFunction<void Function()>();
+
+  ffi.Pointer<Py_tss_t> PyThread_tss_alloc() {
+    return _PyThread_tss_alloc();
+  }
+
+  late final _PyThread_tss_allocPtr =
+      _lookup<ffi.NativeFunction<ffi.Pointer<Py_tss_t> Function()>>(
+          'PyThread_tss_alloc');
+  late final _PyThread_tss_alloc =
+      _PyThread_tss_allocPtr.asFunction<ffi.Pointer<Py_tss_t> Function()>();
+
+  void PyThread_tss_free(
+    ffi.Pointer<Py_tss_t> key,
+  ) {
+    return _PyThread_tss_free(
+      key,
+    );
+  }
+
+  late final _PyThread_tss_freePtr =
+      _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Pointer<Py_tss_t>)>>(
+          'PyThread_tss_free');
+  late final _PyThread_tss_free =
+      _PyThread_tss_freePtr.asFunction<void Function(ffi.Pointer<Py_tss_t>)>();
+
+  int PyThread_tss_is_created(
+    ffi.Pointer<Py_tss_t> key,
+  ) {
+    return _PyThread_tss_is_created(
+      key,
+    );
+  }
+
+  late final _PyThread_tss_is_createdPtr =
+      _lookup<ffi.NativeFunction<ffi.Int Function(ffi.Pointer<Py_tss_t>)>>(
+          'PyThread_tss_is_created');
+  late final _PyThread_tss_is_created = _PyThread_tss_is_createdPtr.asFunction<
+      int Function(ffi.Pointer<Py_tss_t>)>();
+
+  int PyThread_tss_create(
+    ffi.Pointer<Py_tss_t> key,
+  ) {
+    return _PyThread_tss_create(
+      key,
+    );
+  }
+
+  late final _PyThread_tss_createPtr =
+      _lookup<ffi.NativeFunction<ffi.Int Function(ffi.Pointer<Py_tss_t>)>>(
+          'PyThread_tss_create');
+  late final _PyThread_tss_create =
+      _PyThread_tss_createPtr.asFunction<int Function(ffi.Pointer<Py_tss_t>)>();
+
+  void PyThread_tss_delete(
+    ffi.Pointer<Py_tss_t> key,
+  ) {
+    return _PyThread_tss_delete(
+      key,
+    );
+  }
+
+  late final _PyThread_tss_deletePtr =
+      _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Pointer<Py_tss_t>)>>(
+          'PyThread_tss_delete');
+  late final _PyThread_tss_delete = _PyThread_tss_deletePtr.asFunction<
+      void Function(ffi.Pointer<Py_tss_t>)>();
+
+  int PyThread_tss_set(
+    ffi.Pointer<Py_tss_t> key,
+    ffi.Pointer<ffi.Void> value,
+  ) {
+    return _PyThread_tss_set(
+      key,
+      value,
+    );
+  }
+
+  late final _PyThread_tss_setPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int Function(ffi.Pointer<Py_tss_t>,
+              ffi.Pointer<ffi.Void>)>>('PyThread_tss_set');
+  late final _PyThread_tss_set = _PyThread_tss_setPtr.asFunction<
+      int Function(ffi.Pointer<Py_tss_t>, ffi.Pointer<ffi.Void>)>();
+
+  ffi.Pointer<ffi.Void> PyThread_tss_get(
+    ffi.Pointer<Py_tss_t> key,
+  ) {
+    return _PyThread_tss_get(
+      key,
+    );
+  }
+
+  late final _PyThread_tss_getPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<ffi.Void> Function(
+              ffi.Pointer<Py_tss_t>)>>('PyThread_tss_get');
+  late final _PyThread_tss_get = _PyThread_tss_getPtr.asFunction<
+      ffi.Pointer<ffi.Void> Function(ffi.Pointer<Py_tss_t>)>();
+
+  int PyThread_at_fork_reinit(
+    ffi.Pointer<PyThread_type_lock> lock,
+  ) {
+    return _PyThread_at_fork_reinit(
+      lock,
+    );
+  }
+
+  late final _PyThread_at_fork_reinitPtr = _lookup<
+          ffi
+          .NativeFunction<ffi.Int Function(ffi.Pointer<PyThread_type_lock>)>>(
+      '_PyThread_at_fork_reinit');
+  late final _PyThread_at_fork_reinit = _PyThread_at_fork_reinitPtr.asFunction<
+      int Function(ffi.Pointer<PyThread_type_lock>)>();
+
   late final ffi.Pointer<PyTypeObject> _PyContext_Type =
       _lookup<PyTypeObject>('PyContext_Type');
 
@@ -11609,124 +16898,6 @@ class DartPyC {
           '_PyContext_NewHamtForTests');
   late final _PyContext_NewHamtForTests = _PyContext_NewHamtForTestsPtr
       .asFunction<ffi.Pointer<PyObject> Function()>();
-
-  int PyContext_ClearFreeList() {
-    return _PyContext_ClearFreeList();
-  }
-
-  late final _PyContext_ClearFreeListPtr =
-      _lookup<ffi.NativeFunction<ffi.Int Function()>>(
-          'PyContext_ClearFreeList');
-  late final _PyContext_ClearFreeList =
-      _PyContext_ClearFreeListPtr.asFunction<int Function()>();
-
-  ffi.Pointer<PyArena> PyArena_New() {
-    return _PyArena_New();
-  }
-
-  late final _PyArena_NewPtr =
-      _lookup<ffi.NativeFunction<ffi.Pointer<PyArena> Function()>>(
-          'PyArena_New');
-  late final _PyArena_New =
-      _PyArena_NewPtr.asFunction<ffi.Pointer<PyArena> Function()>();
-
-  void PyArena_Free(
-    ffi.Pointer<PyArena> arg0,
-  ) {
-    return _PyArena_Free(
-      arg0,
-    );
-  }
-
-  late final _PyArena_FreePtr =
-      _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Pointer<PyArena>)>>(
-          'PyArena_Free');
-  late final _PyArena_Free =
-      _PyArena_FreePtr.asFunction<void Function(ffi.Pointer<PyArena>)>();
-
-  ffi.Pointer<ffi.Void> PyArena_Malloc(
-    ffi.Pointer<PyArena> arg0,
-    int size,
-  ) {
-    return _PyArena_Malloc(
-      arg0,
-      size,
-    );
-  }
-
-  late final _PyArena_MallocPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<ffi.Void> Function(
-              ffi.Pointer<PyArena>, ffi.Size)>>('PyArena_Malloc');
-  late final _PyArena_Malloc = _PyArena_MallocPtr.asFunction<
-      ffi.Pointer<ffi.Void> Function(ffi.Pointer<PyArena>, int)>();
-
-  int PyArena_AddPyObject(
-    ffi.Pointer<PyArena> arg0,
-    ffi.Pointer<PyObject> arg1,
-  ) {
-    return _PyArena_AddPyObject(
-      arg0,
-      arg1,
-    );
-  }
-
-  late final _PyArena_AddPyObjectPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Int Function(ffi.Pointer<PyArena>,
-              ffi.Pointer<PyObject>)>>('PyArena_AddPyObject');
-  late final _PyArena_AddPyObject = _PyArena_AddPyObjectPtr.asFunction<
-      int Function(ffi.Pointer<PyArena>, ffi.Pointer<PyObject>)>();
-
-  ffi.Pointer<PyObject> Py_VaBuildValue_SizeT(
-    ffi.Pointer<ffi.Char> arg0,
-    ffi.Pointer<__va_list_tag> arg1,
-  ) {
-    return _Py_VaBuildValue_SizeT(
-      arg0,
-      arg1,
-    );
-  }
-
-  late final _Py_VaBuildValue_SizeTPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<PyObject> Function(ffi.Pointer<ffi.Char>,
-              ffi.Pointer<__va_list_tag>)>>('_Py_VaBuildValue_SizeT');
-  late final _Py_VaBuildValue_SizeT = _Py_VaBuildValue_SizeTPtr.asFunction<
-      ffi.Pointer<PyObject> Function(
-          ffi.Pointer<ffi.Char>, ffi.Pointer<__va_list_tag>)>();
-
-  ffi.Pointer<ffi.Pointer<PyObject>> Py_VaBuildStack_SizeT(
-    ffi.Pointer<ffi.Pointer<PyObject>> small_stack,
-    int small_stack_len,
-    ffi.Pointer<ffi.Char> format,
-    ffi.Pointer<__va_list_tag> va,
-    ffi.Pointer<Py_ssize_t> p_nargs,
-  ) {
-    return _Py_VaBuildStack_SizeT(
-      small_stack,
-      small_stack_len,
-      format,
-      va,
-      p_nargs,
-    );
-  }
-
-  late final _Py_VaBuildStack_SizeTPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<ffi.Pointer<PyObject>> Function(
-              ffi.Pointer<ffi.Pointer<PyObject>>,
-              Py_ssize_t,
-              ffi.Pointer<ffi.Char>,
-              ffi.Pointer<__va_list_tag>,
-              ffi.Pointer<Py_ssize_t>)>>('_Py_VaBuildStack_SizeT');
-  late final _Py_VaBuildStack_SizeT = _Py_VaBuildStack_SizeTPtr.asFunction<
-      ffi.Pointer<ffi.Pointer<PyObject>> Function(
-          ffi.Pointer<ffi.Pointer<PyObject>>,
-          int,
-          ffi.Pointer<ffi.Char>,
-          ffi.Pointer<__va_list_tag>,
-          ffi.Pointer<Py_ssize_t>)>();
 
   int PyArg_Parse(
     ffi.Pointer<PyObject> arg0,
@@ -11905,6 +17076,260 @@ class DartPyC {
   late final _Py_BuildValue_SizeT = _Py_BuildValue_SizeTPtr.asFunction<
       ffi.Pointer<PyObject> Function(ffi.Pointer<ffi.Char>)>();
 
+  ffi.Pointer<PyObject> Py_VaBuildValue(
+    ffi.Pointer<ffi.Char> arg0,
+    ffi.Pointer<__va_list_tag> arg1,
+  ) {
+    return _Py_VaBuildValue(
+      arg0,
+      arg1,
+    );
+  }
+
+  late final _Py_VaBuildValuePtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<PyObject> Function(ffi.Pointer<ffi.Char>,
+              ffi.Pointer<__va_list_tag>)>>('Py_VaBuildValue');
+  late final _Py_VaBuildValue = _Py_VaBuildValuePtr.asFunction<
+      ffi.Pointer<PyObject> Function(
+          ffi.Pointer<ffi.Char>, ffi.Pointer<__va_list_tag>)>();
+
+  int PyModule_AddObjectRef(
+    ffi.Pointer<PyObject> mod,
+    ffi.Pointer<ffi.Char> name,
+    ffi.Pointer<PyObject> value,
+  ) {
+    return _PyModule_AddObjectRef(
+      mod,
+      name,
+      value,
+    );
+  }
+
+  late final _PyModule_AddObjectRefPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int Function(ffi.Pointer<PyObject>, ffi.Pointer<ffi.Char>,
+              ffi.Pointer<PyObject>)>>('PyModule_AddObjectRef');
+  late final _PyModule_AddObjectRef = _PyModule_AddObjectRefPtr.asFunction<
+      int Function(ffi.Pointer<PyObject>, ffi.Pointer<ffi.Char>,
+          ffi.Pointer<PyObject>)>();
+
+  int PyModule_AddObject(
+    ffi.Pointer<PyObject> mod,
+    ffi.Pointer<ffi.Char> arg1,
+    ffi.Pointer<PyObject> value,
+  ) {
+    return _PyModule_AddObject(
+      mod,
+      arg1,
+      value,
+    );
+  }
+
+  late final _PyModule_AddObjectPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int Function(ffi.Pointer<PyObject>, ffi.Pointer<ffi.Char>,
+              ffi.Pointer<PyObject>)>>('PyModule_AddObject');
+  late final _PyModule_AddObject = _PyModule_AddObjectPtr.asFunction<
+      int Function(ffi.Pointer<PyObject>, ffi.Pointer<ffi.Char>,
+          ffi.Pointer<PyObject>)>();
+
+  int PyModule_AddIntConstant(
+    ffi.Pointer<PyObject> arg0,
+    ffi.Pointer<ffi.Char> arg1,
+    int arg2,
+  ) {
+    return _PyModule_AddIntConstant(
+      arg0,
+      arg1,
+      arg2,
+    );
+  }
+
+  late final _PyModule_AddIntConstantPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int Function(ffi.Pointer<PyObject>, ffi.Pointer<ffi.Char>,
+              ffi.Long)>>('PyModule_AddIntConstant');
+  late final _PyModule_AddIntConstant = _PyModule_AddIntConstantPtr.asFunction<
+      int Function(ffi.Pointer<PyObject>, ffi.Pointer<ffi.Char>, int)>();
+
+  int PyModule_AddStringConstant(
+    ffi.Pointer<PyObject> arg0,
+    ffi.Pointer<ffi.Char> arg1,
+    ffi.Pointer<ffi.Char> arg2,
+  ) {
+    return _PyModule_AddStringConstant(
+      arg0,
+      arg1,
+      arg2,
+    );
+  }
+
+  late final _PyModule_AddStringConstantPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int Function(ffi.Pointer<PyObject>, ffi.Pointer<ffi.Char>,
+              ffi.Pointer<ffi.Char>)>>('PyModule_AddStringConstant');
+  late final _PyModule_AddStringConstant =
+      _PyModule_AddStringConstantPtr.asFunction<
+          int Function(ffi.Pointer<PyObject>, ffi.Pointer<ffi.Char>,
+              ffi.Pointer<ffi.Char>)>();
+
+  int PyModule_AddType(
+    ffi.Pointer<PyObject> module,
+    ffi.Pointer<PyTypeObject> type,
+  ) {
+    return _PyModule_AddType(
+      module,
+      type,
+    );
+  }
+
+  late final _PyModule_AddTypePtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int Function(ffi.Pointer<PyObject>,
+              ffi.Pointer<PyTypeObject>)>>('PyModule_AddType');
+  late final _PyModule_AddType = _PyModule_AddTypePtr.asFunction<
+      int Function(ffi.Pointer<PyObject>, ffi.Pointer<PyTypeObject>)>();
+
+  int PyModule_SetDocString(
+    ffi.Pointer<PyObject> arg0,
+    ffi.Pointer<ffi.Char> arg1,
+  ) {
+    return _PyModule_SetDocString(
+      arg0,
+      arg1,
+    );
+  }
+
+  late final _PyModule_SetDocStringPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int Function(ffi.Pointer<PyObject>,
+              ffi.Pointer<ffi.Char>)>>('PyModule_SetDocString');
+  late final _PyModule_SetDocString = _PyModule_SetDocStringPtr.asFunction<
+      int Function(ffi.Pointer<PyObject>, ffi.Pointer<ffi.Char>)>();
+
+  int PyModule_AddFunctions(
+    ffi.Pointer<PyObject> arg0,
+    ffi.Pointer<PyMethodDef> arg1,
+  ) {
+    return _PyModule_AddFunctions(
+      arg0,
+      arg1,
+    );
+  }
+
+  late final _PyModule_AddFunctionsPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int Function(ffi.Pointer<PyObject>,
+              ffi.Pointer<PyMethodDef>)>>('PyModule_AddFunctions');
+  late final _PyModule_AddFunctions = _PyModule_AddFunctionsPtr.asFunction<
+      int Function(ffi.Pointer<PyObject>, ffi.Pointer<PyMethodDef>)>();
+
+  int PyModule_ExecDef(
+    ffi.Pointer<PyObject> module,
+    ffi.Pointer<PyModuleDef> def,
+  ) {
+    return _PyModule_ExecDef(
+      module,
+      def,
+    );
+  }
+
+  late final _PyModule_ExecDefPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int Function(ffi.Pointer<PyObject>,
+              ffi.Pointer<PyModuleDef>)>>('PyModule_ExecDef');
+  late final _PyModule_ExecDef = _PyModule_ExecDefPtr.asFunction<
+      int Function(ffi.Pointer<PyObject>, ffi.Pointer<PyModuleDef>)>();
+
+  ffi.Pointer<PyObject> PyModule_Create2(
+    ffi.Pointer<PyModuleDef> arg0,
+    int apiver,
+  ) {
+    return _PyModule_Create2(
+      arg0,
+      apiver,
+    );
+  }
+
+  late final _PyModule_Create2Ptr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<PyObject> Function(
+              ffi.Pointer<PyModuleDef>, ffi.Int)>>('PyModule_Create2');
+  late final _PyModule_Create2 = _PyModule_Create2Ptr.asFunction<
+      ffi.Pointer<PyObject> Function(ffi.Pointer<PyModuleDef>, int)>();
+
+  ffi.Pointer<PyObject> PyModule_FromDefAndSpec2(
+    ffi.Pointer<PyModuleDef> def,
+    ffi.Pointer<PyObject> spec,
+    int module_api_version,
+  ) {
+    return _PyModule_FromDefAndSpec2(
+      def,
+      spec,
+      module_api_version,
+    );
+  }
+
+  late final _PyModule_FromDefAndSpec2Ptr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<PyObject> Function(ffi.Pointer<PyModuleDef>,
+              ffi.Pointer<PyObject>, ffi.Int)>>('PyModule_FromDefAndSpec2');
+  late final _PyModule_FromDefAndSpec2 =
+      _PyModule_FromDefAndSpec2Ptr.asFunction<
+          ffi.Pointer<PyObject> Function(
+              ffi.Pointer<PyModuleDef>, ffi.Pointer<PyObject>, int)>();
+
+  ffi.Pointer<PyObject> Py_VaBuildValue_SizeT(
+    ffi.Pointer<ffi.Char> arg0,
+    ffi.Pointer<__va_list_tag> arg1,
+  ) {
+    return _Py_VaBuildValue_SizeT(
+      arg0,
+      arg1,
+    );
+  }
+
+  late final _Py_VaBuildValue_SizeTPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<PyObject> Function(ffi.Pointer<ffi.Char>,
+              ffi.Pointer<__va_list_tag>)>>('_Py_VaBuildValue_SizeT');
+  late final _Py_VaBuildValue_SizeT = _Py_VaBuildValue_SizeTPtr.asFunction<
+      ffi.Pointer<PyObject> Function(
+          ffi.Pointer<ffi.Char>, ffi.Pointer<__va_list_tag>)>();
+
+  ffi.Pointer<ffi.Pointer<PyObject>> Py_VaBuildStack_SizeT(
+    ffi.Pointer<ffi.Pointer<PyObject>> small_stack,
+    int small_stack_len,
+    ffi.Pointer<ffi.Char> format,
+    ffi.Pointer<__va_list_tag> va,
+    ffi.Pointer<Py_ssize_t> p_nargs,
+  ) {
+    return _Py_VaBuildStack_SizeT(
+      small_stack,
+      small_stack_len,
+      format,
+      va,
+      p_nargs,
+    );
+  }
+
+  late final _Py_VaBuildStack_SizeTPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<ffi.Pointer<PyObject>> Function(
+              ffi.Pointer<ffi.Pointer<PyObject>>,
+              Py_ssize_t,
+              ffi.Pointer<ffi.Char>,
+              ffi.Pointer<__va_list_tag>,
+              ffi.Pointer<Py_ssize_t>)>>('_Py_VaBuildStack_SizeT');
+  late final _Py_VaBuildStack_SizeT = _Py_VaBuildStack_SizeTPtr.asFunction<
+      ffi.Pointer<ffi.Pointer<PyObject>> Function(
+          ffi.Pointer<ffi.Pointer<PyObject>>,
+          int,
+          ffi.Pointer<ffi.Char>,
+          ffi.Pointer<__va_list_tag>,
+          ffi.Pointer<Py_ssize_t>)>();
+
   int PyArg_UnpackStack(
     ffi.Pointer<ffi.Pointer<PyObject>> args,
     int nargs,
@@ -11948,6 +17373,23 @@ class DartPyC {
           ffi.Int Function(ffi.Pointer<ffi.Char>,
               ffi.Pointer<PyObject>)>>('_PyArg_NoKeywords');
   late final _PyArg_NoKeywords = _PyArg_NoKeywordsPtr.asFunction<
+      int Function(ffi.Pointer<ffi.Char>, ffi.Pointer<PyObject>)>();
+
+  int PyArg_NoKwnames(
+    ffi.Pointer<ffi.Char> funcname,
+    ffi.Pointer<PyObject> kwnames,
+  ) {
+    return _PyArg_NoKwnames(
+      funcname,
+      kwnames,
+    );
+  }
+
+  late final _PyArg_NoKwnamesPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int Function(ffi.Pointer<ffi.Char>,
+              ffi.Pointer<PyObject>)>>('_PyArg_NoKwnames');
+  late final _PyArg_NoKwnames = _PyArg_NoKwnamesPtr.asFunction<
       int Function(ffi.Pointer<ffi.Char>, ffi.Pointer<PyObject>)>();
 
   int PyArg_NoPositional(
@@ -12012,24 +17454,6 @@ class DartPyC {
               Py_ssize_t)>>('_PyArg_CheckPositional');
   late final _PyArg_CheckPositional = _PyArg_CheckPositionalPtr.asFunction<
       int Function(ffi.Pointer<ffi.Char>, int, int, int)>();
-
-  ffi.Pointer<PyObject> Py_VaBuildValue(
-    ffi.Pointer<ffi.Char> arg0,
-    ffi.Pointer<__va_list_tag> arg1,
-  ) {
-    return _Py_VaBuildValue(
-      arg0,
-      arg1,
-    );
-  }
-
-  late final _Py_VaBuildValuePtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<PyObject> Function(ffi.Pointer<ffi.Char>,
-              ffi.Pointer<__va_list_tag>)>>('Py_VaBuildValue');
-  late final _Py_VaBuildValue = _Py_VaBuildValuePtr.asFunction<
-      ffi.Pointer<PyObject> Function(
-          ffi.Pointer<ffi.Char>, ffi.Pointer<__va_list_tag>)>();
 
   ffi.Pointer<ffi.Pointer<PyObject>> Py_VaBuildStack(
     ffi.Pointer<ffi.Pointer<PyObject>> small_stack,
@@ -12202,141 +17626,59 @@ class DartPyC {
           int,
           ffi.Pointer<ffi.Pointer<PyObject>>)>();
 
-  void PyArg_Fini() {
-    return _PyArg_Fini();
-  }
-
-  late final _PyArg_FiniPtr =
-      _lookup<ffi.NativeFunction<ffi.Void Function()>>('_PyArg_Fini');
-  late final _PyArg_Fini = _PyArg_FiniPtr.asFunction<void Function()>();
-
-  int PyModule_AddObject(
-    ffi.Pointer<PyObject> arg0,
-    ffi.Pointer<ffi.Char> arg1,
-    ffi.Pointer<PyObject> arg2,
+  ffi.Pointer<ffi.Pointer<PyObject>> PyArg_UnpackKeywordsWithVararg(
+    ffi.Pointer<ffi.Pointer<PyObject>> args,
+    int nargs,
+    ffi.Pointer<PyObject> kwargs,
+    ffi.Pointer<PyObject> kwnames,
+    ffi.Pointer<_PyArg_Parser> parser,
+    int minpos,
+    int maxpos,
+    int minkw,
+    int vararg,
+    ffi.Pointer<ffi.Pointer<PyObject>> buf,
   ) {
-    return _PyModule_AddObject(
-      arg0,
-      arg1,
-      arg2,
+    return _PyArg_UnpackKeywordsWithVararg(
+      args,
+      nargs,
+      kwargs,
+      kwnames,
+      parser,
+      minpos,
+      maxpos,
+      minkw,
+      vararg,
+      buf,
     );
   }
 
-  late final _PyModule_AddObjectPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Int Function(ffi.Pointer<PyObject>, ffi.Pointer<ffi.Char>,
-              ffi.Pointer<PyObject>)>>('PyModule_AddObject');
-  late final _PyModule_AddObject = _PyModule_AddObjectPtr.asFunction<
-      int Function(ffi.Pointer<PyObject>, ffi.Pointer<ffi.Char>,
-          ffi.Pointer<PyObject>)>();
-
-  int PyModule_AddIntConstant(
-    ffi.Pointer<PyObject> arg0,
-    ffi.Pointer<ffi.Char> arg1,
-    int arg2,
-  ) {
-    return _PyModule_AddIntConstant(
-      arg0,
-      arg1,
-      arg2,
-    );
-  }
-
-  late final _PyModule_AddIntConstantPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Int Function(ffi.Pointer<PyObject>, ffi.Pointer<ffi.Char>,
-              ffi.Long)>>('PyModule_AddIntConstant');
-  late final _PyModule_AddIntConstant = _PyModule_AddIntConstantPtr.asFunction<
-      int Function(ffi.Pointer<PyObject>, ffi.Pointer<ffi.Char>, int)>();
-
-  int PyModule_AddStringConstant(
-    ffi.Pointer<PyObject> arg0,
-    ffi.Pointer<ffi.Char> arg1,
-    ffi.Pointer<ffi.Char> arg2,
-  ) {
-    return _PyModule_AddStringConstant(
-      arg0,
-      arg1,
-      arg2,
-    );
-  }
-
-  late final _PyModule_AddStringConstantPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Int Function(ffi.Pointer<PyObject>, ffi.Pointer<ffi.Char>,
-              ffi.Pointer<ffi.Char>)>>('PyModule_AddStringConstant');
-  late final _PyModule_AddStringConstant =
-      _PyModule_AddStringConstantPtr.asFunction<
-          int Function(ffi.Pointer<PyObject>, ffi.Pointer<ffi.Char>,
-              ffi.Pointer<ffi.Char>)>();
-
-  int PyModule_SetDocString(
-    ffi.Pointer<PyObject> arg0,
-    ffi.Pointer<ffi.Char> arg1,
-  ) {
-    return _PyModule_SetDocString(
-      arg0,
-      arg1,
-    );
-  }
-
-  late final _PyModule_SetDocStringPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Int Function(ffi.Pointer<PyObject>,
-              ffi.Pointer<ffi.Char>)>>('PyModule_SetDocString');
-  late final _PyModule_SetDocString = _PyModule_SetDocStringPtr.asFunction<
-      int Function(ffi.Pointer<PyObject>, ffi.Pointer<ffi.Char>)>();
-
-  int PyModule_AddFunctions(
-    ffi.Pointer<PyObject> arg0,
-    ffi.Pointer<PyMethodDef> arg1,
-  ) {
-    return _PyModule_AddFunctions(
-      arg0,
-      arg1,
-    );
-  }
-
-  late final _PyModule_AddFunctionsPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Int Function(ffi.Pointer<PyObject>,
-              ffi.Pointer<PyMethodDef>)>>('PyModule_AddFunctions');
-  late final _PyModule_AddFunctions = _PyModule_AddFunctionsPtr.asFunction<
-      int Function(ffi.Pointer<PyObject>, ffi.Pointer<PyMethodDef>)>();
-
-  int PyModule_ExecDef(
-    ffi.Pointer<PyObject> module,
-    ffi.Pointer<PyModuleDef> def,
-  ) {
-    return _PyModule_ExecDef(
-      module,
-      def,
-    );
-  }
-
-  late final _PyModule_ExecDefPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Int Function(ffi.Pointer<PyObject>,
-              ffi.Pointer<PyModuleDef>)>>('PyModule_ExecDef');
-  late final _PyModule_ExecDef = _PyModule_ExecDefPtr.asFunction<
-      int Function(ffi.Pointer<PyObject>, ffi.Pointer<PyModuleDef>)>();
-
-  ffi.Pointer<PyObject> PyModule_Create2(
-    ffi.Pointer<PyModuleDef> arg0,
-    int apiver,
-  ) {
-    return _PyModule_Create2(
-      arg0,
-      apiver,
-    );
-  }
-
-  late final _PyModule_Create2Ptr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<PyObject> Function(
-              ffi.Pointer<PyModuleDef>, ffi.Int)>>('PyModule_Create2');
-  late final _PyModule_Create2 = _PyModule_Create2Ptr.asFunction<
-      ffi.Pointer<PyObject> Function(ffi.Pointer<PyModuleDef>, int)>();
+  late final _PyArg_UnpackKeywordsWithVarargPtr = _lookup<
+          ffi.NativeFunction<
+              ffi.Pointer<ffi.Pointer<PyObject>> Function(
+                  ffi.Pointer<ffi.Pointer<PyObject>>,
+                  Py_ssize_t,
+                  ffi.Pointer<PyObject>,
+                  ffi.Pointer<PyObject>,
+                  ffi.Pointer<_PyArg_Parser>,
+                  ffi.Int,
+                  ffi.Int,
+                  ffi.Int,
+                  ffi.Int,
+                  ffi.Pointer<ffi.Pointer<PyObject>>)>>(
+      '_PyArg_UnpackKeywordsWithVararg');
+  late final _PyArg_UnpackKeywordsWithVararg =
+      _PyArg_UnpackKeywordsWithVarargPtr.asFunction<
+          ffi.Pointer<ffi.Pointer<PyObject>> Function(
+              ffi.Pointer<ffi.Pointer<PyObject>>,
+              int,
+              ffi.Pointer<PyObject>,
+              ffi.Pointer<PyObject>,
+              ffi.Pointer<_PyArg_Parser>,
+              int,
+              int,
+              int,
+              int,
+              ffi.Pointer<ffi.Pointer<PyObject>>)>();
 
   ffi.Pointer<PyObject> PyModule_CreateInitialized(
     ffi.Pointer<PyModuleDef> arg0,
@@ -12356,462 +17698,25 @@ class DartPyC {
       _PyModule_CreateInitializedPtr.asFunction<
           ffi.Pointer<PyObject> Function(ffi.Pointer<PyModuleDef>, int)>();
 
-  ffi.Pointer<PyObject> PyModule_FromDefAndSpec2(
-    ffi.Pointer<PyModuleDef> def,
-    ffi.Pointer<PyObject> spec,
-    int module_api_version,
-  ) {
-    return _PyModule_FromDefAndSpec2(
-      def,
-      spec,
-      module_api_version,
-    );
-  }
-
-  late final _PyModule_FromDefAndSpec2Ptr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<PyObject> Function(ffi.Pointer<PyModuleDef>,
-              ffi.Pointer<PyObject>, ffi.Int)>>('PyModule_FromDefAndSpec2');
-  late final _PyModule_FromDefAndSpec2 =
-      _PyModule_FromDefAndSpec2Ptr.asFunction<
-          ffi.Pointer<PyObject> Function(
-              ffi.Pointer<PyModuleDef>, ffi.Pointer<PyObject>, int)>();
-
-  late final ffi.Pointer<ffi.Pointer<ffi.Char>> _Py_PackageContext =
-      _lookup<ffi.Pointer<ffi.Char>>('_Py_PackageContext');
-
-  ffi.Pointer<ffi.Char> get Py_PackageContext => _Py_PackageContext.value;
-
-  set Py_PackageContext(ffi.Pointer<ffi.Char> value) =>
-      _Py_PackageContext.value = value;
-
-  late final ffi.Pointer<PyTypeObject> _PyCode_Type =
-      _lookup<PyTypeObject>('PyCode_Type');
-
-  PyTypeObject get PyCode_Type => _PyCode_Type.ref;
-
-  ffi.Pointer<PyCodeObject> PyCode_New(
-    int arg0,
-    int arg1,
-    int arg2,
-    int arg3,
-    int arg4,
-    ffi.Pointer<PyObject> arg5,
-    ffi.Pointer<PyObject> arg6,
-    ffi.Pointer<PyObject> arg7,
-    ffi.Pointer<PyObject> arg8,
-    ffi.Pointer<PyObject> arg9,
-    ffi.Pointer<PyObject> arg10,
-    ffi.Pointer<PyObject> arg11,
-    ffi.Pointer<PyObject> arg12,
-    int arg13,
-    ffi.Pointer<PyObject> arg14,
-  ) {
-    return _PyCode_New(
-      arg0,
-      arg1,
-      arg2,
-      arg3,
-      arg4,
-      arg5,
-      arg6,
-      arg7,
-      arg8,
-      arg9,
-      arg10,
-      arg11,
-      arg12,
-      arg13,
-      arg14,
-    );
-  }
-
-  late final _PyCode_NewPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<PyCodeObject> Function(
-              ffi.Int,
-              ffi.Int,
-              ffi.Int,
-              ffi.Int,
-              ffi.Int,
-              ffi.Pointer<PyObject>,
-              ffi.Pointer<PyObject>,
-              ffi.Pointer<PyObject>,
-              ffi.Pointer<PyObject>,
-              ffi.Pointer<PyObject>,
-              ffi.Pointer<PyObject>,
-              ffi.Pointer<PyObject>,
-              ffi.Pointer<PyObject>,
-              ffi.Int,
-              ffi.Pointer<PyObject>)>>('PyCode_New');
-  late final _PyCode_New = _PyCode_NewPtr.asFunction<
-      ffi.Pointer<PyCodeObject> Function(
-          int,
-          int,
-          int,
-          int,
-          int,
-          ffi.Pointer<PyObject>,
-          ffi.Pointer<PyObject>,
-          ffi.Pointer<PyObject>,
-          ffi.Pointer<PyObject>,
-          ffi.Pointer<PyObject>,
-          ffi.Pointer<PyObject>,
-          ffi.Pointer<PyObject>,
-          ffi.Pointer<PyObject>,
-          int,
-          ffi.Pointer<PyObject>)>();
-
-  ffi.Pointer<PyCodeObject> PyCode_NewWithPosOnlyArgs(
-    int arg0,
-    int arg1,
-    int arg2,
-    int arg3,
-    int arg4,
-    int arg5,
-    ffi.Pointer<PyObject> arg6,
-    ffi.Pointer<PyObject> arg7,
-    ffi.Pointer<PyObject> arg8,
-    ffi.Pointer<PyObject> arg9,
-    ffi.Pointer<PyObject> arg10,
-    ffi.Pointer<PyObject> arg11,
-    ffi.Pointer<PyObject> arg12,
-    ffi.Pointer<PyObject> arg13,
-    int arg14,
-    ffi.Pointer<PyObject> arg15,
-  ) {
-    return _PyCode_NewWithPosOnlyArgs(
-      arg0,
-      arg1,
-      arg2,
-      arg3,
-      arg4,
-      arg5,
-      arg6,
-      arg7,
-      arg8,
-      arg9,
-      arg10,
-      arg11,
-      arg12,
-      arg13,
-      arg14,
-      arg15,
-    );
-  }
-
-  late final _PyCode_NewWithPosOnlyArgsPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<PyCodeObject> Function(
-              ffi.Int,
-              ffi.Int,
-              ffi.Int,
-              ffi.Int,
-              ffi.Int,
-              ffi.Int,
-              ffi.Pointer<PyObject>,
-              ffi.Pointer<PyObject>,
-              ffi.Pointer<PyObject>,
-              ffi.Pointer<PyObject>,
-              ffi.Pointer<PyObject>,
-              ffi.Pointer<PyObject>,
-              ffi.Pointer<PyObject>,
-              ffi.Pointer<PyObject>,
-              ffi.Int,
-              ffi.Pointer<PyObject>)>>('PyCode_NewWithPosOnlyArgs');
-  late final _PyCode_NewWithPosOnlyArgs =
-      _PyCode_NewWithPosOnlyArgsPtr.asFunction<
-          ffi.Pointer<PyCodeObject> Function(
-              int,
-              int,
-              int,
-              int,
-              int,
-              int,
-              ffi.Pointer<PyObject>,
-              ffi.Pointer<PyObject>,
-              ffi.Pointer<PyObject>,
-              ffi.Pointer<PyObject>,
-              ffi.Pointer<PyObject>,
-              ffi.Pointer<PyObject>,
-              ffi.Pointer<PyObject>,
-              ffi.Pointer<PyObject>,
-              int,
-              ffi.Pointer<PyObject>)>();
-
-  ffi.Pointer<PyCodeObject> PyCode_NewEmpty(
-    ffi.Pointer<ffi.Char> filename,
-    ffi.Pointer<ffi.Char> funcname,
-    int firstlineno,
-  ) {
-    return _PyCode_NewEmpty(
-      filename,
-      funcname,
-      firstlineno,
-    );
-  }
-
-  late final _PyCode_NewEmptyPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<PyCodeObject> Function(ffi.Pointer<ffi.Char>,
-              ffi.Pointer<ffi.Char>, ffi.Int)>>('PyCode_NewEmpty');
-  late final _PyCode_NewEmpty = _PyCode_NewEmptyPtr.asFunction<
-      ffi.Pointer<PyCodeObject> Function(
-          ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Char>, int)>();
-
-  int PyCode_Addr2Line(
-    ffi.Pointer<PyCodeObject> arg0,
-    int arg1,
-  ) {
-    return _PyCode_Addr2Line(
-      arg0,
-      arg1,
-    );
-  }
-
-  late final _PyCode_Addr2LinePtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Int Function(
-              ffi.Pointer<PyCodeObject>, ffi.Int)>>('PyCode_Addr2Line');
-  late final _PyCode_Addr2Line = _PyCode_Addr2LinePtr.asFunction<
-      int Function(ffi.Pointer<PyCodeObject>, int)>();
-
-  int PyCode_CheckLineNumber(
-    ffi.Pointer<PyCodeObject> co,
-    int lasti,
-    ffi.Pointer<PyAddrPair> bounds,
-  ) {
-    return _PyCode_CheckLineNumber(
-      co,
-      lasti,
-      bounds,
-    );
-  }
-
-  late final _PyCode_CheckLineNumberPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Int Function(ffi.Pointer<PyCodeObject>, ffi.Int,
-              ffi.Pointer<PyAddrPair>)>>('_PyCode_CheckLineNumber');
-  late final _PyCode_CheckLineNumber = _PyCode_CheckLineNumberPtr.asFunction<
-      int Function(ffi.Pointer<PyCodeObject>, int, ffi.Pointer<PyAddrPair>)>();
-
-  ffi.Pointer<PyObject> PyCode_ConstantKey(
-    ffi.Pointer<PyObject> obj,
-  ) {
-    return _PyCode_ConstantKey(
-      obj,
-    );
-  }
-
-  late final _PyCode_ConstantKeyPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<PyObject> Function(
-              ffi.Pointer<PyObject>)>>('_PyCode_ConstantKey');
-  late final _PyCode_ConstantKey = _PyCode_ConstantKeyPtr.asFunction<
-      ffi.Pointer<PyObject> Function(ffi.Pointer<PyObject>)>();
-
-  ffi.Pointer<PyObject> PyCode_Optimize(
-    ffi.Pointer<PyObject> code,
-    ffi.Pointer<PyObject> consts,
-    ffi.Pointer<PyObject> names,
-    ffi.Pointer<PyObject> lnotab,
-  ) {
-    return _PyCode_Optimize(
-      code,
-      consts,
-      names,
-      lnotab,
-    );
-  }
-
-  late final _PyCode_OptimizePtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<PyObject> Function(
-              ffi.Pointer<PyObject>,
-              ffi.Pointer<PyObject>,
-              ffi.Pointer<PyObject>,
-              ffi.Pointer<PyObject>)>>('PyCode_Optimize');
-  late final _PyCode_Optimize = _PyCode_OptimizePtr.asFunction<
-      ffi.Pointer<PyObject> Function(
-          ffi.Pointer<PyObject>,
-          ffi.Pointer<PyObject>,
-          ffi.Pointer<PyObject>,
-          ffi.Pointer<PyObject>)>();
-
-  int PyCode_GetExtra(
-    ffi.Pointer<PyObject> code,
-    int index,
-    ffi.Pointer<ffi.Pointer<ffi.Void>> extra,
-  ) {
-    return _PyCode_GetExtra(
-      code,
-      index,
-      extra,
-    );
-  }
-
-  late final _PyCode_GetExtraPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Int Function(ffi.Pointer<PyObject>, Py_ssize_t,
-              ffi.Pointer<ffi.Pointer<ffi.Void>>)>>('_PyCode_GetExtra');
-  late final _PyCode_GetExtra = _PyCode_GetExtraPtr.asFunction<
-      int Function(
-          ffi.Pointer<PyObject>, int, ffi.Pointer<ffi.Pointer<ffi.Void>>)>();
-
-  int PyCode_SetExtra(
-    ffi.Pointer<PyObject> code,
-    int index,
-    ffi.Pointer<ffi.Void> extra,
-  ) {
-    return _PyCode_SetExtra(
-      code,
-      index,
-      extra,
-    );
-  }
-
-  late final _PyCode_SetExtraPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Int Function(ffi.Pointer<PyObject>, Py_ssize_t,
-              ffi.Pointer<ffi.Void>)>>('_PyCode_SetExtra');
-  late final _PyCode_SetExtra = _PyCode_SetExtraPtr.asFunction<
-      int Function(ffi.Pointer<PyObject>, int, ffi.Pointer<ffi.Void>)>();
-
-  ffi.Pointer<PyCodeObject> PyNode_Compile(
-    ffi.Pointer<_node> arg0,
+  int PyModule_Add(
+    ffi.Pointer<PyObject> arg0,
     ffi.Pointer<ffi.Char> arg1,
+    ffi.Pointer<PyObject> arg2,
   ) {
-    return _PyNode_Compile(
+    return _PyModule_Add(
       arg0,
       arg1,
+      arg2,
     );
   }
 
-  late final _PyNode_CompilePtr = _lookup<
+  late final _PyModule_AddPtr = _lookup<
       ffi.NativeFunction<
-          ffi.Pointer<PyCodeObject> Function(
-              ffi.Pointer<_node>, ffi.Pointer<ffi.Char>)>>('PyNode_Compile');
-  late final _PyNode_Compile = _PyNode_CompilePtr.asFunction<
-      ffi.Pointer<PyCodeObject> Function(
-          ffi.Pointer<_node>, ffi.Pointer<ffi.Char>)>();
-
-  ffi.Pointer<PyCodeObject> PyAST_CompileEx(
-    ffi.Pointer<_mod> mod,
-    ffi.Pointer<ffi.Char> filename,
-    ffi.Pointer<PyCompilerFlags> flags,
-    int optimize,
-    ffi.Pointer<PyArena> arena,
-  ) {
-    return _PyAST_CompileEx(
-      mod,
-      filename,
-      flags,
-      optimize,
-      arena,
-    );
-  }
-
-  late final _PyAST_CompileExPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<PyCodeObject> Function(
-              ffi.Pointer<_mod>,
-              ffi.Pointer<ffi.Char>,
-              ffi.Pointer<PyCompilerFlags>,
-              ffi.Int,
-              ffi.Pointer<PyArena>)>>('PyAST_CompileEx');
-  late final _PyAST_CompileEx = _PyAST_CompileExPtr.asFunction<
-      ffi.Pointer<PyCodeObject> Function(
-          ffi.Pointer<_mod>,
-          ffi.Pointer<ffi.Char>,
-          ffi.Pointer<PyCompilerFlags>,
-          int,
-          ffi.Pointer<PyArena>)>();
-
-  ffi.Pointer<PyCodeObject> PyAST_CompileObject(
-    ffi.Pointer<_mod> mod,
-    ffi.Pointer<PyObject> filename,
-    ffi.Pointer<PyCompilerFlags> flags,
-    int optimize,
-    ffi.Pointer<PyArena> arena,
-  ) {
-    return _PyAST_CompileObject(
-      mod,
-      filename,
-      flags,
-      optimize,
-      arena,
-    );
-  }
-
-  late final _PyAST_CompileObjectPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<PyCodeObject> Function(
-              ffi.Pointer<_mod>,
-              ffi.Pointer<PyObject>,
-              ffi.Pointer<PyCompilerFlags>,
-              ffi.Int,
-              ffi.Pointer<PyArena>)>>('PyAST_CompileObject');
-  late final _PyAST_CompileObject = _PyAST_CompileObjectPtr.asFunction<
-      ffi.Pointer<PyCodeObject> Function(
-          ffi.Pointer<_mod>,
-          ffi.Pointer<PyObject>,
-          ffi.Pointer<PyCompilerFlags>,
-          int,
-          ffi.Pointer<PyArena>)>();
-
-  ffi.Pointer<PyFutureFeatures> PyFuture_FromAST(
-    ffi.Pointer<_mod> mod,
-    ffi.Pointer<ffi.Char> filename,
-  ) {
-    return _PyFuture_FromAST(
-      mod,
-      filename,
-    );
-  }
-
-  late final _PyFuture_FromASTPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<PyFutureFeatures> Function(
-              ffi.Pointer<_mod>, ffi.Pointer<ffi.Char>)>>('PyFuture_FromAST');
-  late final _PyFuture_FromAST = _PyFuture_FromASTPtr.asFunction<
-      ffi.Pointer<PyFutureFeatures> Function(
-          ffi.Pointer<_mod>, ffi.Pointer<ffi.Char>)>();
-
-  ffi.Pointer<PyFutureFeatures> PyFuture_FromASTObject(
-    ffi.Pointer<_mod> mod,
-    ffi.Pointer<PyObject> filename,
-  ) {
-    return _PyFuture_FromASTObject(
-      mod,
-      filename,
-    );
-  }
-
-  late final _PyFuture_FromASTObjectPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<PyFutureFeatures> Function(ffi.Pointer<_mod>,
-              ffi.Pointer<PyObject>)>>('PyFuture_FromASTObject');
-  late final _PyFuture_FromASTObject = _PyFuture_FromASTObjectPtr.asFunction<
-      ffi.Pointer<PyFutureFeatures> Function(
-          ffi.Pointer<_mod>, ffi.Pointer<PyObject>)>();
-
-  ffi.Pointer<PyObject> Py_Mangle(
-    ffi.Pointer<PyObject> p,
-    ffi.Pointer<PyObject> name,
-  ) {
-    return _Py_Mangle(
-      p,
-      name,
-    );
-  }
-
-  late final _Py_ManglePtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<PyObject> Function(
-              ffi.Pointer<PyObject>, ffi.Pointer<PyObject>)>>('_Py_Mangle');
-  late final _Py_Mangle = _Py_ManglePtr.asFunction<
-      ffi.Pointer<PyObject> Function(
-          ffi.Pointer<PyObject>, ffi.Pointer<PyObject>)>();
+          ffi.Int Function(ffi.Pointer<PyObject>, ffi.Pointer<ffi.Char>,
+              ffi.Pointer<PyObject>)>>('_PyModule_Add');
+  late final _PyModule_Add = _PyModule_AddPtr.asFunction<
+      int Function(ffi.Pointer<PyObject>, ffi.Pointer<ffi.Char>,
+          ffi.Pointer<PyObject>)>();
 
   int PyCompile_OpcodeStackEffect(
     int opcode,
@@ -12848,24 +17753,92 @@ class DartPyC {
       _PyCompile_OpcodeStackEffectWithJumpPtr.asFunction<
           int Function(int, int, int)>();
 
-  int PyAST_Optimize(
-    ffi.Pointer<_mod> arg0,
-    ffi.Pointer<PyArena> arena,
-    int optimize,
+  ffi.Pointer<PyObject> Py_CompileString(
+    ffi.Pointer<ffi.Char> arg0,
+    ffi.Pointer<ffi.Char> arg1,
+    int arg2,
   ) {
-    return _PyAST_Optimize(
+    return _Py_CompileString(
       arg0,
-      arena,
-      optimize,
+      arg1,
+      arg2,
     );
   }
 
-  late final _PyAST_OptimizePtr = _lookup<
+  late final _Py_CompileStringPtr = _lookup<
       ffi.NativeFunction<
-          ffi.Int Function(ffi.Pointer<_mod>, ffi.Pointer<PyArena>,
-              ffi.Int)>>('_PyAST_Optimize');
-  late final _PyAST_Optimize = _PyAST_OptimizePtr.asFunction<
-      int Function(ffi.Pointer<_mod>, ffi.Pointer<PyArena>, int)>();
+          ffi.Pointer<PyObject> Function(ffi.Pointer<ffi.Char>,
+              ffi.Pointer<ffi.Char>, ffi.Int)>>('Py_CompileString');
+  late final _Py_CompileString = _Py_CompileStringPtr.asFunction<
+      ffi.Pointer<PyObject> Function(
+          ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Char>, int)>();
+
+  void PyErr_Print() {
+    return _PyErr_Print();
+  }
+
+  late final _PyErr_PrintPtr =
+      _lookup<ffi.NativeFunction<ffi.Void Function()>>('PyErr_Print');
+  late final _PyErr_Print = _PyErr_PrintPtr.asFunction<void Function()>();
+
+  void PyErr_PrintEx(
+    int arg0,
+  ) {
+    return _PyErr_PrintEx(
+      arg0,
+    );
+  }
+
+  late final _PyErr_PrintExPtr =
+      _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Int)>>('PyErr_PrintEx');
+  late final _PyErr_PrintEx =
+      _PyErr_PrintExPtr.asFunction<void Function(int)>();
+
+  void PyErr_Display(
+    ffi.Pointer<PyObject> arg0,
+    ffi.Pointer<PyObject> arg1,
+    ffi.Pointer<PyObject> arg2,
+  ) {
+    return _PyErr_Display(
+      arg0,
+      arg1,
+      arg2,
+    );
+  }
+
+  late final _PyErr_DisplayPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Void Function(ffi.Pointer<PyObject>, ffi.Pointer<PyObject>,
+              ffi.Pointer<PyObject>)>>('PyErr_Display');
+  late final _PyErr_Display = _PyErr_DisplayPtr.asFunction<
+      void Function(ffi.Pointer<PyObject>, ffi.Pointer<PyObject>,
+          ffi.Pointer<PyObject>)>();
+
+  void PyErr_DisplayException(
+    ffi.Pointer<PyObject> arg0,
+  ) {
+    return _PyErr_DisplayException(
+      arg0,
+    );
+  }
+
+  late final _PyErr_DisplayExceptionPtr =
+      _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Pointer<PyObject>)>>(
+          'PyErr_DisplayException');
+  late final _PyErr_DisplayException = _PyErr_DisplayExceptionPtr.asFunction<
+      void Function(ffi.Pointer<PyObject>)>();
+
+  late final ffi.Pointer<ffi.Pointer<ffi.NativeFunction<ffi.Int Function()>>>
+      _PyOS_InputHook =
+      _lookup<ffi.Pointer<ffi.NativeFunction<ffi.Int Function()>>>(
+          'PyOS_InputHook');
+
+  ffi.Pointer<ffi.NativeFunction<ffi.Int Function()>> get PyOS_InputHook =>
+      _PyOS_InputHook.value;
+
+  set PyOS_InputHook(
+          ffi.Pointer<ffi.NativeFunction<ffi.Int Function()>> value) =>
+      _PyOS_InputHook.value = value;
 
   int PyRun_SimpleStringFlags(
     ffi.Pointer<ffi.Char> arg0,
@@ -12883,6 +17856,28 @@ class DartPyC {
               ffi.Pointer<PyCompilerFlags>)>>('PyRun_SimpleStringFlags');
   late final _PyRun_SimpleStringFlags = _PyRun_SimpleStringFlagsPtr.asFunction<
       int Function(ffi.Pointer<ffi.Char>, ffi.Pointer<PyCompilerFlags>)>();
+
+  int PyRun_SimpleFileObject(
+    ffi.Pointer<FILE> fp,
+    ffi.Pointer<PyObject> filename,
+    int closeit,
+    ffi.Pointer<PyCompilerFlags> flags,
+  ) {
+    return _PyRun_SimpleFileObject(
+      fp,
+      filename,
+      closeit,
+      flags,
+    );
+  }
+
+  late final _PyRun_SimpleFileObjectPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int Function(ffi.Pointer<FILE>, ffi.Pointer<PyObject>, ffi.Int,
+              ffi.Pointer<PyCompilerFlags>)>>('_PyRun_SimpleFileObject');
+  late final _PyRun_SimpleFileObject = _PyRun_SimpleFileObjectPtr.asFunction<
+      int Function(ffi.Pointer<FILE>, ffi.Pointer<PyObject>, int,
+          ffi.Pointer<PyCompilerFlags>)>();
 
   int PyRun_AnyFileExFlags(
     ffi.Pointer<FILE> fp,
@@ -12904,6 +17899,28 @@ class DartPyC {
               ffi.Pointer<PyCompilerFlags>)>>('PyRun_AnyFileExFlags');
   late final _PyRun_AnyFileExFlags = _PyRun_AnyFileExFlagsPtr.asFunction<
       int Function(ffi.Pointer<FILE>, ffi.Pointer<ffi.Char>, int,
+          ffi.Pointer<PyCompilerFlags>)>();
+
+  int PyRun_AnyFileObject(
+    ffi.Pointer<FILE> fp,
+    ffi.Pointer<PyObject> filename,
+    int closeit,
+    ffi.Pointer<PyCompilerFlags> flags,
+  ) {
+    return _PyRun_AnyFileObject(
+      fp,
+      filename,
+      closeit,
+      flags,
+    );
+  }
+
+  late final _PyRun_AnyFileObjectPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int Function(ffi.Pointer<FILE>, ffi.Pointer<PyObject>, ffi.Int,
+              ffi.Pointer<PyCompilerFlags>)>>('_PyRun_AnyFileObject');
+  late final _PyRun_AnyFileObject = _PyRun_AnyFileObjectPtr.asFunction<
+      int Function(ffi.Pointer<FILE>, ffi.Pointer<PyObject>, int,
           ffi.Pointer<PyCompilerFlags>)>();
 
   int PyRun_SimpleFileExFlags(
@@ -12991,232 +18008,26 @@ class DartPyC {
           int Function(ffi.Pointer<FILE>, ffi.Pointer<ffi.Char>,
               ffi.Pointer<PyCompilerFlags>)>();
 
-  ffi.Pointer<_mod> PyParser_ASTFromString(
-    ffi.Pointer<ffi.Char> s,
-    ffi.Pointer<ffi.Char> filename,
-    int start,
-    ffi.Pointer<PyCompilerFlags> flags,
-    ffi.Pointer<PyArena> arena,
-  ) {
-    return _PyParser_ASTFromString(
-      s,
-      filename,
-      start,
-      flags,
-      arena,
-    );
-  }
-
-  late final _PyParser_ASTFromStringPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<_mod> Function(
-              ffi.Pointer<ffi.Char>,
-              ffi.Pointer<ffi.Char>,
-              ffi.Int,
-              ffi.Pointer<PyCompilerFlags>,
-              ffi.Pointer<PyArena>)>>('PyParser_ASTFromString');
-  late final _PyParser_ASTFromString = _PyParser_ASTFromStringPtr.asFunction<
-      ffi.Pointer<_mod> Function(ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Char>,
-          int, ffi.Pointer<PyCompilerFlags>, ffi.Pointer<PyArena>)>();
-
-  ffi.Pointer<_mod> PyParser_ASTFromStringObject(
-    ffi.Pointer<ffi.Char> s,
-    ffi.Pointer<PyObject> filename,
-    int start,
-    ffi.Pointer<PyCompilerFlags> flags,
-    ffi.Pointer<PyArena> arena,
-  ) {
-    return _PyParser_ASTFromStringObject(
-      s,
-      filename,
-      start,
-      flags,
-      arena,
-    );
-  }
-
-  late final _PyParser_ASTFromStringObjectPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<_mod> Function(
-              ffi.Pointer<ffi.Char>,
-              ffi.Pointer<PyObject>,
-              ffi.Int,
-              ffi.Pointer<PyCompilerFlags>,
-              ffi.Pointer<PyArena>)>>('PyParser_ASTFromStringObject');
-  late final _PyParser_ASTFromStringObject =
-      _PyParser_ASTFromStringObjectPtr.asFunction<
-          ffi.Pointer<_mod> Function(
-              ffi.Pointer<ffi.Char>,
-              ffi.Pointer<PyObject>,
-              int,
-              ffi.Pointer<PyCompilerFlags>,
-              ffi.Pointer<PyArena>)>();
-
-  ffi.Pointer<_mod> PyParser_ASTFromFile(
-    ffi.Pointer<FILE> fp,
-    ffi.Pointer<ffi.Char> filename,
-    ffi.Pointer<ffi.Char> enc,
-    int start,
-    ffi.Pointer<ffi.Char> ps1,
-    ffi.Pointer<ffi.Char> ps2,
-    ffi.Pointer<PyCompilerFlags> flags,
-    ffi.Pointer<ffi.Int> errcode,
-    ffi.Pointer<PyArena> arena,
-  ) {
-    return _PyParser_ASTFromFile(
-      fp,
-      filename,
-      enc,
-      start,
-      ps1,
-      ps2,
-      flags,
-      errcode,
-      arena,
-    );
-  }
-
-  late final _PyParser_ASTFromFilePtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<_mod> Function(
-              ffi.Pointer<FILE>,
-              ffi.Pointer<ffi.Char>,
-              ffi.Pointer<ffi.Char>,
-              ffi.Int,
-              ffi.Pointer<ffi.Char>,
-              ffi.Pointer<ffi.Char>,
-              ffi.Pointer<PyCompilerFlags>,
-              ffi.Pointer<ffi.Int>,
-              ffi.Pointer<PyArena>)>>('PyParser_ASTFromFile');
-  late final _PyParser_ASTFromFile = _PyParser_ASTFromFilePtr.asFunction<
-      ffi.Pointer<_mod> Function(
-          ffi.Pointer<FILE>,
-          ffi.Pointer<ffi.Char>,
-          ffi.Pointer<ffi.Char>,
-          int,
-          ffi.Pointer<ffi.Char>,
-          ffi.Pointer<ffi.Char>,
-          ffi.Pointer<PyCompilerFlags>,
-          ffi.Pointer<ffi.Int>,
-          ffi.Pointer<PyArena>)>();
-
-  ffi.Pointer<_mod> PyParser_ASTFromFileObject(
+  int PyRun_InteractiveLoopObject(
     ffi.Pointer<FILE> fp,
     ffi.Pointer<PyObject> filename,
-    ffi.Pointer<ffi.Char> enc,
-    int start,
-    ffi.Pointer<ffi.Char> ps1,
-    ffi.Pointer<ffi.Char> ps2,
     ffi.Pointer<PyCompilerFlags> flags,
-    ffi.Pointer<ffi.Int> errcode,
-    ffi.Pointer<PyArena> arena,
   ) {
-    return _PyParser_ASTFromFileObject(
+    return _PyRun_InteractiveLoopObject(
       fp,
       filename,
-      enc,
-      start,
-      ps1,
-      ps2,
       flags,
-      errcode,
-      arena,
     );
   }
 
-  late final _PyParser_ASTFromFileObjectPtr = _lookup<
+  late final _PyRun_InteractiveLoopObjectPtr = _lookup<
       ffi.NativeFunction<
-          ffi.Pointer<_mod> Function(
-              ffi.Pointer<FILE>,
-              ffi.Pointer<PyObject>,
-              ffi.Pointer<ffi.Char>,
-              ffi.Int,
-              ffi.Pointer<ffi.Char>,
-              ffi.Pointer<ffi.Char>,
-              ffi.Pointer<PyCompilerFlags>,
-              ffi.Pointer<ffi.Int>,
-              ffi.Pointer<PyArena>)>>('PyParser_ASTFromFileObject');
-  late final _PyParser_ASTFromFileObject =
-      _PyParser_ASTFromFileObjectPtr.asFunction<
-          ffi.Pointer<_mod> Function(
-              ffi.Pointer<FILE>,
-              ffi.Pointer<PyObject>,
-              ffi.Pointer<ffi.Char>,
-              int,
-              ffi.Pointer<ffi.Char>,
-              ffi.Pointer<ffi.Char>,
-              ffi.Pointer<PyCompilerFlags>,
-              ffi.Pointer<ffi.Int>,
-              ffi.Pointer<PyArena>)>();
-
-  ffi.Pointer<_node> PyParser_SimpleParseStringFlags(
-    ffi.Pointer<ffi.Char> arg0,
-    int arg1,
-    int arg2,
-  ) {
-    return _PyParser_SimpleParseStringFlags(
-      arg0,
-      arg1,
-      arg2,
-    );
-  }
-
-  late final _PyParser_SimpleParseStringFlagsPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<_node> Function(ffi.Pointer<ffi.Char>, ffi.Int,
-              ffi.Int)>>('PyParser_SimpleParseStringFlags');
-  late final _PyParser_SimpleParseStringFlags =
-      _PyParser_SimpleParseStringFlagsPtr.asFunction<
-          ffi.Pointer<_node> Function(ffi.Pointer<ffi.Char>, int, int)>();
-
-  ffi.Pointer<_node> PyParser_SimpleParseStringFlagsFilename(
-    ffi.Pointer<ffi.Char> arg0,
-    ffi.Pointer<ffi.Char> arg1,
-    int arg2,
-    int arg3,
-  ) {
-    return _PyParser_SimpleParseStringFlagsFilename(
-      arg0,
-      arg1,
-      arg2,
-      arg3,
-    );
-  }
-
-  late final _PyParser_SimpleParseStringFlagsFilenamePtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<_node> Function(
-              ffi.Pointer<ffi.Char>,
-              ffi.Pointer<ffi.Char>,
-              ffi.Int,
-              ffi.Int)>>('PyParser_SimpleParseStringFlagsFilename');
-  late final _PyParser_SimpleParseStringFlagsFilename =
-      _PyParser_SimpleParseStringFlagsFilenamePtr.asFunction<
-          ffi.Pointer<_node> Function(
-              ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Char>, int, int)>();
-
-  ffi.Pointer<_node> PyParser_SimpleParseFileFlags(
-    ffi.Pointer<FILE> arg0,
-    ffi.Pointer<ffi.Char> arg1,
-    int arg2,
-    int arg3,
-  ) {
-    return _PyParser_SimpleParseFileFlags(
-      arg0,
-      arg1,
-      arg2,
-      arg3,
-    );
-  }
-
-  late final _PyParser_SimpleParseFileFlagsPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<_node> Function(ffi.Pointer<FILE>, ffi.Pointer<ffi.Char>,
-              ffi.Int, ffi.Int)>>('PyParser_SimpleParseFileFlags');
-  late final _PyParser_SimpleParseFileFlags =
-      _PyParser_SimpleParseFileFlagsPtr.asFunction<
-          ffi.Pointer<_node> Function(
-              ffi.Pointer<FILE>, ffi.Pointer<ffi.Char>, int, int)>();
+          ffi.Int Function(ffi.Pointer<FILE>, ffi.Pointer<PyObject>,
+              ffi.Pointer<PyCompilerFlags>)>>('_PyRun_InteractiveLoopObject');
+  late final _PyRun_InteractiveLoopObject =
+      _PyRun_InteractiveLoopObjectPtr.asFunction<
+          int Function(ffi.Pointer<FILE>, ffi.Pointer<PyObject>,
+              ffi.Pointer<PyCompilerFlags>)>();
 
   ffi.Pointer<PyObject> PyRun_StringFlags(
     ffi.Pointer<ffi.Char> arg0,
@@ -13346,26 +18157,6 @@ class DartPyC {
       ffi.Pointer<PyObject> Function(ffi.Pointer<ffi.Char>,
           ffi.Pointer<PyObject>, int, ffi.Pointer<PyCompilerFlags>, int)>();
 
-  ffi.Pointer<symtable> Py_SymtableString(
-    ffi.Pointer<ffi.Char> str,
-    ffi.Pointer<ffi.Char> filename,
-    int start,
-  ) {
-    return _Py_SymtableString(
-      str,
-      filename,
-      start,
-    );
-  }
-
-  late final _Py_SymtableStringPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<symtable> Function(ffi.Pointer<ffi.Char>,
-              ffi.Pointer<ffi.Char>, ffi.Int)>>('Py_SymtableString');
-  late final _Py_SymtableString = _Py_SymtableStringPtr.asFunction<
-      ffi.Pointer<symtable> Function(
-          ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Char>, int)>();
-
   ffi.Pointer<ffi.Char> Py_SourceAsString(
     ffi.Pointer<PyObject> cmd,
     ffi.Pointer<ffi.Char> funcname,
@@ -13397,93 +18188,6 @@ class DartPyC {
           ffi.Pointer<ffi.Char>,
           ffi.Pointer<PyCompilerFlags>,
           ffi.Pointer<ffi.Pointer<PyObject>>)>();
-
-  ffi.Pointer<symtable> Py_SymtableStringObject(
-    ffi.Pointer<ffi.Char> str,
-    ffi.Pointer<PyObject> filename,
-    int start,
-  ) {
-    return _Py_SymtableStringObject(
-      str,
-      filename,
-      start,
-    );
-  }
-
-  late final _Py_SymtableStringObjectPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<symtable> Function(ffi.Pointer<ffi.Char>,
-              ffi.Pointer<PyObject>, ffi.Int)>>('Py_SymtableStringObject');
-  late final _Py_SymtableStringObject = _Py_SymtableStringObjectPtr.asFunction<
-      ffi.Pointer<symtable> Function(
-          ffi.Pointer<ffi.Char>, ffi.Pointer<PyObject>, int)>();
-
-  ffi.Pointer<symtable> Py_SymtableStringObjectFlags(
-    ffi.Pointer<ffi.Char> str,
-    ffi.Pointer<PyObject> filename,
-    int start,
-    ffi.Pointer<PyCompilerFlags> flags,
-  ) {
-    return _Py_SymtableStringObjectFlags(
-      str,
-      filename,
-      start,
-      flags,
-    );
-  }
-
-  late final _Py_SymtableStringObjectFlagsPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<symtable> Function(
-              ffi.Pointer<ffi.Char>,
-              ffi.Pointer<PyObject>,
-              ffi.Int,
-              ffi.Pointer<PyCompilerFlags>)>>('_Py_SymtableStringObjectFlags');
-  late final _Py_SymtableStringObjectFlags =
-      _Py_SymtableStringObjectFlagsPtr.asFunction<
-          ffi.Pointer<symtable> Function(ffi.Pointer<ffi.Char>,
-              ffi.Pointer<PyObject>, int, ffi.Pointer<PyCompilerFlags>)>();
-
-  void PyErr_Print() {
-    return _PyErr_Print();
-  }
-
-  late final _PyErr_PrintPtr =
-      _lookup<ffi.NativeFunction<ffi.Void Function()>>('PyErr_Print');
-  late final _PyErr_Print = _PyErr_PrintPtr.asFunction<void Function()>();
-
-  void PyErr_PrintEx(
-    int arg0,
-  ) {
-    return _PyErr_PrintEx(
-      arg0,
-    );
-  }
-
-  late final _PyErr_PrintExPtr =
-      _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Int)>>('PyErr_PrintEx');
-  late final _PyErr_PrintEx =
-      _PyErr_PrintExPtr.asFunction<void Function(int)>();
-
-  void PyErr_Display(
-    ffi.Pointer<PyObject> arg0,
-    ffi.Pointer<PyObject> arg1,
-    ffi.Pointer<PyObject> arg2,
-  ) {
-    return _PyErr_Display(
-      arg0,
-      arg1,
-      arg2,
-    );
-  }
-
-  late final _PyErr_DisplayPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Void Function(ffi.Pointer<PyObject>, ffi.Pointer<PyObject>,
-              ffi.Pointer<PyObject>)>>('PyErr_Display');
-  late final _PyErr_Display = _PyErr_DisplayPtr.asFunction<
-      void Function(ffi.Pointer<PyObject>, ffi.Pointer<PyObject>,
-          ffi.Pointer<PyObject>)>();
 
   ffi.Pointer<PyObject> PyRun_String(
     ffi.Pointer<ffi.Char> str,
@@ -13762,17 +18466,14 @@ class DartPyC {
       ffi.Pointer<ffi.Char> Function(
           ffi.Pointer<FILE>, ffi.Pointer<FILE>, ffi.Pointer<ffi.Char>)>();
 
-  late final ffi.Pointer<ffi.Pointer<ffi.NativeFunction<ffi.Int Function()>>>
-      _PyOS_InputHook =
-      _lookup<ffi.Pointer<ffi.NativeFunction<ffi.Int Function()>>>(
-          'PyOS_InputHook');
+  late final ffi.Pointer<ffi.Pointer<PyThreadState>> _PyOS_ReadlineTState =
+      _lookup<ffi.Pointer<PyThreadState>>('_PyOS_ReadlineTState');
 
-  ffi.Pointer<ffi.NativeFunction<ffi.Int Function()>> get PyOS_InputHook =>
-      _PyOS_InputHook.value;
+  ffi.Pointer<PyThreadState> get PyOS_ReadlineTState =>
+      _PyOS_ReadlineTState.value;
 
-  set PyOS_InputHook(
-          ffi.Pointer<ffi.NativeFunction<ffi.Int Function()>> value) =>
-      _PyOS_InputHook.value = value;
+  set PyOS_ReadlineTState(ffi.Pointer<PyThreadState> value) =>
+      _PyOS_ReadlineTState.value = value;
 
   late final ffi.Pointer<
           ffi.Pointer<
@@ -13800,15 +18501,6 @@ class DartPyC {
                           ffi.Pointer<FILE>, ffi.Pointer<ffi.Char>)>>
               value) =>
       _PyOS_ReadlineFunctionPointer.value = value;
-
-  late final ffi.Pointer<ffi.Pointer<PyThreadState>> _PyOS_ReadlineTState =
-      _lookup<ffi.Pointer<PyThreadState>>('_PyOS_ReadlineTState');
-
-  ffi.Pointer<PyThreadState> get PyOS_ReadlineTState =>
-      _PyOS_ReadlineTState.value;
-
-  set PyOS_ReadlineTState(ffi.Pointer<PyThreadState> value) =>
-      _PyOS_ReadlineTState.value = value;
 
   void Py_Initialize() {
     return _Py_Initialize();
@@ -14126,6 +18818,452 @@ class DartPyC {
   late final _PyOS_setsig = _PyOS_setsigPtr.asFunction<
       PyOS_sighandler_t Function(int, PyOS_sighandler_t)>();
 
+  late final ffi.Pointer<ffi.UnsignedLong> _Py_Version =
+      _lookup<ffi.UnsignedLong>('Py_Version');
+
+  int get Py_Version => _Py_Version.value;
+
+  int Py_FrozenMain(
+    int argc,
+    ffi.Pointer<ffi.Pointer<ffi.Char>> argv,
+  ) {
+    return _Py_FrozenMain(
+      argc,
+      argv,
+    );
+  }
+
+  late final _Py_FrozenMainPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int Function(
+              ffi.Int, ffi.Pointer<ffi.Pointer<ffi.Char>>)>>('Py_FrozenMain');
+  late final _Py_FrozenMain = _Py_FrozenMainPtr.asFunction<
+      int Function(int, ffi.Pointer<ffi.Pointer<ffi.Char>>)>();
+
+  int Py_SetStandardStreamEncoding(
+    ffi.Pointer<ffi.Char> encoding,
+    ffi.Pointer<ffi.Char> errors,
+  ) {
+    return _Py_SetStandardStreamEncoding(
+      encoding,
+      errors,
+    );
+  }
+
+  late final _Py_SetStandardStreamEncodingPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int Function(ffi.Pointer<ffi.Char>,
+              ffi.Pointer<ffi.Char>)>>('Py_SetStandardStreamEncoding');
+  late final _Py_SetStandardStreamEncoding = _Py_SetStandardStreamEncodingPtr
+      .asFunction<int Function(ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Char>)>();
+
+  PyStatus Py_PreInitialize(
+    ffi.Pointer<PyPreConfig> src_config,
+  ) {
+    return _Py_PreInitialize(
+      src_config,
+    );
+  }
+
+  late final _Py_PreInitializePtr =
+      _lookup<ffi.NativeFunction<PyStatus Function(ffi.Pointer<PyPreConfig>)>>(
+          'Py_PreInitialize');
+  late final _Py_PreInitialize = _Py_PreInitializePtr.asFunction<
+      PyStatus Function(ffi.Pointer<PyPreConfig>)>();
+
+  PyStatus Py_PreInitializeFromBytesArgs(
+    ffi.Pointer<PyPreConfig> src_config,
+    int argc,
+    ffi.Pointer<ffi.Pointer<ffi.Char>> argv,
+  ) {
+    return _Py_PreInitializeFromBytesArgs(
+      src_config,
+      argc,
+      argv,
+    );
+  }
+
+  late final _Py_PreInitializeFromBytesArgsPtr = _lookup<
+          ffi.NativeFunction<
+              PyStatus Function(ffi.Pointer<PyPreConfig>, Py_ssize_t,
+                  ffi.Pointer<ffi.Pointer<ffi.Char>>)>>(
+      'Py_PreInitializeFromBytesArgs');
+  late final _Py_PreInitializeFromBytesArgs =
+      _Py_PreInitializeFromBytesArgsPtr.asFunction<
+          PyStatus Function(ffi.Pointer<PyPreConfig>, int,
+              ffi.Pointer<ffi.Pointer<ffi.Char>>)>();
+
+  PyStatus Py_PreInitializeFromArgs(
+    ffi.Pointer<PyPreConfig> src_config,
+    int argc,
+    ffi.Pointer<ffi.Pointer<ffi.WChar>> argv,
+  ) {
+    return _Py_PreInitializeFromArgs(
+      src_config,
+      argc,
+      argv,
+    );
+  }
+
+  late final _Py_PreInitializeFromArgsPtr = _lookup<
+          ffi.NativeFunction<
+              PyStatus Function(ffi.Pointer<PyPreConfig>, Py_ssize_t,
+                  ffi.Pointer<ffi.Pointer<ffi.WChar>>)>>(
+      'Py_PreInitializeFromArgs');
+  late final _Py_PreInitializeFromArgs =
+      _Py_PreInitializeFromArgsPtr.asFunction<
+          PyStatus Function(ffi.Pointer<PyPreConfig>, int,
+              ffi.Pointer<ffi.Pointer<ffi.WChar>>)>();
+
+  int Py_IsCoreInitialized() {
+    return _Py_IsCoreInitialized();
+  }
+
+  late final _Py_IsCoreInitializedPtr =
+      _lookup<ffi.NativeFunction<ffi.Int Function()>>('_Py_IsCoreInitialized');
+  late final _Py_IsCoreInitialized =
+      _Py_IsCoreInitializedPtr.asFunction<int Function()>();
+
+  PyStatus Py_InitializeFromConfig(
+    ffi.Pointer<PyConfig> config,
+  ) {
+    return _Py_InitializeFromConfig(
+      config,
+    );
+  }
+
+  late final _Py_InitializeFromConfigPtr =
+      _lookup<ffi.NativeFunction<PyStatus Function(ffi.Pointer<PyConfig>)>>(
+          'Py_InitializeFromConfig');
+  late final _Py_InitializeFromConfig = _Py_InitializeFromConfigPtr.asFunction<
+      PyStatus Function(ffi.Pointer<PyConfig>)>();
+
+  PyStatus Py_InitializeMain() {
+    return _Py_InitializeMain();
+  }
+
+  late final _Py_InitializeMainPtr =
+      _lookup<ffi.NativeFunction<PyStatus Function()>>('_Py_InitializeMain');
+  late final _Py_InitializeMain =
+      _Py_InitializeMainPtr.asFunction<PyStatus Function()>();
+
+  int Py_RunMain() {
+    return _Py_RunMain();
+  }
+
+  late final _Py_RunMainPtr =
+      _lookup<ffi.NativeFunction<ffi.Int Function()>>('Py_RunMain');
+  late final _Py_RunMain = _Py_RunMainPtr.asFunction<int Function()>();
+
+  void Py_ExitStatusException(
+    PyStatus err,
+  ) {
+    return _Py_ExitStatusException(
+      err,
+    );
+  }
+
+  late final _Py_ExitStatusExceptionPtr =
+      _lookup<ffi.NativeFunction<ffi.Void Function(PyStatus)>>(
+          'Py_ExitStatusException');
+  late final _Py_ExitStatusException =
+      _Py_ExitStatusExceptionPtr.asFunction<void Function(PyStatus)>();
+
+  void Py_RestoreSignals() {
+    return _Py_RestoreSignals();
+  }
+
+  late final _Py_RestoreSignalsPtr =
+      _lookup<ffi.NativeFunction<ffi.Void Function()>>('_Py_RestoreSignals');
+  late final _Py_RestoreSignals =
+      _Py_RestoreSignalsPtr.asFunction<void Function()>();
+
+  int Py_FdIsInteractive(
+    ffi.Pointer<FILE> arg0,
+    ffi.Pointer<ffi.Char> arg1,
+  ) {
+    return _Py_FdIsInteractive(
+      arg0,
+      arg1,
+    );
+  }
+
+  late final _Py_FdIsInteractivePtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int Function(
+              ffi.Pointer<FILE>, ffi.Pointer<ffi.Char>)>>('Py_FdIsInteractive');
+  late final _Py_FdIsInteractive = _Py_FdIsInteractivePtr.asFunction<
+      int Function(ffi.Pointer<FILE>, ffi.Pointer<ffi.Char>)>();
+
+  int Py_FdIsInteractive1(
+    ffi.Pointer<FILE> fp,
+    ffi.Pointer<PyObject> filename,
+  ) {
+    return _Py_FdIsInteractive1(
+      fp,
+      filename,
+    );
+  }
+
+  late final _Py_FdIsInteractive1Ptr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int Function(ffi.Pointer<FILE>,
+              ffi.Pointer<PyObject>)>>('_Py_FdIsInteractive');
+  late final _Py_FdIsInteractive1 = _Py_FdIsInteractive1Ptr.asFunction<
+      int Function(ffi.Pointer<FILE>, ffi.Pointer<PyObject>)>();
+
+  void Py_SetProgramFullPath(
+    ffi.Pointer<ffi.WChar> arg0,
+  ) {
+    return _Py_SetProgramFullPath(
+      arg0,
+    );
+  }
+
+  late final _Py_SetProgramFullPathPtr =
+      _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ffi.WChar>)>>(
+          '_Py_SetProgramFullPath');
+  late final _Py_SetProgramFullPath = _Py_SetProgramFullPathPtr.asFunction<
+      void Function(ffi.Pointer<ffi.WChar>)>();
+
+  ffi.Pointer<ffi.Char> Py_gitidentifier() {
+    return _Py_gitidentifier();
+  }
+
+  late final _Py_gitidentifierPtr =
+      _lookup<ffi.NativeFunction<ffi.Pointer<ffi.Char> Function()>>(
+          '_Py_gitidentifier');
+  late final _Py_gitidentifier =
+      _Py_gitidentifierPtr.asFunction<ffi.Pointer<ffi.Char> Function()>();
+
+  ffi.Pointer<ffi.Char> Py_gitversion() {
+    return _Py_gitversion();
+  }
+
+  late final _Py_gitversionPtr =
+      _lookup<ffi.NativeFunction<ffi.Pointer<ffi.Char> Function()>>(
+          '_Py_gitversion');
+  late final _Py_gitversion =
+      _Py_gitversionPtr.asFunction<ffi.Pointer<ffi.Char> Function()>();
+
+  int Py_IsFinalizing() {
+    return _Py_IsFinalizing();
+  }
+
+  late final _Py_IsFinalizingPtr =
+      _lookup<ffi.NativeFunction<ffi.Int Function()>>('_Py_IsFinalizing');
+  late final _Py_IsFinalizing =
+      _Py_IsFinalizingPtr.asFunction<int Function()>();
+
+  int Py_IsInterpreterFinalizing(
+    ffi.Pointer<PyInterpreterState> interp,
+  ) {
+    return _Py_IsInterpreterFinalizing(
+      interp,
+    );
+  }
+
+  late final _Py_IsInterpreterFinalizingPtr = _lookup<
+          ffi
+          .NativeFunction<ffi.Int Function(ffi.Pointer<PyInterpreterState>)>>(
+      '_Py_IsInterpreterFinalizing');
+  late final _Py_IsInterpreterFinalizing = _Py_IsInterpreterFinalizingPtr
+      .asFunction<int Function(ffi.Pointer<PyInterpreterState>)>();
+
+  int PyOS_URandom(
+    ffi.Pointer<ffi.Void> buffer,
+    int size,
+  ) {
+    return _PyOS_URandom(
+      buffer,
+      size,
+    );
+  }
+
+  late final _PyOS_URandomPtr = _lookup<
+          ffi
+          .NativeFunction<ffi.Int Function(ffi.Pointer<ffi.Void>, Py_ssize_t)>>(
+      '_PyOS_URandom');
+  late final _PyOS_URandom =
+      _PyOS_URandomPtr.asFunction<int Function(ffi.Pointer<ffi.Void>, int)>();
+
+  int PyOS_URandomNonblock(
+    ffi.Pointer<ffi.Void> buffer,
+    int size,
+  ) {
+    return _PyOS_URandomNonblock(
+      buffer,
+      size,
+    );
+  }
+
+  late final _PyOS_URandomNonblockPtr = _lookup<
+          ffi
+          .NativeFunction<ffi.Int Function(ffi.Pointer<ffi.Void>, Py_ssize_t)>>(
+      '_PyOS_URandomNonblock');
+  late final _PyOS_URandomNonblock = _PyOS_URandomNonblockPtr.asFunction<
+      int Function(ffi.Pointer<ffi.Void>, int)>();
+
+  int Py_CoerceLegacyLocale(
+    int warn,
+  ) {
+    return _Py_CoerceLegacyLocale(
+      warn,
+    );
+  }
+
+  late final _Py_CoerceLegacyLocalePtr =
+      _lookup<ffi.NativeFunction<ffi.Int Function(ffi.Int)>>(
+          '_Py_CoerceLegacyLocale');
+  late final _Py_CoerceLegacyLocale =
+      _Py_CoerceLegacyLocalePtr.asFunction<int Function(int)>();
+
+  int Py_LegacyLocaleDetected(
+    int warn,
+  ) {
+    return _Py_LegacyLocaleDetected(
+      warn,
+    );
+  }
+
+  late final _Py_LegacyLocaleDetectedPtr =
+      _lookup<ffi.NativeFunction<ffi.Int Function(ffi.Int)>>(
+          '_Py_LegacyLocaleDetected');
+  late final _Py_LegacyLocaleDetected =
+      _Py_LegacyLocaleDetectedPtr.asFunction<int Function(int)>();
+
+  ffi.Pointer<ffi.Char> Py_SetLocaleFromEnv(
+    int category,
+  ) {
+    return _Py_SetLocaleFromEnv(
+      category,
+    );
+  }
+
+  late final _Py_SetLocaleFromEnvPtr =
+      _lookup<ffi.NativeFunction<ffi.Pointer<ffi.Char> Function(ffi.Int)>>(
+          '_Py_SetLocaleFromEnv');
+  late final _Py_SetLocaleFromEnv =
+      _Py_SetLocaleFromEnvPtr.asFunction<ffi.Pointer<ffi.Char> Function(int)>();
+
+  PyStatus Py_NewInterpreterFromConfig(
+    ffi.Pointer<ffi.Pointer<PyThreadState>> tstate_p,
+    ffi.Pointer<PyInterpreterConfig> config,
+  ) {
+    return _Py_NewInterpreterFromConfig(
+      tstate_p,
+      config,
+    );
+  }
+
+  late final _Py_NewInterpreterFromConfigPtr = _lookup<
+          ffi.NativeFunction<
+              PyStatus Function(ffi.Pointer<ffi.Pointer<PyThreadState>>,
+                  ffi.Pointer<PyInterpreterConfig>)>>(
+      'Py_NewInterpreterFromConfig');
+  late final _Py_NewInterpreterFromConfig =
+      _Py_NewInterpreterFromConfigPtr.asFunction<
+          PyStatus Function(ffi.Pointer<ffi.Pointer<PyThreadState>>,
+              ffi.Pointer<PyInterpreterConfig>)>();
+
+  int Py_AtExit1(
+    ffi.Pointer<PyInterpreterState> arg0,
+    atexit_datacallbackfunc arg1,
+    ffi.Pointer<ffi.Void> arg2,
+  ) {
+    return _Py_AtExit1(
+      arg0,
+      arg1,
+      arg2,
+    );
+  }
+
+  late final _Py_AtExit1Ptr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int Function(ffi.Pointer<PyInterpreterState>,
+              atexit_datacallbackfunc, ffi.Pointer<ffi.Void>)>>('_Py_AtExit');
+  late final _Py_AtExit1 = _Py_AtExit1Ptr.asFunction<
+      int Function(ffi.Pointer<PyInterpreterState>, atexit_datacallbackfunc,
+          ffi.Pointer<ffi.Void>)>();
+
+  ffi.Pointer<PyObject> PyEval_EvalCode(
+    ffi.Pointer<PyObject> arg0,
+    ffi.Pointer<PyObject> arg1,
+    ffi.Pointer<PyObject> arg2,
+  ) {
+    return _PyEval_EvalCode(
+      arg0,
+      arg1,
+      arg2,
+    );
+  }
+
+  late final _PyEval_EvalCodePtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<PyObject> Function(
+              ffi.Pointer<PyObject>,
+              ffi.Pointer<PyObject>,
+              ffi.Pointer<PyObject>)>>('PyEval_EvalCode');
+  late final _PyEval_EvalCode = _PyEval_EvalCodePtr.asFunction<
+      ffi.Pointer<PyObject> Function(ffi.Pointer<PyObject>,
+          ffi.Pointer<PyObject>, ffi.Pointer<PyObject>)>();
+
+  ffi.Pointer<PyObject> PyEval_EvalCodeEx(
+    ffi.Pointer<PyObject> co,
+    ffi.Pointer<PyObject> globals,
+    ffi.Pointer<PyObject> locals,
+    ffi.Pointer<ffi.Pointer<PyObject>> args,
+    int argc,
+    ffi.Pointer<ffi.Pointer<PyObject>> kwds,
+    int kwdc,
+    ffi.Pointer<ffi.Pointer<PyObject>> defs,
+    int defc,
+    ffi.Pointer<PyObject> kwdefs,
+    ffi.Pointer<PyObject> closure,
+  ) {
+    return _PyEval_EvalCodeEx(
+      co,
+      globals,
+      locals,
+      args,
+      argc,
+      kwds,
+      kwdc,
+      defs,
+      defc,
+      kwdefs,
+      closure,
+    );
+  }
+
+  late final _PyEval_EvalCodeExPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<PyObject> Function(
+              ffi.Pointer<PyObject>,
+              ffi.Pointer<PyObject>,
+              ffi.Pointer<PyObject>,
+              ffi.Pointer<ffi.Pointer<PyObject>>,
+              ffi.Int,
+              ffi.Pointer<ffi.Pointer<PyObject>>,
+              ffi.Int,
+              ffi.Pointer<ffi.Pointer<PyObject>>,
+              ffi.Int,
+              ffi.Pointer<PyObject>,
+              ffi.Pointer<PyObject>)>>('PyEval_EvalCodeEx');
+  late final _PyEval_EvalCodeEx = _PyEval_EvalCodeExPtr.asFunction<
+      ffi.Pointer<PyObject> Function(
+          ffi.Pointer<PyObject>,
+          ffi.Pointer<PyObject>,
+          ffi.Pointer<PyObject>,
+          ffi.Pointer<ffi.Pointer<PyObject>>,
+          int,
+          ffi.Pointer<ffi.Pointer<PyObject>>,
+          int,
+          ffi.Pointer<ffi.Pointer<PyObject>>,
+          int,
+          ffi.Pointer<PyObject>,
+          ffi.Pointer<PyObject>)>();
+
   ffi.Pointer<PyObject> PyEval_CallObjectWithKeywords(
     ffi.Pointer<PyObject> callable,
     ffi.Pointer<PyObject> args,
@@ -14189,113 +19327,6 @@ class DartPyC {
       ffi.Pointer<PyObject> Function(ffi.Pointer<PyObject>,
           ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Char>)>();
 
-  void PyEval_SetProfile(
-    Py_tracefunc arg0,
-    ffi.Pointer<PyObject> arg1,
-  ) {
-    return _PyEval_SetProfile(
-      arg0,
-      arg1,
-    );
-  }
-
-  late final _PyEval_SetProfilePtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Void Function(
-              Py_tracefunc, ffi.Pointer<PyObject>)>>('PyEval_SetProfile');
-  late final _PyEval_SetProfile = _PyEval_SetProfilePtr.asFunction<
-      void Function(Py_tracefunc, ffi.Pointer<PyObject>)>();
-
-  void PyEval_SetTrace(
-    Py_tracefunc arg0,
-    ffi.Pointer<PyObject> arg1,
-  ) {
-    return _PyEval_SetTrace(
-      arg0,
-      arg1,
-    );
-  }
-
-  late final _PyEval_SetTracePtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Void Function(
-              Py_tracefunc, ffi.Pointer<PyObject>)>>('PyEval_SetTrace');
-  late final _PyEval_SetTrace = _PyEval_SetTracePtr.asFunction<
-      void Function(Py_tracefunc, ffi.Pointer<PyObject>)>();
-
-  void PyEval_SetCoroutineOriginTrackingDepth(
-    int new_depth,
-  ) {
-    return _PyEval_SetCoroutineOriginTrackingDepth(
-      new_depth,
-    );
-  }
-
-  late final _PyEval_SetCoroutineOriginTrackingDepthPtr =
-      _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Int)>>(
-          '_PyEval_SetCoroutineOriginTrackingDepth');
-  late final _PyEval_SetCoroutineOriginTrackingDepth =
-      _PyEval_SetCoroutineOriginTrackingDepthPtr.asFunction<
-          void Function(int)>();
-
-  int PyEval_GetCoroutineOriginTrackingDepth() {
-    return _PyEval_GetCoroutineOriginTrackingDepth();
-  }
-
-  late final _PyEval_GetCoroutineOriginTrackingDepthPtr =
-      _lookup<ffi.NativeFunction<ffi.Int Function()>>(
-          '_PyEval_GetCoroutineOriginTrackingDepth');
-  late final _PyEval_GetCoroutineOriginTrackingDepth =
-      _PyEval_GetCoroutineOriginTrackingDepthPtr.asFunction<int Function()>();
-
-  void PyEval_SetAsyncGenFirstiter(
-    ffi.Pointer<PyObject> arg0,
-  ) {
-    return _PyEval_SetAsyncGenFirstiter(
-      arg0,
-    );
-  }
-
-  late final _PyEval_SetAsyncGenFirstiterPtr =
-      _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Pointer<PyObject>)>>(
-          '_PyEval_SetAsyncGenFirstiter');
-  late final _PyEval_SetAsyncGenFirstiter = _PyEval_SetAsyncGenFirstiterPtr
-      .asFunction<void Function(ffi.Pointer<PyObject>)>();
-
-  ffi.Pointer<PyObject> PyEval_GetAsyncGenFirstiter() {
-    return _PyEval_GetAsyncGenFirstiter();
-  }
-
-  late final _PyEval_GetAsyncGenFirstiterPtr =
-      _lookup<ffi.NativeFunction<ffi.Pointer<PyObject> Function()>>(
-          '_PyEval_GetAsyncGenFirstiter');
-  late final _PyEval_GetAsyncGenFirstiter = _PyEval_GetAsyncGenFirstiterPtr
-      .asFunction<ffi.Pointer<PyObject> Function()>();
-
-  void PyEval_SetAsyncGenFinalizer(
-    ffi.Pointer<PyObject> arg0,
-  ) {
-    return _PyEval_SetAsyncGenFinalizer(
-      arg0,
-    );
-  }
-
-  late final _PyEval_SetAsyncGenFinalizerPtr =
-      _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Pointer<PyObject>)>>(
-          '_PyEval_SetAsyncGenFinalizer');
-  late final _PyEval_SetAsyncGenFinalizer = _PyEval_SetAsyncGenFinalizerPtr
-      .asFunction<void Function(ffi.Pointer<PyObject>)>();
-
-  ffi.Pointer<PyObject> PyEval_GetAsyncGenFinalizer() {
-    return _PyEval_GetAsyncGenFinalizer();
-  }
-
-  late final _PyEval_GetAsyncGenFinalizerPtr =
-      _lookup<ffi.NativeFunction<ffi.Pointer<PyObject> Function()>>(
-          '_PyEval_GetAsyncGenFinalizer');
-  late final _PyEval_GetAsyncGenFinalizer = _PyEval_GetAsyncGenFinalizerPtr
-      .asFunction<ffi.Pointer<PyObject> Function()>();
-
   ffi.Pointer<PyObject> PyEval_GetBuiltins() {
     return _PyEval_GetBuiltins();
   }
@@ -14326,44 +19357,15 @@ class DartPyC {
   late final _PyEval_GetLocals =
       _PyEval_GetLocalsPtr.asFunction<ffi.Pointer<PyObject> Function()>();
 
-  ffi.Pointer<_frame> PyEval_GetFrame() {
+  ffi.Pointer<PyFrameObject> PyEval_GetFrame() {
     return _PyEval_GetFrame();
   }
 
   late final _PyEval_GetFramePtr =
-      _lookup<ffi.NativeFunction<ffi.Pointer<_frame> Function()>>(
+      _lookup<ffi.NativeFunction<ffi.Pointer<PyFrameObject> Function()>>(
           'PyEval_GetFrame');
   late final _PyEval_GetFrame =
-      _PyEval_GetFramePtr.asFunction<ffi.Pointer<_frame> Function()>();
-
-  ffi.Pointer<PyObject> PyEval_GetBuiltinId(
-    ffi.Pointer<_Py_Identifier> arg0,
-  ) {
-    return _PyEval_GetBuiltinId(
-      arg0,
-    );
-  }
-
-  late final _PyEval_GetBuiltinIdPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<PyObject> Function(
-              ffi.Pointer<_Py_Identifier>)>>('_PyEval_GetBuiltinId');
-  late final _PyEval_GetBuiltinId = _PyEval_GetBuiltinIdPtr.asFunction<
-      ffi.Pointer<PyObject> Function(ffi.Pointer<_Py_Identifier>)>();
-
-  int PyEval_MergeCompilerFlags(
-    ffi.Pointer<PyCompilerFlags> cf,
-  ) {
-    return _PyEval_MergeCompilerFlags(
-      cf,
-    );
-  }
-
-  late final _PyEval_MergeCompilerFlagsPtr = _lookup<
-          ffi.NativeFunction<ffi.Int Function(ffi.Pointer<PyCompilerFlags>)>>(
-      'PyEval_MergeCompilerFlags');
-  late final _PyEval_MergeCompilerFlags = _PyEval_MergeCompilerFlagsPtr
-      .asFunction<int Function(ffi.Pointer<PyCompilerFlags>)>();
+      _PyEval_GetFramePtr.asFunction<ffi.Pointer<PyFrameObject> Function()>();
 
   int Py_AddPendingCall(
     ffi.Pointer<ffi.NativeFunction<ffi.Int Function(ffi.Pointer<ffi.Void>)>>
@@ -14420,27 +19422,28 @@ class DartPyC {
   late final _Py_GetRecursionLimit =
       _Py_GetRecursionLimitPtr.asFunction<int Function()>();
 
-  int Py_CheckRecursiveCall(
+  int Py_EnterRecursiveCall(
     ffi.Pointer<ffi.Char> where,
   ) {
-    return _Py_CheckRecursiveCall(
+    return _Py_EnterRecursiveCall(
       where,
     );
   }
 
-  late final _Py_CheckRecursiveCallPtr =
+  late final _Py_EnterRecursiveCallPtr =
       _lookup<ffi.NativeFunction<ffi.Int Function(ffi.Pointer<ffi.Char>)>>(
-          '_Py_CheckRecursiveCall');
-  late final _Py_CheckRecursiveCall = _Py_CheckRecursiveCallPtr.asFunction<
+          'Py_EnterRecursiveCall');
+  late final _Py_EnterRecursiveCall = _Py_EnterRecursiveCallPtr.asFunction<
       int Function(ffi.Pointer<ffi.Char>)>();
 
-  late final ffi.Pointer<ffi.Int> _Py_CheckRecursionLimit =
-      _lookup<ffi.Int>('_Py_CheckRecursionLimit');
+  void Py_LeaveRecursiveCall() {
+    return _Py_LeaveRecursiveCall();
+  }
 
-  int get Py_CheckRecursionLimit => _Py_CheckRecursionLimit.value;
-
-  set Py_CheckRecursionLimit(int value) =>
-      _Py_CheckRecursionLimit.value = value;
+  late final _Py_LeaveRecursiveCallPtr =
+      _lookup<ffi.NativeFunction<ffi.Void Function()>>('Py_LeaveRecursiveCall');
+  late final _Py_LeaveRecursiveCall =
+      _Py_LeaveRecursiveCallPtr.asFunction<void Function()>();
 
   ffi.Pointer<ffi.Char> PyEval_GetFuncName(
     ffi.Pointer<PyObject> arg0,
@@ -14473,7 +19476,7 @@ class DartPyC {
       ffi.Pointer<ffi.Char> Function(ffi.Pointer<PyObject>)>();
 
   ffi.Pointer<PyObject> PyEval_EvalFrame(
-    ffi.Pointer<_frame> arg0,
+    ffi.Pointer<PyFrameObject> arg0,
   ) {
     return _PyEval_EvalFrame(
       arg0,
@@ -14481,14 +19484,14 @@ class DartPyC {
   }
 
   late final _PyEval_EvalFramePtr = _lookup<
-          ffi
-          .NativeFunction<ffi.Pointer<PyObject> Function(ffi.Pointer<_frame>)>>(
-      'PyEval_EvalFrame');
+      ffi.NativeFunction<
+          ffi.Pointer<PyObject> Function(
+              ffi.Pointer<PyFrameObject>)>>('PyEval_EvalFrame');
   late final _PyEval_EvalFrame = _PyEval_EvalFramePtr.asFunction<
-      ffi.Pointer<PyObject> Function(ffi.Pointer<_frame>)>();
+      ffi.Pointer<PyObject> Function(ffi.Pointer<PyFrameObject>)>();
 
   ffi.Pointer<PyObject> PyEval_EvalFrameEx(
-    ffi.Pointer<_frame> f,
+    ffi.Pointer<PyFrameObject> f,
     int exc,
   ) {
     return _PyEval_EvalFrameEx(
@@ -14500,26 +19503,9 @@ class DartPyC {
   late final _PyEval_EvalFrameExPtr = _lookup<
       ffi.NativeFunction<
           ffi.Pointer<PyObject> Function(
-              ffi.Pointer<_frame>, ffi.Int)>>('PyEval_EvalFrameEx');
+              ffi.Pointer<PyFrameObject>, ffi.Int)>>('PyEval_EvalFrameEx');
   late final _PyEval_EvalFrameEx = _PyEval_EvalFrameExPtr.asFunction<
-      ffi.Pointer<PyObject> Function(ffi.Pointer<_frame>, int)>();
-
-  ffi.Pointer<PyObject> PyEval_EvalFrameDefault(
-    ffi.Pointer<_frame> f,
-    int exc,
-  ) {
-    return _PyEval_EvalFrameDefault(
-      f,
-      exc,
-    );
-  }
-
-  late final _PyEval_EvalFrameDefaultPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<PyObject> Function(
-              ffi.Pointer<_frame>, ffi.Int)>>('_PyEval_EvalFrameDefault');
-  late final _PyEval_EvalFrameDefault = _PyEval_EvalFrameDefaultPtr.asFunction<
-      ffi.Pointer<PyObject> Function(ffi.Pointer<_frame>, int)>();
+      ffi.Pointer<PyObject> Function(ffi.Pointer<PyFrameObject>, int)>();
 
   ffi.Pointer<PyThreadState> PyEval_SaveThread() {
     return _PyEval_SaveThread();
@@ -14610,6 +19596,180 @@ class DartPyC {
   late final _PyEval_ReleaseThread = _PyEval_ReleaseThreadPtr.asFunction<
       void Function(ffi.Pointer<PyThreadState>)>();
 
+  void PyEval_SetProfile(
+    Py_tracefunc arg0,
+    ffi.Pointer<PyObject> arg1,
+  ) {
+    return _PyEval_SetProfile(
+      arg0,
+      arg1,
+    );
+  }
+
+  late final _PyEval_SetProfilePtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Void Function(
+              Py_tracefunc, ffi.Pointer<PyObject>)>>('PyEval_SetProfile');
+  late final _PyEval_SetProfile = _PyEval_SetProfilePtr.asFunction<
+      void Function(Py_tracefunc, ffi.Pointer<PyObject>)>();
+
+  void PyEval_SetProfileAllThreads(
+    Py_tracefunc arg0,
+    ffi.Pointer<PyObject> arg1,
+  ) {
+    return _PyEval_SetProfileAllThreads(
+      arg0,
+      arg1,
+    );
+  }
+
+  late final _PyEval_SetProfileAllThreadsPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Void Function(Py_tracefunc,
+              ffi.Pointer<PyObject>)>>('PyEval_SetProfileAllThreads');
+  late final _PyEval_SetProfileAllThreads = _PyEval_SetProfileAllThreadsPtr
+      .asFunction<void Function(Py_tracefunc, ffi.Pointer<PyObject>)>();
+
+  int PyEval_SetProfile1(
+    ffi.Pointer<PyThreadState> tstate,
+    Py_tracefunc func,
+    ffi.Pointer<PyObject> arg,
+  ) {
+    return _PyEval_SetProfile1(
+      tstate,
+      func,
+      arg,
+    );
+  }
+
+  late final _PyEval_SetProfile1Ptr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int Function(ffi.Pointer<PyThreadState>, Py_tracefunc,
+              ffi.Pointer<PyObject>)>>('_PyEval_SetProfile');
+  late final _PyEval_SetProfile1 = _PyEval_SetProfile1Ptr.asFunction<
+      int Function(
+          ffi.Pointer<PyThreadState>, Py_tracefunc, ffi.Pointer<PyObject>)>();
+
+  void PyEval_SetTrace(
+    Py_tracefunc arg0,
+    ffi.Pointer<PyObject> arg1,
+  ) {
+    return _PyEval_SetTrace(
+      arg0,
+      arg1,
+    );
+  }
+
+  late final _PyEval_SetTracePtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Void Function(
+              Py_tracefunc, ffi.Pointer<PyObject>)>>('PyEval_SetTrace');
+  late final _PyEval_SetTrace = _PyEval_SetTracePtr.asFunction<
+      void Function(Py_tracefunc, ffi.Pointer<PyObject>)>();
+
+  void PyEval_SetTraceAllThreads(
+    Py_tracefunc arg0,
+    ffi.Pointer<PyObject> arg1,
+  ) {
+    return _PyEval_SetTraceAllThreads(
+      arg0,
+      arg1,
+    );
+  }
+
+  late final _PyEval_SetTraceAllThreadsPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Void Function(Py_tracefunc,
+              ffi.Pointer<PyObject>)>>('PyEval_SetTraceAllThreads');
+  late final _PyEval_SetTraceAllThreads = _PyEval_SetTraceAllThreadsPtr
+      .asFunction<void Function(Py_tracefunc, ffi.Pointer<PyObject>)>();
+
+  int PyEval_SetTrace1(
+    ffi.Pointer<PyThreadState> tstate,
+    Py_tracefunc func,
+    ffi.Pointer<PyObject> arg,
+  ) {
+    return _PyEval_SetTrace1(
+      tstate,
+      func,
+      arg,
+    );
+  }
+
+  late final _PyEval_SetTrace1Ptr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int Function(ffi.Pointer<PyThreadState>, Py_tracefunc,
+              ffi.Pointer<PyObject>)>>('_PyEval_SetTrace');
+  late final _PyEval_SetTrace1 = _PyEval_SetTrace1Ptr.asFunction<
+      int Function(
+          ffi.Pointer<PyThreadState>, Py_tracefunc, ffi.Pointer<PyObject>)>();
+
+  ffi.Pointer<PyObject> PyEval_GetBuiltin(
+    ffi.Pointer<PyObject> arg0,
+  ) {
+    return _PyEval_GetBuiltin(
+      arg0,
+    );
+  }
+
+  late final _PyEval_GetBuiltinPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<PyObject> Function(
+              ffi.Pointer<PyObject>)>>('_PyEval_GetBuiltin');
+  late final _PyEval_GetBuiltin = _PyEval_GetBuiltinPtr.asFunction<
+      ffi.Pointer<PyObject> Function(ffi.Pointer<PyObject>)>();
+
+  ffi.Pointer<PyObject> PyEval_GetBuiltinId(
+    ffi.Pointer<_Py_Identifier> arg0,
+  ) {
+    return _PyEval_GetBuiltinId(
+      arg0,
+    );
+  }
+
+  late final _PyEval_GetBuiltinIdPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<PyObject> Function(
+              ffi.Pointer<_Py_Identifier>)>>('_PyEval_GetBuiltinId');
+  late final _PyEval_GetBuiltinId = _PyEval_GetBuiltinIdPtr.asFunction<
+      ffi.Pointer<PyObject> Function(ffi.Pointer<_Py_Identifier>)>();
+
+  int PyEval_MergeCompilerFlags(
+    ffi.Pointer<PyCompilerFlags> cf,
+  ) {
+    return _PyEval_MergeCompilerFlags(
+      cf,
+    );
+  }
+
+  late final _PyEval_MergeCompilerFlagsPtr = _lookup<
+          ffi.NativeFunction<ffi.Int Function(ffi.Pointer<PyCompilerFlags>)>>(
+      'PyEval_MergeCompilerFlags');
+  late final _PyEval_MergeCompilerFlags = _PyEval_MergeCompilerFlagsPtr
+      .asFunction<int Function(ffi.Pointer<PyCompilerFlags>)>();
+
+  ffi.Pointer<PyObject> PyEval_EvalFrameDefault(
+    ffi.Pointer<PyThreadState> tstate,
+    ffi.Pointer<_PyInterpreterFrame> f,
+    int exc,
+  ) {
+    return _PyEval_EvalFrameDefault(
+      tstate,
+      f,
+      exc,
+    );
+  }
+
+  late final _PyEval_EvalFrameDefaultPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<PyObject> Function(
+              ffi.Pointer<PyThreadState>,
+              ffi.Pointer<_PyInterpreterFrame>,
+              ffi.Int)>>('_PyEval_EvalFrameDefault');
+  late final _PyEval_EvalFrameDefault = _PyEval_EvalFrameDefaultPtr.asFunction<
+      ffi.Pointer<PyObject> Function(
+          ffi.Pointer<PyThreadState>, ffi.Pointer<_PyInterpreterFrame>, int)>();
+
   void PyEval_SetSwitchInterval(
     int microseconds,
   ) {
@@ -14634,19 +19794,34 @@ class DartPyC {
   late final _PyEval_GetSwitchInterval =
       _PyEval_GetSwitchIntervalPtr.asFunction<int Function()>();
 
-  int PyEval_RequestCodeExtraIndex(
-    freefunc arg0,
+  int PyEval_MakePendingCalls(
+    ffi.Pointer<PyThreadState> arg0,
   ) {
-    return _PyEval_RequestCodeExtraIndex(
+    return _PyEval_MakePendingCalls(
       arg0,
     );
   }
 
-  late final _PyEval_RequestCodeExtraIndexPtr =
+  late final _PyEval_MakePendingCallsPtr =
+      _lookup<ffi.NativeFunction<ffi.Int Function(ffi.Pointer<PyThreadState>)>>(
+          '_PyEval_MakePendingCalls');
+  late final _PyEval_MakePendingCalls = _PyEval_MakePendingCallsPtr.asFunction<
+      int Function(ffi.Pointer<PyThreadState>)>();
+
+  int PyUnstable_Eval_RequestCodeExtraIndex(
+    freefunc arg0,
+  ) {
+    return _PyUnstable_Eval_RequestCodeExtraIndex(
+      arg0,
+    );
+  }
+
+  late final _PyUnstable_Eval_RequestCodeExtraIndexPtr =
       _lookup<ffi.NativeFunction<Py_ssize_t Function(freefunc)>>(
-          '_PyEval_RequestCodeExtraIndex');
-  late final _PyEval_RequestCodeExtraIndex =
-      _PyEval_RequestCodeExtraIndexPtr.asFunction<int Function(freefunc)>();
+          'PyUnstable_Eval_RequestCodeExtraIndex');
+  late final _PyUnstable_Eval_RequestCodeExtraIndex =
+      _PyUnstable_Eval_RequestCodeExtraIndexPtr.asFunction<
+          int Function(freefunc)>();
 
   int PyEval_SliceIndex(
     ffi.Pointer<PyObject> arg0,
@@ -14892,6 +20067,112 @@ class DartPyC {
   late final _PySys_GetXOptions =
       _PySys_GetXOptionsPtr.asFunction<ffi.Pointer<PyObject> Function()>();
 
+  int PyUnstable_PerfMapState_Init() {
+    return _PyUnstable_PerfMapState_Init();
+  }
+
+  late final _PyUnstable_PerfMapState_InitPtr =
+      _lookup<ffi.NativeFunction<ffi.Int Function()>>(
+          'PyUnstable_PerfMapState_Init');
+  late final _PyUnstable_PerfMapState_Init =
+      _PyUnstable_PerfMapState_InitPtr.asFunction<int Function()>();
+
+  int PyUnstable_WritePerfMapEntry(
+    ffi.Pointer<ffi.Void> code_addr,
+    int code_size,
+    ffi.Pointer<ffi.Char> entry_name,
+  ) {
+    return _PyUnstable_WritePerfMapEntry(
+      code_addr,
+      code_size,
+      entry_name,
+    );
+  }
+
+  late final _PyUnstable_WritePerfMapEntryPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int Function(ffi.Pointer<ffi.Void>, ffi.UnsignedInt,
+              ffi.Pointer<ffi.Char>)>>('PyUnstable_WritePerfMapEntry');
+  late final _PyUnstable_WritePerfMapEntry =
+      _PyUnstable_WritePerfMapEntryPtr.asFunction<
+          int Function(ffi.Pointer<ffi.Void>, int, ffi.Pointer<ffi.Char>)>();
+
+  void PyUnstable_PerfMapState_Fini() {
+    return _PyUnstable_PerfMapState_Fini();
+  }
+
+  late final _PyUnstable_PerfMapState_FiniPtr =
+      _lookup<ffi.NativeFunction<ffi.Void Function()>>(
+          'PyUnstable_PerfMapState_Fini');
+  late final _PyUnstable_PerfMapState_Fini =
+      _PyUnstable_PerfMapState_FiniPtr.asFunction<void Function()>();
+
+  ffi.Pointer<PyObject> PySys_GetAttr(
+    ffi.Pointer<PyThreadState> tstate,
+    ffi.Pointer<PyObject> name,
+  ) {
+    return _PySys_GetAttr(
+      tstate,
+      name,
+    );
+  }
+
+  late final _PySys_GetAttrPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<PyObject> Function(ffi.Pointer<PyThreadState>,
+              ffi.Pointer<PyObject>)>>('_PySys_GetAttr');
+  late final _PySys_GetAttr = _PySys_GetAttrPtr.asFunction<
+      ffi.Pointer<PyObject> Function(
+          ffi.Pointer<PyThreadState>, ffi.Pointer<PyObject>)>();
+
+  int PySys_GetSizeOf(
+    ffi.Pointer<PyObject> arg0,
+  ) {
+    return _PySys_GetSizeOf(
+      arg0,
+    );
+  }
+
+  late final _PySys_GetSizeOfPtr =
+      _lookup<ffi.NativeFunction<ffi.Size Function(ffi.Pointer<PyObject>)>>(
+          '_PySys_GetSizeOf');
+  late final _PySys_GetSizeOf =
+      _PySys_GetSizeOfPtr.asFunction<int Function(ffi.Pointer<PyObject>)>();
+
+  int PySys_Audit(
+    ffi.Pointer<ffi.Char> event,
+    ffi.Pointer<ffi.Char> argFormat,
+  ) {
+    return _PySys_Audit(
+      event,
+      argFormat,
+    );
+  }
+
+  late final _PySys_AuditPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int Function(
+              ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Char>)>>('PySys_Audit');
+  late final _PySys_Audit = _PySys_AuditPtr.asFunction<
+      int Function(ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Char>)>();
+
+  int PySys_AddAuditHook(
+    Py_AuditHookFunction arg0,
+    ffi.Pointer<ffi.Void> arg1,
+  ) {
+    return _PySys_AddAuditHook(
+      arg0,
+      arg1,
+    );
+  }
+
+  late final _PySys_AddAuditHookPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int Function(Py_AuditHookFunction,
+              ffi.Pointer<ffi.Void>)>>('PySys_AddAuditHook');
+  late final _PySys_AddAuditHook = _PySys_AddAuditHookPtr.asFunction<
+      int Function(Py_AuditHookFunction, ffi.Pointer<ffi.Void>)>();
+
   ffi.Pointer<PyObject> PyOS_FSPath(
     ffi.Pointer<PyObject> path,
   ) {
@@ -14915,15 +20196,6 @@ class DartPyC {
       _lookup<ffi.NativeFunction<ffi.Int Function()>>('PyOS_InterruptOccurred');
   late final _PyOS_InterruptOccurred =
       _PyOS_InterruptOccurredPtr.asFunction<int Function()>();
-
-  void PyOS_InitInterrupts() {
-    return _PyOS_InitInterrupts();
-  }
-
-  late final _PyOS_InitInterruptsPtr =
-      _lookup<ffi.NativeFunction<ffi.Void Function()>>('PyOS_InitInterrupts');
-  late final _PyOS_InitInterrupts =
-      _PyOS_InitInterruptsPtr.asFunction<void Function()>();
 
   void PyOS_BeforeFork() {
     return _PyOS_BeforeFork();
@@ -14968,25 +20240,6 @@ class DartPyC {
       _lookup<ffi.NativeFunction<ffi.Int Function()>>('_PyOS_IsMainThread');
   late final _PyOS_IsMainThread =
       _PyOS_IsMainThreadPtr.asFunction<int Function()>();
-
-  void PySignal_AfterFork() {
-    return _PySignal_AfterFork();
-  }
-
-  late final _PySignal_AfterForkPtr =
-      _lookup<ffi.NativeFunction<ffi.Void Function()>>('_PySignal_AfterFork');
-  late final _PySignal_AfterFork =
-      _PySignal_AfterForkPtr.asFunction<void Function()>();
-
-  ffi.Pointer<PyObject> PyInit__imp() {
-    return _PyInit__imp();
-  }
-
-  late final _PyInit__impPtr =
-      _lookup<ffi.NativeFunction<ffi.Pointer<PyObject> Function()>>(
-          'PyInit__imp');
-  late final _PyInit__imp =
-      _PyInit__impPtr.asFunction<ffi.Pointer<PyObject> Function()>();
 
   int PyImport_GetMagicNumber() {
     return _PyImport_GetMagicNumber();
@@ -15132,102 +20385,19 @@ class DartPyC {
   late final _PyImport_GetModule = _PyImport_GetModulePtr.asFunction<
       ffi.Pointer<PyObject> Function(ffi.Pointer<PyObject>)>();
 
-  int PyImport_IsInitialized(
-    ffi.Pointer<PyInterpreterState> arg0,
-  ) {
-    return _PyImport_IsInitialized(
-      arg0,
-    );
-  }
-
-  late final _PyImport_IsInitializedPtr = _lookup<
-          ffi
-          .NativeFunction<ffi.Int Function(ffi.Pointer<PyInterpreterState>)>>(
-      '_PyImport_IsInitialized');
-  late final _PyImport_IsInitialized = _PyImport_IsInitializedPtr.asFunction<
-      int Function(ffi.Pointer<PyInterpreterState>)>();
-
-  ffi.Pointer<PyObject> PyImport_GetModuleId(
-    ffi.Pointer<_Py_Identifier> name,
-  ) {
-    return _PyImport_GetModuleId(
-      name,
-    );
-  }
-
-  late final _PyImport_GetModuleIdPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<PyObject> Function(
-              ffi.Pointer<_Py_Identifier>)>>('_PyImport_GetModuleId');
-  late final _PyImport_GetModuleId = _PyImport_GetModuleIdPtr.asFunction<
-      ffi.Pointer<PyObject> Function(ffi.Pointer<_Py_Identifier>)>();
-
   ffi.Pointer<PyObject> PyImport_AddModuleObject(
     ffi.Pointer<PyObject> name,
-    ffi.Pointer<PyObject> modules,
   ) {
     return _PyImport_AddModuleObject(
       name,
-      modules,
     );
   }
 
   late final _PyImport_AddModuleObjectPtr = _lookup<
       ffi.NativeFunction<
-          ffi.Pointer<PyObject> Function(ffi.Pointer<PyObject>,
-              ffi.Pointer<PyObject>)>>('_PyImport_AddModuleObject');
-  late final _PyImport_AddModuleObject =
-      _PyImport_AddModuleObjectPtr.asFunction<
-          ffi.Pointer<PyObject> Function(
-              ffi.Pointer<PyObject>, ffi.Pointer<PyObject>)>();
-
-  int PyImport_SetModule(
-    ffi.Pointer<PyObject> name,
-    ffi.Pointer<PyObject> module,
-  ) {
-    return _PyImport_SetModule(
-      name,
-      module,
-    );
-  }
-
-  late final _PyImport_SetModulePtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Int Function(ffi.Pointer<PyObject>,
-              ffi.Pointer<PyObject>)>>('_PyImport_SetModule');
-  late final _PyImport_SetModule = _PyImport_SetModulePtr.asFunction<
-      int Function(ffi.Pointer<PyObject>, ffi.Pointer<PyObject>)>();
-
-  int PyImport_SetModuleString(
-    ffi.Pointer<ffi.Char> name,
-    ffi.Pointer<PyObject> module,
-  ) {
-    return _PyImport_SetModuleString(
-      name,
-      module,
-    );
-  }
-
-  late final _PyImport_SetModuleStringPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Int Function(ffi.Pointer<ffi.Char>,
-              ffi.Pointer<PyObject>)>>('_PyImport_SetModuleString');
-  late final _PyImport_SetModuleString = _PyImport_SetModuleStringPtr
-      .asFunction<int Function(ffi.Pointer<ffi.Char>, ffi.Pointer<PyObject>)>();
-
-  ffi.Pointer<PyObject> PyImport_AddModuleObject1(
-    ffi.Pointer<PyObject> name,
-  ) {
-    return _PyImport_AddModuleObject1(
-      name,
-    );
-  }
-
-  late final _PyImport_AddModuleObject1Ptr = _lookup<
-      ffi.NativeFunction<
           ffi.Pointer<PyObject> Function(
               ffi.Pointer<PyObject>)>>('PyImport_AddModuleObject');
-  late final _PyImport_AddModuleObject1 = _PyImport_AddModuleObject1Ptr
+  late final _PyImport_AddModuleObject = _PyImport_AddModuleObjectPtr
       .asFunction<ffi.Pointer<PyObject> Function(ffi.Pointer<PyObject>)>();
 
   ffi.Pointer<PyObject> PyImport_AddModule(
@@ -15386,15 +20556,6 @@ class DartPyC {
   late final _PyImport_ReloadModule = _PyImport_ReloadModulePtr.asFunction<
       ffi.Pointer<PyObject> Function(ffi.Pointer<PyObject>)>();
 
-  void PyImport_Cleanup() {
-    return _PyImport_Cleanup();
-  }
-
-  late final _PyImport_CleanupPtr =
-      _lookup<ffi.NativeFunction<ffi.Void Function()>>('PyImport_Cleanup');
-  late final _PyImport_Cleanup =
-      _PyImport_CleanupPtr.asFunction<void Function()>();
-
   int PyImport_ImportFrozenModuleObject(
     ffi.Pointer<PyObject> name,
   ) {
@@ -15424,92 +20585,130 @@ class DartPyC {
   late final _PyImport_ImportFrozenModule = _PyImport_ImportFrozenModulePtr
       .asFunction<int Function(ffi.Pointer<ffi.Char>)>();
 
-  void PyImport_AcquireLock() {
-    return _PyImport_AcquireLock();
-  }
-
-  late final _PyImport_AcquireLockPtr =
-      _lookup<ffi.NativeFunction<ffi.Void Function()>>('_PyImport_AcquireLock');
-  late final _PyImport_AcquireLock =
-      _PyImport_AcquireLockPtr.asFunction<void Function()>();
-
-  int PyImport_ReleaseLock() {
-    return _PyImport_ReleaseLock();
-  }
-
-  late final _PyImport_ReleaseLockPtr =
-      _lookup<ffi.NativeFunction<ffi.Int Function()>>('_PyImport_ReleaseLock');
-  late final _PyImport_ReleaseLock =
-      _PyImport_ReleaseLockPtr.asFunction<int Function()>();
-
-  void PyImport_ReInitLock() {
-    return _PyImport_ReInitLock();
-  }
-
-  late final _PyImport_ReInitLockPtr =
-      _lookup<ffi.NativeFunction<ffi.Void Function()>>('_PyImport_ReInitLock');
-  late final _PyImport_ReInitLock =
-      _PyImport_ReInitLockPtr.asFunction<void Function()>();
-
-  ffi.Pointer<PyObject> PyImport_FindBuiltin(
+  int PyImport_AppendInittab(
     ffi.Pointer<ffi.Char> name,
-    ffi.Pointer<PyObject> modules,
+    ffi.Pointer<ffi.NativeFunction<ffi.Pointer<PyObject> Function()>> initfunc,
   ) {
-    return _PyImport_FindBuiltin(
+    return _PyImport_AppendInittab(
       name,
-      modules,
+      initfunc,
     );
   }
 
-  late final _PyImport_FindBuiltinPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<PyObject> Function(ffi.Pointer<ffi.Char>,
-              ffi.Pointer<PyObject>)>>('_PyImport_FindBuiltin');
-  late final _PyImport_FindBuiltin = _PyImport_FindBuiltinPtr.asFunction<
-      ffi.Pointer<PyObject> Function(
-          ffi.Pointer<ffi.Char>, ffi.Pointer<PyObject>)>();
+  late final _PyImport_AppendInittabPtr = _lookup<
+          ffi.NativeFunction<
+              ffi.Int Function(
+                  ffi.Pointer<ffi.Char>,
+                  ffi.Pointer<
+                      ffi.NativeFunction<ffi.Pointer<PyObject> Function()>>)>>(
+      'PyImport_AppendInittab');
+  late final _PyImport_AppendInittab = _PyImport_AppendInittabPtr.asFunction<
+      int Function(ffi.Pointer<ffi.Char>,
+          ffi.Pointer<ffi.NativeFunction<ffi.Pointer<PyObject> Function()>>)>();
 
-  ffi.Pointer<PyObject> PyImport_FindExtensionObject(
-    ffi.Pointer<PyObject> arg0,
-    ffi.Pointer<PyObject> arg1,
+  ffi.Pointer<PyObject> PyInit__imp() {
+    return _PyInit__imp();
+  }
+
+  late final _PyInit__impPtr =
+      _lookup<ffi.NativeFunction<ffi.Pointer<PyObject> Function()>>(
+          'PyInit__imp');
+  late final _PyInit__imp =
+      _PyInit__impPtr.asFunction<ffi.Pointer<PyObject> Function()>();
+
+  int PyImport_IsInitialized(
+    ffi.Pointer<PyInterpreterState> arg0,
   ) {
-    return _PyImport_FindExtensionObject(
+    return _PyImport_IsInitialized(
       arg0,
-      arg1,
     );
   }
 
-  late final _PyImport_FindExtensionObjectPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<PyObject> Function(ffi.Pointer<PyObject>,
-              ffi.Pointer<PyObject>)>>('_PyImport_FindExtensionObject');
-  late final _PyImport_FindExtensionObject =
-      _PyImport_FindExtensionObjectPtr.asFunction<
-          ffi.Pointer<PyObject> Function(
-              ffi.Pointer<PyObject>, ffi.Pointer<PyObject>)>();
+  late final _PyImport_IsInitializedPtr = _lookup<
+          ffi
+          .NativeFunction<ffi.Int Function(ffi.Pointer<PyInterpreterState>)>>(
+      '_PyImport_IsInitialized');
+  late final _PyImport_IsInitialized = _PyImport_IsInitializedPtr.asFunction<
+      int Function(ffi.Pointer<PyInterpreterState>)>();
 
-  ffi.Pointer<PyObject> PyImport_FindExtensionObjectEx(
-    ffi.Pointer<PyObject> arg0,
-    ffi.Pointer<PyObject> arg1,
-    ffi.Pointer<PyObject> arg2,
+  ffi.Pointer<PyObject> PyImport_GetModuleId(
+    ffi.Pointer<_Py_Identifier> name,
   ) {
-    return _PyImport_FindExtensionObjectEx(
-      arg0,
-      arg1,
-      arg2,
+    return _PyImport_GetModuleId(
+      name,
     );
   }
 
-  late final _PyImport_FindExtensionObjectExPtr = _lookup<
+  late final _PyImport_GetModuleIdPtr = _lookup<
       ffi.NativeFunction<
           ffi.Pointer<PyObject> Function(
-              ffi.Pointer<PyObject>,
-              ffi.Pointer<PyObject>,
-              ffi.Pointer<PyObject>)>>('_PyImport_FindExtensionObjectEx');
-  late final _PyImport_FindExtensionObjectEx =
-      _PyImport_FindExtensionObjectExPtr.asFunction<
-          ffi.Pointer<PyObject> Function(ffi.Pointer<PyObject>,
-              ffi.Pointer<PyObject>, ffi.Pointer<PyObject>)>();
+              ffi.Pointer<_Py_Identifier>)>>('_PyImport_GetModuleId');
+  late final _PyImport_GetModuleId = _PyImport_GetModuleIdPtr.asFunction<
+      ffi.Pointer<PyObject> Function(ffi.Pointer<_Py_Identifier>)>();
+
+  int PyImport_SetModule(
+    ffi.Pointer<PyObject> name,
+    ffi.Pointer<PyObject> module,
+  ) {
+    return _PyImport_SetModule(
+      name,
+      module,
+    );
+  }
+
+  late final _PyImport_SetModulePtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int Function(ffi.Pointer<PyObject>,
+              ffi.Pointer<PyObject>)>>('_PyImport_SetModule');
+  late final _PyImport_SetModule = _PyImport_SetModulePtr.asFunction<
+      int Function(ffi.Pointer<PyObject>, ffi.Pointer<PyObject>)>();
+
+  int PyImport_SetModuleString(
+    ffi.Pointer<ffi.Char> name,
+    ffi.Pointer<PyObject> module,
+  ) {
+    return _PyImport_SetModuleString(
+      name,
+      module,
+    );
+  }
+
+  late final _PyImport_SetModuleStringPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int Function(ffi.Pointer<ffi.Char>,
+              ffi.Pointer<PyObject>)>>('_PyImport_SetModuleString');
+  late final _PyImport_SetModuleString = _PyImport_SetModuleStringPtr
+      .asFunction<int Function(ffi.Pointer<ffi.Char>, ffi.Pointer<PyObject>)>();
+
+  void PyImport_AcquireLock(
+    ffi.Pointer<PyInterpreterState> interp,
+  ) {
+    return _PyImport_AcquireLock(
+      interp,
+    );
+  }
+
+  late final _PyImport_AcquireLockPtr = _lookup<
+          ffi
+          .NativeFunction<ffi.Void Function(ffi.Pointer<PyInterpreterState>)>>(
+      '_PyImport_AcquireLock');
+  late final _PyImport_AcquireLock = _PyImport_AcquireLockPtr.asFunction<
+      void Function(ffi.Pointer<PyInterpreterState>)>();
+
+  int PyImport_ReleaseLock(
+    ffi.Pointer<PyInterpreterState> interp,
+  ) {
+    return _PyImport_ReleaseLock(
+      interp,
+    );
+  }
+
+  late final _PyImport_ReleaseLockPtr = _lookup<
+          ffi
+          .NativeFunction<ffi.Int Function(ffi.Pointer<PyInterpreterState>)>>(
+      '_PyImport_ReleaseLock');
+  late final _PyImport_ReleaseLock = _PyImport_ReleaseLockPtr.asFunction<
+      int Function(ffi.Pointer<PyInterpreterState>)>();
 
   int PyImport_FixupBuiltin(
     ffi.Pointer<PyObject> mod,
@@ -15579,32 +20778,6 @@ class DartPyC {
   late final _PyImport_ExtendInittab = _PyImport_ExtendInittabPtr.asFunction<
       int Function(ffi.Pointer<_inittab>)>();
 
-  late final ffi.Pointer<PyTypeObject> _PyNullImporter_Type =
-      _lookup<PyTypeObject>('PyNullImporter_Type');
-
-  PyTypeObject get PyNullImporter_Type => _PyNullImporter_Type.ref;
-
-  int PyImport_AppendInittab(
-    ffi.Pointer<ffi.Char> name,
-    ffi.Pointer<ffi.NativeFunction<ffi.Pointer<PyObject> Function()>> initfunc,
-  ) {
-    return _PyImport_AppendInittab(
-      name,
-      initfunc,
-    );
-  }
-
-  late final _PyImport_AppendInittabPtr = _lookup<
-          ffi.NativeFunction<
-              ffi.Int Function(
-                  ffi.Pointer<ffi.Char>,
-                  ffi.Pointer<
-                      ffi.NativeFunction<ffi.Pointer<PyObject> Function()>>)>>(
-      'PyImport_AppendInittab');
-  late final _PyImport_AppendInittab = _PyImport_AppendInittabPtr.asFunction<
-      int Function(ffi.Pointer<ffi.Char>,
-          ffi.Pointer<ffi.NativeFunction<ffi.Pointer<PyObject> Function()>>)>();
-
   late final ffi.Pointer<ffi.Pointer<_frozen>> _PyImport_FrozenModules =
       _lookup<ffi.Pointer<_frozen>>('PyImport_FrozenModules');
 
@@ -15613,6 +20786,58 @@ class DartPyC {
 
   set PyImport_FrozenModules(ffi.Pointer<_frozen> value) =>
       _PyImport_FrozenModules.value = value;
+
+  ffi.Pointer<PyObject> PyImport_GetModuleAttr(
+    ffi.Pointer<PyObject> arg0,
+    ffi.Pointer<PyObject> arg1,
+  ) {
+    return _PyImport_GetModuleAttr(
+      arg0,
+      arg1,
+    );
+  }
+
+  late final _PyImport_GetModuleAttrPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<PyObject> Function(ffi.Pointer<PyObject>,
+              ffi.Pointer<PyObject>)>>('_PyImport_GetModuleAttr');
+  late final _PyImport_GetModuleAttr = _PyImport_GetModuleAttrPtr.asFunction<
+      ffi.Pointer<PyObject> Function(
+          ffi.Pointer<PyObject>, ffi.Pointer<PyObject>)>();
+
+  ffi.Pointer<PyObject> PyImport_GetModuleAttrString(
+    ffi.Pointer<ffi.Char> arg0,
+    ffi.Pointer<ffi.Char> arg1,
+  ) {
+    return _PyImport_GetModuleAttrString(
+      arg0,
+      arg1,
+    );
+  }
+
+  late final _PyImport_GetModuleAttrStringPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<PyObject> Function(ffi.Pointer<ffi.Char>,
+              ffi.Pointer<ffi.Char>)>>('_PyImport_GetModuleAttrString');
+  late final _PyImport_GetModuleAttrString =
+      _PyImport_GetModuleAttrStringPtr.asFunction<
+          ffi.Pointer<PyObject> Function(
+              ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Char>)>();
+
+  ffi.Pointer<PyObject> PyObject_CallNoArgs(
+    ffi.Pointer<PyObject> func,
+  ) {
+    return _PyObject_CallNoArgs(
+      func,
+    );
+  }
+
+  late final _PyObject_CallNoArgsPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<PyObject> Function(
+              ffi.Pointer<PyObject>)>>('PyObject_CallNoArgs');
+  late final _PyObject_CallNoArgs = _PyObject_CallNoArgsPtr.asFunction<
+      ffi.Pointer<PyObject> Function(ffi.Pointer<PyObject>)>();
 
   ffi.Pointer<PyObject> PyObject_Call(
     ffi.Pointer<PyObject> callable,
@@ -15767,6 +20992,96 @@ class DartPyC {
       _PyObject_CallMethodObjArgsPtr.asFunction<
           ffi.Pointer<PyObject> Function(
               ffi.Pointer<PyObject>, ffi.Pointer<PyObject>)>();
+
+  int PyVectorcall_NARGS(
+    int nargsf,
+  ) {
+    return _PyVectorcall_NARGS(
+      nargsf,
+    );
+  }
+
+  late final _PyVectorcall_NARGSPtr =
+      _lookup<ffi.NativeFunction<Py_ssize_t Function(ffi.Size)>>(
+          'PyVectorcall_NARGS');
+  late final _PyVectorcall_NARGS =
+      _PyVectorcall_NARGSPtr.asFunction<int Function(int)>();
+
+  ffi.Pointer<PyObject> PyVectorcall_Call(
+    ffi.Pointer<PyObject> callable,
+    ffi.Pointer<PyObject> tuple,
+    ffi.Pointer<PyObject> dict,
+  ) {
+    return _PyVectorcall_Call(
+      callable,
+      tuple,
+      dict,
+    );
+  }
+
+  late final _PyVectorcall_CallPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<PyObject> Function(
+              ffi.Pointer<PyObject>,
+              ffi.Pointer<PyObject>,
+              ffi.Pointer<PyObject>)>>('PyVectorcall_Call');
+  late final _PyVectorcall_Call = _PyVectorcall_CallPtr.asFunction<
+      ffi.Pointer<PyObject> Function(ffi.Pointer<PyObject>,
+          ffi.Pointer<PyObject>, ffi.Pointer<PyObject>)>();
+
+  ffi.Pointer<PyObject> PyObject_Vectorcall(
+    ffi.Pointer<PyObject> callable,
+    ffi.Pointer<ffi.Pointer<PyObject>> args,
+    int nargsf,
+    ffi.Pointer<PyObject> kwnames,
+  ) {
+    return _PyObject_Vectorcall(
+      callable,
+      args,
+      nargsf,
+      kwnames,
+    );
+  }
+
+  late final _PyObject_VectorcallPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<PyObject> Function(
+              ffi.Pointer<PyObject>,
+              ffi.Pointer<ffi.Pointer<PyObject>>,
+              ffi.Size,
+              ffi.Pointer<PyObject>)>>('PyObject_Vectorcall');
+  late final _PyObject_Vectorcall = _PyObject_VectorcallPtr.asFunction<
+      ffi.Pointer<PyObject> Function(ffi.Pointer<PyObject>,
+          ffi.Pointer<ffi.Pointer<PyObject>>, int, ffi.Pointer<PyObject>)>();
+
+  ffi.Pointer<PyObject> PyObject_VectorcallMethod(
+    ffi.Pointer<PyObject> name,
+    ffi.Pointer<ffi.Pointer<PyObject>> args,
+    int nargsf,
+    ffi.Pointer<PyObject> kwnames,
+  ) {
+    return _PyObject_VectorcallMethod(
+      name,
+      args,
+      nargsf,
+      kwnames,
+    );
+  }
+
+  late final _PyObject_VectorcallMethodPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<PyObject> Function(
+              ffi.Pointer<PyObject>,
+              ffi.Pointer<ffi.Pointer<PyObject>>,
+              ffi.Size,
+              ffi.Pointer<PyObject>)>>('PyObject_VectorcallMethod');
+  late final _PyObject_VectorcallMethod =
+      _PyObject_VectorcallMethodPtr.asFunction<
+          ffi.Pointer<PyObject> Function(
+              ffi.Pointer<PyObject>,
+              ffi.Pointer<ffi.Pointer<PyObject>>,
+              int,
+              ffi.Pointer<PyObject>)>();
 
   ffi.Pointer<PyObject> PyObject_Type(
     ffi.Pointer<PyObject> o,
@@ -15996,6 +21311,21 @@ class DartPyC {
   late final _PyObject_GetIter = _PyObject_GetIterPtr.asFunction<
       ffi.Pointer<PyObject> Function(ffi.Pointer<PyObject>)>();
 
+  ffi.Pointer<PyObject> PyObject_GetAIter(
+    ffi.Pointer<PyObject> arg0,
+  ) {
+    return _PyObject_GetAIter(
+      arg0,
+    );
+  }
+
+  late final _PyObject_GetAIterPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<PyObject> Function(
+              ffi.Pointer<PyObject>)>>('PyObject_GetAIter');
+  late final _PyObject_GetAIter = _PyObject_GetAIterPtr.asFunction<
+      ffi.Pointer<PyObject> Function(ffi.Pointer<PyObject>)>();
+
   int PyIter_Check(
     ffi.Pointer<PyObject> arg0,
   ) {
@@ -16009,6 +21339,20 @@ class DartPyC {
           'PyIter_Check');
   late final _PyIter_Check =
       _PyIter_CheckPtr.asFunction<int Function(ffi.Pointer<PyObject>)>();
+
+  int PyAIter_Check(
+    ffi.Pointer<PyObject> arg0,
+  ) {
+    return _PyAIter_Check(
+      arg0,
+    );
+  }
+
+  late final _PyAIter_CheckPtr =
+      _lookup<ffi.NativeFunction<ffi.Int Function(ffi.Pointer<PyObject>)>>(
+          'PyAIter_Check');
+  late final _PyAIter_Check =
+      _PyAIter_CheckPtr.asFunction<int Function(ffi.Pointer<PyObject>)>();
 
   ffi.Pointer<PyObject> PyIter_Next(
     ffi.Pointer<PyObject> arg0,
@@ -16024,6 +21368,26 @@ class DartPyC {
               ffi.Pointer<PyObject>)>>('PyIter_Next');
   late final _PyIter_Next = _PyIter_NextPtr.asFunction<
       ffi.Pointer<PyObject> Function(ffi.Pointer<PyObject>)>();
+
+  int PyIter_Send(
+    ffi.Pointer<PyObject> arg0,
+    ffi.Pointer<PyObject> arg1,
+    ffi.Pointer<ffi.Pointer<PyObject>> arg2,
+  ) {
+    return _PyIter_Send(
+      arg0,
+      arg1,
+      arg2,
+    );
+  }
+
+  late final _PyIter_SendPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int32 Function(ffi.Pointer<PyObject>, ffi.Pointer<PyObject>,
+              ffi.Pointer<ffi.Pointer<PyObject>>)>>('PyIter_Send');
+  late final _PyIter_Send = _PyIter_SendPtr.asFunction<
+      int Function(ffi.Pointer<PyObject>, ffi.Pointer<PyObject>,
+          ffi.Pointer<ffi.Pointer<PyObject>>)>();
 
   int PyNumber_Check(
     ffi.Pointer<PyObject> o,
@@ -17224,6 +22588,435 @@ class DartPyC {
   late final _PyObject_IsSubclass = _PyObject_IsSubclassPtr.asFunction<
       int Function(ffi.Pointer<PyObject>, ffi.Pointer<PyObject>)>();
 
+  ffi.Pointer<PyObject> PyStack_AsDict(
+    ffi.Pointer<ffi.Pointer<PyObject>> values,
+    ffi.Pointer<PyObject> kwnames,
+  ) {
+    return _PyStack_AsDict(
+      values,
+      kwnames,
+    );
+  }
+
+  late final _PyStack_AsDictPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<PyObject> Function(ffi.Pointer<ffi.Pointer<PyObject>>,
+              ffi.Pointer<PyObject>)>>('_PyStack_AsDict');
+  late final _PyStack_AsDict = _PyStack_AsDictPtr.asFunction<
+      ffi.Pointer<PyObject> Function(
+          ffi.Pointer<ffi.Pointer<PyObject>>, ffi.Pointer<PyObject>)>();
+
+  ffi.Pointer<PyObject> Py_CheckFunctionResult(
+    ffi.Pointer<PyThreadState> tstate,
+    ffi.Pointer<PyObject> callable,
+    ffi.Pointer<PyObject> result,
+    ffi.Pointer<ffi.Char> where,
+  ) {
+    return _Py_CheckFunctionResult(
+      tstate,
+      callable,
+      result,
+      where,
+    );
+  }
+
+  late final _Py_CheckFunctionResultPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<PyObject> Function(
+              ffi.Pointer<PyThreadState>,
+              ffi.Pointer<PyObject>,
+              ffi.Pointer<PyObject>,
+              ffi.Pointer<ffi.Char>)>>('_Py_CheckFunctionResult');
+  late final _Py_CheckFunctionResult = _Py_CheckFunctionResultPtr.asFunction<
+      ffi.Pointer<PyObject> Function(
+          ffi.Pointer<PyThreadState>,
+          ffi.Pointer<PyObject>,
+          ffi.Pointer<PyObject>,
+          ffi.Pointer<ffi.Char>)>();
+
+  ffi.Pointer<PyObject> PyObject_MakeTpCall(
+    ffi.Pointer<PyThreadState> tstate,
+    ffi.Pointer<PyObject> callable,
+    ffi.Pointer<ffi.Pointer<PyObject>> args,
+    int nargs,
+    ffi.Pointer<PyObject> keywords,
+  ) {
+    return _PyObject_MakeTpCall(
+      tstate,
+      callable,
+      args,
+      nargs,
+      keywords,
+    );
+  }
+
+  late final _PyObject_MakeTpCallPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<PyObject> Function(
+              ffi.Pointer<PyThreadState>,
+              ffi.Pointer<PyObject>,
+              ffi.Pointer<ffi.Pointer<PyObject>>,
+              Py_ssize_t,
+              ffi.Pointer<PyObject>)>>('_PyObject_MakeTpCall');
+  late final _PyObject_MakeTpCall = _PyObject_MakeTpCallPtr.asFunction<
+      ffi.Pointer<PyObject> Function(
+          ffi.Pointer<PyThreadState>,
+          ffi.Pointer<PyObject>,
+          ffi.Pointer<ffi.Pointer<PyObject>>,
+          int,
+          ffi.Pointer<PyObject>)>();
+
+  vectorcallfunc PyVectorcall_Function(
+    ffi.Pointer<PyObject> callable,
+  ) {
+    return _PyVectorcall_Function(
+      callable,
+    );
+  }
+
+  late final _PyVectorcall_FunctionPtr = _lookup<
+          ffi.NativeFunction<vectorcallfunc Function(ffi.Pointer<PyObject>)>>(
+      'PyVectorcall_Function');
+  late final _PyVectorcall_Function = _PyVectorcall_FunctionPtr.asFunction<
+      vectorcallfunc Function(ffi.Pointer<PyObject>)>();
+
+  ffi.Pointer<PyObject> PyObject_VectorcallDict(
+    ffi.Pointer<PyObject> callable,
+    ffi.Pointer<ffi.Pointer<PyObject>> args,
+    int nargsf,
+    ffi.Pointer<PyObject> kwargs,
+  ) {
+    return _PyObject_VectorcallDict(
+      callable,
+      args,
+      nargsf,
+      kwargs,
+    );
+  }
+
+  late final _PyObject_VectorcallDictPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<PyObject> Function(
+              ffi.Pointer<PyObject>,
+              ffi.Pointer<ffi.Pointer<PyObject>>,
+              ffi.Size,
+              ffi.Pointer<PyObject>)>>('PyObject_VectorcallDict');
+  late final _PyObject_VectorcallDict = _PyObject_VectorcallDictPtr.asFunction<
+      ffi.Pointer<PyObject> Function(ffi.Pointer<PyObject>,
+          ffi.Pointer<ffi.Pointer<PyObject>>, int, ffi.Pointer<PyObject>)>();
+
+  ffi.Pointer<PyObject> PyObject_FastCall(
+    ffi.Pointer<PyObject> func,
+    ffi.Pointer<ffi.Pointer<PyObject>> args,
+    int nargs,
+  ) {
+    return _PyObject_FastCall(
+      func,
+      args,
+      nargs,
+    );
+  }
+
+  late final _PyObject_FastCallPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<PyObject> Function(
+              ffi.Pointer<PyObject>,
+              ffi.Pointer<ffi.Pointer<PyObject>>,
+              Py_ssize_t)>>('_PyObject_FastCall');
+  late final _PyObject_FastCall = _PyObject_FastCallPtr.asFunction<
+      ffi.Pointer<PyObject> Function(
+          ffi.Pointer<PyObject>, ffi.Pointer<ffi.Pointer<PyObject>>, int)>();
+
+  ffi.Pointer<PyObject> PyObject_CallOneArg(
+    ffi.Pointer<PyObject> func,
+    ffi.Pointer<PyObject> arg,
+  ) {
+    return _PyObject_CallOneArg(
+      func,
+      arg,
+    );
+  }
+
+  late final _PyObject_CallOneArgPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<PyObject> Function(ffi.Pointer<PyObject>,
+              ffi.Pointer<PyObject>)>>('PyObject_CallOneArg');
+  late final _PyObject_CallOneArg = _PyObject_CallOneArgPtr.asFunction<
+      ffi.Pointer<PyObject> Function(
+          ffi.Pointer<PyObject>, ffi.Pointer<PyObject>)>();
+
+  ffi.Pointer<PyObject> PyObject_CallMethod1(
+    ffi.Pointer<PyObject> obj,
+    ffi.Pointer<PyObject> name,
+    ffi.Pointer<ffi.Char> format,
+  ) {
+    return _PyObject_CallMethod1(
+      obj,
+      name,
+      format,
+    );
+  }
+
+  late final _PyObject_CallMethod1Ptr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<PyObject> Function(
+              ffi.Pointer<PyObject>,
+              ffi.Pointer<PyObject>,
+              ffi.Pointer<ffi.Char>)>>('_PyObject_CallMethod');
+  late final _PyObject_CallMethod1 = _PyObject_CallMethod1Ptr.asFunction<
+      ffi.Pointer<PyObject> Function(ffi.Pointer<PyObject>,
+          ffi.Pointer<PyObject>, ffi.Pointer<ffi.Char>)>();
+
+  ffi.Pointer<PyObject> PyObject_CallMethodId(
+    ffi.Pointer<PyObject> obj,
+    ffi.Pointer<_Py_Identifier> name,
+    ffi.Pointer<ffi.Char> format,
+  ) {
+    return _PyObject_CallMethodId(
+      obj,
+      name,
+      format,
+    );
+  }
+
+  late final _PyObject_CallMethodIdPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<PyObject> Function(
+              ffi.Pointer<PyObject>,
+              ffi.Pointer<_Py_Identifier>,
+              ffi.Pointer<ffi.Char>)>>('_PyObject_CallMethodId');
+  late final _PyObject_CallMethodId = _PyObject_CallMethodIdPtr.asFunction<
+      ffi.Pointer<PyObject> Function(ffi.Pointer<PyObject>,
+          ffi.Pointer<_Py_Identifier>, ffi.Pointer<ffi.Char>)>();
+
+  ffi.Pointer<PyObject> PyObject_CallMethodId_SizeT(
+    ffi.Pointer<PyObject> obj,
+    ffi.Pointer<_Py_Identifier> name,
+    ffi.Pointer<ffi.Char> format,
+  ) {
+    return _PyObject_CallMethodId_SizeT(
+      obj,
+      name,
+      format,
+    );
+  }
+
+  late final _PyObject_CallMethodId_SizeTPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<PyObject> Function(
+              ffi.Pointer<PyObject>,
+              ffi.Pointer<_Py_Identifier>,
+              ffi.Pointer<ffi.Char>)>>('_PyObject_CallMethodId_SizeT');
+  late final _PyObject_CallMethodId_SizeT =
+      _PyObject_CallMethodId_SizeTPtr.asFunction<
+          ffi.Pointer<PyObject> Function(ffi.Pointer<PyObject>,
+              ffi.Pointer<_Py_Identifier>, ffi.Pointer<ffi.Char>)>();
+
+  ffi.Pointer<PyObject> PyObject_CallMethodIdObjArgs(
+    ffi.Pointer<PyObject> obj,
+    ffi.Pointer<_Py_Identifier> name,
+  ) {
+    return _PyObject_CallMethodIdObjArgs(
+      obj,
+      name,
+    );
+  }
+
+  late final _PyObject_CallMethodIdObjArgsPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<PyObject> Function(ffi.Pointer<PyObject>,
+              ffi.Pointer<_Py_Identifier>)>>('_PyObject_CallMethodIdObjArgs');
+  late final _PyObject_CallMethodIdObjArgs =
+      _PyObject_CallMethodIdObjArgsPtr.asFunction<
+          ffi.Pointer<PyObject> Function(
+              ffi.Pointer<PyObject>, ffi.Pointer<_Py_Identifier>)>();
+
+  int PyObject_HasLen(
+    ffi.Pointer<PyObject> o,
+  ) {
+    return _PyObject_HasLen(
+      o,
+    );
+  }
+
+  late final _PyObject_HasLenPtr =
+      _lookup<ffi.NativeFunction<ffi.Int Function(ffi.Pointer<PyObject>)>>(
+          '_PyObject_HasLen');
+  late final _PyObject_HasLen =
+      _PyObject_HasLenPtr.asFunction<int Function(ffi.Pointer<PyObject>)>();
+
+  int PyObject_LengthHint(
+    ffi.Pointer<PyObject> o,
+    int arg1,
+  ) {
+    return _PyObject_LengthHint(
+      o,
+      arg1,
+    );
+  }
+
+  late final _PyObject_LengthHintPtr = _lookup<
+      ffi.NativeFunction<
+          Py_ssize_t Function(
+              ffi.Pointer<PyObject>, Py_ssize_t)>>('PyObject_LengthHint');
+  late final _PyObject_LengthHint = _PyObject_LengthHintPtr.asFunction<
+      int Function(ffi.Pointer<PyObject>, int)>();
+
+  int PySequence_IterSearch(
+    ffi.Pointer<PyObject> seq,
+    ffi.Pointer<PyObject> obj,
+    int operation,
+  ) {
+    return _PySequence_IterSearch(
+      seq,
+      obj,
+      operation,
+    );
+  }
+
+  late final _PySequence_IterSearchPtr = _lookup<
+      ffi.NativeFunction<
+          Py_ssize_t Function(ffi.Pointer<PyObject>, ffi.Pointer<PyObject>,
+              ffi.Int)>>('_PySequence_IterSearch');
+  late final _PySequence_IterSearch = _PySequence_IterSearchPtr.asFunction<
+      int Function(ffi.Pointer<PyObject>, ffi.Pointer<PyObject>, int)>();
+
+  int PyObject_RealIsInstance(
+    ffi.Pointer<PyObject> inst,
+    ffi.Pointer<PyObject> cls,
+  ) {
+    return _PyObject_RealIsInstance(
+      inst,
+      cls,
+    );
+  }
+
+  late final _PyObject_RealIsInstancePtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int Function(ffi.Pointer<PyObject>,
+              ffi.Pointer<PyObject>)>>('_PyObject_RealIsInstance');
+  late final _PyObject_RealIsInstance = _PyObject_RealIsInstancePtr.asFunction<
+      int Function(ffi.Pointer<PyObject>, ffi.Pointer<PyObject>)>();
+
+  int PyObject_RealIsSubclass(
+    ffi.Pointer<PyObject> derived,
+    ffi.Pointer<PyObject> cls,
+  ) {
+    return _PyObject_RealIsSubclass(
+      derived,
+      cls,
+    );
+  }
+
+  late final _PyObject_RealIsSubclassPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int Function(ffi.Pointer<PyObject>,
+              ffi.Pointer<PyObject>)>>('_PyObject_RealIsSubclass');
+  late final _PyObject_RealIsSubclass = _PyObject_RealIsSubclassPtr.asFunction<
+      int Function(ffi.Pointer<PyObject>, ffi.Pointer<PyObject>)>();
+
+  ffi.Pointer<ffi.Pointer<ffi.Char>> PySequence_BytesToCharpArray(
+    ffi.Pointer<PyObject> self,
+  ) {
+    return _PySequence_BytesToCharpArray(
+      self,
+    );
+  }
+
+  late final _PySequence_BytesToCharpArrayPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<ffi.Pointer<ffi.Char>> Function(
+              ffi.Pointer<PyObject>)>>('_PySequence_BytesToCharpArray');
+  late final _PySequence_BytesToCharpArray =
+      _PySequence_BytesToCharpArrayPtr.asFunction<
+          ffi.Pointer<ffi.Pointer<ffi.Char>> Function(ffi.Pointer<PyObject>)>();
+
+  void Py_FreeCharPArray(
+    ffi.Pointer<ffi.Pointer<ffi.Char>> array,
+  ) {
+    return _Py_FreeCharPArray(
+      array,
+    );
+  }
+
+  late final _Py_FreeCharPArrayPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Void Function(
+              ffi.Pointer<ffi.Pointer<ffi.Char>>)>>('_Py_FreeCharPArray');
+  late final _Py_FreeCharPArray = _Py_FreeCharPArrayPtr.asFunction<
+      void Function(ffi.Pointer<ffi.Pointer<ffi.Char>>)>();
+
+  void Py_add_one_to_index_F(
+    int nd,
+    ffi.Pointer<Py_ssize_t> index,
+    ffi.Pointer<Py_ssize_t> shape,
+  ) {
+    return _Py_add_one_to_index_F(
+      nd,
+      index,
+      shape,
+    );
+  }
+
+  late final _Py_add_one_to_index_FPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Void Function(ffi.Int, ffi.Pointer<Py_ssize_t>,
+              ffi.Pointer<Py_ssize_t>)>>('_Py_add_one_to_index_F');
+  late final _Py_add_one_to_index_F = _Py_add_one_to_index_FPtr.asFunction<
+      void Function(int, ffi.Pointer<Py_ssize_t>, ffi.Pointer<Py_ssize_t>)>();
+
+  void Py_add_one_to_index_C(
+    int nd,
+    ffi.Pointer<Py_ssize_t> index,
+    ffi.Pointer<Py_ssize_t> shape,
+  ) {
+    return _Py_add_one_to_index_C(
+      nd,
+      index,
+      shape,
+    );
+  }
+
+  late final _Py_add_one_to_index_CPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Void Function(ffi.Int, ffi.Pointer<Py_ssize_t>,
+              ffi.Pointer<Py_ssize_t>)>>('_Py_add_one_to_index_C');
+  late final _Py_add_one_to_index_C = _Py_add_one_to_index_CPtr.asFunction<
+      void Function(int, ffi.Pointer<Py_ssize_t>, ffi.Pointer<Py_ssize_t>)>();
+
+  int Py_convert_optional_to_ssize_t(
+    ffi.Pointer<PyObject> arg0,
+    ffi.Pointer<ffi.Void> arg1,
+  ) {
+    return _Py_convert_optional_to_ssize_t(
+      arg0,
+      arg1,
+    );
+  }
+
+  late final _Py_convert_optional_to_ssize_tPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Int Function(ffi.Pointer<PyObject>,
+              ffi.Pointer<ffi.Void>)>>('_Py_convert_optional_to_ssize_t');
+  late final _Py_convert_optional_to_ssize_t =
+      _Py_convert_optional_to_ssize_tPtr.asFunction<
+          int Function(ffi.Pointer<PyObject>, ffi.Pointer<ffi.Void>)>();
+
+  ffi.Pointer<PyObject> PyNumber_Index1(
+    ffi.Pointer<PyObject> o,
+  ) {
+    return _PyNumber_Index1(
+      o,
+    );
+  }
+
+  late final _PyNumber_Index1Ptr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<PyObject> Function(
+              ffi.Pointer<PyObject>)>>('_PyNumber_Index');
+  late final _PyNumber_Index1 = _PyNumber_Index1Ptr.asFunction<
+      ffi.Pointer<PyObject> Function(ffi.Pointer<PyObject>)>();
+
   late final ffi.Pointer<PyTypeObject> _PyFilter_Type =
       _lookup<PyTypeObject>('PyFilter_Type');
 
@@ -17238,174 +23031,6 @@ class DartPyC {
       _lookup<PyTypeObject>('PyZip_Type');
 
   PyTypeObject get PyZip_Type => _PyZip_Type.ref;
-
-  ffi.Pointer<PyObject> PyEval_EvalCode(
-    ffi.Pointer<PyObject> arg0,
-    ffi.Pointer<PyObject> arg1,
-    ffi.Pointer<PyObject> arg2,
-  ) {
-    return _PyEval_EvalCode(
-      arg0,
-      arg1,
-      arg2,
-    );
-  }
-
-  late final _PyEval_EvalCodePtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<PyObject> Function(
-              ffi.Pointer<PyObject>,
-              ffi.Pointer<PyObject>,
-              ffi.Pointer<PyObject>)>>('PyEval_EvalCode');
-  late final _PyEval_EvalCode = _PyEval_EvalCodePtr.asFunction<
-      ffi.Pointer<PyObject> Function(ffi.Pointer<PyObject>,
-          ffi.Pointer<PyObject>, ffi.Pointer<PyObject>)>();
-
-  ffi.Pointer<PyObject> PyEval_EvalCodeEx(
-    ffi.Pointer<PyObject> co,
-    ffi.Pointer<PyObject> globals,
-    ffi.Pointer<PyObject> locals,
-    ffi.Pointer<ffi.Pointer<PyObject>> args,
-    int argc,
-    ffi.Pointer<ffi.Pointer<PyObject>> kwds,
-    int kwdc,
-    ffi.Pointer<ffi.Pointer<PyObject>> defs,
-    int defc,
-    ffi.Pointer<PyObject> kwdefs,
-    ffi.Pointer<PyObject> closure,
-  ) {
-    return _PyEval_EvalCodeEx(
-      co,
-      globals,
-      locals,
-      args,
-      argc,
-      kwds,
-      kwdc,
-      defs,
-      defc,
-      kwdefs,
-      closure,
-    );
-  }
-
-  late final _PyEval_EvalCodeExPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<PyObject> Function(
-              ffi.Pointer<PyObject>,
-              ffi.Pointer<PyObject>,
-              ffi.Pointer<PyObject>,
-              ffi.Pointer<ffi.Pointer<PyObject>>,
-              ffi.Int,
-              ffi.Pointer<ffi.Pointer<PyObject>>,
-              ffi.Int,
-              ffi.Pointer<ffi.Pointer<PyObject>>,
-              ffi.Int,
-              ffi.Pointer<PyObject>,
-              ffi.Pointer<PyObject>)>>('PyEval_EvalCodeEx');
-  late final _PyEval_EvalCodeEx = _PyEval_EvalCodeExPtr.asFunction<
-      ffi.Pointer<PyObject> Function(
-          ffi.Pointer<PyObject>,
-          ffi.Pointer<PyObject>,
-          ffi.Pointer<PyObject>,
-          ffi.Pointer<ffi.Pointer<PyObject>>,
-          int,
-          ffi.Pointer<ffi.Pointer<PyObject>>,
-          int,
-          ffi.Pointer<ffi.Pointer<PyObject>>,
-          int,
-          ffi.Pointer<PyObject>,
-          ffi.Pointer<PyObject>)>();
-
-  ffi.Pointer<PyObject> PyEval_EvalCodeWithName(
-    ffi.Pointer<PyObject> co,
-    ffi.Pointer<PyObject> globals,
-    ffi.Pointer<PyObject> locals,
-    ffi.Pointer<ffi.Pointer<PyObject>> args,
-    int argcount,
-    ffi.Pointer<ffi.Pointer<PyObject>> kwnames,
-    ffi.Pointer<ffi.Pointer<PyObject>> kwargs,
-    int kwcount,
-    int kwstep,
-    ffi.Pointer<ffi.Pointer<PyObject>> defs,
-    int defcount,
-    ffi.Pointer<PyObject> kwdefs,
-    ffi.Pointer<PyObject> closure,
-    ffi.Pointer<PyObject> name,
-    ffi.Pointer<PyObject> qualname,
-  ) {
-    return _PyEval_EvalCodeWithName(
-      co,
-      globals,
-      locals,
-      args,
-      argcount,
-      kwnames,
-      kwargs,
-      kwcount,
-      kwstep,
-      defs,
-      defcount,
-      kwdefs,
-      closure,
-      name,
-      qualname,
-    );
-  }
-
-  late final _PyEval_EvalCodeWithNamePtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<PyObject> Function(
-              ffi.Pointer<PyObject>,
-              ffi.Pointer<PyObject>,
-              ffi.Pointer<PyObject>,
-              ffi.Pointer<ffi.Pointer<PyObject>>,
-              Py_ssize_t,
-              ffi.Pointer<ffi.Pointer<PyObject>>,
-              ffi.Pointer<ffi.Pointer<PyObject>>,
-              Py_ssize_t,
-              ffi.Int,
-              ffi.Pointer<ffi.Pointer<PyObject>>,
-              Py_ssize_t,
-              ffi.Pointer<PyObject>,
-              ffi.Pointer<PyObject>,
-              ffi.Pointer<PyObject>,
-              ffi.Pointer<PyObject>)>>('_PyEval_EvalCodeWithName');
-  late final _PyEval_EvalCodeWithName = _PyEval_EvalCodeWithNamePtr.asFunction<
-      ffi.Pointer<PyObject> Function(
-          ffi.Pointer<PyObject>,
-          ffi.Pointer<PyObject>,
-          ffi.Pointer<PyObject>,
-          ffi.Pointer<ffi.Pointer<PyObject>>,
-          int,
-          ffi.Pointer<ffi.Pointer<PyObject>>,
-          ffi.Pointer<ffi.Pointer<PyObject>>,
-          int,
-          int,
-          ffi.Pointer<ffi.Pointer<PyObject>>,
-          int,
-          ffi.Pointer<PyObject>,
-          ffi.Pointer<PyObject>,
-          ffi.Pointer<PyObject>,
-          ffi.Pointer<PyObject>)>();
-
-  ffi.Pointer<PyObject> PyEval_CallTracing(
-    ffi.Pointer<PyObject> func,
-    ffi.Pointer<PyObject> args,
-  ) {
-    return _PyEval_CallTracing(
-      func,
-      args,
-    );
-  }
-
-  late final _PyEval_CallTracingPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<PyObject> Function(ffi.Pointer<PyObject>,
-              ffi.Pointer<PyObject>)>>('_PyEval_CallTracing');
-  late final _PyEval_CallTracing = _PyEval_CallTracingPtr.asFunction<
-      ffi.Pointer<PyObject> Function(
-          ffi.Pointer<PyObject>, ffi.Pointer<PyObject>)>();
 
   late final ffi.Pointer<ffi.Pointer<ffi.UnsignedInt>> _Py_ctype_table =
       _lookup<ffi.Pointer<ffi.UnsignedInt>>('_Py_ctype_table');
@@ -17579,97 +23204,6 @@ class DartPyC {
   late final _PyOS_mystricmp = _PyOS_mystricmpPtr.asFunction<
       int Function(ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Char>)>();
 
-  double Py_dg_strtod(
-    ffi.Pointer<ffi.Char> str,
-    ffi.Pointer<ffi.Pointer<ffi.Char>> ptr,
-  ) {
-    return _Py_dg_strtod(
-      str,
-      ptr,
-    );
-  }
-
-  late final _Py_dg_strtodPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Double Function(ffi.Pointer<ffi.Char>,
-              ffi.Pointer<ffi.Pointer<ffi.Char>>)>>('_Py_dg_strtod');
-  late final _Py_dg_strtod = _Py_dg_strtodPtr.asFunction<
-      double Function(
-          ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Pointer<ffi.Char>>)>();
-
-  ffi.Pointer<ffi.Char> Py_dg_dtoa(
-    double d,
-    int mode,
-    int ndigits,
-    ffi.Pointer<ffi.Int> decpt,
-    ffi.Pointer<ffi.Int> sign,
-    ffi.Pointer<ffi.Pointer<ffi.Char>> rve,
-  ) {
-    return _Py_dg_dtoa(
-      d,
-      mode,
-      ndigits,
-      decpt,
-      sign,
-      rve,
-    );
-  }
-
-  late final _Py_dg_dtoaPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<ffi.Char> Function(
-              ffi.Double,
-              ffi.Int,
-              ffi.Int,
-              ffi.Pointer<ffi.Int>,
-              ffi.Pointer<ffi.Int>,
-              ffi.Pointer<ffi.Pointer<ffi.Char>>)>>('_Py_dg_dtoa');
-  late final _Py_dg_dtoa = _Py_dg_dtoaPtr.asFunction<
-      ffi.Pointer<ffi.Char> Function(double, int, int, ffi.Pointer<ffi.Int>,
-          ffi.Pointer<ffi.Int>, ffi.Pointer<ffi.Pointer<ffi.Char>>)>();
-
-  void Py_dg_freedtoa(
-    ffi.Pointer<ffi.Char> s,
-  ) {
-    return _Py_dg_freedtoa(
-      s,
-    );
-  }
-
-  late final _Py_dg_freedtoaPtr =
-      _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ffi.Char>)>>(
-          '_Py_dg_freedtoa');
-  late final _Py_dg_freedtoa =
-      _Py_dg_freedtoaPtr.asFunction<void Function(ffi.Pointer<ffi.Char>)>();
-
-  double Py_dg_stdnan(
-    int sign,
-  ) {
-    return _Py_dg_stdnan(
-      sign,
-    );
-  }
-
-  late final _Py_dg_stdnanPtr =
-      _lookup<ffi.NativeFunction<ffi.Double Function(ffi.Int)>>(
-          '_Py_dg_stdnan');
-  late final _Py_dg_stdnan =
-      _Py_dg_stdnanPtr.asFunction<double Function(int)>();
-
-  double Py_dg_infinity(
-    int sign,
-  ) {
-    return _Py_dg_infinity(
-      sign,
-    );
-  }
-
-  late final _Py_dg_infinityPtr =
-      _lookup<ffi.NativeFunction<ffi.Double Function(ffi.Int)>>(
-          '_Py_dg_infinity');
-  late final _Py_dg_infinity =
-      _Py_dg_infinityPtr.asFunction<double Function(int)>();
-
   ffi.Pointer<ffi.WChar> Py_DecodeLocale(
     ffi.Pointer<ffi.Char> arg,
     ffi.Pointer<ffi.Size> size,
@@ -17706,241 +23240,6 @@ class DartPyC {
       ffi.Pointer<ffi.Char> Function(
           ffi.Pointer<ffi.WChar>, ffi.Pointer<ffi.Size>)>();
 
-  ffi.Pointer<ffi.Char> Py_EncodeLocaleRaw(
-    ffi.Pointer<ffi.WChar> text,
-    ffi.Pointer<ffi.Size> error_pos,
-  ) {
-    return _Py_EncodeLocaleRaw(
-      text,
-      error_pos,
-    );
-  }
-
-  late final _Py_EncodeLocaleRawPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<ffi.Char> Function(ffi.Pointer<ffi.WChar>,
-              ffi.Pointer<ffi.Size>)>>('_Py_EncodeLocaleRaw');
-  late final _Py_EncodeLocaleRaw = _Py_EncodeLocaleRawPtr.asFunction<
-      ffi.Pointer<ffi.Char> Function(
-          ffi.Pointer<ffi.WChar>, ffi.Pointer<ffi.Size>)>();
-
-  int Py_GetErrorHandler(
-    ffi.Pointer<ffi.Char> errors,
-  ) {
-    return _Py_GetErrorHandler(
-      errors,
-    );
-  }
-
-  late final _Py_GetErrorHandlerPtr =
-      _lookup<ffi.NativeFunction<ffi.Int32 Function(ffi.Pointer<ffi.Char>)>>(
-          '_Py_GetErrorHandler');
-  late final _Py_GetErrorHandler =
-      _Py_GetErrorHandlerPtr.asFunction<int Function(ffi.Pointer<ffi.Char>)>();
-
-  int Py_DecodeLocaleEx(
-    ffi.Pointer<ffi.Char> arg,
-    ffi.Pointer<ffi.Pointer<ffi.WChar>> wstr,
-    ffi.Pointer<ffi.Size> wlen,
-    ffi.Pointer<ffi.Pointer<ffi.Char>> reason,
-    int current_locale,
-    int errors,
-  ) {
-    return _Py_DecodeLocaleEx(
-      arg,
-      wstr,
-      wlen,
-      reason,
-      current_locale,
-      errors,
-    );
-  }
-
-  late final _Py_DecodeLocaleExPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Int Function(
-              ffi.Pointer<ffi.Char>,
-              ffi.Pointer<ffi.Pointer<ffi.WChar>>,
-              ffi.Pointer<ffi.Size>,
-              ffi.Pointer<ffi.Pointer<ffi.Char>>,
-              ffi.Int,
-              ffi.Int32)>>('_Py_DecodeLocaleEx');
-  late final _Py_DecodeLocaleEx = _Py_DecodeLocaleExPtr.asFunction<
-      int Function(
-          ffi.Pointer<ffi.Char>,
-          ffi.Pointer<ffi.Pointer<ffi.WChar>>,
-          ffi.Pointer<ffi.Size>,
-          ffi.Pointer<ffi.Pointer<ffi.Char>>,
-          int,
-          int)>();
-
-  int Py_EncodeLocaleEx(
-    ffi.Pointer<ffi.WChar> text,
-    ffi.Pointer<ffi.Pointer<ffi.Char>> str,
-    ffi.Pointer<ffi.Size> error_pos,
-    ffi.Pointer<ffi.Pointer<ffi.Char>> reason,
-    int current_locale,
-    int errors,
-  ) {
-    return _Py_EncodeLocaleEx(
-      text,
-      str,
-      error_pos,
-      reason,
-      current_locale,
-      errors,
-    );
-  }
-
-  late final _Py_EncodeLocaleExPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Int Function(
-              ffi.Pointer<ffi.WChar>,
-              ffi.Pointer<ffi.Pointer<ffi.Char>>,
-              ffi.Pointer<ffi.Size>,
-              ffi.Pointer<ffi.Pointer<ffi.Char>>,
-              ffi.Int,
-              ffi.Int32)>>('_Py_EncodeLocaleEx');
-  late final _Py_EncodeLocaleEx = _Py_EncodeLocaleExPtr.asFunction<
-      int Function(
-          ffi.Pointer<ffi.WChar>,
-          ffi.Pointer<ffi.Pointer<ffi.Char>>,
-          ffi.Pointer<ffi.Size>,
-          ffi.Pointer<ffi.Pointer<ffi.Char>>,
-          int,
-          int)>();
-
-  ffi.Pointer<PyObject> Py_device_encoding(
-    int arg0,
-  ) {
-    return _Py_device_encoding(
-      arg0,
-    );
-  }
-
-  late final _Py_device_encodingPtr =
-      _lookup<ffi.NativeFunction<ffi.Pointer<PyObject> Function(ffi.Int)>>(
-          '_Py_device_encoding');
-  late final _Py_device_encoding =
-      _Py_device_encodingPtr.asFunction<ffi.Pointer<PyObject> Function(int)>();
-
-  int Py_fstat(
-    int fd,
-    ffi.Pointer<stat> status,
-  ) {
-    return _Py_fstat(
-      fd,
-      status,
-    );
-  }
-
-  late final _Py_fstatPtr =
-      _lookup<ffi.NativeFunction<ffi.Int Function(ffi.Int, ffi.Pointer<stat>)>>(
-          '_Py_fstat');
-  late final _Py_fstat =
-      _Py_fstatPtr.asFunction<int Function(int, ffi.Pointer<stat>)>();
-
-  int Py_fstat_noraise(
-    int fd,
-    ffi.Pointer<stat> status,
-  ) {
-    return _Py_fstat_noraise(
-      fd,
-      status,
-    );
-  }
-
-  late final _Py_fstat_noraisePtr =
-      _lookup<ffi.NativeFunction<ffi.Int Function(ffi.Int, ffi.Pointer<stat>)>>(
-          '_Py_fstat_noraise');
-  late final _Py_fstat_noraise =
-      _Py_fstat_noraisePtr.asFunction<int Function(int, ffi.Pointer<stat>)>();
-
-  int Py_stat(
-    ffi.Pointer<PyObject> path,
-    ffi.Pointer<stat> status,
-  ) {
-    return _Py_stat(
-      path,
-      status,
-    );
-  }
-
-  late final _Py_statPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Int Function(
-              ffi.Pointer<PyObject>, ffi.Pointer<stat>)>>('_Py_stat');
-  late final _Py_stat = _Py_statPtr.asFunction<
-      int Function(ffi.Pointer<PyObject>, ffi.Pointer<stat>)>();
-
-  int Py_open(
-    ffi.Pointer<ffi.Char> pathname,
-    int flags,
-  ) {
-    return _Py_open(
-      pathname,
-      flags,
-    );
-  }
-
-  late final _Py_openPtr = _lookup<
-          ffi.NativeFunction<ffi.Int Function(ffi.Pointer<ffi.Char>, ffi.Int)>>(
-      '_Py_open');
-  late final _Py_open =
-      _Py_openPtr.asFunction<int Function(ffi.Pointer<ffi.Char>, int)>();
-
-  int Py_open_noraise(
-    ffi.Pointer<ffi.Char> pathname,
-    int flags,
-  ) {
-    return _Py_open_noraise(
-      pathname,
-      flags,
-    );
-  }
-
-  late final _Py_open_noraisePtr = _lookup<
-          ffi.NativeFunction<ffi.Int Function(ffi.Pointer<ffi.Char>, ffi.Int)>>(
-      '_Py_open_noraise');
-  late final _Py_open_noraise = _Py_open_noraisePtr.asFunction<
-      int Function(ffi.Pointer<ffi.Char>, int)>();
-
-  ffi.Pointer<FILE> Py_wfopen(
-    ffi.Pointer<ffi.WChar> path,
-    ffi.Pointer<ffi.WChar> mode,
-  ) {
-    return _Py_wfopen(
-      path,
-      mode,
-    );
-  }
-
-  late final _Py_wfopenPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<FILE> Function(
-              ffi.Pointer<ffi.WChar>, ffi.Pointer<ffi.WChar>)>>('_Py_wfopen');
-  late final _Py_wfopen = _Py_wfopenPtr.asFunction<
-      ffi.Pointer<FILE> Function(
-          ffi.Pointer<ffi.WChar>, ffi.Pointer<ffi.WChar>)>();
-
-  ffi.Pointer<FILE> Py_fopen(
-    ffi.Pointer<ffi.Char> pathname,
-    ffi.Pointer<ffi.Char> mode,
-  ) {
-    return _Py_fopen(
-      pathname,
-      mode,
-    );
-  }
-
-  late final _Py_fopenPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<FILE> Function(
-              ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Char>)>>('_Py_fopen');
-  late final _Py_fopen = _Py_fopenPtr.asFunction<
-      ffi.Pointer<FILE> Function(
-          ffi.Pointer<ffi.Char>, ffi.Pointer<ffi.Char>)>();
-
   ffi.Pointer<FILE> Py_fopen_obj(
     ffi.Pointer<PyObject> path,
     ffi.Pointer<ffi.Char> mode,
@@ -17958,213 +23257,6 @@ class DartPyC {
   late final _Py_fopen_obj = _Py_fopen_objPtr.asFunction<
       ffi.Pointer<FILE> Function(
           ffi.Pointer<PyObject>, ffi.Pointer<ffi.Char>)>();
-
-  int Py_read(
-    int fd,
-    ffi.Pointer<ffi.Void> buf,
-    int count,
-  ) {
-    return _Py_read(
-      fd,
-      buf,
-      count,
-    );
-  }
-
-  late final _Py_readPtr = _lookup<
-      ffi.NativeFunction<
-          Py_ssize_t Function(
-              ffi.Int, ffi.Pointer<ffi.Void>, ffi.Size)>>('_Py_read');
-  late final _Py_read =
-      _Py_readPtr.asFunction<int Function(int, ffi.Pointer<ffi.Void>, int)>();
-
-  int Py_write(
-    int fd,
-    ffi.Pointer<ffi.Void> buf,
-    int count,
-  ) {
-    return _Py_write(
-      fd,
-      buf,
-      count,
-    );
-  }
-
-  late final _Py_writePtr = _lookup<
-      ffi.NativeFunction<
-          Py_ssize_t Function(
-              ffi.Int, ffi.Pointer<ffi.Void>, ffi.Size)>>('_Py_write');
-  late final _Py_write =
-      _Py_writePtr.asFunction<int Function(int, ffi.Pointer<ffi.Void>, int)>();
-
-  int Py_write_noraise(
-    int fd,
-    ffi.Pointer<ffi.Void> buf,
-    int count,
-  ) {
-    return _Py_write_noraise(
-      fd,
-      buf,
-      count,
-    );
-  }
-
-  late final _Py_write_noraisePtr = _lookup<
-      ffi.NativeFunction<
-          Py_ssize_t Function(
-              ffi.Int, ffi.Pointer<ffi.Void>, ffi.Size)>>('_Py_write_noraise');
-  late final _Py_write_noraise = _Py_write_noraisePtr.asFunction<
-      int Function(int, ffi.Pointer<ffi.Void>, int)>();
-
-  int Py_wreadlink(
-    ffi.Pointer<ffi.WChar> path,
-    ffi.Pointer<ffi.WChar> buf,
-    int buflen,
-  ) {
-    return _Py_wreadlink(
-      path,
-      buf,
-      buflen,
-    );
-  }
-
-  late final _Py_wreadlinkPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Int Function(ffi.Pointer<ffi.WChar>, ffi.Pointer<ffi.WChar>,
-              ffi.Size)>>('_Py_wreadlink');
-  late final _Py_wreadlink = _Py_wreadlinkPtr.asFunction<
-      int Function(ffi.Pointer<ffi.WChar>, ffi.Pointer<ffi.WChar>, int)>();
-
-  ffi.Pointer<ffi.WChar> Py_wrealpath(
-    ffi.Pointer<ffi.WChar> path,
-    ffi.Pointer<ffi.WChar> resolved_path,
-    int resolved_path_len,
-  ) {
-    return _Py_wrealpath(
-      path,
-      resolved_path,
-      resolved_path_len,
-    );
-  }
-
-  late final _Py_wrealpathPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<ffi.WChar> Function(ffi.Pointer<ffi.WChar>,
-              ffi.Pointer<ffi.WChar>, ffi.Size)>>('_Py_wrealpath');
-  late final _Py_wrealpath = _Py_wrealpathPtr.asFunction<
-      ffi.Pointer<ffi.WChar> Function(
-          ffi.Pointer<ffi.WChar>, ffi.Pointer<ffi.WChar>, int)>();
-
-  ffi.Pointer<ffi.WChar> Py_wgetcwd(
-    ffi.Pointer<ffi.WChar> buf,
-    int buflen,
-  ) {
-    return _Py_wgetcwd(
-      buf,
-      buflen,
-    );
-  }
-
-  late final _Py_wgetcwdPtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Pointer<ffi.WChar> Function(
-              ffi.Pointer<ffi.WChar>, ffi.Size)>>('_Py_wgetcwd');
-  late final _Py_wgetcwd = _Py_wgetcwdPtr.asFunction<
-      ffi.Pointer<ffi.WChar> Function(ffi.Pointer<ffi.WChar>, int)>();
-
-  int Py_get_inheritable(
-    int fd,
-  ) {
-    return _Py_get_inheritable(
-      fd,
-    );
-  }
-
-  late final _Py_get_inheritablePtr =
-      _lookup<ffi.NativeFunction<ffi.Int Function(ffi.Int)>>(
-          '_Py_get_inheritable');
-  late final _Py_get_inheritable =
-      _Py_get_inheritablePtr.asFunction<int Function(int)>();
-
-  int Py_set_inheritable(
-    int fd,
-    int inheritable,
-    ffi.Pointer<ffi.Int> atomic_flag_works,
-  ) {
-    return _Py_set_inheritable(
-      fd,
-      inheritable,
-      atomic_flag_works,
-    );
-  }
-
-  late final _Py_set_inheritablePtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Int Function(
-              ffi.Int, ffi.Int, ffi.Pointer<ffi.Int>)>>('_Py_set_inheritable');
-  late final _Py_set_inheritable = _Py_set_inheritablePtr.asFunction<
-      int Function(int, int, ffi.Pointer<ffi.Int>)>();
-
-  int Py_set_inheritable_async_safe(
-    int fd,
-    int inheritable,
-    ffi.Pointer<ffi.Int> atomic_flag_works,
-  ) {
-    return _Py_set_inheritable_async_safe(
-      fd,
-      inheritable,
-      atomic_flag_works,
-    );
-  }
-
-  late final _Py_set_inheritable_async_safePtr = _lookup<
-      ffi.NativeFunction<
-          ffi.Int Function(ffi.Int, ffi.Int,
-              ffi.Pointer<ffi.Int>)>>('_Py_set_inheritable_async_safe');
-  late final _Py_set_inheritable_async_safe = _Py_set_inheritable_async_safePtr
-      .asFunction<int Function(int, int, ffi.Pointer<ffi.Int>)>();
-
-  int Py_dup(
-    int fd,
-  ) {
-    return _Py_dup(
-      fd,
-    );
-  }
-
-  late final _Py_dupPtr =
-      _lookup<ffi.NativeFunction<ffi.Int Function(ffi.Int)>>('_Py_dup');
-  late final _Py_dup = _Py_dupPtr.asFunction<int Function(int)>();
-
-  int Py_get_blocking(
-    int fd,
-  ) {
-    return _Py_get_blocking(
-      fd,
-    );
-  }
-
-  late final _Py_get_blockingPtr =
-      _lookup<ffi.NativeFunction<ffi.Int Function(ffi.Int)>>(
-          '_Py_get_blocking');
-  late final _Py_get_blocking =
-      _Py_get_blockingPtr.asFunction<int Function(int)>();
-
-  int Py_set_blocking(
-    int fd,
-    int blocking,
-  ) {
-    return _Py_set_blocking(
-      fd,
-      blocking,
-    );
-  }
-
-  late final _Py_set_blockingPtr =
-      _lookup<ffi.NativeFunction<ffi.Int Function(ffi.Int, ffi.Int)>>(
-          '_Py_set_blocking');
-  late final _Py_set_blocking =
-      _Py_set_blockingPtr.asFunction<int Function(int, int)>();
 
   int PyTraceMalloc_Track(
     int domain,
@@ -18217,32 +23309,221 @@ class DartPyC {
               ffi.UnsignedInt, ffi.UintPtr)>>('_PyTraceMalloc_GetTraceback');
   late final _PyTraceMalloc_GetTraceback = _PyTraceMalloc_GetTracebackPtr
       .asFunction<ffi.Pointer<PyObject> Function(int, int)>();
+
+  int PyTraceMalloc_IsTracing() {
+    return _PyTraceMalloc_IsTracing();
+  }
+
+  late final _PyTraceMalloc_IsTracingPtr =
+      _lookup<ffi.NativeFunction<ffi.Int Function()>>(
+          '_PyTraceMalloc_IsTracing');
+  late final _PyTraceMalloc_IsTracing =
+      _PyTraceMalloc_IsTracingPtr.asFunction<int Function()>();
+
+  void PyTraceMalloc_ClearTraces() {
+    return _PyTraceMalloc_ClearTraces();
+  }
+
+  late final _PyTraceMalloc_ClearTracesPtr =
+      _lookup<ffi.NativeFunction<ffi.Void Function()>>(
+          '_PyTraceMalloc_ClearTraces');
+  late final _PyTraceMalloc_ClearTraces =
+      _PyTraceMalloc_ClearTracesPtr.asFunction<void Function()>();
+
+  ffi.Pointer<PyObject> PyTraceMalloc_GetTraces() {
+    return _PyTraceMalloc_GetTraces();
+  }
+
+  late final _PyTraceMalloc_GetTracesPtr =
+      _lookup<ffi.NativeFunction<ffi.Pointer<PyObject> Function()>>(
+          '_PyTraceMalloc_GetTraces');
+  late final _PyTraceMalloc_GetTraces = _PyTraceMalloc_GetTracesPtr.asFunction<
+      ffi.Pointer<PyObject> Function()>();
+
+  ffi.Pointer<PyObject> PyTraceMalloc_GetObjectTraceback(
+    ffi.Pointer<PyObject> obj,
+  ) {
+    return _PyTraceMalloc_GetObjectTraceback(
+      obj,
+    );
+  }
+
+  late final _PyTraceMalloc_GetObjectTracebackPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<PyObject> Function(
+              ffi.Pointer<PyObject>)>>('_PyTraceMalloc_GetObjectTraceback');
+  late final _PyTraceMalloc_GetObjectTraceback =
+      _PyTraceMalloc_GetObjectTracebackPtr.asFunction<
+          ffi.Pointer<PyObject> Function(ffi.Pointer<PyObject>)>();
+
+  int PyTraceMalloc_Init() {
+    return _PyTraceMalloc_Init();
+  }
+
+  late final _PyTraceMalloc_InitPtr =
+      _lookup<ffi.NativeFunction<ffi.Int Function()>>('_PyTraceMalloc_Init');
+  late final _PyTraceMalloc_Init =
+      _PyTraceMalloc_InitPtr.asFunction<int Function()>();
+
+  int PyTraceMalloc_Start(
+    int max_nframe,
+  ) {
+    return _PyTraceMalloc_Start(
+      max_nframe,
+    );
+  }
+
+  late final _PyTraceMalloc_StartPtr =
+      _lookup<ffi.NativeFunction<ffi.Int Function(ffi.Int)>>(
+          '_PyTraceMalloc_Start');
+  late final _PyTraceMalloc_Start =
+      _PyTraceMalloc_StartPtr.asFunction<int Function(int)>();
+
+  void PyTraceMalloc_Stop() {
+    return _PyTraceMalloc_Stop();
+  }
+
+  late final _PyTraceMalloc_StopPtr =
+      _lookup<ffi.NativeFunction<ffi.Void Function()>>('_PyTraceMalloc_Stop');
+  late final _PyTraceMalloc_Stop =
+      _PyTraceMalloc_StopPtr.asFunction<void Function()>();
+
+  int PyTraceMalloc_GetTracebackLimit() {
+    return _PyTraceMalloc_GetTracebackLimit();
+  }
+
+  late final _PyTraceMalloc_GetTracebackLimitPtr =
+      _lookup<ffi.NativeFunction<ffi.Int Function()>>(
+          '_PyTraceMalloc_GetTracebackLimit');
+  late final _PyTraceMalloc_GetTracebackLimit =
+      _PyTraceMalloc_GetTracebackLimitPtr.asFunction<int Function()>();
+
+  int PyTraceMalloc_GetMemory() {
+    return _PyTraceMalloc_GetMemory();
+  }
+
+  late final _PyTraceMalloc_GetMemoryPtr =
+      _lookup<ffi.NativeFunction<ffi.Size Function()>>(
+          '_PyTraceMalloc_GetMemory');
+  late final _PyTraceMalloc_GetMemory =
+      _PyTraceMalloc_GetMemoryPtr.asFunction<int Function()>();
+
+  ffi.Pointer<PyObject> PyTraceMalloc_GetTracedMemory() {
+    return _PyTraceMalloc_GetTracedMemory();
+  }
+
+  late final _PyTraceMalloc_GetTracedMemoryPtr =
+      _lookup<ffi.NativeFunction<ffi.Pointer<PyObject> Function()>>(
+          '_PyTraceMalloc_GetTracedMemory');
+  late final _PyTraceMalloc_GetTracedMemory = _PyTraceMalloc_GetTracedMemoryPtr
+      .asFunction<ffi.Pointer<PyObject> Function()>();
+
+  void PyTraceMalloc_ResetPeak() {
+    return _PyTraceMalloc_ResetPeak();
+  }
+
+  late final _PyTraceMalloc_ResetPeakPtr =
+      _lookup<ffi.NativeFunction<ffi.Void Function()>>(
+          '_PyTraceMalloc_ResetPeak');
+  late final _PyTraceMalloc_ResetPeak =
+      _PyTraceMalloc_ResetPeakPtr.asFunction<void Function()>();
 }
 
-final class _PyTraceMalloc_Config extends ffi.Struct {
-  @ffi.Int32()
-  external int initialized;
-
-  @ffi.Int()
-  external int tracing;
-
-  @ffi.Int()
-  external int max_nframe;
-
-  @ffi.Int()
-  external int use_domain;
+abstract class PyMemAllocatorDomain {
+  static const int PYMEM_DOMAIN_RAW = 0;
+  static const int PYMEM_DOMAIN_MEM = 1;
+  static const int PYMEM_DOMAIN_OBJ = 2;
 }
+
+abstract class PyMemAllocatorName {
+  static const int PYMEM_ALLOCATOR_NOT_SET = 0;
+  static const int PYMEM_ALLOCATOR_DEFAULT = 1;
+  static const int PYMEM_ALLOCATOR_DEBUG = 2;
+  static const int PYMEM_ALLOCATOR_MALLOC = 3;
+  static const int PYMEM_ALLOCATOR_MALLOC_DEBUG = 4;
+  static const int PYMEM_ALLOCATOR_PYMALLOC = 5;
+  static const int PYMEM_ALLOCATOR_PYMALLOC_DEBUG = 6;
+}
+
+final class PyMemAllocatorEx extends ffi.Struct {
+  external ffi.Pointer<ffi.Void> ctx;
+
+  external ffi.Pointer<
+      ffi.NativeFunction<
+          ffi.Pointer<ffi.Void> Function(
+              ffi.Pointer<ffi.Void> ctx, ffi.Size size)>> malloc;
+
+  external ffi.Pointer<
+          ffi.NativeFunction<
+              ffi.Pointer<ffi.Void> Function(
+                  ffi.Pointer<ffi.Void> ctx, ffi.Size nelem, ffi.Size elsize)>>
+      calloc;
+
+  external ffi.Pointer<
+      ffi.NativeFunction<
+          ffi.Pointer<ffi.Void> Function(ffi.Pointer<ffi.Void> ctx,
+              ffi.Pointer<ffi.Void> ptr, ffi.Size new_size)>> realloc;
+
+  external ffi.Pointer<
+      ffi.NativeFunction<
+          ffi.Void Function(
+              ffi.Pointer<ffi.Void> ctx, ffi.Pointer<ffi.Void> ptr)>> free;
+}
+
+final class PyModuleDef extends ffi.Struct {
+  external PyModuleDef_Base m_base;
+
+  external ffi.Pointer<ffi.Char> m_name;
+
+  external ffi.Pointer<ffi.Char> m_doc;
+
+  @Py_ssize_t()
+  external int m_size;
+
+  external ffi.Pointer<PyMethodDef> m_methods;
+
+  external ffi.Pointer<PyModuleDef_Slot> m_slots;
+
+  external traverseproc m_traverse;
+
+  external inquiry m_clear;
+
+  external freefunc m_free;
+}
+
+final class PyModuleDef_Base extends ffi.Struct {
+  external PyObject ob_base;
+
+  external ffi.Pointer<ffi.NativeFunction<ffi.Pointer<PyObject> Function()>>
+      m_init;
+
+  @Py_ssize_t()
+  external int m_index;
+
+  external ffi.Pointer<PyObject> m_copy;
+}
+
+typedef PyObject = _object;
 
 final class _object extends ffi.Struct {
+  external UnnamedUnion1 unnamed;
+
+  external ffi.Pointer<PyTypeObject> ob_type;
+}
+
+final class UnnamedUnion1 extends ffi.Union {
   @Py_ssize_t()
   external int ob_refcnt;
 
-  external ffi.Pointer<_typeobject> ob_type;
+  @ffi.Array.multi([2])
+  external ffi.Array<ffi.Uint32> ob_refcnt_split;
 }
 
 typedef Py_ssize_t = ssize_t;
 typedef ssize_t = __darwin_ssize_t;
 typedef __darwin_ssize_t = ffi.Long;
+typedef Dart__darwin_ssize_t = int;
+typedef PyTypeObject = _typeobject;
 
 final class _typeobject extends ffi.Struct {
   external PyVarObject ob_base;
@@ -18310,9 +23591,9 @@ final class _typeobject extends ffi.Struct {
 
   external ffi.Pointer<PyGetSetDef> tp_getset;
 
-  external ffi.Pointer<_typeobject> tp_base;
+  external ffi.Pointer<PyTypeObject1> tp_base;
 
-  external ffi.Pointer<PyObject> tp_dict;
+  external ffi.Pointer<PyObject1> tp_dict;
 
   external descrgetfunc tp_descr_get;
 
@@ -18331,15 +23612,15 @@ final class _typeobject extends ffi.Struct {
 
   external inquiry tp_is_gc;
 
-  external ffi.Pointer<PyObject> tp_bases;
+  external ffi.Pointer<PyObject1> tp_bases;
 
-  external ffi.Pointer<PyObject> tp_mro;
+  external ffi.Pointer<PyObject1> tp_mro;
 
-  external ffi.Pointer<PyObject> tp_cache;
+  external ffi.Pointer<PyObject1> tp_cache;
 
-  external ffi.Pointer<PyObject> tp_subclasses;
+  external ffi.Pointer<ffi.Void> tp_subclasses;
 
-  external ffi.Pointer<PyObject> tp_weaklist;
+  external ffi.Pointer<PyObject1> tp_weaklist;
 
   external destructor tp_del;
 
@@ -18350,30 +23631,29 @@ final class _typeobject extends ffi.Struct {
 
   external vectorcallfunc tp_vectorcall;
 
-  external ffi.Pointer<
-      ffi.NativeFunction<
-          ffi.Int Function(
-              ffi.Pointer<PyObject>, ffi.Pointer<FILE>, ffi.Int)>> tp_print;
+  @ffi.UnsignedChar()
+  external int tp_watched;
 }
 
 final class PyVarObject extends ffi.Struct {
-  external PyObject ob_base;
+  external PyObject1 ob_base;
 
   @Py_ssize_t()
   external int ob_size;
 }
 
-typedef PyObject = _object;
-typedef destructor
-    = ffi.Pointer<ffi.NativeFunction<ffi.Void Function(ffi.Pointer<PyObject>)>>;
-typedef getattrfunc = ffi.Pointer<
-    ffi.NativeFunction<
-        ffi.Pointer<PyObject> Function(
-            ffi.Pointer<PyObject>, ffi.Pointer<ffi.Char>)>>;
-typedef setattrfunc = ffi.Pointer<
-    ffi.NativeFunction<
-        ffi.Int Function(ffi.Pointer<PyObject>, ffi.Pointer<ffi.Char>,
-            ffi.Pointer<PyObject>)>>;
+typedef PyObject1 = _object;
+typedef destructor = ffi.Pointer<ffi.NativeFunction<destructorFunction>>;
+typedef destructorFunction = ffi.Void Function(ffi.Pointer<PyObject1>);
+typedef DartdestructorFunction = void Function(ffi.Pointer<PyObject1>);
+typedef getattrfunc = ffi.Pointer<ffi.NativeFunction<getattrfuncFunction>>;
+typedef getattrfuncFunction = ffi.Pointer<PyObject1> Function(
+    ffi.Pointer<PyObject1>, ffi.Pointer<ffi.Char>);
+typedef setattrfunc = ffi.Pointer<ffi.NativeFunction<setattrfuncFunction>>;
+typedef setattrfuncFunction = ffi.Int Function(
+    ffi.Pointer<PyObject1>, ffi.Pointer<ffi.Char>, ffi.Pointer<PyObject1>);
+typedef DartsetattrfuncFunction = int Function(
+    ffi.Pointer<PyObject1>, ffi.Pointer<ffi.Char>, ffi.Pointer<PyObject1>);
 
 final class PyAsyncMethods extends ffi.Struct {
   external unaryfunc am_await;
@@ -18381,12 +23661,28 @@ final class PyAsyncMethods extends ffi.Struct {
   external unaryfunc am_aiter;
 
   external unaryfunc am_anext;
+
+  external sendfunc am_send;
 }
 
-typedef unaryfunc = ffi.Pointer<
-    ffi.NativeFunction<ffi.Pointer<PyObject> Function(ffi.Pointer<PyObject>)>>;
-typedef reprfunc = ffi.Pointer<
-    ffi.NativeFunction<ffi.Pointer<PyObject> Function(ffi.Pointer<PyObject>)>>;
+typedef unaryfunc = ffi.Pointer<ffi.NativeFunction<unaryfuncFunction>>;
+typedef unaryfuncFunction = ffi.Pointer<PyObject1> Function(
+    ffi.Pointer<PyObject1>);
+typedef sendfunc = ffi.Pointer<ffi.NativeFunction<sendfuncFunction>>;
+typedef sendfuncFunction = ffi.Int32 Function(ffi.Pointer<PyObject1> iter,
+    ffi.Pointer<PyObject1> value, ffi.Pointer<ffi.Pointer<PyObject1>> result);
+typedef DartsendfuncFunction = int Function(ffi.Pointer<PyObject1> iter,
+    ffi.Pointer<PyObject1> value, ffi.Pointer<ffi.Pointer<PyObject1>> result);
+
+abstract class PySendResult {
+  static const int PYGEN_RETURN = 0;
+  static const int PYGEN_ERROR = -1;
+  static const int PYGEN_NEXT = 1;
+}
+
+typedef reprfunc = ffi.Pointer<ffi.NativeFunction<reprfuncFunction>>;
+typedef reprfuncFunction = ffi.Pointer<PyObject1> Function(
+    ffi.Pointer<PyObject1>);
 
 final class PyNumberMethods extends ffi.Struct {
   external binaryfunc nb_add;
@@ -18462,16 +23758,15 @@ final class PyNumberMethods extends ffi.Struct {
   external binaryfunc nb_inplace_matrix_multiply;
 }
 
-typedef binaryfunc = ffi.Pointer<
-    ffi.NativeFunction<
-        ffi.Pointer<PyObject> Function(
-            ffi.Pointer<PyObject>, ffi.Pointer<PyObject>)>>;
-typedef ternaryfunc = ffi.Pointer<
-    ffi.NativeFunction<
-        ffi.Pointer<PyObject> Function(ffi.Pointer<PyObject>,
-            ffi.Pointer<PyObject>, ffi.Pointer<PyObject>)>>;
-typedef inquiry
-    = ffi.Pointer<ffi.NativeFunction<ffi.Int Function(ffi.Pointer<PyObject>)>>;
+typedef binaryfunc = ffi.Pointer<ffi.NativeFunction<binaryfuncFunction>>;
+typedef binaryfuncFunction = ffi.Pointer<PyObject1> Function(
+    ffi.Pointer<PyObject1>, ffi.Pointer<PyObject1>);
+typedef ternaryfunc = ffi.Pointer<ffi.NativeFunction<ternaryfuncFunction>>;
+typedef ternaryfuncFunction = ffi.Pointer<PyObject1> Function(
+    ffi.Pointer<PyObject1>, ffi.Pointer<PyObject1>, ffi.Pointer<PyObject1>);
+typedef inquiry = ffi.Pointer<ffi.NativeFunction<inquiryFunction>>;
+typedef inquiryFunction = ffi.Int Function(ffi.Pointer<PyObject1>);
+typedef DartinquiryFunction = int Function(ffi.Pointer<PyObject1>);
 
 final class PySequenceMethods extends ffi.Struct {
   external lenfunc sq_length;
@@ -18495,18 +23790,26 @@ final class PySequenceMethods extends ffi.Struct {
   external ssizeargfunc sq_inplace_repeat;
 }
 
-typedef lenfunc = ffi
-    .Pointer<ffi.NativeFunction<Py_ssize_t Function(ffi.Pointer<PyObject>)>>;
-typedef ssizeargfunc = ffi.Pointer<
-    ffi.NativeFunction<
-        ffi.Pointer<PyObject> Function(ffi.Pointer<PyObject>, Py_ssize_t)>>;
-typedef ssizeobjargproc = ffi.Pointer<
-    ffi.NativeFunction<
-        ffi.Int Function(
-            ffi.Pointer<PyObject>, Py_ssize_t, ffi.Pointer<PyObject>)>>;
-typedef objobjproc = ffi.Pointer<
-    ffi.NativeFunction<
-        ffi.Int Function(ffi.Pointer<PyObject>, ffi.Pointer<PyObject>)>>;
+typedef lenfunc = ffi.Pointer<ffi.NativeFunction<lenfuncFunction>>;
+typedef lenfuncFunction = Py_ssize_t Function(ffi.Pointer<PyObject1>);
+typedef DartlenfuncFunction = Dart__darwin_ssize_t Function(
+    ffi.Pointer<PyObject1>);
+typedef ssizeargfunc = ffi.Pointer<ffi.NativeFunction<ssizeargfuncFunction>>;
+typedef ssizeargfuncFunction = ffi.Pointer<PyObject1> Function(
+    ffi.Pointer<PyObject1>, Py_ssize_t);
+typedef DartssizeargfuncFunction = ffi.Pointer<PyObject1> Function(
+    ffi.Pointer<PyObject1>, Dart__darwin_ssize_t);
+typedef ssizeobjargproc
+    = ffi.Pointer<ffi.NativeFunction<ssizeobjargprocFunction>>;
+typedef ssizeobjargprocFunction = ffi.Int Function(
+    ffi.Pointer<PyObject1>, Py_ssize_t, ffi.Pointer<PyObject1>);
+typedef DartssizeobjargprocFunction = int Function(
+    ffi.Pointer<PyObject1>, Dart__darwin_ssize_t, ffi.Pointer<PyObject1>);
+typedef objobjproc = ffi.Pointer<ffi.NativeFunction<objobjprocFunction>>;
+typedef objobjprocFunction = ffi.Int Function(
+    ffi.Pointer<PyObject1>, ffi.Pointer<PyObject1>);
+typedef DartobjobjprocFunction = int Function(
+    ffi.Pointer<PyObject1>, ffi.Pointer<PyObject1>);
 
 final class PyMappingMethods extends ffi.Struct {
   external lenfunc mp_length;
@@ -18516,21 +23819,24 @@ final class PyMappingMethods extends ffi.Struct {
   external objobjargproc mp_ass_subscript;
 }
 
-typedef objobjargproc = ffi.Pointer<
-    ffi.NativeFunction<
-        ffi.Int Function(ffi.Pointer<PyObject>, ffi.Pointer<PyObject>,
-            ffi.Pointer<PyObject>)>>;
-typedef hashfunc = ffi
-    .Pointer<ffi.NativeFunction<Py_hash_t Function(ffi.Pointer<PyObject>)>>;
+typedef objobjargproc = ffi.Pointer<ffi.NativeFunction<objobjargprocFunction>>;
+typedef objobjargprocFunction = ffi.Int Function(
+    ffi.Pointer<PyObject1>, ffi.Pointer<PyObject1>, ffi.Pointer<PyObject1>);
+typedef DartobjobjargprocFunction = int Function(
+    ffi.Pointer<PyObject1>, ffi.Pointer<PyObject1>, ffi.Pointer<PyObject1>);
+typedef hashfunc = ffi.Pointer<ffi.NativeFunction<hashfuncFunction>>;
+typedef hashfuncFunction = Py_hash_t Function(ffi.Pointer<PyObject1>);
+typedef DarthashfuncFunction = Dart__darwin_ssize_t Function(
+    ffi.Pointer<PyObject1>);
 typedef Py_hash_t = Py_ssize_t;
-typedef getattrofunc = ffi.Pointer<
-    ffi.NativeFunction<
-        ffi.Pointer<PyObject> Function(
-            ffi.Pointer<PyObject>, ffi.Pointer<PyObject>)>>;
-typedef setattrofunc = ffi.Pointer<
-    ffi.NativeFunction<
-        ffi.Int Function(ffi.Pointer<PyObject>, ffi.Pointer<PyObject>,
-            ffi.Pointer<PyObject>)>>;
+typedef getattrofunc = ffi.Pointer<ffi.NativeFunction<getattrofuncFunction>>;
+typedef getattrofuncFunction = ffi.Pointer<PyObject1> Function(
+    ffi.Pointer<PyObject1>, ffi.Pointer<PyObject1>);
+typedef setattrofunc = ffi.Pointer<ffi.NativeFunction<setattrofuncFunction>>;
+typedef setattrofuncFunction = ffi.Int Function(
+    ffi.Pointer<PyObject1>, ffi.Pointer<PyObject1>, ffi.Pointer<PyObject1>);
+typedef DartsetattrofuncFunction = int Function(
+    ffi.Pointer<PyObject1>, ffi.Pointer<PyObject1>, ffi.Pointer<PyObject1>);
 
 final class PyBufferProcs extends ffi.Struct {
   external getbufferproc bf_getbuffer;
@@ -18538,16 +23844,16 @@ final class PyBufferProcs extends ffi.Struct {
   external releasebufferproc bf_releasebuffer;
 }
 
-typedef getbufferproc = ffi.Pointer<
-    ffi.NativeFunction<
-        ffi.Int Function(
-            ffi.Pointer<PyObject>, ffi.Pointer<Py_buffer>, ffi.Int)>>;
-typedef Py_buffer = bufferinfo;
+typedef getbufferproc = ffi.Pointer<ffi.NativeFunction<getbufferprocFunction>>;
+typedef getbufferprocFunction = ffi.Int Function(
+    ffi.Pointer<PyObject1>, ffi.Pointer<Py_buffer>, ffi.Int);
+typedef DartgetbufferprocFunction = int Function(
+    ffi.Pointer<PyObject1>, ffi.Pointer<Py_buffer>, int);
 
-final class bufferinfo extends ffi.Struct {
+final class Py_buffer extends ffi.Struct {
   external ffi.Pointer<ffi.Void> buf;
 
-  external ffi.Pointer<PyObject> obj;
+  external ffi.Pointer<PyObject1> obj;
 
   @Py_ssize_t()
   external int len;
@@ -18572,24 +23878,33 @@ final class bufferinfo extends ffi.Struct {
   external ffi.Pointer<ffi.Void> internal;
 }
 
-typedef releasebufferproc = ffi.Pointer<
-    ffi.NativeFunction<
-        ffi.Void Function(ffi.Pointer<PyObject>, ffi.Pointer<Py_buffer>)>>;
-typedef traverseproc = ffi.Pointer<
-    ffi.NativeFunction<
-        ffi.Int Function(
-            ffi.Pointer<PyObject>, visitproc, ffi.Pointer<ffi.Void>)>>;
-typedef visitproc = ffi.Pointer<
-    ffi.NativeFunction<
-        ffi.Int Function(ffi.Pointer<PyObject>, ffi.Pointer<ffi.Void>)>>;
-typedef richcmpfunc = ffi.Pointer<
-    ffi.NativeFunction<
-        ffi.Pointer<PyObject> Function(
-            ffi.Pointer<PyObject>, ffi.Pointer<PyObject>, ffi.Int)>>;
-typedef getiterfunc = ffi.Pointer<
-    ffi.NativeFunction<ffi.Pointer<PyObject> Function(ffi.Pointer<PyObject>)>>;
-typedef iternextfunc = ffi.Pointer<
-    ffi.NativeFunction<ffi.Pointer<PyObject> Function(ffi.Pointer<PyObject>)>>;
+typedef releasebufferproc
+    = ffi.Pointer<ffi.NativeFunction<releasebufferprocFunction>>;
+typedef releasebufferprocFunction = ffi.Void Function(
+    ffi.Pointer<PyObject1>, ffi.Pointer<Py_buffer>);
+typedef DartreleasebufferprocFunction = void Function(
+    ffi.Pointer<PyObject1>, ffi.Pointer<Py_buffer>);
+typedef traverseproc = ffi.Pointer<ffi.NativeFunction<traverseprocFunction>>;
+typedef traverseprocFunction = ffi.Int Function(
+    ffi.Pointer<PyObject1>, visitproc, ffi.Pointer<ffi.Void>);
+typedef DarttraverseprocFunction = int Function(
+    ffi.Pointer<PyObject1>, visitproc, ffi.Pointer<ffi.Void>);
+typedef visitproc = ffi.Pointer<ffi.NativeFunction<visitprocFunction>>;
+typedef visitprocFunction = ffi.Int Function(
+    ffi.Pointer<PyObject1>, ffi.Pointer<ffi.Void>);
+typedef DartvisitprocFunction = int Function(
+    ffi.Pointer<PyObject1>, ffi.Pointer<ffi.Void>);
+typedef richcmpfunc = ffi.Pointer<ffi.NativeFunction<richcmpfuncFunction>>;
+typedef richcmpfuncFunction = ffi.Pointer<PyObject1> Function(
+    ffi.Pointer<PyObject1>, ffi.Pointer<PyObject1>, ffi.Int);
+typedef DartrichcmpfuncFunction = ffi.Pointer<PyObject1> Function(
+    ffi.Pointer<PyObject1>, ffi.Pointer<PyObject1>, int);
+typedef getiterfunc = ffi.Pointer<ffi.NativeFunction<getiterfuncFunction>>;
+typedef getiterfuncFunction = ffi.Pointer<PyObject1> Function(
+    ffi.Pointer<PyObject1>);
+typedef iternextfunc = ffi.Pointer<ffi.NativeFunction<iternextfuncFunction>>;
+typedef iternextfuncFunction = ffi.Pointer<PyObject1> Function(
+    ffi.Pointer<PyObject1>);
 
 final class PyMethodDef extends ffi.Struct {
   external ffi.Pointer<ffi.Char> ml_name;
@@ -18602,12 +23917,24 @@ final class PyMethodDef extends ffi.Struct {
   external ffi.Pointer<ffi.Char> ml_doc;
 }
 
-typedef PyCFunction = ffi.Pointer<
-    ffi.NativeFunction<
-        ffi.Pointer<PyObject> Function(
-            ffi.Pointer<PyObject>, ffi.Pointer<PyObject>)>>;
+typedef PyCFunction = ffi.Pointer<ffi.NativeFunction<PyCFunctionFunction>>;
+typedef PyCFunctionFunction = ffi.Pointer<PyObject1> Function(
+    ffi.Pointer<PyObject1>, ffi.Pointer<PyObject1>);
 
-final class PyMemberDef extends ffi.Opaque {}
+final class PyMemberDef extends ffi.Struct {
+  external ffi.Pointer<ffi.Char> name;
+
+  @ffi.Int()
+  external int type;
+
+  @Py_ssize_t()
+  external int offset;
+
+  @ffi.Int()
+  external int flags;
+
+  external ffi.Pointer<ffi.Char> doc;
+}
 
 final class PyGetSetDef extends ffi.Struct {
   external ffi.Pointer<ffi.Char> name;
@@ -18621,42 +23948,262 @@ final class PyGetSetDef extends ffi.Struct {
   external ffi.Pointer<ffi.Void> closure;
 }
 
-typedef getter = ffi.Pointer<
-    ffi.NativeFunction<
-        ffi.Pointer<PyObject> Function(
-            ffi.Pointer<PyObject>, ffi.Pointer<ffi.Void>)>>;
-typedef setter = ffi.Pointer<
-    ffi.NativeFunction<
-        ffi.Int Function(ffi.Pointer<PyObject>, ffi.Pointer<PyObject>,
-            ffi.Pointer<ffi.Void>)>>;
-typedef descrgetfunc = ffi.Pointer<
-    ffi.NativeFunction<
-        ffi.Pointer<PyObject> Function(ffi.Pointer<PyObject>,
-            ffi.Pointer<PyObject>, ffi.Pointer<PyObject>)>>;
-typedef descrsetfunc = ffi.Pointer<
-    ffi.NativeFunction<
-        ffi.Int Function(ffi.Pointer<PyObject>, ffi.Pointer<PyObject>,
-            ffi.Pointer<PyObject>)>>;
-typedef initproc = ffi.Pointer<
-    ffi.NativeFunction<
-        ffi.Int Function(ffi.Pointer<PyObject>, ffi.Pointer<PyObject>,
-            ffi.Pointer<PyObject>)>>;
-typedef allocfunc = ffi.Pointer<
-    ffi.NativeFunction<
-        ffi.Pointer<PyObject> Function(ffi.Pointer<_typeobject>, Py_ssize_t)>>;
-typedef newfunc = ffi.Pointer<
-    ffi.NativeFunction<
-        ffi.Pointer<PyObject> Function(ffi.Pointer<_typeobject>,
-            ffi.Pointer<PyObject>, ffi.Pointer<PyObject>)>>;
-typedef freefunc
-    = ffi.Pointer<ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ffi.Void>)>>;
-typedef vectorcallfunc = ffi.Pointer<
-    ffi.NativeFunction<
-        ffi.Pointer<PyObject> Function(
-            ffi.Pointer<PyObject> callable,
-            ffi.Pointer<ffi.Pointer<PyObject>> args,
-            ffi.Size nargsf,
-            ffi.Pointer<PyObject> kwnames)>>;
+typedef getter = ffi.Pointer<ffi.NativeFunction<getterFunction>>;
+typedef getterFunction = ffi.Pointer<PyObject1> Function(
+    ffi.Pointer<PyObject1>, ffi.Pointer<ffi.Void>);
+typedef setter = ffi.Pointer<ffi.NativeFunction<setterFunction>>;
+typedef setterFunction = ffi.Int Function(
+    ffi.Pointer<PyObject1>, ffi.Pointer<PyObject1>, ffi.Pointer<ffi.Void>);
+typedef DartsetterFunction = int Function(
+    ffi.Pointer<PyObject1>, ffi.Pointer<PyObject1>, ffi.Pointer<ffi.Void>);
+typedef PyTypeObject1 = _typeobject;
+typedef descrgetfunc = ffi.Pointer<ffi.NativeFunction<descrgetfuncFunction>>;
+typedef descrgetfuncFunction = ffi.Pointer<PyObject1> Function(
+    ffi.Pointer<PyObject1>, ffi.Pointer<PyObject1>, ffi.Pointer<PyObject1>);
+typedef descrsetfunc = ffi.Pointer<ffi.NativeFunction<descrsetfuncFunction>>;
+typedef descrsetfuncFunction = ffi.Int Function(
+    ffi.Pointer<PyObject1>, ffi.Pointer<PyObject1>, ffi.Pointer<PyObject1>);
+typedef DartdescrsetfuncFunction = int Function(
+    ffi.Pointer<PyObject1>, ffi.Pointer<PyObject1>, ffi.Pointer<PyObject1>);
+typedef initproc = ffi.Pointer<ffi.NativeFunction<initprocFunction>>;
+typedef initprocFunction = ffi.Int Function(
+    ffi.Pointer<PyObject1>, ffi.Pointer<PyObject1>, ffi.Pointer<PyObject1>);
+typedef DartinitprocFunction = int Function(
+    ffi.Pointer<PyObject1>, ffi.Pointer<PyObject1>, ffi.Pointer<PyObject1>);
+typedef allocfunc = ffi.Pointer<ffi.NativeFunction<allocfuncFunction>>;
+typedef allocfuncFunction = ffi.Pointer<PyObject1> Function(
+    ffi.Pointer<PyTypeObject1>, Py_ssize_t);
+typedef DartallocfuncFunction = ffi.Pointer<PyObject1> Function(
+    ffi.Pointer<PyTypeObject1>, Dart__darwin_ssize_t);
+typedef newfunc = ffi.Pointer<ffi.NativeFunction<newfuncFunction>>;
+typedef newfuncFunction = ffi.Pointer<PyObject1> Function(
+    ffi.Pointer<PyTypeObject1>, ffi.Pointer<PyObject1>, ffi.Pointer<PyObject1>);
+typedef freefunc = ffi.Pointer<ffi.NativeFunction<freefuncFunction>>;
+typedef freefuncFunction = ffi.Void Function(ffi.Pointer<ffi.Void>);
+typedef DartfreefuncFunction = void Function(ffi.Pointer<ffi.Void>);
+typedef vectorcallfunc
+    = ffi.Pointer<ffi.NativeFunction<vectorcallfuncFunction>>;
+typedef vectorcallfuncFunction = ffi.Pointer<PyObject1> Function(
+    ffi.Pointer<PyObject1> callable,
+    ffi.Pointer<ffi.Pointer<PyObject1>> args,
+    ffi.Size nargsf,
+    ffi.Pointer<PyObject1> kwnames);
+typedef DartvectorcallfuncFunction = ffi.Pointer<PyObject1> Function(
+    ffi.Pointer<PyObject1> callable,
+    ffi.Pointer<ffi.Pointer<PyObject1>> args,
+    int nargsf,
+    ffi.Pointer<PyObject1> kwnames);
+
+final class PyModuleDef_Slot extends ffi.Struct {
+  @ffi.Int()
+  external int slot;
+
+  external ffi.Pointer<ffi.Void> value;
+}
+
+final class _longobject extends ffi.Struct {
+  external PyObject ob_base;
+
+  external _PyLongValue long_value;
+}
+
+final class _PyLongValue extends ffi.Struct {
+  @ffi.UintPtr()
+  external int lv_tag;
+
+  @ffi.Array.multi([1])
+  external ffi.Array<digit> ob_digit;
+}
+
+typedef digit = ffi.Uint32;
+typedef Dartdigit = int;
+
+final class PyCodeObject extends ffi.Struct {
+  external PyVarObject ob_base;
+
+  external ffi.Pointer<PyObject> co_consts;
+
+  external ffi.Pointer<PyObject> co_names;
+
+  external ffi.Pointer<PyObject> co_exceptiontable;
+
+  @ffi.Int()
+  external int co_flags;
+
+  @ffi.Int()
+  external int co_argcount;
+
+  @ffi.Int()
+  external int co_posonlyargcount;
+
+  @ffi.Int()
+  external int co_kwonlyargcount;
+
+  @ffi.Int()
+  external int co_stacksize;
+
+  @ffi.Int()
+  external int co_firstlineno;
+
+  @ffi.Int()
+  external int co_nlocalsplus;
+
+  @ffi.Int()
+  external int co_framesize;
+
+  @ffi.Int()
+  external int co_nlocals;
+
+  @ffi.Int()
+  external int co_ncellvars;
+
+  @ffi.Int()
+  external int co_nfreevars;
+
+  @ffi.Uint32()
+  external int co_version;
+
+  external ffi.Pointer<PyObject> co_localsplusnames;
+
+  external ffi.Pointer<PyObject> co_localspluskinds;
+
+  external ffi.Pointer<PyObject> co_filename;
+
+  external ffi.Pointer<PyObject> co_name;
+
+  external ffi.Pointer<PyObject> co_qualname;
+
+  external ffi.Pointer<PyObject> co_linetable;
+
+  external ffi.Pointer<PyObject> co_weakreflist;
+
+  external ffi.Pointer<_PyCoCached> _co_cached;
+
+  @ffi.Uint64()
+  external int _co_instrumentation_version;
+
+  external ffi.Pointer<_PyCoMonitoringData> _co_monitoring;
+
+  @ffi.Int()
+  external int _co_firsttraceable;
+
+  external ffi.Pointer<ffi.Void> co_extra;
+
+  @ffi.Array.multi([1])
+  external ffi.Array<ffi.Char> co_code_adaptive;
+}
+
+final class _PyCoCached extends ffi.Struct {
+  external ffi.Pointer<PyObject> _co_code;
+
+  external ffi.Pointer<PyObject> _co_varnames;
+
+  external ffi.Pointer<PyObject> _co_cellvars;
+
+  external ffi.Pointer<PyObject> _co_freevars;
+}
+
+final class _PyCoMonitoringData extends ffi.Struct {
+  external _Py_LocalMonitors local_monitors;
+
+  external _Py_LocalMonitors active_monitors;
+
+  external ffi.Pointer<ffi.Uint8> tools;
+
+  external ffi.Pointer<_PyCoLineInstrumentationData> lines;
+
+  external ffi.Pointer<ffi.Uint8> line_tools;
+
+  external ffi.Pointer<ffi.Uint8> per_instruction_opcodes;
+
+  external ffi.Pointer<ffi.Uint8> per_instruction_tools;
+}
+
+final class _Py_LocalMonitors extends ffi.Struct {
+  @ffi.Array.multi([15])
+  external ffi.Array<ffi.Uint8> tools;
+}
+
+final class _PyCoLineInstrumentationData extends ffi.Struct {
+  @ffi.Uint8()
+  external int original_opcode;
+
+  @ffi.Int8()
+  external int line_delta;
+}
+
+final class _frame extends ffi.Opaque {}
+
+final class _ts extends ffi.Opaque {}
+
+final class _is extends ffi.Opaque {}
+
+final class PyType_Slot extends ffi.Struct {
+  @ffi.Int()
+  external int slot;
+
+  external ffi.Pointer<ffi.Void> pfunc;
+}
+
+final class PyType_Spec extends ffi.Struct {
+  external ffi.Pointer<ffi.Char> name;
+
+  @ffi.Int()
+  external int basicsize;
+
+  @ffi.Int()
+  external int itemsize;
+
+  @ffi.UnsignedInt()
+  external int flags;
+
+  external ffi.Pointer<PyType_Slot> slots;
+}
+
+final class _Py_Identifier extends ffi.Struct {
+  external ffi.Pointer<ffi.Char> string;
+
+  @Py_ssize_t()
+  external int index;
+}
+
+final class _specialization_cache extends ffi.Struct {
+  external ffi.Pointer<PyObject> getitem;
+
+  @ffi.Uint32()
+  external int getitem_version;
+}
+
+final class _heaptypeobject extends ffi.Struct {
+  external PyTypeObject ht_type;
+
+  external PyAsyncMethods as_async;
+
+  external PyNumberMethods as_number;
+
+  external PyMappingMethods as_mapping;
+
+  external PySequenceMethods as_sequence;
+
+  external PyBufferProcs as_buffer;
+
+  external ffi.Pointer<PyObject> ht_name;
+
+  external ffi.Pointer<PyObject> ht_slots;
+
+  external ffi.Pointer<PyObject> ht_qualname;
+
+  external ffi.Pointer<_dictkeysobject> ht_cached_keys;
+
+  external ffi.Pointer<PyObject> ht_module;
+
+  external ffi.Pointer<ffi.Char> _ht_tpname;
+
+  external _specialization_cache _spec_cache;
+}
+
+final class _dictkeysobject extends ffi.Opaque {}
+
 typedef FILE = __sFILE;
 
 final class __sFILE extends ffi.Struct {
@@ -18731,125 +24278,52 @@ final class __sbuf extends ffi.Struct {
 typedef fpos_t = __darwin_off_t;
 typedef __darwin_off_t = __int64_t;
 typedef __int64_t = ffi.LongLong;
+typedef Dart__int64_t = int;
 
 final class __sFILEX extends ffi.Opaque {}
 
-final class PyType_Slot extends ffi.Struct {
-  @ffi.Int()
-  external int slot;
+typedef PyThreadState = _ts;
+typedef PyType_WatchCallback
+    = ffi.Pointer<ffi.NativeFunction<PyType_WatchCallbackFunction>>;
+typedef PyType_WatchCallbackFunction = ffi.Int Function(
+    ffi.Pointer<PyTypeObject>);
+typedef DartPyType_WatchCallbackFunction = int Function(
+    ffi.Pointer<PyTypeObject>);
+typedef gcvisitobjects_t
+    = ffi.Pointer<ffi.NativeFunction<gcvisitobjects_tFunction>>;
+typedef gcvisitobjects_tFunction = ffi.Int Function(
+    ffi.Pointer<PyObject>, ffi.Pointer<ffi.Void>);
+typedef Dartgcvisitobjects_tFunction = int Function(
+    ffi.Pointer<PyObject>, ffi.Pointer<ffi.Void>);
 
-  external ffi.Pointer<ffi.Void> pfunc;
+final class PyObjectArenaAllocator extends ffi.Struct {
+  external ffi.Pointer<ffi.Void> ctx;
+
+  external ffi.Pointer<
+      ffi.NativeFunction<
+          ffi.Pointer<ffi.Void> Function(
+              ffi.Pointer<ffi.Void> ctx, ffi.Size size)>> alloc;
+
+  external ffi.Pointer<
+      ffi.NativeFunction<
+          ffi.Void Function(ffi.Pointer<ffi.Void> ctx,
+              ffi.Pointer<ffi.Void> ptr, ffi.Size size)>> free;
 }
-
-final class PyType_Spec extends ffi.Struct {
-  external ffi.Pointer<ffi.Char> name;
-
-  @ffi.Int()
-  external int basicsize;
-
-  @ffi.Int()
-  external int itemsize;
-
-  @ffi.UnsignedInt()
-  external int flags;
-
-  external ffi.Pointer<PyType_Slot> slots;
-}
-
-abstract class PyTime_round_t {
-  static const int PyTime_ROUND_FLOOR = 0;
-  static const int PyTime_ROUND_CEILING = 1;
-  static const int PyTime_ROUND_HALF_EVEN = 2;
-  static const int PyTime_ROUND_UP = 3;
-  static const int PyTime_ROUND_TIMEOUT = 3;
-}
-
-typedef time_t = __darwin_time_t;
-typedef __darwin_time_t = ffi.Long;
-typedef _PyTime_t = ffi.Int64;
-
-final class timeval extends ffi.Struct {
-  @__darwin_time_t()
-  external int tv_sec;
-
-  @__darwin_suseconds_t()
-  external int tv_usec;
-}
-
-typedef __darwin_suseconds_t = __int32_t;
-typedef __int32_t = ffi.Int;
-
-final class timespec extends ffi.Struct {
-  @__darwin_time_t()
-  external int tv_sec;
-
-  @ffi.Long()
-  external int tv_nsec;
-}
-
-final class _Py_clock_info_t extends ffi.Struct {
-  external ffi.Pointer<ffi.Char> implementation;
-
-  @ffi.Int()
-  external int monotonic;
-
-  @ffi.Int()
-  external int adjustable;
-
-  @ffi.Double()
-  external double resolution;
-}
-
-final class tm extends ffi.Struct {
-  @ffi.Int()
-  external int tm_sec;
-
-  @ffi.Int()
-  external int tm_min;
-
-  @ffi.Int()
-  external int tm_hour;
-
-  @ffi.Int()
-  external int tm_mday;
-
-  @ffi.Int()
-  external int tm_mon;
-
-  @ffi.Int()
-  external int tm_year;
-
-  @ffi.Int()
-  external int tm_wday;
-
-  @ffi.Int()
-  external int tm_yday;
-
-  @ffi.Int()
-  external int tm_isdst;
-
-  @ffi.Long()
-  external int tm_gmtoff;
-
-  external ffi.Pointer<ffi.Char> tm_zone;
-}
-
-typedef PyTypeObject = _typeobject;
 
 final class _Py_HashSecret_t extends ffi.Union {
   @ffi.Array.multi([24])
   external ffi.Array<ffi.UnsignedChar> uc;
 
-  external UnnamedStruct1 fnv;
+  external UnnamedStruct2 fnv;
 
-  external UnnamedStruct2 siphash;
+  external UnnamedStruct3 siphash;
 
-  external UnnamedStruct3 djbx33a;
+  external UnnamedStruct4 djbx33a;
 
-  external UnnamedStruct4 expat;
+  external UnnamedStruct5 expat;
 }
 
-final class UnnamedStruct1 extends ffi.Struct {
+final class UnnamedStruct2 extends ffi.Struct {
   @Py_hash_t()
   external int prefix;
 
@@ -18857,7 +24331,7 @@ final class UnnamedStruct1 extends ffi.Struct {
   external int suffix;
 }
 
-final class UnnamedStruct2 extends ffi.Struct {
+final class UnnamedStruct3 extends ffi.Struct {
   @ffi.Uint64()
   external int k0;
 
@@ -18865,7 +24339,7 @@ final class UnnamedStruct2 extends ffi.Struct {
   external int k1;
 }
 
-final class UnnamedStruct3 extends ffi.Struct {
+final class UnnamedStruct4 extends ffi.Struct {
   @ffi.Array.multi([16])
   external ffi.Array<ffi.UnsignedChar> padding;
 
@@ -18873,7 +24347,7 @@ final class UnnamedStruct3 extends ffi.Struct {
   external int suffix;
 }
 
-final class UnnamedStruct4 extends ffi.Struct {
+final class UnnamedStruct5 extends ffi.Struct {
   @ffi.Array.multi([16])
   external ffi.Array<ffi.UnsignedChar> padding;
 
@@ -18905,18 +24379,8 @@ final class PyByteArrayObject extends ffi.Struct {
 
   external ffi.Pointer<ffi.Char> ob_start;
 
-  @ffi.Int()
+  @Py_ssize_t()
   external int ob_exports;
-}
-
-final class PyBytesObject extends ffi.Struct {
-  external PyVarObject ob_base;
-
-  @Py_hash_t()
-  external int ob_shash;
-
-  @ffi.Array.multi([1])
-  external ffi.Array<ffi.Char> ob_sval;
 }
 
 final class __va_list_tag extends ffi.Struct {
@@ -18929,6 +24393,16 @@ final class __va_list_tag extends ffi.Struct {
   external ffi.Pointer<ffi.Void> overflow_arg_area;
 
   external ffi.Pointer<ffi.Void> reg_save_area;
+}
+
+final class PyBytesObject extends ffi.Struct {
+  external PyVarObject ob_base;
+
+  @Py_hash_t()
+  external int ob_shash;
+
+  @ffi.Array.multi([1])
+  external ffi.Array<ffi.Char> ob_sval;
 }
 
 final class _PyBytesWriter extends ffi.Struct {
@@ -18954,24 +24428,26 @@ final class _PyBytesWriter extends ffi.Struct {
 }
 
 typedef Py_UCS4 = ffi.Uint32;
+typedef DartPy_UCS4 = int;
 
-final class _longobject extends ffi.Struct {
-  external PyVarObject ob_base;
+final class PyASCIIObject extends ffi.Opaque {}
 
-  @ffi.Array.multi([1])
-  external ffi.Array<digit> ob_digit;
+final class PyCompactUnicodeObject extends ffi.Opaque {}
+
+final class PyUnicodeObject extends ffi.Opaque {}
+
+abstract class PyUnicode_Kind {
+  static const int PyUnicode_1BYTE_KIND = 1;
+  static const int PyUnicode_2BYTE_KIND = 2;
+  static const int PyUnicode_4BYTE_KIND = 4;
 }
-
-typedef digit = ffi.Uint32;
-typedef PyLongObject = _longobject;
-typedef Py_UNICODE = ffi.WChar;
 
 final class _PyUnicodeWriter extends ffi.Struct {
   external ffi.Pointer<PyObject> buffer;
 
   external ffi.Pointer<ffi.Void> data;
 
-  @ffi.Int32()
+  @ffi.Int()
   external int kind;
 
   @Py_UCS4()
@@ -18996,12 +24472,559 @@ final class _PyUnicodeWriter extends ffi.Struct {
   external int readonly;
 }
 
-abstract class PyUnicode_Kind {
-  static const int PyUnicode_WCHAR_KIND = 0;
-  static const int PyUnicode_1BYTE_KIND = 1;
-  static const int PyUnicode_2BYTE_KIND = 2;
-  static const int PyUnicode_4BYTE_KIND = 4;
+final class PyStatus extends ffi.Struct {
+  @ffi.Int32()
+  external int _type;
+
+  external ffi.Pointer<ffi.Char> func;
+
+  external ffi.Pointer<ffi.Char> err_msg;
+
+  @ffi.Int()
+  external int exitcode;
 }
+
+final class PyWideStringList extends ffi.Struct {
+  @Py_ssize_t()
+  external int length;
+
+  external ffi.Pointer<ffi.Pointer<ffi.WChar>> items;
+}
+
+final class PyPreConfig extends ffi.Struct {
+  @ffi.Int()
+  external int _config_init;
+
+  @ffi.Int()
+  external int parse_argv;
+
+  @ffi.Int()
+  external int isolated;
+
+  @ffi.Int()
+  external int use_environment;
+
+  @ffi.Int()
+  external int configure_locale;
+
+  @ffi.Int()
+  external int coerce_c_locale;
+
+  @ffi.Int()
+  external int coerce_c_locale_warn;
+
+  @ffi.Int()
+  external int utf8_mode;
+
+  @ffi.Int()
+  external int dev_mode;
+
+  @ffi.Int()
+  external int allocator;
+}
+
+final class PyConfig extends ffi.Struct {
+  @ffi.Int()
+  external int _config_init;
+
+  @ffi.Int()
+  external int isolated;
+
+  @ffi.Int()
+  external int use_environment;
+
+  @ffi.Int()
+  external int dev_mode;
+
+  @ffi.Int()
+  external int install_signal_handlers;
+
+  @ffi.Int()
+  external int use_hash_seed;
+
+  @ffi.UnsignedLong()
+  external int hash_seed;
+
+  @ffi.Int()
+  external int faulthandler;
+
+  @ffi.Int()
+  external int tracemalloc;
+
+  @ffi.Int()
+  external int perf_profiling;
+
+  @ffi.Int()
+  external int import_time;
+
+  @ffi.Int()
+  external int code_debug_ranges;
+
+  @ffi.Int()
+  external int show_ref_count;
+
+  @ffi.Int()
+  external int dump_refs;
+
+  external ffi.Pointer<ffi.WChar> dump_refs_file;
+
+  @ffi.Int()
+  external int malloc_stats;
+
+  external ffi.Pointer<ffi.WChar> filesystem_encoding;
+
+  external ffi.Pointer<ffi.WChar> filesystem_errors;
+
+  external ffi.Pointer<ffi.WChar> pycache_prefix;
+
+  @ffi.Int()
+  external int parse_argv;
+
+  external PyWideStringList orig_argv;
+
+  external PyWideStringList argv;
+
+  external PyWideStringList xoptions;
+
+  external PyWideStringList warnoptions;
+
+  @ffi.Int()
+  external int site_import;
+
+  @ffi.Int()
+  external int bytes_warning;
+
+  @ffi.Int()
+  external int warn_default_encoding;
+
+  @ffi.Int()
+  external int inspect;
+
+  @ffi.Int()
+  external int interactive;
+
+  @ffi.Int()
+  external int optimization_level;
+
+  @ffi.Int()
+  external int parser_debug;
+
+  @ffi.Int()
+  external int write_bytecode;
+
+  @ffi.Int()
+  external int verbose;
+
+  @ffi.Int()
+  external int quiet;
+
+  @ffi.Int()
+  external int user_site_directory;
+
+  @ffi.Int()
+  external int configure_c_stdio;
+
+  @ffi.Int()
+  external int buffered_stdio;
+
+  external ffi.Pointer<ffi.WChar> stdio_encoding;
+
+  external ffi.Pointer<ffi.WChar> stdio_errors;
+
+  external ffi.Pointer<ffi.WChar> check_hash_pycs_mode;
+
+  @ffi.Int()
+  external int use_frozen_modules;
+
+  @ffi.Int()
+  external int safe_path;
+
+  @ffi.Int()
+  external int int_max_str_digits;
+
+  @ffi.Int()
+  external int pathconfig_warnings;
+
+  external ffi.Pointer<ffi.WChar> program_name;
+
+  external ffi.Pointer<ffi.WChar> pythonpath_env;
+
+  external ffi.Pointer<ffi.WChar> home;
+
+  external ffi.Pointer<ffi.WChar> platlibdir;
+
+  @ffi.Int()
+  external int module_search_paths_set;
+
+  external PyWideStringList module_search_paths;
+
+  external ffi.Pointer<ffi.WChar> stdlib_dir;
+
+  external ffi.Pointer<ffi.WChar> executable;
+
+  external ffi.Pointer<ffi.WChar> base_executable;
+
+  external ffi.Pointer<ffi.WChar> prefix;
+
+  external ffi.Pointer<ffi.WChar> base_prefix;
+
+  external ffi.Pointer<ffi.WChar> exec_prefix;
+
+  external ffi.Pointer<ffi.WChar> base_exec_prefix;
+
+  @ffi.Int()
+  external int skip_source_first_line;
+
+  external ffi.Pointer<ffi.WChar> run_command;
+
+  external ffi.Pointer<ffi.WChar> run_module;
+
+  external ffi.Pointer<ffi.WChar> run_filename;
+
+  @ffi.Int()
+  external int _install_importlib;
+
+  @ffi.Int()
+  external int _init_main;
+
+  @ffi.Int()
+  external int _is_python_build;
+}
+
+typedef PyInterpreterState = _is;
+typedef PyFrameObject = _frame;
+
+abstract class PyGILState_STATE {
+  static const int PyGILState_LOCKED = 0;
+  static const int PyGILState_UNLOCKED = 1;
+}
+
+final class _PyCFrame extends ffi.Struct {
+  external ffi.Pointer<_PyInterpreterFrame> current_frame;
+
+  external ffi.Pointer<_PyCFrame> previous;
+}
+
+final class _PyInterpreterFrame extends ffi.Opaque {}
+
+final class _err_stackitem extends ffi.Struct {
+  external ffi.Pointer<PyObject> exc_value;
+
+  external ffi.Pointer<_err_stackitem> previous_item;
+}
+
+final class _stack_chunk extends ffi.Struct {
+  external ffi.Pointer<_stack_chunk> previous;
+
+  @ffi.Size()
+  external int size;
+
+  @ffi.Size()
+  external int top;
+
+  @ffi.Array.multi([1])
+  external ffi.Array<ffi.Pointer<PyObject>> data;
+}
+
+final class _py_trashcan extends ffi.Struct {
+  @ffi.Int()
+  external int delete_nesting;
+
+  external ffi.Pointer<PyObject> delete_later;
+}
+
+typedef _PyFrameEvalFunction
+    = ffi.Pointer<ffi.NativeFunction<_PyFrameEvalFunctionFunction>>;
+typedef _PyFrameEvalFunctionFunction = ffi.Pointer<PyObject> Function(
+    ffi.Pointer<PyThreadState>, ffi.Pointer<_PyInterpreterFrame>, ffi.Int);
+typedef Dart_PyFrameEvalFunctionFunction = ffi.Pointer<PyObject> Function(
+    ffi.Pointer<PyThreadState>, ffi.Pointer<_PyInterpreterFrame>, int);
+
+final class _xid extends ffi.Struct {
+  external ffi.Pointer<ffi.Void> data;
+
+  external ffi.Pointer<PyObject> obj;
+
+  @ffi.Int64()
+  external int interp;
+
+  external xid_newobjectfunc new_object;
+
+  external xid_freefunc free;
+}
+
+typedef xid_newobjectfunc
+    = ffi.Pointer<ffi.NativeFunction<xid_newobjectfuncFunction>>;
+typedef xid_newobjectfuncFunction = ffi.Pointer<PyObject> Function(
+    ffi.Pointer<_PyCrossInterpreterData>);
+typedef _PyCrossInterpreterData = _xid;
+typedef xid_freefunc = ffi.Pointer<ffi.NativeFunction<xid_freefuncFunction>>;
+typedef xid_freefuncFunction = ffi.Void Function(ffi.Pointer<ffi.Void>);
+typedef Dartxid_freefuncFunction = void Function(ffi.Pointer<ffi.Void>);
+typedef crossinterpdatafunc
+    = ffi.Pointer<ffi.NativeFunction<crossinterpdatafuncFunction>>;
+typedef crossinterpdatafuncFunction = ffi.Int Function(
+    ffi.Pointer<PyThreadState>,
+    ffi.Pointer<PyObject>,
+    ffi.Pointer<_PyCrossInterpreterData>);
+typedef DartcrossinterpdatafuncFunction = int Function(
+    ffi.Pointer<PyThreadState>,
+    ffi.Pointer<PyObject>,
+    ffi.Pointer<_PyCrossInterpreterData>);
+
+final class PyBaseExceptionObject extends ffi.Struct {
+  external PyObject ob_base;
+
+  external ffi.Pointer<PyObject> dict;
+
+  external ffi.Pointer<PyObject> args;
+
+  external ffi.Pointer<PyObject> notes;
+
+  external ffi.Pointer<PyObject> traceback;
+
+  external ffi.Pointer<PyObject> context;
+
+  external ffi.Pointer<PyObject> cause;
+
+  @ffi.Char()
+  external int suppress_context;
+}
+
+final class PyBaseExceptionGroupObject extends ffi.Struct {
+  external PyObject ob_base;
+
+  external ffi.Pointer<PyObject> dict;
+
+  external ffi.Pointer<PyObject> args;
+
+  external ffi.Pointer<PyObject> notes;
+
+  external ffi.Pointer<PyObject> traceback;
+
+  external ffi.Pointer<PyObject> context;
+
+  external ffi.Pointer<PyObject> cause;
+
+  @ffi.Char()
+  external int suppress_context;
+
+  external ffi.Pointer<PyObject> msg;
+
+  external ffi.Pointer<PyObject> excs;
+}
+
+final class PySyntaxErrorObject extends ffi.Struct {
+  external PyObject ob_base;
+
+  external ffi.Pointer<PyObject> dict;
+
+  external ffi.Pointer<PyObject> args;
+
+  external ffi.Pointer<PyObject> notes;
+
+  external ffi.Pointer<PyObject> traceback;
+
+  external ffi.Pointer<PyObject> context;
+
+  external ffi.Pointer<PyObject> cause;
+
+  @ffi.Char()
+  external int suppress_context;
+
+  external ffi.Pointer<PyObject> msg;
+
+  external ffi.Pointer<PyObject> filename;
+
+  external ffi.Pointer<PyObject> lineno;
+
+  external ffi.Pointer<PyObject> offset;
+
+  external ffi.Pointer<PyObject> end_lineno;
+
+  external ffi.Pointer<PyObject> end_offset;
+
+  external ffi.Pointer<PyObject> text;
+
+  external ffi.Pointer<PyObject> print_file_and_line;
+}
+
+final class PyImportErrorObject extends ffi.Struct {
+  external PyObject ob_base;
+
+  external ffi.Pointer<PyObject> dict;
+
+  external ffi.Pointer<PyObject> args;
+
+  external ffi.Pointer<PyObject> notes;
+
+  external ffi.Pointer<PyObject> traceback;
+
+  external ffi.Pointer<PyObject> context;
+
+  external ffi.Pointer<PyObject> cause;
+
+  @ffi.Char()
+  external int suppress_context;
+
+  external ffi.Pointer<PyObject> msg;
+
+  external ffi.Pointer<PyObject> name;
+
+  external ffi.Pointer<PyObject> path;
+
+  external ffi.Pointer<PyObject> name_from;
+}
+
+final class PyUnicodeErrorObject extends ffi.Struct {
+  external PyObject ob_base;
+
+  external ffi.Pointer<PyObject> dict;
+
+  external ffi.Pointer<PyObject> args;
+
+  external ffi.Pointer<PyObject> notes;
+
+  external ffi.Pointer<PyObject> traceback;
+
+  external ffi.Pointer<PyObject> context;
+
+  external ffi.Pointer<PyObject> cause;
+
+  @ffi.Char()
+  external int suppress_context;
+
+  external ffi.Pointer<PyObject> encoding;
+
+  external ffi.Pointer<PyObject> object;
+
+  @Py_ssize_t()
+  external int start;
+
+  @Py_ssize_t()
+  external int end;
+
+  external ffi.Pointer<PyObject> reason;
+}
+
+final class PySystemExitObject extends ffi.Struct {
+  external PyObject ob_base;
+
+  external ffi.Pointer<PyObject> dict;
+
+  external ffi.Pointer<PyObject> args;
+
+  external ffi.Pointer<PyObject> notes;
+
+  external ffi.Pointer<PyObject> traceback;
+
+  external ffi.Pointer<PyObject> context;
+
+  external ffi.Pointer<PyObject> cause;
+
+  @ffi.Char()
+  external int suppress_context;
+
+  external ffi.Pointer<PyObject> code;
+}
+
+final class PyOSErrorObject extends ffi.Struct {
+  external PyObject ob_base;
+
+  external ffi.Pointer<PyObject> dict;
+
+  external ffi.Pointer<PyObject> args;
+
+  external ffi.Pointer<PyObject> notes;
+
+  external ffi.Pointer<PyObject> traceback;
+
+  external ffi.Pointer<PyObject> context;
+
+  external ffi.Pointer<PyObject> cause;
+
+  @ffi.Char()
+  external int suppress_context;
+
+  external ffi.Pointer<PyObject> myerrno;
+
+  external ffi.Pointer<PyObject> strerror;
+
+  external ffi.Pointer<PyObject> filename;
+
+  external ffi.Pointer<PyObject> filename2;
+
+  @Py_ssize_t()
+  external int written;
+}
+
+final class PyStopIterationObject extends ffi.Struct {
+  external PyObject ob_base;
+
+  external ffi.Pointer<PyObject> dict;
+
+  external ffi.Pointer<PyObject> args;
+
+  external ffi.Pointer<PyObject> notes;
+
+  external ffi.Pointer<PyObject> traceback;
+
+  external ffi.Pointer<PyObject> context;
+
+  external ffi.Pointer<PyObject> cause;
+
+  @ffi.Char()
+  external int suppress_context;
+
+  external ffi.Pointer<PyObject> value;
+}
+
+final class PyNameErrorObject extends ffi.Struct {
+  external PyObject ob_base;
+
+  external ffi.Pointer<PyObject> dict;
+
+  external ffi.Pointer<PyObject> args;
+
+  external ffi.Pointer<PyObject> notes;
+
+  external ffi.Pointer<PyObject> traceback;
+
+  external ffi.Pointer<PyObject> context;
+
+  external ffi.Pointer<PyObject> cause;
+
+  @ffi.Char()
+  external int suppress_context;
+
+  external ffi.Pointer<PyObject> name;
+}
+
+final class PyAttributeErrorObject extends ffi.Struct {
+  external PyObject ob_base;
+
+  external ffi.Pointer<PyObject> dict;
+
+  external ffi.Pointer<PyObject> args;
+
+  external ffi.Pointer<PyObject> notes;
+
+  external ffi.Pointer<PyObject> traceback;
+
+  external ffi.Pointer<PyObject> context;
+
+  external ffi.Pointer<PyObject> cause;
+
+  @ffi.Char()
+  external int suppress_context;
+
+  external ffi.Pointer<PyObject> obj;
+
+  external ffi.Pointer<PyObject> name;
+}
+
+typedef _PyErr_StackItem = _err_stackitem;
+typedef PyLongObject = _longobject;
 
 final class PyFloatObject extends ffi.Struct {
   external PyObject ob_base;
@@ -19058,6 +25081,13 @@ final class PyMemoryViewObject extends ffi.Struct {
   external ffi.Array<Py_ssize_t> ob_array;
 }
 
+final class PyTupleObject extends ffi.Struct {
+  external PyVarObject ob_base;
+
+  @ffi.Array.multi([1])
+  external ffi.Array<ffi.Pointer<PyObject>> ob_item;
+}
+
 final class PyListObject extends ffi.Struct {
   external PyVarObject ob_base;
 
@@ -19066,6 +25096,53 @@ final class PyListObject extends ffi.Struct {
   @Py_ssize_t()
   external int allocated;
 }
+
+final class _dictvalues extends ffi.Opaque {}
+
+final class PyDictObject extends ffi.Struct {
+  external PyObject ob_base;
+
+  @Py_ssize_t()
+  external int ma_used;
+
+  @ffi.Uint64()
+  external int ma_version_tag;
+
+  external ffi.Pointer<PyDictKeysObject> ma_keys;
+
+  external ffi.Pointer<PyDictValues> ma_values;
+}
+
+typedef PyDictKeysObject = _dictkeysobject;
+typedef PyDictValues = _dictvalues;
+
+final class _PyDictViewObject extends ffi.Struct {
+  external PyObject ob_base;
+
+  external ffi.Pointer<PyDictObject> dv_dict;
+}
+
+abstract class PyDict_WatchEvent {
+  static const int PyDict_EVENT_ADDED = 0;
+  static const int PyDict_EVENT_MODIFIED = 1;
+  static const int PyDict_EVENT_DELETED = 2;
+  static const int PyDict_EVENT_CLONED = 3;
+  static const int PyDict_EVENT_CLEARED = 4;
+  static const int PyDict_EVENT_DEALLOCATED = 5;
+}
+
+typedef PyDict_WatchCallback
+    = ffi.Pointer<ffi.NativeFunction<PyDict_WatchCallbackFunction>>;
+typedef PyDict_WatchCallbackFunction = ffi.Int Function(
+    ffi.Int32 event,
+    ffi.Pointer<PyObject> dict,
+    ffi.Pointer<PyObject> key,
+    ffi.Pointer<PyObject> new_value);
+typedef DartPyDict_WatchCallbackFunction = int Function(
+    int event,
+    ffi.Pointer<PyObject> dict,
+    ffi.Pointer<PyObject> key,
+    ffi.Pointer<PyObject> new_value);
 
 final class _odictobject extends ffi.Opaque {}
 
@@ -19116,52 +25193,42 @@ final class PyCFunctionObject extends ffi.Struct {
   external vectorcallfunc vectorcall;
 }
 
-final class PyModuleDef extends ffi.Struct {
-  external PyModuleDef_Base m_base;
+final class PyCMethodObject extends ffi.Struct {
+  external PyCFunctionObject func;
 
-  external ffi.Pointer<ffi.Char> m_name;
-
-  external ffi.Pointer<ffi.Char> m_doc;
-
-  @Py_ssize_t()
-  external int m_size;
-
-  external ffi.Pointer<PyMethodDef> m_methods;
-
-  external ffi.Pointer<PyModuleDef_Slot> m_slots;
-
-  external traverseproc m_traverse;
-
-  external inquiry m_clear;
-
-  external freefunc m_free;
+  external ffi.Pointer<PyTypeObject> mm_class;
 }
 
-final class PyModuleDef_Base extends ffi.Struct {
-  external PyObject ob_base;
+final class PyFrameConstructor extends ffi.Struct {
+  external ffi.Pointer<PyObject> fc_globals;
 
-  external ffi.Pointer<ffi.NativeFunction<ffi.Pointer<PyObject> Function()>>
-      m_init;
+  external ffi.Pointer<PyObject> fc_builtins;
 
-  @Py_ssize_t()
-  external int m_index;
+  external ffi.Pointer<PyObject> fc_name;
 
-  external ffi.Pointer<PyObject> m_copy;
-}
+  external ffi.Pointer<PyObject> fc_qualname;
 
-final class PyModuleDef_Slot extends ffi.Struct {
-  @ffi.Int()
-  external int slot;
+  external ffi.Pointer<PyObject> fc_code;
 
-  external ffi.Pointer<ffi.Void> value;
+  external ffi.Pointer<PyObject> fc_defaults;
+
+  external ffi.Pointer<PyObject> fc_kwdefaults;
+
+  external ffi.Pointer<PyObject> fc_closure;
 }
 
 final class PyFunctionObject extends ffi.Struct {
   external PyObject ob_base;
 
-  external ffi.Pointer<PyObject> func_code;
-
   external ffi.Pointer<PyObject> func_globals;
+
+  external ffi.Pointer<PyObject> func_builtins;
+
+  external ffi.Pointer<PyObject> func_name;
+
+  external ffi.Pointer<PyObject> func_qualname;
+
+  external ffi.Pointer<PyObject> func_code;
 
   external ffi.Pointer<PyObject> func_defaults;
 
@@ -19171,8 +25238,6 @@ final class PyFunctionObject extends ffi.Struct {
 
   external ffi.Pointer<PyObject> func_doc;
 
-  external ffi.Pointer<PyObject> func_name;
-
   external ffi.Pointer<PyObject> func_dict;
 
   external ffi.Pointer<PyObject> func_weakreflist;
@@ -19181,10 +25246,28 @@ final class PyFunctionObject extends ffi.Struct {
 
   external ffi.Pointer<PyObject> func_annotations;
 
-  external ffi.Pointer<PyObject> func_qualname;
+  external ffi.Pointer<PyObject> func_typeparams;
 
   external vectorcallfunc vectorcall;
+
+  @ffi.Uint32()
+  external int func_version;
 }
+
+abstract class PyFunction_WatchEvent {
+  static const int PyFunction_EVENT_CREATE = 0;
+  static const int PyFunction_EVENT_DESTROY = 1;
+  static const int PyFunction_EVENT_MODIFY_CODE = 2;
+  static const int PyFunction_EVENT_MODIFY_DEFAULTS = 3;
+  static const int PyFunction_EVENT_MODIFY_KWDEFAULTS = 4;
+}
+
+typedef PyFunction_WatchCallback
+    = ffi.Pointer<ffi.NativeFunction<PyFunction_WatchCallbackFunction>>;
+typedef PyFunction_WatchCallbackFunction = ffi.Int Function(ffi.Int32 event,
+    ffi.Pointer<PyFunctionObject> func, ffi.Pointer<PyObject> new_value);
+typedef DartPyFunction_WatchCallbackFunction = int Function(int event,
+    ffi.Pointer<PyFunctionObject> func, ffi.Pointer<PyObject> new_value);
 
 final class PyMethodObject extends ffi.Struct {
   external PyObject ob_base;
@@ -19204,10 +25287,96 @@ final class PyInstanceMethodObject extends ffi.Struct {
   external ffi.Pointer<PyObject> func;
 }
 
+typedef Py_OpenCodeHookFunction
+    = ffi.Pointer<ffi.NativeFunction<Py_OpenCodeHookFunctionFunction>>;
+typedef Py_OpenCodeHookFunctionFunction = ffi.Pointer<PyObject> Function(
+    ffi.Pointer<PyObject>, ffi.Pointer<ffi.Void>);
 typedef PyCapsule_Destructor
-    = ffi.Pointer<ffi.NativeFunction<ffi.Void Function(ffi.Pointer<PyObject>)>>;
+    = ffi.Pointer<ffi.NativeFunction<PyCapsule_DestructorFunction>>;
+typedef PyCapsule_DestructorFunction = ffi.Void Function(ffi.Pointer<PyObject>);
+typedef DartPyCapsule_DestructorFunction = void Function(ffi.Pointer<PyObject>);
 
-final class _frame extends ffi.Opaque {}
+final class _Py_GlobalMonitors extends ffi.Struct {
+  @ffi.Array.multi([15])
+  external ffi.Array<ffi.Uint8> tools;
+}
+
+final class _Py_CODEUNIT extends ffi.Union {
+  @ffi.Uint16()
+  external int cache;
+
+  external UnnamedStruct7 op;
+}
+
+final class UnnamedStruct7 extends ffi.Struct {
+  @ffi.Uint8()
+  external int code;
+
+  @ffi.Uint8()
+  external int arg;
+}
+
+abstract class PyCodeEvent {
+  static const int PY_CODE_EVENT_CREATE = 0;
+  static const int PY_CODE_EVENT_DESTROY = 1;
+}
+
+typedef PyCode_WatchCallback
+    = ffi.Pointer<ffi.NativeFunction<PyCode_WatchCallbackFunction>>;
+typedef PyCode_WatchCallbackFunction = ffi.Int Function(
+    ffi.Int32 event, ffi.Pointer<PyCodeObject> co);
+typedef DartPyCode_WatchCallbackFunction = int Function(
+    int event, ffi.Pointer<PyCodeObject> co);
+
+final class _opaque extends ffi.Struct {
+  @ffi.Int()
+  external int computed_line;
+
+  external ffi.Pointer<ffi.Uint8> lo_next;
+
+  external ffi.Pointer<ffi.Uint8> limit;
+}
+
+final class _line_offsets extends ffi.Struct {
+  @ffi.Int()
+  external int ar_start;
+
+  @ffi.Int()
+  external int ar_end;
+
+  @ffi.Int()
+  external int ar_line;
+
+  external _opaque opaque;
+}
+
+typedef PyCodeAddressRange = _line_offsets;
+
+abstract class PyCodeLocationInfoKind {
+  static const int PY_CODE_LOCATION_INFO_SHORT0 = 0;
+  static const int PY_CODE_LOCATION_INFO_ONE_LINE0 = 10;
+  static const int PY_CODE_LOCATION_INFO_ONE_LINE1 = 11;
+  static const int PY_CODE_LOCATION_INFO_ONE_LINE2 = 12;
+  static const int PY_CODE_LOCATION_INFO_NO_COLUMNS = 13;
+  static const int PY_CODE_LOCATION_INFO_LONG = 14;
+  static const int PY_CODE_LOCATION_INFO_NONE = 15;
+}
+
+final class _traceback extends ffi.Struct {
+  external PyObject ob_base;
+
+  external ffi.Pointer<PyTracebackObject> tb_next;
+
+  external ffi.Pointer<PyFrameObject> tb_frame;
+
+  @ffi.Int()
+  external int tb_lasti;
+
+  @ffi.Int()
+  external int tb_lineno;
+}
+
+typedef PyTracebackObject = _traceback;
 
 final class PySliceObject extends ffi.Struct {
   external PyObject ob_base;
@@ -19225,144 +25394,8 @@ final class PyCellObject extends ffi.Struct {
   external ffi.Pointer<PyObject> ob_ref;
 }
 
-abstract class PyLockStatus {
-  static const int PY_LOCK_FAILURE = 0;
-  static const int PY_LOCK_ACQUIRED = 1;
-  static const int PY_LOCK_INTR = 2;
-}
-
-typedef PyThread_type_lock = ffi.Pointer<ffi.Void>;
-
-final class _Py_tss_t extends ffi.Struct {
-  @ffi.Int()
-  external int _is_initialized;
-
-  @pthread_key_t()
-  external int _key;
-}
-
-typedef pthread_key_t = __darwin_pthread_key_t;
-typedef __darwin_pthread_key_t = ffi.UnsignedLong;
-typedef Py_tss_t = _Py_tss_t;
-
-final class _ts extends ffi.Struct {
-  external ffi.Pointer<_ts> prev;
-
-  external ffi.Pointer<_ts> next;
-
-  external ffi.Pointer<PyInterpreterState> interp;
-
-  external ffi.Pointer<_frame> frame;
-
-  @ffi.Int()
-  external int recursion_depth;
-
-  @ffi.Char()
-  external int overflowed;
-
-  @ffi.Char()
-  external int recursion_critical;
-
-  @ffi.Int()
-  external int stackcheck_counter;
-
-  @ffi.Int()
-  external int tracing;
-
-  @ffi.Int()
-  external int use_tracing;
-
-  external Py_tracefunc c_profilefunc;
-
-  external Py_tracefunc c_tracefunc;
-
-  external ffi.Pointer<PyObject> c_profileobj;
-
-  external ffi.Pointer<PyObject> c_traceobj;
-
-  external ffi.Pointer<PyObject> curexc_type;
-
-  external ffi.Pointer<PyObject> curexc_value;
-
-  external ffi.Pointer<PyObject> curexc_traceback;
-
-  external _PyErr_StackItem exc_state;
-
-  external ffi.Pointer<_PyErr_StackItem> exc_info;
-
-  external ffi.Pointer<PyObject> dict;
-
-  @ffi.Int()
-  external int gilstate_counter;
-
-  external ffi.Pointer<PyObject> async_exc;
-
-  @ffi.UnsignedLong()
-  external int thread_id;
-
-  @ffi.Int()
-  external int trash_delete_nesting;
-
-  external ffi.Pointer<PyObject> trash_delete_later;
-
-  external ffi
-      .Pointer<ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ffi.Void>)>>
-      on_delete;
-
-  external ffi.Pointer<ffi.Void> on_delete_data;
-
-  @ffi.Int()
-  external int coroutine_origin_tracking_depth;
-
-  external ffi.Pointer<PyObject> async_gen_firstiter;
-
-  external ffi.Pointer<PyObject> async_gen_finalizer;
-
-  external ffi.Pointer<PyObject> context;
-
-  @ffi.Uint64()
-  external int context_ver;
-
-  @ffi.Uint64()
-  external int id;
-}
-
-typedef PyInterpreterState = _is;
-
-final class _is extends ffi.Opaque {}
-
-typedef Py_tracefunc = ffi.Pointer<
-    ffi.NativeFunction<
-        ffi.Int Function(ffi.Pointer<PyObject>, ffi.Pointer<_frame>, ffi.Int,
-            ffi.Pointer<PyObject>)>>;
-typedef _PyErr_StackItem = _err_stackitem;
-
-final class _err_stackitem extends ffi.Struct {
-  external ffi.Pointer<PyObject> exc_type;
-
-  external ffi.Pointer<PyObject> exc_value;
-
-  external ffi.Pointer<PyObject> exc_traceback;
-
-  external ffi.Pointer<_err_stackitem> previous_item;
-}
-
-typedef PyThreadState = _ts;
-
-abstract class PyGILState_STATE {
-  static const int PyGILState_LOCKED = 0;
-  static const int PyGILState_UNLOCKED = 1;
-}
-
 final class PyGenObject extends ffi.Struct {
   external PyObject ob_base;
-
-  external ffi.Pointer<_frame> gi_frame;
-
-  @ffi.Char()
-  external int gi_running;
-
-  external ffi.Pointer<PyObject> gi_code;
 
   external ffi.Pointer<PyObject> gi_weakreflist;
 
@@ -19371,17 +25404,27 @@ final class PyGenObject extends ffi.Struct {
   external ffi.Pointer<PyObject> gi_qualname;
 
   external _PyErr_StackItem gi_exc_state;
+
+  external ffi.Pointer<PyObject> gi_origin_or_finalizer;
+
+  @ffi.Char()
+  external int gi_hooks_inited;
+
+  @ffi.Char()
+  external int gi_closed;
+
+  @ffi.Char()
+  external int gi_running_async;
+
+  @ffi.Int8()
+  external int gi_frame_state;
+
+  @ffi.Array.multi([1])
+  external ffi.Array<ffi.Pointer<PyObject>> gi_iframe;
 }
 
 final class PyCoroObject extends ffi.Struct {
   external PyObject ob_base;
-
-  external ffi.Pointer<_frame> cr_frame;
-
-  @ffi.Char()
-  external int cr_running;
-
-  external ffi.Pointer<PyObject> cr_code;
 
   external ffi.Pointer<PyObject> cr_weakreflist;
 
@@ -19391,18 +25434,26 @@ final class PyCoroObject extends ffi.Struct {
 
   external _PyErr_StackItem cr_exc_state;
 
-  external ffi.Pointer<PyObject> cr_origin;
+  external ffi.Pointer<PyObject> cr_origin_or_finalizer;
+
+  @ffi.Char()
+  external int cr_hooks_inited;
+
+  @ffi.Char()
+  external int cr_closed;
+
+  @ffi.Char()
+  external int cr_running_async;
+
+  @ffi.Int8()
+  external int cr_frame_state;
+
+  @ffi.Array.multi([1])
+  external ffi.Array<ffi.Pointer<PyObject>> cr_iframe;
 }
 
 final class PyAsyncGenObject extends ffi.Struct {
   external PyObject ob_base;
-
-  external ffi.Pointer<_frame> ag_frame;
-
-  @ffi.Char()
-  external int ag_running;
-
-  external ffi.Pointer<PyObject> ag_code;
 
   external ffi.Pointer<PyObject> ag_weakreflist;
 
@@ -19412,16 +25463,22 @@ final class PyAsyncGenObject extends ffi.Struct {
 
   external _PyErr_StackItem ag_exc_state;
 
-  external ffi.Pointer<PyObject> ag_finalizer;
+  external ffi.Pointer<PyObject> ag_origin_or_finalizer;
 
-  @ffi.Int()
+  @ffi.Char()
   external int ag_hooks_inited;
 
-  @ffi.Int()
+  @ffi.Char()
   external int ag_closed;
 
-  @ffi.Int()
+  @ffi.Char()
   external int ag_running_async;
+
+  @ffi.Int8()
+  external int ag_frame_state;
+
+  @ffi.Array.multi([1])
+  external ffi.Array<ffi.Pointer<PyObject>> ag_iframe;
 }
 
 final class wrapperbase extends ffi.Struct {
@@ -19442,10 +25499,11 @@ final class wrapperbase extends ffi.Struct {
   external ffi.Pointer<PyObject> name_strobj;
 }
 
-typedef wrapperfunc = ffi.Pointer<
-    ffi.NativeFunction<
-        ffi.Pointer<PyObject> Function(ffi.Pointer<PyObject> self,
-            ffi.Pointer<PyObject> args, ffi.Pointer<ffi.Void> wrapped)>>;
+typedef wrapperfunc = ffi.Pointer<ffi.NativeFunction<wrapperfuncFunction>>;
+typedef wrapperfuncFunction = ffi.Pointer<PyObject> Function(
+    ffi.Pointer<PyObject> self,
+    ffi.Pointer<PyObject> args,
+    ffi.Pointer<ffi.Void> wrapped);
 
 final class PyDescrObject extends ffi.Struct {
   external PyObject ob_base;
@@ -19498,6 +25556,8 @@ final class _PyWeakReference extends ffi.Struct {
   external ffi.Pointer<PyWeakReference> wr_prev;
 
   external ffi.Pointer<PyWeakReference> wr_next;
+
+  external vectorcallfunc vectorcall;
 }
 
 typedef PyWeakReference = _PyWeakReference;
@@ -19519,17 +25579,118 @@ final class PyStructSequence_Desc extends ffi.Struct {
   external int n_in_sequence;
 }
 
+final class timeval extends ffi.Struct {
+  @__darwin_time_t()
+  external int tv_sec;
+
+  @__darwin_suseconds_t()
+  external int tv_usec;
+}
+
+typedef __darwin_time_t = ffi.Long;
+typedef Dart__darwin_time_t = int;
+typedef __darwin_suseconds_t = __int32_t;
+typedef __int32_t = ffi.Int;
+typedef Dart__int32_t = int;
+
+abstract class PyTime_round_t {
+  static const int PyTime_ROUND_FLOOR = 0;
+  static const int PyTime_ROUND_CEILING = 1;
+  static const int PyTime_ROUND_HALF_EVEN = 2;
+  static const int PyTime_ROUND_UP = 3;
+  static const int PyTime_ROUND_TIMEOUT = 3;
+}
+
+typedef time_t = __darwin_time_t;
+typedef _PyTime_t = ffi.Int64;
+typedef Dart_PyTime_t = int;
+
+final class timespec extends ffi.Struct {
+  @__darwin_time_t()
+  external int tv_sec;
+
+  @ffi.Long()
+  external int tv_nsec;
+}
+
+final class _Py_clock_info_t extends ffi.Struct {
+  external ffi.Pointer<ffi.Char> implementation;
+
+  @ffi.Int()
+  external int monotonic;
+
+  @ffi.Int()
+  external int adjustable;
+
+  @ffi.Double()
+  external double resolution;
+}
+
+final class tm extends ffi.Struct {
+  @ffi.Int()
+  external int tm_sec;
+
+  @ffi.Int()
+  external int tm_min;
+
+  @ffi.Int()
+  external int tm_hour;
+
+  @ffi.Int()
+  external int tm_mday;
+
+  @ffi.Int()
+  external int tm_mon;
+
+  @ffi.Int()
+  external int tm_year;
+
+  @ffi.Int()
+  external int tm_wday;
+
+  @ffi.Int()
+  external int tm_yday;
+
+  @ffi.Int()
+  external int tm_isdst;
+
+  @ffi.Long()
+  external int tm_gmtoff;
+
+  external ffi.Pointer<ffi.Char> tm_zone;
+}
+
+abstract class PyLockStatus {
+  static const int PY_LOCK_FAILURE = 0;
+  static const int PY_LOCK_ACQUIRED = 1;
+  static const int PY_LOCK_INTR = 2;
+}
+
+typedef PyThread_type_lock = ffi.Pointer<ffi.Void>;
+
+final class _Py_tss_t extends ffi.Struct {
+  @ffi.Int()
+  external int _is_initialized;
+
+  @pthread_key_t()
+  external int _key;
+}
+
+typedef pthread_key_t = __darwin_pthread_key_t;
+typedef __darwin_pthread_key_t = ffi.UnsignedLong;
+typedef Dart__darwin_pthread_key_t = int;
+typedef Py_tss_t = _Py_tss_t;
+
 final class _pycontextobject extends ffi.Opaque {}
 
 final class _pycontextvarobject extends ffi.Opaque {}
 
 final class _pycontexttokenobject extends ffi.Opaque {}
 
-final class _arena extends ffi.Opaque {}
-
-typedef PyArena = _arena;
-
 final class _PyArg_Parser extends ffi.Struct {
+  @ffi.Int()
+  external int initialized;
+
   external ffi.Pointer<ffi.Char> format;
 
   external ffi.Pointer<ffi.Pointer<ffi.Char>> keywords;
@@ -19552,81 +25713,6 @@ final class _PyArg_Parser extends ffi.Struct {
   external ffi.Pointer<_PyArg_Parser> next;
 }
 
-final class _PyOpcache extends ffi.Opaque {}
-
-final class PyCodeObject extends ffi.Struct {
-  external PyObject ob_base;
-
-  @ffi.Int()
-  external int co_argcount;
-
-  @ffi.Int()
-  external int co_posonlyargcount;
-
-  @ffi.Int()
-  external int co_kwonlyargcount;
-
-  @ffi.Int()
-  external int co_nlocals;
-
-  @ffi.Int()
-  external int co_stacksize;
-
-  @ffi.Int()
-  external int co_flags;
-
-  @ffi.Int()
-  external int co_firstlineno;
-
-  external ffi.Pointer<PyObject> co_code;
-
-  external ffi.Pointer<PyObject> co_consts;
-
-  external ffi.Pointer<PyObject> co_names;
-
-  external ffi.Pointer<PyObject> co_varnames;
-
-  external ffi.Pointer<PyObject> co_freevars;
-
-  external ffi.Pointer<PyObject> co_cellvars;
-
-  external ffi.Pointer<Py_ssize_t> co_cell2arg;
-
-  external ffi.Pointer<PyObject> co_filename;
-
-  external ffi.Pointer<PyObject> co_name;
-
-  external ffi.Pointer<PyObject> co_lnotab;
-
-  external ffi.Pointer<ffi.Void> co_zombieframe;
-
-  external ffi.Pointer<PyObject> co_weakreflist;
-
-  external ffi.Pointer<ffi.Void> co_extra;
-
-  external ffi.Pointer<ffi.UnsignedChar> co_opcache_map;
-
-  external ffi.Pointer<_PyOpcache> co_opcache;
-
-  @ffi.Int()
-  external int co_opcache_flag;
-
-  @ffi.UnsignedChar()
-  external int co_opcache_size;
-}
-
-final class _addr_pair extends ffi.Struct {
-  @ffi.Int()
-  external int ap_lower;
-
-  @ffi.Int()
-  external int ap_upper;
-}
-
-typedef PyAddrPair = _addr_pair;
-
-final class _node extends ffi.Opaque {}
-
 final class PyCompilerFlags extends ffi.Struct {
   @ffi.Int()
   external int cf_flags;
@@ -19635,28 +25721,79 @@ final class PyCompilerFlags extends ffi.Struct {
   external int cf_feature_version;
 }
 
+final class _PyCompilerSrcLocation extends ffi.Struct {
+  @ffi.Int()
+  external int lineno;
+
+  @ffi.Int()
+  external int end_lineno;
+
+  @ffi.Int()
+  external int col_offset;
+
+  @ffi.Int()
+  external int end_col_offset;
+}
+
 final class PyFutureFeatures extends ffi.Struct {
   @ffi.Int()
   external int ff_features;
 
-  @ffi.Int()
-  external int ff_lineno;
+  external _PyCompilerSrcLocation ff_location;
 }
-
-final class _mod extends ffi.Opaque {}
-
-final class symtable extends ffi.Opaque {}
 
 typedef PyOS_sighandler_t
-    = ffi.Pointer<ffi.NativeFunction<ffi.Void Function(ffi.Int)>>;
+    = ffi.Pointer<ffi.NativeFunction<PyOS_sighandler_tFunction>>;
+typedef PyOS_sighandler_tFunction = ffi.Void Function(ffi.Int);
+typedef DartPyOS_sighandler_tFunction = void Function(int);
 
-final class _Py_Identifier extends ffi.Struct {
-  external ffi.Pointer<_Py_Identifier> next;
+final class PyInterpreterConfig extends ffi.Struct {
+  @ffi.Int()
+  external int use_main_obmalloc;
 
-  external ffi.Pointer<ffi.Char> string;
+  @ffi.Int()
+  external int allow_fork;
 
-  external ffi.Pointer<PyObject> object;
+  @ffi.Int()
+  external int allow_exec;
+
+  @ffi.Int()
+  external int allow_threads;
+
+  @ffi.Int()
+  external int allow_daemon_threads;
+
+  @ffi.Int()
+  external int check_multi_interp_extensions;
+
+  @ffi.Int()
+  external int gil;
 }
+
+typedef atexit_datacallbackfunc
+    = ffi.Pointer<ffi.NativeFunction<atexit_datacallbackfuncFunction>>;
+typedef atexit_datacallbackfuncFunction = ffi.Void Function(
+    ffi.Pointer<ffi.Void>);
+typedef Dartatexit_datacallbackfuncFunction = void Function(
+    ffi.Pointer<ffi.Void>);
+typedef Py_tracefunc = ffi.Pointer<ffi.NativeFunction<Py_tracefuncFunction>>;
+typedef Py_tracefuncFunction = ffi.Int Function(ffi.Pointer<PyObject>,
+    ffi.Pointer<PyFrameObject>, ffi.Int, ffi.Pointer<PyObject>);
+typedef DartPy_tracefuncFunction = int Function(ffi.Pointer<PyObject>,
+    ffi.Pointer<PyFrameObject>, int, ffi.Pointer<PyObject>);
+
+final class PerfMapState extends ffi.Struct {
+  external ffi.Pointer<FILE> perf_map;
+
+  external PyThread_type_lock map_lock;
+}
+
+typedef Py_AuditHookFunction
+    = ffi.Pointer<ffi.NativeFunction<Py_AuditHookFunctionFunction>>;
+typedef Py_AuditHookFunctionFunction = ffi.Int Function(
+    ffi.Pointer<ffi.Char>, ffi.Pointer<PyObject>, ffi.Pointer<ffi.Void>);
+typedef DartPy_AuditHookFunctionFunction = int Function(
+    ffi.Pointer<ffi.Char>, ffi.Pointer<PyObject>, ffi.Pointer<ffi.Void>);
 
 final class _inittab extends ffi.Struct {
   external ffi.Pointer<ffi.Char> name;
@@ -19672,96 +25809,19 @@ final class _frozen extends ffi.Struct {
 
   @ffi.Int()
   external int size;
+
+  @ffi.Int()
+  external int is_package;
+
+  external ffi.Pointer<ffi.NativeFunction<ffi.Pointer<PyObject> Function()>>
+      get_code;
 }
 
-abstract class Py_error_handler {
-  static const int Py_ERROR_UNKNOWN = 0;
-  static const int Py_ERROR_STRICT = 1;
-  static const int Py_ERROR_SURROGATEESCAPE = 2;
-  static const int Py_ERROR_REPLACE = 3;
-  static const int Py_ERROR_IGNORE = 4;
-  static const int Py_ERROR_BACKSLASHREPLACE = 5;
-  static const int Py_ERROR_SURROGATEPASS = 6;
-  static const int Py_ERROR_XMLCHARREFREPLACE = 7;
-  static const int Py_ERROR_OTHER = 8;
-}
+const int _PyStatus_TYPE_OK = 0;
 
-final class stat extends ffi.Struct {
-  @dev_t()
-  external int st_dev;
+const int _PyStatus_TYPE_ERROR = 1;
 
-  @mode_t()
-  external int st_mode;
-
-  @nlink_t()
-  external int st_nlink;
-
-  @__darwin_ino64_t()
-  external int st_ino;
-
-  @uid_t()
-  external int st_uid;
-
-  @gid_t()
-  external int st_gid;
-
-  @dev_t()
-  external int st_rdev;
-
-  external timespec st_atimespec;
-
-  external timespec st_mtimespec;
-
-  external timespec st_ctimespec;
-
-  external timespec st_birthtimespec;
-
-  @off_t()
-  external int st_size;
-
-  @blkcnt_t()
-  external int st_blocks;
-
-  @blksize_t()
-  external int st_blksize;
-
-  @__uint32_t()
-  external int st_flags;
-
-  @__uint32_t()
-  external int st_gen;
-
-  @__int32_t()
-  external int st_lspare;
-
-  @ffi.Array.multi([2])
-  external ffi.Array<__int64_t> st_qspare;
-}
-
-typedef dev_t = __darwin_dev_t;
-typedef __darwin_dev_t = __int32_t;
-typedef mode_t = __darwin_mode_t;
-typedef __darwin_mode_t = __uint16_t;
-typedef __uint16_t = ffi.UnsignedShort;
-typedef nlink_t = __uint16_t;
-typedef __darwin_ino64_t = __uint64_t;
-typedef __uint64_t = ffi.UnsignedLongLong;
-typedef uid_t = __darwin_uid_t;
-typedef __darwin_uid_t = __uint32_t;
-typedef __uint32_t = ffi.UnsignedInt;
-typedef gid_t = __darwin_gid_t;
-typedef __darwin_gid_t = __uint32_t;
-typedef off_t = __darwin_off_t;
-typedef blkcnt_t = __darwin_blkcnt_t;
-typedef __darwin_blkcnt_t = __int64_t;
-typedef blksize_t = __darwin_blksize_t;
-typedef __darwin_blksize_t = __int32_t;
-
-const int TRACEMALLOC_NOT_INITIALIZED = 0;
-
-const int TRACEMALLOC_INITIALIZED = 1;
-
-const int TRACEMALLOC_FINALIZED = 2;
+const int _PyStatus_TYPE_EXIT = 2;
 
 const int PY_RELEASE_LEVEL_ALPHA = 10;
 
@@ -19773,19 +25833,27 @@ const int PY_RELEASE_LEVEL_FINAL = 15;
 
 const int PY_MAJOR_VERSION = 3;
 
-const int PY_MINOR_VERSION = 8;
+const int PY_MINOR_VERSION = 12;
 
-const int PY_MICRO_VERSION = 17;
+const int PY_MICRO_VERSION = 3;
 
 const int PY_RELEASE_LEVEL = 15;
 
 const int PY_RELEASE_SERIAL = 0;
 
-const String PY_VERSION = '3.8.17';
+const String PY_VERSION = '3.12.3';
 
-const int PY_VERSION_HEX = 50860528;
+const int PY_VERSION_HEX = 51119088;
+
+const int ALIGNOF_LONG = 8;
+
+const int ALIGNOF_MAX_ALIGN_T = 16;
+
+const int ALIGNOF_SIZE_T = 8;
 
 const int ENABLE_IPV6 = 1;
+
+const int HAVE_ACCEPT = 1;
 
 const int HAVE_ACOSH = 1;
 
@@ -19799,11 +25867,17 @@ const int HAVE_ASINH = 1;
 
 const int HAVE_ATANH = 1;
 
+const int HAVE_BIND = 1;
+
 const int HAVE_BROKEN_SEM_GETVALUE = 1;
 
 const int HAVE_BUILTIN_ATOMIC = 1;
 
+const int HAVE_BZLIB_H = 1;
+
 const int HAVE_CHFLAGS = 1;
+
+const int HAVE_CHMOD = 1;
 
 const int HAVE_CHOWN = 1;
 
@@ -19821,7 +25895,7 @@ const int HAVE_COMPUTED_GOTOS = 1;
 
 const int HAVE_CONFSTR = 1;
 
-const int HAVE_COPYSIGN = 1;
+const int HAVE_CONNECT = 1;
 
 const int HAVE_CTERMID = 1;
 
@@ -19834,6 +25908,8 @@ const int HAVE_CURSES_H = 1;
 const int HAVE_CURSES_HAS_KEY = 1;
 
 const int HAVE_CURSES_IMMEDOK = 1;
+
+const int HAVE_CURSES_IS_PAD = 1;
 
 const int HAVE_CURSES_IS_TERM_RESIZED = 1;
 
@@ -19849,11 +25925,7 @@ const int HAVE_CURSES_USE_ENV = 1;
 
 const int HAVE_CURSES_WCHGAT = 1;
 
-const int HAVE_DECL_ISFINITE = 1;
-
-const int HAVE_DECL_ISINF = 1;
-
-const int HAVE_DECL_ISNAN = 1;
+const int HAVE_DB_H = 1;
 
 const int HAVE_DECL_RTLD_DEEPBIND = 0;
 
@@ -19885,7 +25957,11 @@ const int HAVE_DLFCN_H = 1;
 
 const int HAVE_DLOPEN = 1;
 
+const int HAVE_DUP = 1;
+
 const int HAVE_DUP2 = 1;
+
+const int HAVE_DYLD_SHARED_CACHE_CONTAINS_PATH = 1;
 
 const int HAVE_DYNAMIC_LOADING = 1;
 
@@ -19915,7 +25991,11 @@ const int HAVE_FCNTL_H = 1;
 
 const int HAVE_FDOPENDIR = 1;
 
-const int HAVE_FINITE = 1;
+const int HAVE_FFI_CLOSURE_ALLOC = 1;
+
+const int HAVE_FFI_PREP_CIF_VAR = 1;
+
+const int HAVE_FFI_PREP_CLOSURE_LOC = 1;
 
 const int HAVE_FLOCK = 1;
 
@@ -19945,8 +26025,6 @@ const int HAVE_FUTIMES = 1;
 
 const int HAVE_GAI_STRERROR = 1;
 
-const int HAVE_GAMMA = 1;
-
 const int HAVE_GCC_ASM_FOR_X64 = 1;
 
 const int HAVE_GCC_UINT128_T = 1;
@@ -19955,7 +26033,15 @@ const int HAVE_GETADDRINFO = 1;
 
 const int HAVE_GETC_UNLOCKED = 1;
 
+const int HAVE_GETEGID = 1;
+
 const int HAVE_GETENTROPY = 1;
+
+const int HAVE_GETEUID = 1;
+
+const int HAVE_GETGID = 1;
+
+const int HAVE_GETGRGID = 1;
 
 const int HAVE_GETGRGID_R = 1;
 
@@ -19965,7 +26051,11 @@ const int HAVE_GETGROUPLIST = 1;
 
 const int HAVE_GETGROUPS = 1;
 
+const int HAVE_GETHOSTBYADDR = 1;
+
 const int HAVE_GETHOSTBYNAME = 1;
+
+const int HAVE_GETHOSTNAME = 1;
 
 const int HAVE_GETITIMER = 1;
 
@@ -19985,17 +26075,31 @@ const int HAVE_GETPGRP = 1;
 
 const int HAVE_GETPID = 1;
 
+const int HAVE_GETPPID = 1;
+
 const int HAVE_GETPRIORITY = 1;
+
+const int HAVE_GETPROTOBYNAME = 1;
 
 const int HAVE_GETPWENT = 1;
 
 const int HAVE_GETPWNAM_R = 1;
 
+const int HAVE_GETPWUID = 1;
+
 const int HAVE_GETPWUID_R = 1;
+
+const int HAVE_GETRUSAGE = 1;
+
+const int HAVE_GETSERVBYNAME = 1;
+
+const int HAVE_GETSERVBYPORT = 1;
 
 const int HAVE_GETSID = 1;
 
-const int HAVE_GETTIMEOFDAY = 1;
+const int HAVE_GETSOCKNAME = 1;
+
+const int HAVE_GETUID = 1;
 
 const int HAVE_GETWD = 1;
 
@@ -20003,11 +26107,11 @@ const int HAVE_GRP_H = 1;
 
 const int HAVE_HSTRERROR = 1;
 
-const int HAVE_HYPOT = 1;
-
 const int HAVE_IF_NAMEINDEX = 1;
 
 const int HAVE_INET_ATON = 1;
+
+const int HAVE_INET_NTOA = 1;
 
 const int HAVE_INET_PTON = 1;
 
@@ -20029,21 +26133,23 @@ const int HAVE_LCHMOD = 1;
 
 const int HAVE_LCHOWN = 1;
 
-const int HAVE_LGAMMA = 1;
-
 const int HAVE_LIBDL = 1;
 
-const int HAVE_LIBREADLINE = 1;
+const int HAVE_LIBSQLITE3 = 1;
 
 const int HAVE_LINK = 1;
 
 const int HAVE_LINKAT = 1;
+
+const int HAVE_LISTEN = 1;
 
 const int HAVE_LOCKF = 1;
 
 const int HAVE_LOG1P = 1;
 
 const int HAVE_LOG2 = 1;
+
+const int HAVE_LOGIN_TTY = 1;
 
 const int HAVE_LONG_DOUBLE = 1;
 
@@ -20056,8 +26162,6 @@ const int HAVE_MADVISE = 1;
 const int HAVE_MAKEDEV = 1;
 
 const int HAVE_MBRTOWC = 1;
-
-const int HAVE_MEMORY_H = 1;
 
 const int HAVE_MKDIRAT = 1;
 
@@ -20073,7 +26177,19 @@ const int HAVE_MKTIME = 1;
 
 const int HAVE_MMAP = 1;
 
+const int HAVE_NANOSLEEP = 1;
+
+const int HAVE_NCURSESW = 1;
+
 const int HAVE_NCURSES_H = 1;
+
+const int HAVE_NDBM_H = 1;
+
+const int HAVE_NETDB_H = 1;
+
+const int HAVE_NETINET_IN_H = 1;
+
+const int HAVE_NET_ETHERNET_H = 1;
 
 const int HAVE_NET_IF_H = 1;
 
@@ -20081,11 +26197,17 @@ const int HAVE_NICE = 1;
 
 const int HAVE_OPENAT = 1;
 
+const int HAVE_OPENDIR = 1;
+
 const int HAVE_OPENPTY = 1;
+
+const int HAVE_PANEL_H = 1;
 
 const int HAVE_PATHCONF = 1;
 
 const int HAVE_PAUSE = 1;
+
+const int HAVE_PIPE = 1;
 
 const int HAVE_POLL = 1;
 
@@ -20099,8 +26221,6 @@ const int HAVE_PREAD = 1;
 
 const int HAVE_PREADV = 1;
 
-const int HAVE_DYLD_SHARED_CACHE_CONTAINS_PATH = 1;
-
 const int HAVE_PROTOTYPES = 1;
 
 const int HAVE_PTHREAD_H = 1;
@@ -20108,8 +26228,6 @@ const int HAVE_PTHREAD_H = 1;
 const int HAVE_PTHREAD_KILL = 1;
 
 const int HAVE_PTHREAD_SIGMASK = 1;
-
-const int HAVE_PUTENV = 1;
 
 const int HAVE_PWRITE = 1;
 
@@ -20123,11 +26241,9 @@ const int HAVE_READV = 1;
 
 const int HAVE_REALPATH = 1;
 
+const int HAVE_RECVFROM = 1;
+
 const int HAVE_RENAMEAT = 1;
-
-const int HAVE_RL_APPEND_HISTORY = 1;
-
-const int HAVE_RL_CATCH_SIGNAL = 1;
 
 const int HAVE_RL_COMPLETION_APPEND_CHARACTER = 1;
 
@@ -20135,13 +26251,9 @@ const int HAVE_RL_COMPLETION_DISPLAY_MATCHES_HOOK = 1;
 
 const int HAVE_RL_COMPLETION_MATCHES = 1;
 
-const int HAVE_RL_COMPLETION_SUPPRESS_APPEND = 1;
-
 const int HAVE_RL_PRE_INPUT_HOOK = 1;
 
-const int HAVE_RL_RESIZE_TERMINAL = 1;
-
-const int HAVE_ROUND = 1;
+const int HAVE_RPC_RPC_H = 1;
 
 const int HAVE_SCHED_GET_PRIORITY_MAX = 1;
 
@@ -20155,6 +26267,8 @@ const int HAVE_SEM_UNLINK = 1;
 
 const int HAVE_SENDFILE = 1;
 
+const int HAVE_SENDTO = 1;
+
 const int HAVE_SETEGID = 1;
 
 const int HAVE_SETEUID = 1;
@@ -20166,6 +26280,8 @@ const int HAVE_SETGROUPS = 1;
 const int HAVE_SETHOSTNAME = 1;
 
 const int HAVE_SETITIMER = 1;
+
+const int HAVE_SETJMP_H = 1;
 
 const int HAVE_SETLOCALE = 1;
 
@@ -20181,6 +26297,8 @@ const int HAVE_SETREUID = 1;
 
 const int HAVE_SETSID = 1;
 
+const int HAVE_SETSOCKOPT = 1;
+
 const int HAVE_SETUID = 1;
 
 const int HAVE_SETVBUF = 1;
@@ -20188,6 +26306,8 @@ const int HAVE_SETVBUF = 1;
 const int HAVE_SHM_OPEN = 1;
 
 const int HAVE_SHM_UNLINK = 1;
+
+const int HAVE_SHUTDOWN = 1;
 
 const int HAVE_SIGACTION = 1;
 
@@ -20213,6 +26333,8 @@ const int HAVE_SOCKADDR_SA_LEN = 1;
 
 const int HAVE_SOCKADDR_STORAGE = 1;
 
+const int HAVE_SOCKET = 1;
+
 const int HAVE_SOCKETPAIR = 1;
 
 const int HAVE_SPAWN_H = 1;
@@ -20223,15 +26345,13 @@ const int HAVE_STATVFS = 1;
 
 const int HAVE_STAT_TV_NSEC2 = 1;
 
-const int HAVE_STDARG_PROTOTYPES = 1;
-
 const int HAVE_STDINT_H = 1;
+
+const int HAVE_STDIO_H = 1;
 
 const int HAVE_STDLIB_H = 1;
 
 const int HAVE_STD_ATOMIC = 1;
-
-const int HAVE_STRDUP = 1;
 
 const int HAVE_STRFTIME = 1;
 
@@ -20270,6 +26390,10 @@ const int HAVE_SYNC = 1;
 const int HAVE_SYSCONF = 1;
 
 const int HAVE_SYSEXITS_H = 1;
+
+const int HAVE_SYSLOG_H = 1;
+
+const int HAVE_SYSTEM = 1;
 
 const int HAVE_SYS_EVENT_H = 1;
 
@@ -20329,8 +26453,6 @@ const int HAVE_TERMIOS_H = 1;
 
 const int HAVE_TERM_H = 1;
 
-const int HAVE_TGAMMA = 1;
-
 const int HAVE_TIMEGM = 1;
 
 const int HAVE_TIMES = 1;
@@ -20343,13 +26465,15 @@ const int HAVE_TM_ZONE = 1;
 
 const int HAVE_TRUNCATE = 1;
 
+const int HAVE_TTYNAME = 1;
+
+const int HAVE_UMASK = 1;
+
 const int HAVE_UNAME = 1;
 
 const int HAVE_UNISTD_H = 1;
 
 const int HAVE_UNLINKAT = 1;
-
-const int HAVE_UNSETENV = 1;
 
 const int HAVE_UTIL_H = 1;
 
@@ -20359,7 +26483,13 @@ const int HAVE_UTIMES = 1;
 
 const int HAVE_UTIME_H = 1;
 
+const int HAVE_UTMP_H = 1;
+
 const int HAVE_UUID_UUID_H = 1;
+
+const int HAVE_VFORK = 1;
+
+const int HAVE_WAIT = 1;
 
 const int HAVE_WAIT3 = 1;
 
@@ -20383,19 +26513,23 @@ const int HAVE_WORKING_TZSET = 1;
 
 const int HAVE_WRITEV = 1;
 
-const int HAVE_X509_VERIFY_PARAM_SET1_HOST = 1;
-
 const int HAVE_ZLIB_COPY = 1;
 
 const int MVWDELCH_IS_EXPRESSION = 1;
 
 const int PTHREAD_SYSTEM_SCHED_SUPPORTED = 1;
 
+const String PY_BUILTIN_HASHLIB_HASHES = 'md5,sha1,sha2,sha3,blake2';
+
 const int PY_COERCE_C_LOCALE = 1;
 
-const String PY_FORMAT_SIZE_T = 'l';
+const int PY_SQLITE_ENABLE_LOAD_EXTENSION = 1;
+
+const int PY_SQLITE_HAVE_SERIALIZE = 1;
 
 const int PY_SSL_DEFAULT_CIPHERS = 1;
+
+const int PY_SUPPORT_TIER = 1;
 
 const int SIZEOF_DOUBLE = 8;
 
@@ -20437,17 +26571,39 @@ const int STDC_HEADERS = 1;
 
 const int SYS_SELECT_WITH_SYS_TIME = 1;
 
-const int TIME_WITH_SYS_TIME = 1;
+const int THREAD_STACK_SIZE = 16777216;
 
 const int _ALL_SOURCE = 1;
 
+const int _DARWIN_C_SOURCE = 1;
+
+const int __EXTENSIONS__ = 1;
+
 const int _GNU_SOURCE = 1;
+
+const int _HPUX_ALT_XOPEN_SOCKET_API = 1;
+
+const int _NETBSD_SOURCE = 1;
+
+const int _OPENBSD_SOURCE = 1;
 
 const int _POSIX_PTHREAD_SEMANTICS = 1;
 
-const int _TANDEM_SOURCE = 1;
+const int __STDC_WANT_IEC_60559_ATTRIBS_EXT__ = 1;
 
-const int __EXTENSIONS__ = 1;
+const int __STDC_WANT_IEC_60559_BFP_EXT__ = 1;
+
+const int __STDC_WANT_IEC_60559_DFP_EXT__ = 1;
+
+const int __STDC_WANT_IEC_60559_FUNCS_EXT__ = 1;
+
+const int __STDC_WANT_IEC_60559_TYPES_EXT__ = 1;
+
+const int __STDC_WANT_LIB_EXT2__ = 1;
+
+const int __STDC_WANT_MATH_SPEC_FUNCS__ = 1;
+
+const int _TANDEM_SOURCE = 1;
 
 const int WINDOW_HAS_FLAGS = 1;
 
@@ -20459,17 +26615,17 @@ const int WITH_DTRACE = 1;
 
 const int WITH_DYLD = 1;
 
+const int WITH_EDITLINE = 1;
+
+const int WITH_FREELISTS = 1;
+
 const int WITH_NEXT_FRAMEWORK = 1;
 
 const int WITH_PYMALLOC = 1;
 
-const int _DARWIN_C_SOURCE = 1;
-
 const int _FILE_OFFSET_BITS = 64;
 
 const int _LARGEFILE_SOURCE = 1;
-
-const int _NETBSD_SOURCE = 1;
 
 const String _PYTHONFRAMEWORK = 'Python';
 
@@ -20489,15 +26645,17 @@ const int PY_ULLONG_MAX = -1;
 
 const int PYLONG_BITS_IN_DIGIT = 30;
 
+const int PY_SSIZE_T_MAX = 9223372036854775807;
+
+const int PY_SSIZE_T_MIN = -9223372036854775808;
+
 const int SIZEOF_PY_HASH_T = 8;
 
 const int SIZEOF_PY_UHASH_T = 8;
 
 const int PY_SIZE_MAX = -1;
 
-const int PY_SSIZE_T_MAX = 9223372036854775807;
-
-const int PY_SSIZE_T_MIN = -9223372036854775808;
+const String PY_FORMAT_SIZE_T = 'z';
 
 const int PY_BIG_ENDIAN = 0;
 
@@ -20515,17 +26673,81 @@ const double Py_MATH_E = 2.718281828459045;
 
 const double Py_MATH_TAU = 6.283185307179586;
 
+const double Py_INFINITY = double.infinity;
+
 const double Py_HUGE_VAL = double.infinity;
 
 const double Py_NAN = double.nan;
+
+const int PyBUF_MAX_NDIM = 64;
+
+const int PyBUF_SIMPLE = 0;
+
+const int PyBUF_WRITABLE = 1;
+
+const int PyBUF_WRITEABLE = 1;
+
+const int PyBUF_FORMAT = 4;
+
+const int PyBUF_ND = 8;
+
+const int PyBUF_STRIDES = 24;
+
+const int PyBUF_C_CONTIGUOUS = 56;
+
+const int PyBUF_F_CONTIGUOUS = 88;
+
+const int PyBUF_ANY_CONTIGUOUS = 152;
+
+const int PyBUF_INDIRECT = 280;
+
+const int PyBUF_CONTIG = 9;
+
+const int PyBUF_CONTIG_RO = 8;
+
+const int PyBUF_STRIDED = 25;
+
+const int PyBUF_STRIDED_RO = 24;
+
+const int PyBUF_RECORDS = 29;
+
+const int PyBUF_RECORDS_RO = 28;
+
+const int PyBUF_FULL = 285;
+
+const int PyBUF_FULL_RO = 284;
+
+const int PyBUF_READ = 256;
+
+const int PyBUF_WRITE = 512;
+
+const int _Py_IMMORTAL_REFCNT = 4294967295;
 
 const int Py_INVALID_SIZE = -1;
 
 const int Py_PRINT_RAW = 1;
 
+const int _Py_TPFLAGS_STATIC_BUILTIN = 2;
+
+const int Py_TPFLAGS_MANAGED_WEAKREF = 8;
+
+const int Py_TPFLAGS_MANAGED_DICT = 16;
+
+const int Py_TPFLAGS_PREHEADER = 24;
+
+const int Py_TPFLAGS_SEQUENCE = 32;
+
+const int Py_TPFLAGS_MAPPING = 64;
+
+const int Py_TPFLAGS_DISALLOW_INSTANTIATION = 128;
+
+const int Py_TPFLAGS_IMMUTABLETYPE = 256;
+
 const int Py_TPFLAGS_HEAPTYPE = 512;
 
 const int Py_TPFLAGS_BASETYPE = 1024;
+
+const int Py_TPFLAGS_HAVE_VECTORCALL = 2048;
 
 const int _Py_TPFLAGS_HAVE_VECTORCALL = 2048;
 
@@ -20539,11 +26761,13 @@ const int Py_TPFLAGS_HAVE_STACKLESS_EXTENSION = 0;
 
 const int Py_TPFLAGS_METHOD_DESCRIPTOR = 131072;
 
-const int Py_TPFLAGS_HAVE_VERSION_TAG = 262144;
-
 const int Py_TPFLAGS_VALID_VERSION_TAG = 524288;
 
 const int Py_TPFLAGS_IS_ABSTRACT = 1048576;
+
+const int _Py_TPFLAGS_MATCH_SELF = 4194304;
+
+const int Py_TPFLAGS_ITEMS_AT_END = 8388608;
 
 const int Py_TPFLAGS_LONG_SUBCLASS = 16777216;
 
@@ -20561,9 +26785,11 @@ const int Py_TPFLAGS_BASE_EXC_SUBCLASS = 1073741824;
 
 const int Py_TPFLAGS_TYPE_SUBCLASS = 2147483648;
 
-const int Py_TPFLAGS_DEFAULT = 262144;
+const int Py_TPFLAGS_DEFAULT = 0;
 
 const int Py_TPFLAGS_HAVE_FINALIZE = 1;
+
+const int Py_TPFLAGS_HAVE_VERSION_TAG = 262144;
 
 const int Py_LT = 0;
 
@@ -20577,11 +26803,11 @@ const int Py_GT = 4;
 
 const int Py_GE = 5;
 
-const int PyTrash_UNWIND_LEVEL = 50;
+const int TYPE_MAX_WATCHERS = 8;
 
-const int _PyTime_MIN = -9223372036854775808;
+const int Py_bf_getbuffer = 1;
 
-const int _PyTime_MAX = 9223372036854775807;
+const int Py_bf_releasebuffer = 2;
 
 const int Py_mp_ass_subscript = 3;
 
@@ -20739,6 +26965,8 @@ const int Py_am_anext = 79;
 
 const int Py_tp_finalize = 80;
 
+const int Py_am_send = 81;
+
 const int _PyHASH_MULTIPLIER = 1000003;
 
 const int _PyHASH_BITS = 61;
@@ -20746,8 +26974,6 @@ const int _PyHASH_BITS = 61;
 const int _PyHASH_MODULUS = 2305843009213693951;
 
 const int _PyHASH_INF = 314159;
-
-const int _PyHASH_NAN = 0;
 
 const int _PyHASH_IMAG = 1000003;
 
@@ -20759,21 +26985,53 @@ const int Py_HASH_SIPHASH24 = 1;
 
 const int Py_HASH_FNV = 2;
 
-const int Py_HASH_ALGORITHM = 1;
+const int Py_HASH_SIPHASH13 = 3;
 
-const int F_LJUST = 1;
-
-const int F_SIGN = 2;
-
-const int F_BLANK = 4;
-
-const int F_ALT = 8;
-
-const int F_ZERO = 16;
+const int Py_HASH_ALGORITHM = 3;
 
 const int Py_UNICODE_SIZE = 4;
 
 const int Py_UNICODE_REPLACEMENT_CHARACTER = 65533;
+
+const int SSTATE_NOT_INTERNED = 0;
+
+const int SSTATE_INTERNED_MORTAL = 1;
+
+const int SSTATE_INTERNED_IMMORTAL = 2;
+
+const int SSTATE_INTERNED_IMMORTAL_STATIC = 3;
+
+const int MAX_CO_EXTRA_USERS = 255;
+
+const int Py_RTFLAGS_USE_MAIN_OBMALLOC = 32;
+
+const int Py_RTFLAGS_MULTI_INTERP_EXTENSIONS = 256;
+
+const int Py_RTFLAGS_THREADS = 1024;
+
+const int Py_RTFLAGS_DAEMON_THREADS = 2048;
+
+const int Py_RTFLAGS_FORK = 32768;
+
+const int Py_RTFLAGS_EXEC = 65536;
+
+const int PyTrace_CALL = 0;
+
+const int PyTrace_EXCEPTION = 1;
+
+const int PyTrace_LINE = 2;
+
+const int PyTrace_RETURN = 3;
+
+const int PyTrace_C_CALL = 4;
+
+const int PyTrace_C_EXCEPTION = 5;
+
+const int PyTrace_C_RETURN = 6;
+
+const int PyTrace_OPCODE = 7;
+
+const int C_RECURSION_LIMIT = 10000;
 
 const String _Py_PARSE_PID = 'i';
 
@@ -20791,6 +27049,10 @@ const int PyLong_BASE = 1073741824;
 
 const int PyLong_MASK = 1073741823;
 
+const int _PyLong_SIGN_MASK = 3;
+
+const int _PyLong_NON_SIZE_BITS = 3;
+
 const int _Py_MANAGED_BUFFER_RELEASED = 1;
 
 const int _Py_MANAGED_BUFFER_FREE_FORMAT = 2;
@@ -20804,6 +27066,8 @@ const int _Py_MEMORYVIEW_FORTRAN = 4;
 const int _Py_MEMORYVIEW_SCALAR = 8;
 
 const int _Py_MEMORYVIEW_PIL = 16;
+
+const int _Py_MEMORYVIEW_RESTRICTED = 32;
 
 const int PySet_MINSIZE = 8;
 
@@ -20825,35 +27089,23 @@ const int METH_FASTCALL = 128;
 
 const int METH_STACKLESS = 0;
 
+const int METH_METHOD = 512;
+
 const int Py_mod_create = 1;
 
 const int Py_mod_exec = 2;
 
-const int _Py_mod_LAST_SLOT = 2;
+const int Py_mod_multiple_interpreters = 3;
+
+const int _Py_mod_LAST_SLOT = 3;
 
 const String PY_STDIOTEXTMODE = 'b';
 
-const int PYTHREAD_INVALID_THREAD_ID = -1;
+const int _PY_MONITORING_LOCAL_EVENTS = 10;
 
-const int WAIT_LOCK = 1;
+const int _PY_MONITORING_UNGROUPED_EVENTS = 15;
 
-const int NOWAIT_LOCK = 0;
-
-const int PY_TIMEOUT_MAX = 9223372036854775;
-
-const int MAX_CO_EXTRA_USERS = 255;
-
-const int PyWrapperFlag_KEYWORDS = 1;
-
-const int Py_CLEANUP_SUPPORTED = 131072;
-
-const int PYTHON_API_VERSION = 1013;
-
-const String PYTHON_API_STRING = '1013';
-
-const int PYTHON_ABI_VERSION = 3;
-
-const String PYTHON_ABI_STRING = '3';
+const int _PY_MONITORING_EVENTS = 17;
 
 const int CO_OPTIMIZED = 1;
 
@@ -20866,8 +27118,6 @@ const int CO_VARKEYWORDS = 8;
 const int CO_NESTED = 16;
 
 const int CO_GENERATOR = 32;
-
-const int CO_NOFREE = 64;
 
 const int CO_COROUTINE = 128;
 
@@ -20891,9 +27141,89 @@ const int CO_FUTURE_GENERATOR_STOP = 8388608;
 
 const int CO_FUTURE_ANNOTATIONS = 16777216;
 
-const int CO_CELL_NOT_AN_ARG = -1;
-
 const int CO_MAXBLOCKS = 20;
+
+const int Py_T_SHORT = 0;
+
+const int Py_T_INT = 1;
+
+const int Py_T_LONG = 2;
+
+const int Py_T_FLOAT = 3;
+
+const int Py_T_DOUBLE = 4;
+
+const int Py_T_STRING = 5;
+
+const int _Py_T_OBJECT = 6;
+
+const int Py_T_CHAR = 7;
+
+const int Py_T_BYTE = 8;
+
+const int Py_T_UBYTE = 9;
+
+const int Py_T_USHORT = 10;
+
+const int Py_T_UINT = 11;
+
+const int Py_T_ULONG = 12;
+
+const int Py_T_STRING_INPLACE = 13;
+
+const int Py_T_BOOL = 14;
+
+const int Py_T_OBJECT_EX = 16;
+
+const int Py_T_LONGLONG = 17;
+
+const int Py_T_ULONGLONG = 18;
+
+const int Py_T_PYSSIZET = 19;
+
+const int _Py_T_NONE = 20;
+
+const int Py_READONLY = 1;
+
+const int Py_AUDIT_READ = 2;
+
+const int _Py_WRITE_RESTRICTED = 4;
+
+const int Py_RELATIVE_OFFSET = 8;
+
+const int PyWrapperFlag_KEYWORDS = 1;
+
+const int _PyTime_MIN = -9223372036854775808;
+
+const int _PyTime_MAX = 9223372036854775807;
+
+const int _SIZEOF_PYTIME_T = 8;
+
+const int WAIT_LOCK = 1;
+
+const int NOWAIT_LOCK = 0;
+
+const int PY_TIMEOUT_MAX = 9223372036854775;
+
+const int PYTHREAD_INVALID_THREAD_ID = -1;
+
+const int Py_CLEANUP_SUPPORTED = 131072;
+
+const int PYTHON_API_VERSION = 1013;
+
+const String PYTHON_API_STRING = '1013';
+
+const int PYTHON_ABI_VERSION = 3;
+
+const String PYTHON_ABI_STRING = '3';
+
+const int Py_single_input = 256;
+
+const int Py_file_input = 257;
+
+const int Py_eval_input = 258;
+
+const int Py_func_type_input = 345;
 
 const int PyCF_MASK = 33423360;
 
@@ -20911,7 +27241,9 @@ const int PyCF_TYPE_COMMENTS = 4096;
 
 const int PyCF_ALLOW_TOP_LEVEL_AWAIT = 8192;
 
-const int PyCF_COMPILE_MASK = 13824;
+const int PyCF_ALLOW_INCOMPLETE_INPUT = 16384;
+
+const int PyCF_COMPILE_MASK = 30208;
 
 const String FUTURE_NESTED_SCOPES = 'nested_scopes';
 
@@ -20935,15 +27267,13 @@ const String FUTURE_ANNOTATIONS = 'annotations';
 
 const int PY_INVALID_STACK_EFFECT = 2147483647;
 
-const int Py_single_input = 256;
-
-const int Py_file_input = 257;
-
-const int Py_eval_input = 258;
-
-const int Py_func_type_input = 345;
-
 const int PYOS_STACK_MARGIN = 2048;
+
+const int PyInterpreterConfig_DEFAULT_GIL = 0;
+
+const int PyInterpreterConfig_SHARED_GIL = 1;
+
+const int PyInterpreterConfig_OWN_GIL = 2;
 
 const int FVC_MASK = 3;
 
@@ -20958,6 +27288,16 @@ const int FVC_ASCII = 3;
 const int FVS_MASK = 4;
 
 const int FVS_HAVE_SPEC = 4;
+
+const int PY_VECTORCALL_ARGUMENTS_OFFSET = -9223372036854775808;
+
+const int _PY_FASTCALL_SMALL_STACK = 5;
+
+const int PY_ITERSEARCH_COUNT = 1;
+
+const int PY_ITERSEARCH_INDEX = 2;
+
+const int PY_ITERSEARCH_CONTAINS = 3;
 
 const int PY_CTF_LOWER = 1;
 
@@ -20979,12 +27319,10 @@ const int Py_DTSF_ADD_DOT_0 = 2;
 
 const int Py_DTSF_ALT = 4;
 
+const int Py_DTSF_NO_NEG_0 = 8;
+
 const int Py_DTST_FINITE = 0;
 
 const int Py_DTST_INFINITE = 1;
 
 const int Py_DTST_NAN = 2;
-
-const int _PY_READ_MAX = 2147483647;
-
-const int _PY_WRITE_MAX = 2147483647;

@@ -1,12 +1,13 @@
+import 'dart:ffi' as ffi;
+import 'dart:io' as io show Platform;
 import 'dart:io';
 
 import 'package:args/args.dart';
 
 import 'gen.dart';
 
-import 'dart:ffi' as ffi;
 export 'gen.dart';
-import 'dart:io' as io show Platform;
+
 part 'globals.dart';
 
 /// A variable to override the python dynamic library location on your computer
@@ -19,7 +20,8 @@ final _pyLib = pyLibLocation != null
             ? ffi.DynamicLibrary.open(_findMacos())
             : io.Platform.isWindows
                 ? ffi.DynamicLibrary.open(_findWindows())
-                : ffi.DynamicLibrary.open(pythonDylib()); // throw UnimplementedError('${io.Platform} not supported');
+                : ffi.DynamicLibrary.open(
+                    pythonDylib()); // throw UnimplementedError('${io.Platform} not supported');
 
 String pythonDylib() {
   final platformSuffix = io.Platform.isWindows
@@ -28,13 +30,16 @@ String pythonDylib() {
           ? '.dylib'
           : '.so';
   final options = ['--ldflags', '--embed'];
-  var result = Process.runSync('python3.10-config', options);
+  var result = Process.runSync('python3.12-config', options);
   if (result.exitCode != 0) {
-    result = Process.runSync('python3.9-config', options);
+    var result = Process.runSync('python3.10-config', options);
     if (result.exitCode != 0) {
-      result = Process.runSync('python3.8-config', options);
+      result = Process.runSync('python3.9-config', options);
       if (result.exitCode != 0) {
-        throw Exception('Failed to get python location');
+        result = Process.runSync('python3.8-config', options);
+        if (result.exitCode != 0) {
+          throw Exception('Failed to get python location');
+        }
       }
     }
   }
@@ -69,36 +74,52 @@ String pythonDylib() {
 }
 
 String _findLinux() {
-  if (File('/usr/lib/x86_64-linux-gnu/libpython3.8.so').existsSync()) {
-    return '/usr/lib/x86_64-linux-gnu/libpython3.8.so';
-  } else if (File('/usr/lib/x86_64-linux-gnu/libpython3.9.so').existsSync()) {
-    return '/usr/lib/x86_64-linux-gnu/libpython3.9.so';
+  if (File('/usr/lib/x86_64-linux-gnu/libpython3.12.so').existsSync()) {
+    return '/usr/lib/x86_64-linux-gnu/libpython3.12.so';
   } else if (File('/usr/lib/x86_64-linux-gnu/libpython3.10.so').existsSync()) {
     return '/usr/lib/x86_64-linux-gnu/libpython3.10.so';
+  } else if (File('/usr/lib/x86_64-linux-gnu/libpython3.9.so').existsSync()) {
+    return '/usr/lib/x86_64-linux-gnu/libpython3.9.so';
+  } else if (File('/usr/lib/x86_64-linux-gnu/libpython3.8.so').existsSync()) {
+    return '/usr/lib/x86_64-linux-gnu/libpython3.8.so';
   }
-  throw UnimplementedError(
-      'Linux python version not found, searched for Python 3.8, 3.9 and 3.10, set pyLibLocation for custom install location');
+  return pythonDylib();
+  // throw UnimplementedError(
+  //     'Linux python version not found, searched for Python 3.8, 3.9 and 3.10, set pyLibLocation for custom install location');
 }
 
 String _findMacos() {
-  if (Directory('/usr/local/Frameworks/Python.framework/Versions/3.8')
+  if (Directory('/usr/local/Frameworks/Python.framework/Versions/3.12')
       .existsSync()) {
-    return '/usr/local/Frameworks/Python.framework/Versions/3.8/lib/libpython3.8.dylib';
-  } else if (Directory('/usr/local/Frameworks/Python.framework/Versions/3.9')
-      .existsSync()) {
-    return '/usr/local/Frameworks/Python.framework/Versions/3.9/lib/libpython3.9.dylib';
+    return '/usr/local/Frameworks/Python.framework/Versions/3.12/lib/libpython3.12.dylib';
   } else if (Directory('/usr/local/Frameworks/Python.framework/Versions/3.10')
       .existsSync()) {
     return '/usr/local/Frameworks/Python.framework/Versions/3.10/lib/libpython3.10.dylib';
+  } else if (Directory('/usr/local/Frameworks/Python.framework/Versions/3.9')
+      .existsSync()) {
+    return '/usr/local/Frameworks/Python.framework/Versions/3.9/lib/libpython3.9.dylib';
+  } else if (Directory('/usr/local/Frameworks/Python.framework/Versions/3.8')
+      .existsSync()) {
+    return '/usr/local/Frameworks/Python.framework/Versions/3.8/lib/libpython3.8.dylib';
   }
-  throw UnimplementedError(
-      'Macos python version not found, searched for Python 3.8, 3.9, and 3.10, set pyLibLocation for custom install location');
+  return pythonDylib();
+  // throw UnimplementedError(
+  //     'Macos python version not found, searched for Python 3.8, 3.9, and 3.10, set pyLibLocation for custom install location');
 }
 
 String _findWindows() {
   Map env = Platform.environment;
   String username = env['USERNAME'];
+
   if (Directory(
+          'C:\\Users\\$username\\AppData\\Local\\Programs\\Python\\Python312\\python312.dll')
+      .existsSync()) {
+    return 'C:\\Users\\$username\\AppData\\Local\\Programs\\Python\\Python312\\python312.dll';
+  } else if (Directory(
+          'C:\\Users\\$username\\AppData\\Local\\Programs\\Python\\Python310\\python310.dll')
+      .existsSync()) {
+    return 'C:\\Users\\$username\\AppData\\Local\\Programs\\Python\\Python310\\python310.dll';
+  } else if (Directory(
           'C:\\Users\\$username\\AppData\\Local\\Programs\\Python\\Python39\\python39.dll')
       .existsSync()) {
     return 'C:\\Users\\$username\\AppData\\Local\\Programs\\Python\\Python39\\python39.dll';
@@ -106,13 +127,10 @@ String _findWindows() {
           'C:\\Users\\$username\\AppData\\Local\\Programs\\Python\\Python38\\python38.dll')
       .existsSync()) {
     return 'C:\\Users\\$username\\AppData\\Local\\Programs\\Python\\Python38\\python38.dll';
-  } else if (Directory(
-          'C:\\Users\\$username\\AppData\\Local\\Programs\\Python\\Python310\\python310.dll')
-      .existsSync()) {
-    return 'C:\\Users\\$username\\AppData\\Local\\Programs\\Python\\Python310\\python310.dll';
   }
-  throw UnimplementedError(
-      'Window python version not found, searched for Python 3.8, 3.9, 3.10 set pyLibLocation for custom install location');
+  return pythonDylib();
+  // throw UnimplementedError(
+  //     'Window python version not found, searched for Python 3.8, 3.9, 3.10 set pyLibLocation for custom install location');
 }
 
 DartPyC? _dartpyc;

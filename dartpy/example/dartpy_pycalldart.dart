@@ -1,14 +1,14 @@
-import 'dart:io';
 import 'dart:ffi';
-import 'package:ffi/ffi.dart';
+import 'dart:io';
 
 import 'package:dartpy/dartpy.dart';
+import 'package:ffi/ffi.dart';
 
 late Pointer<PyModuleDef> module;
 void main(List<String> args) {
   // initializes the python runtime
-  pyLibLocation =
-      '/usr/local/Frameworks/Python.framework/Versions/3.9/lib/libpython3.9.dylib';
+  // pyLibLocation =
+  //     '/usr/local/Frameworks/Python.framework/Versions/3.12/lib/libpython3.12.dylib';
 
   try {
     final moduleName = 'dartmod'.toNativeUtf8().cast<Char>();
@@ -49,7 +49,7 @@ void main(List<String> args) {
 }
 
 Pointer<PyObject> initFunc() {
-  return dartpyc.PyModule_CreateInitialized(module, 1013);
+  return dartpyc.PyModule_CreateInitialized(module, PYTHON_API_VERSION);
 }
 
 Pointer<PyObject> calledFromPython(
