@@ -1,6 +1,6 @@
 name: dartpy
 description: A library for using dart with python via python's C API
-version: 0.0.3
+version: 0.0.4
 homepage: http://github.com/TimWhiting/dartpy
 
 environment:

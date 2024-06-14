@@ -5,9 +5,9 @@ environment:
   sdk: ">=3.0.0 <4.0.0"
 
 dependencies:
-  dartpy: ^0.0.2
+  dartpy: ^0.0.4
 
 dev_dependencies:
   gen_dartpy: any
-  test: ^1.24.6
-  build_runner: ^2.4.6
+  test: ^1.25.7
+  build_runner: ^2.4.11

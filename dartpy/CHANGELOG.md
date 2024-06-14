@@ -1,3 +1,6 @@
+## 0.0.4
+- Update for python 3.12
+
 ## 0.0.3
 - More robust discovery of python dynamic library location
 
