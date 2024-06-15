@@ -121,3 +121,29 @@ num pymultiplynum(num a, num b) {
   dartpyc.Py_DecRef(pArgs);
   return result.asNum;
 }
+
+/// Calls the python function getenv
+String pygetenv(String envName) {
+  final pyModule = pyImport('os');
+  final pFunc = pyModule.getFunction('getenv');
+  final pArgs = dartpyc.PyTuple_New(1);
+  if (pArgs == nullptr) {
+    throw DartPyException('Creating argument tuple failed');
+  }
+  Pointer<PyObject>? arg;
+  arg = null;
+  try {
+    arg = envName.asPyString;
+    dartpyc.PyTuple_SetItem(pArgs, 0, arg);
+  } on DartPyException catch (e) {
+    if (arg != null) {
+      dartpyc.Py_DecRef(arg);
+    }
+    dartpyc.Py_DecRef(pArgs);
+    throw DartPyException(
+        'Failed while converting argument $arg with error $e');
+  }
+  final result = dartpyc.PyObject_CallObject(pFunc.pyFunctionObject, pArgs);
+  dartpyc.Py_DecRef(pArgs);
+  return result.asString;
+}

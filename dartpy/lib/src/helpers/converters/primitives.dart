@@ -1,7 +1,7 @@
 import 'dart:ffi';
 
-import 'package:dartpy/src/ffi/gen.dart';
 import 'package:ffi/ffi.dart';
+
 import '../../dartpy_base.dart';
 
 extension PyInt on int {
@@ -27,16 +27,11 @@ extension PyNum on num {
 
 extension PyString on String {
   /// Converts a String to a python bytes object
-  PythonString asPyBytes() {
+  Pointer<PyObject> get asPyString {
     final allocated = toNativeUtf8();
-    return PythonString(
-        dartpyc.PyBytes_FromString(allocated.cast<Char>()), allocated);
+    return dartpyc.PyUnicode_FromString(
+        allocated.cast<Char>()); // Let python own the string
   }
-}
-
-class PythonString extends PyObjAllocated<Utf8> {
-  PythonString(Pointer<PyObject> pyObj, Pointer<Utf8> allocated)
-      : super(pyObj, allocated);
 }
 
 /// Manages a PyObject pointer with associated dart ffi allocation
@@ -101,7 +96,7 @@ extension PrimitivesConversion on Pointer<PyObject> {
   }
 
   String get asString {
-    final res = dartpyc.PyBytes_AsString(this);
+    final res = dartpyc.PyUnicode_AsUTF8(this);
     if (!pyErrOccurred()) {
       dartpyc.Py_DecRef(this);
       final str = res.cast<Utf8>().toDartString();

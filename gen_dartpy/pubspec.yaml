@@ -1,6 +1,6 @@
 name: gen_dartpy
 description: A library for generating dart bindings to python code via python's C API
-version: 0.0.2
+version: 0.0.3
 homepage: http://github.com/TimWhiting/dartpy
 
 environment:
@@ -10,7 +10,7 @@ dependencies:
   analyzer: ^6.5.0
   build: ^2.4.1
   source_gen: ^1.5.0
-  dartpy: ^0.0.4
+  dartpy: ^0.0.5
 
 dev_dependencies:
   pedantic: ^1.11.1

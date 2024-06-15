@@ -1,10 +1,9 @@
-export 'primitives.dart';
-export 'collections.dart';
-
 import 'dart:ffi';
 
 import '../../dartpy_base.dart';
-import '../bool_functions.dart';
+
+export 'collections.dart';
+export 'primitives.dart';
 
 /// Converts a Dart object to the python equivalent
 ///
@@ -24,7 +23,7 @@ PyObjAllocated pyConvertDynamic(Object? o) {
   } else if (o is double) {
     return PyObjAllocated.noAllocation(o.asPyFloat);
   } else if (o is String) {
-    return o.asPyBytes();
+    return PyObjAllocated.noAllocation(o.asPyString);
   } else if (o is List) {
     throw UnimplementedError();
   } else if (o is Map) {

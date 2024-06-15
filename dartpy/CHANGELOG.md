@@ -1,3 +1,6 @@
+## 0.0.5
+- String conversion fixes (used to convert to `bytes` object which is not the same as `str`)
+
 ## 0.0.4
 - Update for python 3.12
 

@@ -1,10 +1,10 @@
 import 'dart:async';
+
 import 'package:analyzer/dart/element/element.dart';
 import 'package:analyzer/dart/element/type.dart';
-
 import 'package:build/src/builder/build_step.dart';
-import 'package:source_gen/source_gen.dart';
 import 'package:dartpy/dartpy_annotations.dart';
+import 'package:source_gen/source_gen.dart';
 
 class DartpyFunctionGenerator extends GeneratorForAnnotation<PyFunction> {
   @override
@@ -68,12 +68,15 @@ return result.${convertReturnType(e.returnType)};''';
     if (pType.isDartCoreNum) {
       return 'asPyNum';
     }
+    if (pType.isDartCoreString) {
+      return 'asPyString';
+    }
     throw UnimplementedError(
         'Converting $pType failed, type is not implemented');
   }
 
   String convertReturnType(DartType returnType) {
-    if (returnType.isVoid) {
+    if (returnType is VoidType) {
       return '';
     }
     if (returnType.isDartCoreInt) {
@@ -84,6 +87,9 @@ return result.${convertReturnType(e.returnType)};''';
     }
     if (returnType.isDartCoreNum) {
       return 'asNum';
+    }
+    if (returnType.isDartCoreString) {
+      return 'asString';
     }
     return 'null';
   }
